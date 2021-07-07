@@ -21,7 +21,7 @@ My first discord bot write with python and use cogs
 py -3.9.5 -m pip install discord.py discord-py-slash-command
 
 # Config.py
-change : token , prefix 
+change : token , prefix , welcome , leave , verifyreaction , colorrolereaction , mute role , server log , giveaway log
 
 ## Help 
 My discord : ꜱᴛᴀᴄɪᴀ.#7475
