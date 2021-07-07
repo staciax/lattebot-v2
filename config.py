@@ -1,0 +1,20 @@
+PREFIX = '..'
+
+TOKEN = 'ODYxMTc5OTUyNTc2ODU2MDY1.YOGCVA.ybEvJEqnfuDjVwCyLPEYN8cJA3g'
+
+BOTVERSION = 'beta 2.0a'
+
+WELCOME = ''
+
+LEAVE = '' 
+
+VERIFY = ''
+
+COLOR = ''
+
+MUTEROLE = '୭ muted ୭'
+COLORMUTE = 0xff9f9f #when don't have mute role
+
+SERVER_LOG = 862250482218303509
+
+LOG_GIVEAWAY = 862250482218303509
