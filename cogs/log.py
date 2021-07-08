@@ -13,7 +13,7 @@ class Log(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):       
         self.log_channel = self.bot.get_channel(SERVER_LOG)
-        print('Cogs log : online')
+        print('log')
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):

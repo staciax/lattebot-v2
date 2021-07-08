@@ -8,7 +8,6 @@ import asyncio
 import re
 from config import *
 from datetime import datetime, timedelta
-from discord_slash import SlashCommand, SlashContext
 
 intents = discord.Intents()
 intents.all()
@@ -16,9 +15,13 @@ intents.members = True
 intents = discord.Intents(messages=True, guilds=True)
 
 client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=discord.Intents.all(), owner_id=385049730222129152)
-slash = SlashCommand(client, sync_commands=True, sync_on_cog_reload=True)
 
 @client.remove_command("help") #remove help 
+
+@client.event
+async def on_ready():
+    print(f"{client.user} in online")
+    print(f"\ncommands list")
 
 @client.command()
 async def load(ctx, extension):

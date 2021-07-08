@@ -15,22 +15,8 @@ class Latte(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        await self.client.change_presence(status=discord.Status.idle, activity=discord.Game('.help'))
-        print('Latte Bot\n')
-        print('Cogs Data : online')
-    
-    @commands.command()
-    async def help(self, ctx):
-        embed=discord.Embed(
-        title=f"✧ LATTE Help commnad", 
-        description=f"not available now!",
-        timestamp=datetime.now(timezone.utc),
-        color=0xc4cfcf
-        ) 
-        embed.set_thumbnail(url=ctx.guild.icon.url)
-        embed.set_footer(text = f'Requested by {ctx.author}', icon_url = ctx.author.avatar.url)
-
-        await ctx.channel.send(embed=embed)
+        await self.client.change_presence(status=discord.Status.idle, activity=discord.Game('l.help'))
+        print('Data')
 
     @commands.command()
     async def invite(self, ctx):
@@ -66,7 +52,7 @@ class Latte(commands.Cog):
         embed.add_field(name='Python version:', value=pythonVersion)
         embed.add_field(name='Discord.py version:', value=dpyVersion)
         embed.add_field(name='Total servers:', value=serverCount)
-        embed.add_field(name='Total vsers:', value=memberCount)
+        embed.add_field(name='Total users:', value=memberCount)
         embed.add_field(name='Bot developers:', value="<@385049730222129152>")
 
         embed.set_footer(text=f"Req by {ctx.author}" , icon_url = ctx.author.avatar.url) # (text=f"Req by {ctx.author} | {self.client.user.name}"

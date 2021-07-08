@@ -1,12 +1,16 @@
 import discord
 from discord.ext import commands
+import time
 import re
 import os
 from datetime import datetime, timedelta, timezone
 from config import *
+from typing import Union
+import time
 
 intents = discord.Intents.default()
 intents.members = True
+
 
 class Info(commands.Cog):
 
@@ -15,34 +19,74 @@ class Info(commands.Cog):
     
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Cogs info : online')
+        print('Info')
+
+    @commands.command()
+    async def info(self, ctx, *, user: Union[discord.Member, discord.User] = None):
+        """Shows info about a user."""
+
+        user = user or ctx.author
+        e = discord.Embed()
+        roles = [role.name.replace('@', '@\u200b') for role in getattr(user, 'roles', [])]
+        e.set_author(name=str(user))
+
+        voice = getattr(user, 'voice', None)
+        if voice is not None:
+            vc = voice.channel
+            other_people = len(vc.members) - 1
+            voice = f'{vc.name} with {other_people} others' if other_people else f'{vc.name} by themselves'
+            e.add_field(name='Voice', value=voice, inline=False)
+
+        if roles:
+            e.add_field(name='Roles', value=', '.join(roles) if len(roles) < 10 else f'{len(roles)} roles', inline=False)
+
+        colour = user.colour
+        if colour.value:
+            e.colour = colour
+
+        if user.avatar:
+            e.set_thumbnail(url=user.avatar.url)
+
+        if isinstance(user, discord.User):
+            e.set_footer(text='This member is not in this server.')
+
+        await ctx.send(embed=e)
 
     @commands.command(aliases=['sv'])
-    async def serverinfo(self, Ctx):
-        header = f"Server infomation - {Ctx.guild.name}\n\n"
-        rows = {
-            "Name"                  : Ctx.guild.name,
-            "ID"                    : Ctx.guild.id,
-            "Region"                : str(Ctx.guild.region).title(),
-		    "Owner"                 : Ctx.guild.owner.display_name,
-		    "Shard ID"              : Ctx.guild.shard_id,
-		    "Created on"            : Ctx.guild.created_at.strftime("%d/%m/%y %H:%M:%S"),
-		    "joined"                : max([Member.joined_at for Member in Ctx.guild.members]).strftime("%d/%m/%y %H:%M:%S"),
-		    "Members with bots"     : Ctx.guild.member_count,
-		    "Members"               : len([member for member in Ctx.guild.members if not member.bot]),
-		    "Bots"                  : len([Member for Member in Ctx.guild.members if Member.bot]),   
-		    "categories"            : len(Ctx.guild.categories),
-		    "text channels"         : len(Ctx.guild.text_channels),
-		    "voice channels"        : len(Ctx.guild.voice_channels),
-		    "roles"                 : len(Ctx.guild.roles),
-		    "Banned members"        : len(await Ctx.guild.bans()),
-	        "Most recent member"    : [Member for Member in Ctx.guild.members if Member.joined_at is max([Member.joined_at for Member in Ctx.guild.members])][0].display_name,          
-		    "invite link"           : len(await Ctx.guild.invites()),
+    async def serverinfo(self, ctx):
+        embed = discord.Embed(title=f"Server info - {ctx.guild.name}",color=0xffffff)
+        embed.add_field(name="Server name", value=ctx.guild.name)
+        embed.add_field(name="Server Owner", value=f"{ctx.guild.owner.display_name}#{ctx.guild.owner.discriminator}\n{ctx.guild.owner.mention}")
+        embed.add_field(name="Server Member", value=len([member for member in ctx.guild.members if not member.bot]))
+        embed.add_field(name="Server Region", value=str(ctx.guild.region).title())
+        embed.add_field(name="Server Bots", value=len([Member for Member in ctx.guild.members if Member.bot]))
+        embed.add_field(name="Server Roles", value=len(ctx.guild.roles))
+        embed.add_field(name="Text Channels", value=len(ctx.guild.text_channels))
+        embed.add_field(name="Voice Channels", value=len(ctx.guild.voice_channels))
+        embed.add_field(name="Stage Chennels", value=len(ctx.guild.stage_channels))
+        embed.add_field(name="Category size", value=len(ctx.guild.categories))
+        embed.add_field(name="AFK Chennels", value=ctx.guild.afk_channel)
+        conversion = timedelta(seconds=ctx.guild.afk_timeout)
+        converted_time = str(conversion)
+        embed.add_field(name="AFK Timer", value=converted_time)
+        embed.add_field(name="Rules Channel", value=ctx.guild.rules_channel.mention)
+        embed.add_field(name="System Channel", value=ctx.guild.system_channel.mention)
+        embed.add_field(name="Verification Level", value=ctx.guild.verification_level)
+        embed.set_thumbnail(url=self.client.user.avatar.url)
+#        onlines = len(ctx.status.online)
+#        offlines = len(ctx.status.offline)
+#        idles = len(ctx.status.idle)
+#        Dnds = len(ctx.status.do_not_disturb)
+#        embed.add_field(name=f"Activity", value=f"Online : {onlines}\nOffline{offlines}\nIdle : {idles}\n Dnd: {Dnds}")
 
-        }
-        table = header + "\n".join([f"{key}{' '*(max([len(key) for key in rows.keys()])+2-len(key))}{value}" for key, value in rows.items()])
-        await Ctx.send(f"```{table}```")
-        return
+        if ctx.guild.premium_tier != 0:
+            boosts = f'Level {ctx.guild.premium_tier}\n{ctx.guild.premium_subscription_count} boosts'
+            last_boost = max(ctx.guild.members, key=lambda m: m.premium_since or ctx.guild.created_at)
+            if last_boost.premium_since is not None:
+                boosts = f'{boosts}\nLast Boost: {last_boost}'
+            embed.add_field(name='Boosts', value=boosts, inline=False)
+    
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=['ui'])
     async def userinfo(self, ctx, member: discord.Member = None):

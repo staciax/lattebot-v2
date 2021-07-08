@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord_slash import cog_ext, SlashContext
 import random
 import datetime
 import asyncio
@@ -15,7 +14,7 @@ class Giveaway(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Cogs giveaway : online')
+        print('giveaway')
    
     @commands.command(aliases=['start', 'g'])
     @commands.has_permissions(manage_guild=True) #@commands.has_permissions(administrator = True)

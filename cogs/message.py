@@ -7,6 +7,10 @@ class Message(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print('Message')
+
     @commands.command()
     async def latte(self, ctx):
         await ctx.send('เราชอบกินลาเต้นะ')
