@@ -3,6 +3,7 @@ import discord
 from config import *
 from discord.ext import commands
 from datetime import datetime, timezone
+import time
 
 
 class Log(commands.Cog):
@@ -118,6 +119,27 @@ class Log(commands.Cog):
                 embed.set_footer(text=f"{message.author.display_name}", icon_url=message.author.avatar.url)
             
             await self.log_channel.send(embed=embed)
+    
+#    @commands.Cog.listener() #activity = role
+#    async def on_presence_update(self, before, after):
+#        games = ["game1", "game2", "game3"]
+#        if after.activity and after.activity.name.lower() in games:
+#            role = discord.utils.get(after.guild.roles, name=after.activity)
+#            await after.add_roles(role)
+#        elif before.activity and before.activity.name.lower() in games and not after.activity:
+#            role = discord.utils.get(after.guild.roles, name=after.activity)
+#            if role in after.roles: 
+#                await after.remove_roles(role)
+
+#    @commands.Cog.listener() #online offlie = role
+#    async def on_presence_update(self, before, after):
+#        if str(before.status) == "online":
+#            if str(after.status) == "offline":
+#                guild = self.bot.get_guild(840379510704046151)
+#                role = discord.utils.find(lambda r: r.name == '୨ offline role ୧', guild.roles)
+#                await after.add_roles(role)
+#                await before.remove_roles(role)
+
 
 def setup(client):
     client.add_cog(Log(client))

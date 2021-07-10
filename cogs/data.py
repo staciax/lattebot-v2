@@ -13,10 +13,26 @@ class Latte(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        await self.client.change_presence(status=discord.Status.idle, activity=discord.Game('l.help'))
-        print('Data')
+    @commands.command()
+    async def status(self, ctx, statusType: str, *, statusText):
+
+    # Setting `Playing ` status
+        if statusType.lower() == "playing":
+            await self.client.change_presence(activity=discord.Game(name=statusText))
+
+    # Setting `Streaming ` status
+        if statusType.lower() == "streaming":
+            await self.client.change_presence(activity=discord.Streaming(name=statusText, url=""))
+
+    # Setting `Listening ` status
+        if statusType.lower() == "listening":
+            await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=statusText))
+
+    # Setting `Watching ` status
+        if statusType.lower() == "watching":
+            await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=statusText))
+
+        await ctx.send("**✅ Status Changed!**")
 
     @commands.command()
     async def invite(self, ctx):
@@ -24,7 +40,7 @@ class Latte(commands.Cog):
         embed.set_thumbnail(url=ctx.guild.icon.url)
         embed.set_image(url=ctx.guild.banner.url)
         embed.set_footer(text = f'Req by {ctx.author}', icon_url = ctx.author.avatar.url)
-
+        
         await ctx.send(embed=embed)
     
     @commands.command(description="check latency bot")

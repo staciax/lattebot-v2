@@ -66,9 +66,22 @@ class Info(commands.Cog):
         embed.add_field(name="Stage Chennels", value=len(ctx.guild.stage_channels))
         embed.add_field(name="Category size", value=len(ctx.guild.categories))
         embed.add_field(name="AFK Chennels", value=ctx.guild.afk_channel)
-        conversion = timedelta(seconds=ctx.guild.afk_timeout)
-        converted_time = str(conversion)
-        embed.add_field(name="AFK Timer", value=converted_time)
+#        conversion = timedelta(seconds=ctx.guild.afk_timeout)
+#        sec = str(conversion)
+        sec = ctx.guild.afk_timeout
+
+        if sec == 3600:
+            sec = "1 hour"
+        elif sec == 1800:
+            sec = "30 minutes"
+        elif sec == 900:
+            sec = "15 minutes"
+        elif sec == 300:
+            sec = "5 minutes"
+        elif sec == 60:
+            sec = "1 minute"
+
+        embed.add_field(name="AFK Timer", value=sec)
         embed.add_field(name="Rules Channel", value=ctx.guild.rules_channel.mention)
         embed.add_field(name="System Channel", value=ctx.guild.system_channel.mention)
         embed.add_field(name="Verification Level", value=ctx.guild.verification_level)
@@ -97,23 +110,33 @@ class Info(commands.Cog):
         embed.set_author(name=f"User info - {member}", icon_url=member.avatar.url)
         embed.set_thumbnail(url=member.avatar.url)
 #        embed.add_field(name="Display Name", value=member.mention)   
-        embed.add_field(name="Nickname", value=member.display_name)         
-        embed.add_field(name="Current status", value=str(member.status).title())
+        embed.add_field(name="Nickname", value=f"`{member.display_name}`")         
 #        embed.add_field(name=f"Boost status", value="Yes" if bool(member.premium_since) else "No", inline=True)
         members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
-        embed.add_field(name=f"Join position", value=str(members.index(member)+1), inline=True)
-        embed.add_field(name="Current Activity", value=f"{str(member.activity.type).title().split('.')[1]} {member.activity.name}" if member.activity is not None else "None")
-        embed.add_field(name="Is bot?", value="Yes" if member.bot else "No" , inline=True)     
-        embed.add_field(name="Joined", value=member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p") ,inline=False)
-        embed.add_field(name="Registered", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p"), inline=False) 
+        embed.add_field(name=f"Join position", value=f"`{str(members.index(member)+1)}/{ctx.guild.member_count}`", inline=True)
+        embed.add_field(name="Is bot?", value="`Yes`" if member.bot else "`No`" , inline=True)  
+        embed.add_field(name="Current status", value=f"`{str(member.status).title()}`")
+        embed.add_field(name="Activity", value=f"`{str(member.activity.type).title().split('.')[1]} {member.activity.name}`" if member.activity is not None else "None")
+        embed.add_field(name="Registered", value=member.created_at.strftime("`%d-%m-%Y, %H:%M`"), inline=False)            
+        embed.add_field(name="Joined", value=member.joined_at.strftime("`%d-%m-%Y, %H:%M`") ,inline=False)
         embed.add_field(name="Top Role", value=member.top_role.mention , inline=False)
         if len(member.roles) > 1:
             role_string = ' '.join([r.mention for r in member.roles][1:])
             embed.add_field(name="Roles ({})\n".format(len(member.roles)-1), value=role_string, inline=False) #delete @everyone role
-#        embed.add_field(name="ID" ,value=member.id)
 #        embed.add_field(name="mention member, value=member.mention, inline=False)
 #        memberbot = "Yes" if member.bot else "No"
-        embed.set_footer(text=f"ID: {member.id}" ) #, icon_url = ctx.author.avatar.url)        
+        embed.set_footer(text=f"ID: {member.id}" ) #, icon_url = ctx.author.avatar.url)  
+        u = ""
+        p = member.public_flags
+        if p.hypesquad_brilliance:
+            u += "<:a_discordbrillance:862968137813458995> Hypesquad Brillance"
+        if p.hypesquad_bravery:
+            u += "<:a_discordbravery:862968137012346892> Hypesquad Bravery"
+        if p.hypesquad_balance:
+            u += "<:a_discordbalance:862968137761423381> Hypesquad Balance"
+        embed.add_field(name="Hypesquad House", value=f"{u}", inline=False)
+
+          
 #        print(member.top_role.mention)
         await ctx.send(embed=embed) #text=f"You're our {member.guild.member_count} members ෆ"
 
@@ -126,6 +149,6 @@ class Info(commands.Cog):
         embed.set_image(url =  member.avatar.url) # Shows the avatar
         embed.set_footer(text = f'Requested by {ctx.author}', icon_url = ctx.author.avatar.url)
         await ctx.send(embed = embed)
-        
+
 def setup(client):
     client.add_cog(Info(client))

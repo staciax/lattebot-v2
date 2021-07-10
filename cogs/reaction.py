@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from config import *
 
 class Reaction(commands.Cog):
 
@@ -12,8 +13,8 @@ class Reaction(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        ColourID = 861212646057443338
-        VerifyID = 861849112386469908
+        ColourID = COLOR
+        VerifyID = VERIFY
 
         if ColourID == payload.message_id:
             member = payload.member
@@ -52,8 +53,8 @@ class Reaction(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
-        ColourID = 861212646057443338
-        VerifyID = 861849112386469908
+        ColourID = VERIFY
+        VerifyID = COLOR
 
         if ColourID == payload.message_id:
             guild = await(self.client.fetch_guild(payload.guild_id))

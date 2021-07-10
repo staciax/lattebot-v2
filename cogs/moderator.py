@@ -20,7 +20,7 @@ class Admin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        channel = discord.utils.get(member.guild.text_channels, name="♢・welcome")
+        channel = discord.utils.get(member.guild.text_channels, name=WELCOME)
         if channel:
             embed=discord.Embed(
         description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n‧˚₊ ପ <:a_pink_dot:860493678723072000>︰<#861774918290636800> ଓ ♡ ˖˚˳\n♡ ꒷ get latte roles~︰𓂃 ꒱\n\n⸝⸝﹒{member.mention} ꒱ <a:S_wtfemoji:860490611048054845>", #⊹₊˚**‧Welcome‧**˚₊⊹ 
@@ -36,7 +36,7 @@ class Admin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        channel = discord.utils.get(member.guild.text_channels, name="leave")
+        channel = discord.utils.get(member.guild.text_channels, name=LEAVE)
         if channel:
             embed = discord.Embed(
                 description=f"**Leave Server\n`{member}`**",
@@ -50,7 +50,7 @@ class Admin(commands.Cog):
     @commands.has_permissions(administrator = True)
 #    @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *, reason = None):
-        embed = discord.Embed(title="Banned Member", description=f'{member.name}#{member.discriminator} has been banned from server\nReason: {reason}',timestamp=datetime.utcnow(),color=0xffffff)
+        embed = discord.Embed(title="Banned Member", description=f'{member.name}#{member.discriminator} has been banned from server\nReason: {reason}',timestamp=datetime.now(timezone.utc),color=0xffffff)
         embed.set_footer(text=f"Banned by {ctx.author}" , icon_url = ctx.author.avatar.url)
 
         embedprm = discord.Embed(title="Ban Error\n", description="`Bot doesn't have enough permission to ban someone.`",color=0xffffff)

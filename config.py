@@ -1,16 +1,16 @@
-PREFIX = '..'
+PREFIX = 'lt '
 
 TOKEN = 'ODYxMTc5OTUyNTc2ODU2MDY1.YOGCVA.ybEvJEqnfuDjVwCyLPEYN8cJA3g'
 
 BOTVERSION = 'beta 2.0a'
 
-WELCOME = ''
+WELCOME = '♢・welcome'
 
-LEAVE = '' 
+LEAVE = 'LEAVE' 
 
-VERIFY = ''
+VERIFY = 861849112386469908
 
-COLOR = ''
+COLOR = 861212646057443338
 
 MUTEROLE = '୭ muted ୭'
 COLORMUTE = 0xff9f9f #when don't have mute role
