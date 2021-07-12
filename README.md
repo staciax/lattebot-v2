@@ -10,7 +10,7 @@ My first discord bot write with python and use cogs
 | ------------------------------------| --------- | 
 | **Python**                          | 3.9.5     | 
 | **discord.py**                      | 2.0.0a    | 
-| **discord-py-slash-command**        | 2.3.1     | 
+| **discord-py-slash-command**        | 2.3.2     | 
 | **discord-components**              | 1.1.4     | 
 
 
