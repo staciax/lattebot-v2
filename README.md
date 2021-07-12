@@ -11,6 +11,7 @@ My first discord bot write with python and use cogs
 | **Python**                          | 3.9.5     | 
 | **discord.py**                      | 2.0.0a    | 
 | **discord-py-slash-command**        | 2.3.1     | 
+| **discord-components**              | 1.1.4     | 
 
 
 
@@ -18,10 +19,11 @@ My first discord bot write with python and use cogs
 
 ```bash
 # Windows
-py -3.9.5 -m pip install discord.py discord-py-slash-command
+py -3.9.5 -m pip install discord.py discord-py-slash-command , discord-components
 
 # Config.py
-change : token , prefix , welcome , leave , verifyreaction , colorrolereaction , mute role , server log , giveaway log
+change : token , prefix , welcome , leave , verifyreaction , colorrolereaction , 
+mute role , server log , giveaway log
 
 ## Help 
 My discord : ꜱᴛᴀᴄɪᴀ.#7475
