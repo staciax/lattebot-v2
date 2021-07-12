@@ -1,8 +1,10 @@
 import discord
+import random , typing
 from discord.ext import commands
 import time
 import re
 import os
+import utils
 from datetime import datetime, timedelta, timezone
 from config import *
 from typing import Union
@@ -54,6 +56,7 @@ class Info(commands.Cog):
 
     @commands.command(aliases=['sv'])
     async def serverinfo(self, ctx):
+
         embed = discord.Embed(title=f"Server info - {ctx.guild.name}",color=0xffffff)
         embed.add_field(name="Server name", value=ctx.guild.name)
         embed.add_field(name="Server Owner", value=f"{ctx.guild.owner.display_name}#{ctx.guild.owner.discriminator}\n{ctx.guild.owner.mention}")
@@ -85,6 +88,10 @@ class Info(commands.Cog):
         embed.add_field(name="Rules Channel", value=ctx.guild.rules_channel.mention)
         embed.add_field(name="System Channel", value=ctx.guild.system_channel.mention)
         embed.add_field(name="Verification Level", value=ctx.guild.verification_level)
+        emojitotal = len(ctx.guild.emojis)
+        emojiregular = len([emoji for emoji in ctx.guild.emojis if not emoji.animated])
+        emojianimated = len([emoji for emoji in ctx.guild.emojis if emoji.animated])
+        embed.add_field(name="Emoji",value=f"Total: {emojitotal}\nRegular: {emojiregular}\nAnimated: {emojianimated}")
         embed.set_thumbnail(url=self.client.user.avatar.url)
 #        onlines = len(ctx.status.online)
 #        offlines = len(ctx.status.offline)
@@ -97,11 +104,11 @@ class Info(commands.Cog):
             last_boost = max(ctx.guild.members, key=lambda m: m.premium_since or ctx.guild.created_at)
             if last_boost.premium_since is not None:
                 boosts = f'{boosts}\nLast Boost: {last_boost}'
-            embed.add_field(name='Boosts', value=boosts, inline=False)
+            embed.add_field(name='Boosts', value=boosts)
     
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['ui'])
+    @commands.command(aliases=['ui'] , pass_context=True)
     async def userinfo(self, ctx, member: discord.Member = None):
         if not member:  # if member is no mentioned
             member = ctx.message.author  # set member as the author
@@ -126,15 +133,32 @@ class Info(commands.Cog):
 #        embed.add_field(name="mention member, value=member.mention, inline=False)
 #        memberbot = "Yes" if member.bot else "No"
         embed.set_footer(text=f"ID: {member.id}" ) #, icon_url = ctx.author.avatar.url)  
-        u = ""
-        p = member.public_flags
-        if p.hypesquad_brilliance:
-            u += "<:a_discordbrillance:862968137813458995> Hypesquad Brillance"
-        if p.hypesquad_bravery:
-            u += "<:a_discordbravery:862968137012346892> Hypesquad Bravery"
-        if p.hypesquad_balance:
-            u += "<:a_discordbalance:862968137761423381> Hypesquad Balance"
-        embed.add_field(name="Hypesquad House", value=f"{u}", inline=False)
+
+        flags = member.public_flags.all()
+        badges ="\u0020".join(utils.profile_converter(f.name) for f in flags)
+        if member.bot: badges = f"{badges} {utils.profile_converter('bot')}"
+        if member.premium_since: badges = f"{badges} {utils.profile_converter('guildboost')}"
+
+        embed.add_field(name=f"Badge :", value=f"{badges}** **")
+
+        
+        if "offline" != str(member.mobile_status):
+            mobile = "mobile"
+        else:
+            mobile = ""
+
+        if "offline" != str(member.desktop_status):
+            desktop = "desktop"
+        else:
+            desktop = ""
+        
+        if "offline" != str(member.web_status):
+            Web = "Web"
+        else:
+            Web = ""
+
+        embed.add_field(name=f"Online status", value=F"{desktop} {mobile} {Web}")  
+
 
           
 #        print(member.top_role.mention)
@@ -149,6 +173,6 @@ class Info(commands.Cog):
         embed.set_image(url =  member.avatar.url) # Shows the avatar
         embed.set_footer(text = f'Requested by {ctx.author}', icon_url = ctx.author.avatar.url)
         await ctx.send(embed = embed)
-
+    
 def setup(client):
     client.add_cog(Info(client))

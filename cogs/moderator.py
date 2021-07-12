@@ -198,7 +198,6 @@ class Admin(commands.Cog):
             await ctx.message.delete()
             await ctx.send("`You doesn't have enough permission!`")
 
-
 def setup(client):
     client.add_cog(Admin(client))
 
