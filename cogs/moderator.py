@@ -41,7 +41,7 @@ class Admin(commands.Cog):
             embed = discord.Embed(
                 description=f"**Leave Server\n`{member}`**",
                 color=0xdbd7d2)
-            embed.set_footer(text="—・𝗁𝗈𝗉𝖾 𝗒𝗈𝗎 𝖾𝗇𝗃𝗈𝗒𝖾𝖽 𝗒𝗈𝗎𝗋 𝗌𝗍𝖺𝗒")
+            embed.set_footer(text="—・see ya good bye")
             embed.timestamp = datetime.now(timezone.utc)
 
         await channel.send(embed = embed)  #await channel.send(f"{member} has left the server")

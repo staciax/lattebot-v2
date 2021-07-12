@@ -6,7 +6,7 @@ BOTVERSION = 'v2.0 beta'
 
 WELCOME = '♢・welcome'
 
-LEAVE = 'leave' 
+LEAVE = '♢・m-leave' 
 
 VERIFY = 861849112386469908
 

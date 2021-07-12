@@ -14,13 +14,16 @@ def profile_converter(name):
     "early_supporter" : "<:supporter:864052229246156811> ",
     "system" : "<:system_badge:864053001237037067>",
     "bug_hunter_level_2" : "<:bug_hunter_level_2:864052216946753556>",
-    "verified_bot" : "<:verified_BOT1:864060610911928320><:verified_BO2:864060626573590538>",
+    "verified_bot" : "<:verified_bot1:864170916601790484><:verified_bot2:864170916329816106>",
     "verified_bot_developer" : "<:verified_bot_developer:864053432468897812>",
     "early_verified_bot_developer" : "<:early_verified_bot_developer:864053963169726484>",
     "discord_certified_moderator" : "<:certified_moderator:864054307367682059>",
-    "bot" : "<:bot1:864064664256905227><:bot2:864064720504094732>",
-    "guildboost" : "<a:boost:864076334497923072>",
+    "bot" : "<:bots1:864196319702286336><:bots2:864196319630065664>",
+    "guildboost" : "<a:boost:864076334497923072><:nitro:864052236103581716>",
     "nitro" : "<:nitro:864052236103581716>",   
   }
   
   return names_to_emojis.get(name)
+
+
+

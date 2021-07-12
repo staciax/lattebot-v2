@@ -14,6 +14,7 @@ class Latte(commands.Cog):
         self.client = client
 
     @commands.command()
+    @commands.is_owner()
     async def status(self, ctx, statusType: str, *, statusText):
 
     # Setting `Playing ` status
