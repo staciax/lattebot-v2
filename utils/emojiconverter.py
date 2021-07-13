@@ -1,5 +1,5 @@
-import aioimgur, discord, random, sr_api, asyncdagpi, aiogtts
-import os, io, typing, datetime
+import discord #, random, sr_api, asyncdagpi, aiogtts
+#import os, io, typing, datetime
 
 def profile_converter(name):
   
@@ -24,6 +24,20 @@ def profile_converter(name):
   }
   
   return names_to_emojis.get(name)
+
+def emoji_converter(name):
+  
+  names_to_emojis = {
+    "xmark" : "<:xmark:864416758705553418>",
+    "check" : "<:check:864461829836505098>",
+ 
+  }
+  
+  return names_to_emojis.get(name)
+
+
+
+
 
 
 

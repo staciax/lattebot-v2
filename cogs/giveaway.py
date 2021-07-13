@@ -97,13 +97,13 @@ class Giveaway(commands.Cog):
         except asyncio.TimeoutError:
             await ctx.send("You took to long, please try again.")
 
-        logembed = discord.Embed(title="Giveaway Logged",
-                                 description=f"**Prize:** ``{msg4.content}``\n**Winners:** ``{winerscount}``\n**Channel:** {giveawaychannel.mention}\n**Host:** {ctx.author.mention}",
-                                 color=0xffffff)
-        logembed.set_thumbnail(url=ctx.author.avatar.url)
+#        logembed = discord.Embed(title="Giveaway Logged",
+#                                 description=f"**Prize:** ``{msg4.content}``\n**Winners:** ``{winerscount}``\n**Channel:** {giveawaychannel.mention}\n**Host:** {ctx.author.mention}",
+#                                 color=0xffffff)
+#        logembed.set_thumbnail(url=ctx.author.avatar.url)
 
-        logchannel = ctx.guild.get_channel(LOG_GIVEAWAY) 
-        await logchannel.send(embed=logembed)
+#        logchannel = ctx.guild.get_channel(LOG_GIVEAWAY) 
+#        await logchannel.send(embed=logembed)
 
         futuredate = datetime.utcnow() + timedelta(seconds=timewait)
         embed1 = discord.Embed(color=discord.Color(0x6f2da8), # random color (color=discord.Color(random.randint(0x000000, 0xFFFFFF)),

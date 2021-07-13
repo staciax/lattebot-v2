@@ -23,37 +23,6 @@ class Info(commands.Cog):
     async def on_ready(self):
         print('Info')
 
-    @commands.command()
-    async def info(self, ctx, *, user: Union[discord.Member, discord.User] = None):
-        """Shows info about a user."""
-
-        user = user or ctx.author
-        e = discord.Embed()
-        roles = [role.name.replace('@', '@\u200b') for role in getattr(user, 'roles', [])]
-        e.set_author(name=str(user))
-
-        voice = getattr(user, 'voice', None)
-        if voice is not None:
-            vc = voice.channel
-            other_people = len(vc.members) - 1
-            voice = f'{vc.name} with {other_people} others' if other_people else f'{vc.name} by themselves'
-            e.add_field(name='Voice', value=voice, inline=False)
-
-        if roles:
-            e.add_field(name='Roles', value=', '.join(roles) if len(roles) < 10 else f'{len(roles)} roles', inline=False)
-
-        colour = user.colour
-        if colour.value:
-            e.colour = colour
-
-        if user.avatar:
-            e.set_thumbnail(url=user.avatar.url)
-
-        if isinstance(user, discord.User):
-            e.set_footer(text='This member is not in this server.')
-
-        await ctx.send(embed=e)
-
     @commands.command(aliases=['sv'])
     async def serverinfo(self, ctx):
 
@@ -97,10 +66,24 @@ class Info(commands.Cog):
         eonline = '<:Online:864171414466592788>'
         emember = '<:member:864219999954796615>'
         memberCount = str(ctx.guild.member_count)
-        
+
+        rs = ""
+        rulesch = ctx.guild.rules_channel
+        if rulesch == None:
+            rs += ("none")
+        else:
+            rs = ctx.guild.rules_channel.mention
+
+        sy = ""
+        systemch = ctx.guild.system_channel
+        if systemch == None:
+            sy += ("none")
+        else:
+            sy = ctx.guild.system_channel.mention
+
         embed.add_field(name="AFK Timer", value=sec)
-        embed.add_field(name="Rules Channel", value=ctx.guild.rules_channel.mention)
-        embed.add_field(name="System Channel", value=ctx.guild.system_channel.mention)
+        embed.add_field(name="Rules Channel", value=rs)
+        embed.add_field(name="System Channel", value=sy)
         embed.add_field(name="Verification Level", value=ctx.guild.verification_level)
         emojitotal = len(ctx.guild.emojis)
         emojiregular = len([emoji for emoji in ctx.guild.emojis if not emoji.animated])

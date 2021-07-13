@@ -1,5 +1,6 @@
 import discord
 import platform
+import utils
 from config import *
 from discord.ext import commands
 from time import time
@@ -33,14 +34,15 @@ class Latte(commands.Cog):
         if statusType.lower() == "watching":
             await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=statusText))
 
-        await ctx.send("**✅ Status Changed!**")
+        embed = discord.Embed(description=f"{utils.emoji_converter('check')} **Status Changed!**\n\n`{statusText}`",color=0xffffff)
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def invite(self, ctx):
         embed = discord.Embed(title=f"**invite bot**",description=f"**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.client.guilds)}** servers︰𓂃 ꒱\n\n⸝⸝﹒[`click to invite bot`](https://discord.com/api/oauth2/authorize?client_id=854134402954821643&permissions=8&scope=bot%20applications.commands) ꒱",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
-        embed.set_thumbnail(url=ctx.guild.icon.url)
-        embed.set_image(url=ctx.guild.banner.url)
-        embed.set_footer(text = f'Req by {ctx.author}', icon_url = ctx.author.avatar.url)
+        embed.set_thumbnail(url=self.client.user.avatar.url)
+#       embed.set_image(url='https://i.imgur.com/rzGqQwn.png')
+#         embed.set_footer(text = f'Req by {ctx.author}', icon_url = ctx.author.avatar.url)
         
         await ctx.send(embed=embed)
     
@@ -71,11 +73,10 @@ class Latte(commands.Cog):
         embed.add_field(name='Total servers:', value=serverCount)
         embed.add_field(name='Total users:', value=memberCount)
         embed.add_field(name='Bot developers:', value="<@385049730222129152>")
-
         embed.set_footer(text=f"Req by {ctx.author}" , icon_url = ctx.author.avatar.url) # (text=f"Req by {ctx.author} | {self.client.user.name}"
         embed.set_author(name=f"{self.client.user.name} Stats", icon_url=self.client.user.avatar.url)
+#        embed.set_image(url=ctx.guild.banner.url)
 #        embed.set_thumbnail(url=self.client.user.avatar_url)
-
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['botdis', 'lattelg'])
@@ -91,20 +92,30 @@ class Latte(commands.Cog):
     
     @commands.command(name='bs')
     async def givebotsent(self, ctx, *, message=None):
+        embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify what message the bot send | `prefix` `bs [message]`",color=0xffffff)
+        if message == None:
+            message = await ctx.send(embed=embed)
+        else:
+            await ctx.send(f'{message}')
 
-        message = message or "Please specify what message the bot send."
-        await ctx.message.delete()
-        await ctx.send(message)
+# error commands
 
     @logout.error
     async def logout_error(self, ctx, error):
-        await ctx.send("You do not own this bot.")
+        embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} You do not own this bot.",color=0xffffff)
+        await ctx.send(embed=embed)
         await ctx.message.delete()
-    
-    @givebotsent.error
-    async def givebotsent_error(self, ctx, error):
-        await ctx.send('pls try again! | `bs` `msg` ')
-        await ctx.message.delete()
+
+    @status.error
+    async def status_error(self, ctx, error):
+        embedra = discord.Embed(description=f"{utils.emoji_converter('xmark')} `prefix status` `[statustype]` `[statustext]`\n\n `Status Type` : `playing` | `Streaming` | `Listening` | `Watching`",color=0xffffff)
+        embedow = discord.Embed(description=f"{utils.emoji_converter('xmark')}You do not own this bot.",color=0xffffff)
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(embed=embedra)
+        else:
+            await ctx.send(embed=embedow)
+            await ctx.message.delete()
+
 
 def setup(client):
     client.add_cog(Latte(client))
