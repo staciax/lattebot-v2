@@ -92,7 +92,7 @@ class Help(commands.Cog):
         
         embed6 = discord.Embed(title="Meta Commands",description="Meta Commands\n\n`ping : check ping , respondtime of bot`\n\n`invite :` invite the bot!!\n\n`support :` Get the invite link for the support server!\n\n`vote :`  Get the voting link for the bot",color=0xdfa3ff)
         
-        embed7 = discord.Embed(title="Automation",description="Reaction Roles\nฺ\n`coming soon..`",color=0xdfa3ff)
+        embed7 = discord.Embed(title="Automation",description="Reaction Roles\n\n`coming soon..`",color=0xdfa3ff)
 
 
         while True:
