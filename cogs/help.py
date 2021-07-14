@@ -20,14 +20,15 @@ class Help(commands.Cog):
     @commands.command()
     async def help(self, ctx):
 
-        embedhelp = discord.Embed(title="✧ LATTE Help",description="Prefix of this bot `lt `\nUse `selection` below for more info on an command. \n\u200b",color=0xdfa3ff)
-        embedhelp.add_field(name='Utility', value="•")
-        embedhelp.add_field(name='Infomation', value="•")
-        embedhelp.add_field(name='Moderation', value="•")
-        embedhelp.add_field(name='Fun', value="•")
-        embedhelp.add_field(name='Game', value="•")
-        embedhelp.add_field(name='Meta', value="•")
-        embedhelp.add_field(name='Automation', value="•")
+        embedhelp = discord.Embed(title="✧ LATTE Help",description="Prefix of this bot `lt `\nUse `selection` below for more info on an command. \n",color=0xdfa3ff)
+        embedhelp.add_field(name='** **', value="•**Utility**\n•**Fun**\n•**Automation**")
+        embedhelp.add_field(name='** **', value="•**Infomation**\n•**Game**")
+        embedhelp.add_field(name='** **', value="•**Moderation**\n•**Meta**")
+
+#        embedhelp.add_field(name='Game', value="•")
+#        embedhelp.add_field(name='Meta', value="•")
+#        embedhelp.add_field(name='Automation', value="•")
+#        embedhelp.add_field(name='Fun', value="•")
         embedhelp.add_field(name='** **', value="**Support**\n[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=854134402954821643&permissions=8&scope=bot%20applications.commands) | [Support Server](https://discord.gg/eNK44ngRvn) | [Github](https://github.com/staciax)", inline=False)
       
         msg = await ctx.send(embed=embedhelp,
@@ -38,43 +39,43 @@ class Help(commands.Cog):
                                     label="Utility",
                                     value="test1.2",
                                     description="Utility Commands",
-                                    emoji=self.client.get_emoji(859399025841537064)
+                                    emoji=self.client.get_emoji(864930911869992980)
                                 ),
                                 SelectOption(
                                     label="Infomation",
                                     value="test2.2",
                                     description="Infomation commands",
-                                    emoji="😘"
+                                    emoji=self.client.get_emoji(864921120468369438)
                                 ),
                                 SelectOption(
                                     label="Moderation",
                                     value="test3.2",
                                     description="Moderation commands",
-                                    emoji="😚"
+                                    emoji=self.client.get_emoji(864921119873695774)
                                 ),
                                 SelectOption(
                                     label="Fun",
                                     value="test4.2",
                                     description="Fun commands",
-                                    emoji="😚"
+                                    emoji=self.client.get_emoji(864921119072059463)
                                 ),
                                 SelectOption(
                                     label="Game",
                                     value="test5.2",
                                     description="Game commands",
-                                    emoji="😚"
+                                    emoji=self.client.get_emoji(864921121319944212) #""
                                 ),
                                 SelectOption(
                                     label="Meta",
                                     value="test6.2",
                                     description="Game commands",
-                                    emoji="😚"
+                                    emoji=self.client.get_emoji(864921118296506418)
                                 ),
                                 SelectOption(
                                     label="Automation",
                                     value="test7.2",
                                     description="Reaction roles",
-                                    emoji="😚"
+                                    emoji=self.client.get_emoji(864921120226279504)
                                 ),
 
                             ])]
