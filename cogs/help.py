@@ -15,7 +15,7 @@ class Help(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         DiscordComponents(self.client)
-        print('Help')
+        print(f"-{self.__class__.__name__}")
 
     @commands.command()
     async def help(self, ctx):

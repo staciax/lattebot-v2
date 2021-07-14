@@ -10,14 +10,14 @@ intents.all()
 intents.members = True 
 intents = discord.Intents(messages=True, guilds=True)
 
-class Admin(commands.Cog):
+class Moderation(commands.Cog):
 
     def __init__(self, client):
         self.client = client
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Moderator')
+        print(f"-{self.__class__.__name__}")
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -48,6 +48,7 @@ class Admin(commands.Cog):
         await channel.send(embed = embed)  #await channel.send(f"{member} has left the server")
 
     @commands.command(description="ban member")
+    @commands.guild_only()
     @commands.has_permissions(administrator = True)
 #    @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *, reason = None):
@@ -64,6 +65,7 @@ class Admin(commands.Cog):
             await ctx.channel.send(embed=embedprm)
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True) 
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
@@ -80,6 +82,7 @@ class Admin(commands.Cog):
 
     @commands.command(name="kick", description="kick member", pass_context=True)
     @commands.has_permissions(kick_members=True)
+    @commands.guild_only()
     async def kick(self, ctx, member: discord.Member, *, reason=None):
 
         embedkick = discord.Embed(title="Kicked Member", description=f'Member {member.mention} has been Kicked\nReason : {reason}',color=0xffffff)
@@ -97,6 +100,7 @@ class Admin(commands.Cog):
 
     @commands.command(description="mute member")
     @commands.has_permissions(administrator = True)
+    @commands.guild_only()
     async def mute(self, ctx, member: discord.Member, *, reason=None):
         guild = ctx.guild
         mutedRole = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
@@ -123,6 +127,7 @@ class Admin(commands.Cog):
 
     @commands.command(description="unmute member")
     @commands.has_permissions(administrator = True)
+    @commands.guild_only()
     async def unmute(self, ctx, member: discord.Member):
         mutedRole = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
 
@@ -133,15 +138,43 @@ class Admin(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(description="join voice channel")
+    @commands.guild_only()
     async def join(self, ctx):
         channel = ctx.author.voice.channel
 #        await ctx.message.delete()
         await channel.connect()
 
     @commands.command(description="leave voice channel")
+    @commands.guild_only()
     async def leave(self, ctx):
 #        await ctx.message.delete()
         await ctx.voice_client.disconnect()
+
+    @commands.command(description="lock text channel" , aliases=['lock', 'lockch'])
+    @commands.guild_only()
+    @commands.has_guild_permissions(manage_channels=True)
+#    @commands.bot_has_guild_permissions(manage_channels=True)
+    async def lock_channel(self, ctx, channel: discord.TextChannel=None):
+        channel = channel or ctx.channel
+        if ctx.guild.default_role not in channel.overwrites:
+            embed1 = discord.Embed(description=f"{channel.name} is **lockdown.**\n\n`Note : use this cmd again for remove lockdown!`",color=0xffffff)
+            overwrites = {
+            ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False)
+            }
+            await channel.edit(overwrites=overwrites)
+            await ctx.send(embed=embed1)
+        elif channel.overwrites[ctx.guild.default_role].send_messages == True or channel.overwrites[ctx.guild.default_role].send_messages == None:
+            embed2 = discord.Embed(description=f"{utils.emoji_converter('check')}{channel.name} is **lockdown.**\n\n`Note : use this cmd again for remove lockdown!`",color=0xffffff)
+            overwrites = channel.overwrites[ctx.guild.default_role]
+            overwrites.send_messages = False
+            await channel.set_permissions(ctx.guild.default_role, overwrite=overwrites)
+            await ctx.send(embed=embed2)
+        else:
+            embed3 = discord.Embed(description=f"{utils.emoji_converter('check')}{channel.name} : **Removed lockdown!**",color=0xffffff)
+            overwrites = channel.overwrites[ctx.guild.default_role]
+            overwrites.send_messages = True
+            await channel.set_permissions(ctx.guild.default_role, overwrite=overwrites)
+            await ctx.send(embed=embed3)
 
 ## error commands
 
@@ -159,7 +192,7 @@ class Admin(commands.Cog):
     @unban.error
     async def unban_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **unban****",color=0xffffff)
+            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **unban**",color=0xffffff)
             await ctx.message.delete()
             await ctx.send(embed=embedar)
         if isinstance(error, commands.MissingPermissions):
@@ -181,7 +214,7 @@ class Admin(commands.Cog):
     @mute.error
     async def mute_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to mute!",color=0xffffff)
+            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **mute!**",color=0xffffff)
             await ctx.message.delete()
             await ctx.send(embed=embedar)
         if isinstance(error, commands.MissingPermissions):
@@ -212,7 +245,7 @@ class Admin(commands.Cog):
             await ctx.send(embed=embedpr)
 
 def setup(client):
-    client.add_cog(Admin(client))
+    client.add_cog(Moderation(client))
 
 #auto riole event
 ##@client.event  // auto role

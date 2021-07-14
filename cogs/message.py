@@ -10,7 +10,7 @@ class Message(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Message')
+        print(f"-{self.__class__.__name__}")
 
     @commands.command()
     async def latte(self, ctx):
@@ -24,13 +24,16 @@ class Message(commands.Cog):
             await message.delete()
             await message.channel.send('เอะ! เรียกเราหรอ?  <:S_CuteGWave3:859660565160001537>')
         
-        if message.content.startswith('test1 '):
+#        if message.content.startswith('latte'):
 #            await message.delete()
-            await message.channel.send('test1')
+#            await message.channel.send('`You can type `lt help` for more info`')
 
         if message.content.startswith('test2'):
 #            await message.delete()
             await message.channel.send('test2')
+
+        if self.client.user.mentioned_in(message):
+            await message.channel.send("You can type `lt help` for more info")
     
     @commands.command(name='bdm')
     @commands.has_permissions(administrator = True)
@@ -49,6 +52,7 @@ class Message(commands.Cog):
         await member.send(embed=embed)
         await ctx.send(embed=embedsc)
         await message.delete()
+#error commands
 
     @botdm.error
     async def botdm_error(self, ctx, error):

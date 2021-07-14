@@ -9,10 +9,14 @@ from datetime import datetime, timedelta, timezone
 intents = discord.Intents.default()
 intents.members = True
 
-class Latte(commands.Cog):
+class Data(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+    
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f"-{self.__class__.__name__}")
 
     @commands.command()
     @commands.is_owner()
@@ -118,4 +122,4 @@ class Latte(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(Latte(client))
+    client.add_cog(Data(client))

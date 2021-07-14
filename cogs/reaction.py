@@ -9,7 +9,7 @@ class Reaction(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Reaction role')
+        print(f"-{self.__class__.__name__}")
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):

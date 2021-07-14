@@ -1,13 +1,19 @@
+# Standard 
 import discord
 import json
 import os
-from discord.ext import commands, tasks
-import random
 import datetime
+from discord.ext import commands, tasks
+from datetime import datetime, timedelta
+
+# Third party 
+import random
 import asyncio
 import re
+
+# Local
 from config import *
-from datetime import datetime, timedelta
+
 
 intents = discord.Intents()
 intents.all()
@@ -21,7 +27,7 @@ client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=disc
 @client.event
 async def on_ready():
     print(f"{client.user} in online")
-    print(f"\ncommands list")
+    print(f"\nCogs list\n-----")
 
 @client.command()
 async def load(ctx, extension):
@@ -35,5 +41,7 @@ async def unload(ctx, extension):
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
+
+client.load_extension('jishaku')
 
 client.run(TOKEN)
