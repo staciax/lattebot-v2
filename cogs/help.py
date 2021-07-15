@@ -1,11 +1,14 @@
-import discord
-#import json
+# Standard 
+import discord #import json #import os
 import asyncio
 import re
-#import os
 from discord.ext import commands
+
+# Third party
 from discord_components import *
-#Embed = discord.Embed()
+
+# Local
+
 
 class Help(commands.Cog): 
 
@@ -108,14 +111,12 @@ class Help(commands.Cog):
                     await event.respond(
                         type=7
                     )
-                    
 
                 elif label == "Infomation":
                     await msg.edit(embed=embed2)
                     await event.respond(
                         type=7                        
                     )
-                
           
                 elif label == "Moderation":
                     await msg.edit(embed=embed3)

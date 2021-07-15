@@ -1,8 +1,12 @@
-from discord.ext import commands
+# Standard 
 import discord, random, os
 import platform
+from discord.ext import commands
 from time import time
 from datetime import datetime, timedelta, timezone
+
+# Third party
+# Local
 
 intents = discord.Intents.default()
 intents.members = True

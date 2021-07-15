@@ -1,18 +1,27 @@
+# Standard 
 import discord
-import random , typing
-from discord.ext import commands
+import random
 import time
 import re
 import os
-import utils
+from discord.ext import commands
 from datetime import datetime, timedelta, timezone
-from config import *
+
+
+# Third party
+import giphy_client 
+import typing
 from typing import Union
-import time
+
+# Local
+import utils
+from config import *
+from giphy_client.rest import ApiException
 
 intents = discord.Intents.default()
 intents.members = True
 
+#giphy
 
 class Info(commands.Cog):
 
@@ -146,7 +155,7 @@ class Info(commands.Cog):
         elif mobiles == 'idle':
             mobiles = f"{eidle} Mobile"
         elif mobiles == 'online':
-            mobiles = f"{eonline} Desktop"  
+            mobiles = f"{eonline} Mobile"  
         else:
             mobiles = f"{eonline} Mobile"
         
@@ -253,6 +262,34 @@ class Info(commands.Cog):
     @emoji_info.error
     async def emoji_info_error(self , ctx , error):
         await ctx.send("not found")
+
+    @commands.command()
+    async def poll(self, ctx,*,message):
+        emb=discord.Embed(title=" POLL", description=f"{message}")
+        msg=await ctx.channel.send(embed=emb)
+        await msg.add_reaction(f'{utils.emoji_converter("xmark")}')
+        await msg.add_reaction(f'{utils.emoji_converter("check")}')
+        await ctx.message.delete()
+
+    @commands.command()
+    async def gif(self, ctx,*,q="random"):
+
+        api_instance = giphy_client.DefaultApi()
+        api_key = GIPHYAPI
+
+        try: 
+        
+            api_response = api_instance.gifs_search_get(api_key, q, limit=5, rating='g')
+            lst = list(api_response.data)
+            giff = random.choice(lst)
+
+            emb = discord.Embed(title=q,color=0xffffff)
+            emb.set_image(url = f'https://media.giphy.com/media/{giff.id}/giphy.gif')
+
+            await ctx.channel.send(embed=emb)
+        except ApiException as e:
+            print("Exception when calling DefaultApi->gifs_search_get: %s\n" % e)
+
 
 
 def setup(client):

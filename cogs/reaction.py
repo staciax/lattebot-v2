@@ -1,5 +1,9 @@
+# Standard 
 import discord
 from discord.ext import commands
+
+# Third party
+# Local
 from config import *
 
 class Reaction(commands.Cog):

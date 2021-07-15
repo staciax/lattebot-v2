@@ -1,9 +1,17 @@
+# Standard 
 import discord
 import datetime
-import utils
-from config import *
+import asyncio
+import json
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
+
+
+# Third party
+from re import search
+# Local
+import utils
+from config import *
 
 intents = discord.Intents()
 intents.all()
@@ -13,11 +21,19 @@ intents = discord.Intents(messages=True, guilds=True)
 class Moderation(commands.Cog):
 
     def __init__(self, client):
-        self.client = client
+        self.client = client        
+#        self.url_regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+#        self.links_allowed = (861874852050894868,)
+#        self.images_allowed = (861874852050894868,)
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
+        while True:
+#            print("spam detct")
+            await asyncio.sleep(10)
+            with open("data/spam_detect.txt", "r+") as file:
+                file.truncate(0)
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -131,7 +147,7 @@ class Moderation(commands.Cog):
     async def unmute(self, ctx, member: discord.Member):
         mutedRole = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
 
-        embed = discord.Embed(description=f"**UNMUTED MEMBER**\n\n`You has been unmute :` `{member.display_name}#{member.discriminator}`",color=0xfdfd96)
+        embed = discord.Embed(description=f"**UNMUTED MEMBER**\n\n`You has been unmute :` `{member.display_name}#{member.discriminator}`",color=0xffffff)
         embed.set_footer(text=f"Unmuted by {ctx.author}", icon_url = ctx.author.avatar.url)
 
         await member.remove_roles(mutedRole)
@@ -175,6 +191,54 @@ class Moderation(commands.Cog):
             overwrites.send_messages = True
             await channel.set_permissions(ctx.guild.default_role, overwrite=overwrites)
             await ctx.send(embed=embed3)
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        def _check(m):
+            return (m.author == message.author
+					and len(m.mentions)
+					and (datetime.now(timezone.utc)-m.created_at).seconds < 60)
+        
+        if not message.author.bot:
+            if len(list(filter(lambda m: _check(m), self.client.cached_messages))) >= 3:
+                embedspam = discord.Embed(title="Spam Alert\n",description="Don't spam mentions!",color=0xffffff)
+                await message.channel.send(embed=embedspam, delete_after=10)
+
+        counter = 0
+        with open("data/spam_detect.txt", "r+") as file:
+            for lines in file:
+                if lines.strip("\n") == str(message.author.id):
+                    counter+=1
+
+            file.writelines(f"{str(message.author.id)}\n")
+            if counter > 5:
+                embedmute = discord.Embed(title="Spam Alert",description=f"Mute {message.author.mention} **1 minutes**",color=0xffffff)
+                member = message.author
+                muter = discord.utils.get(message.guild.roles, name = MUTEROLE)     
+                await member.add_roles(muter)
+                await message.channel.send(embed=embedmute, delete_after=10)
+                await asyncio.sleep(60)
+                await member.remove_roles(muter)
+            elif counter > 10:
+                await message.guild.ban(message.author, reason="spam")
+                await asyncio.sleep(20)
+                await message.guild.unban(message.author)     
+
+
+#                unmutes = await self.mute(message, [message.author], reason="Mention spam")
+
+#                if len(unmutes):
+#                    await message.channel.send("You can't use that word here.", delete_after=10)
+            
+#            elif message.channel.id not in self.links_allowed and search(self.url_regex, message.content):
+#                await message.delete()
+#                await message.channel.send("You can't send links in this channel.", delete_after=10)
+            
+#            elif (message.channel.id not in self.images_allowed
+#			 	and any([hasattr(a, "width") for a in message.attachments])):
+#                await message.delete()
+#                await message.channel.send("You can't send images here.", delete_after=10)
+
 
 ## error commands
 

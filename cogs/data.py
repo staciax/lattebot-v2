@@ -1,10 +1,16 @@
+# Standard 
 import discord
 import platform
+import os
+from discord.ext import commands
+from datetime import datetime, timedelta, timezone
+from time import time
+
+# Third party
+
+# Local
 import utils
 from config import *
-from discord.ext import commands
-from time import time
-from datetime import datetime, timedelta, timezone
 
 intents = discord.Intents.default()
 intents.members = True
@@ -101,6 +107,7 @@ class Data(commands.Cog):
             message = await ctx.send(embed=embed)
         else:
             await ctx.send(f'{message}')
+            await ctx.message.delete()
 
 # error commands
 
