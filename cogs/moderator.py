@@ -23,7 +23,7 @@ class Moderation(commands.Cog):
     def __init__(self, client):
         self.client = client        
 #        self.url_regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
-#        self.links_allowed = (861874852050894868,)
+        self.only_images = (ONLYIMG,)
 #        self.images_allowed = (861874852050894868,)
 
     @commands.Cog.listener()
@@ -203,6 +203,10 @@ class Moderation(commands.Cog):
             if len(list(filter(lambda m: _check(m), self.client.cached_messages))) >= 3:
                 embedspam = discord.Embed(title="Spam Alert\n",description="Don't spam mentions!",color=0xffffff)
                 await message.channel.send(embed=embedspam, delete_after=10)
+            
+            elif message.channel.id in self.only_images :
+                await message.delete()
+                await message.channel.send("You can't send message in this channel.", delete_after=10)
 
         counter = 0
         with open("data/spam_detect.txt", "r+") as file:
@@ -219,10 +223,10 @@ class Moderation(commands.Cog):
                 await message.channel.send(embed=embedmute, delete_after=10)
                 await asyncio.sleep(60)
                 await member.remove_roles(muter)
-            elif counter > 10:
-                await message.guild.ban(message.author, reason="spam")
-                await asyncio.sleep(20)
-                await message.guild.unban(message.author)     
+#            elif counter > 5:
+#                await message.guild.ban(message.author, reason="spam")
+#                await asyncio.sleep(20)
+#                await message.guild.unban(message.author)     
 
 
 #                unmutes = await self.mute(message, [message.author], reason="Mention spam")

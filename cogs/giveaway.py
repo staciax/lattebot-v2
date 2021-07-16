@@ -20,6 +20,7 @@ class Giveaway(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
+        
    
     @commands.command(aliases=['start', 'g'])
     @commands.has_permissions(manage_guild=True) #@commands.has_permissions(administrator = True)
