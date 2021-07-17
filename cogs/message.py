@@ -32,9 +32,9 @@ class Message(commands.Cog):
 #            await message.delete()
 #            await message.channel.send('`You can type `lt help` for more info`')
 
-        if message.content.startswith('test2'):
+        if message.content.startswith('it'):
 #            await message.delete()
-            await message.channel.send('test2')
+            await message.channel.send('no no prefix bot is **LT ** > `lt help`', delete_after=10)
 
         if self.client.user.mentioned_in(message):
             await message.channel.send("You can type `lt help` for more info")

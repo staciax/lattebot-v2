@@ -3,13 +3,15 @@ import discord
 import json
 import os
 import datetime
+import random
+import asyncio
+import re
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta
 
 # Third party 
-import random
-import asyncio
-import re
+import pymongo
+from pymongo import MongoClient
 
 # Local
 from config import *
@@ -21,7 +23,7 @@ intents.members = True
 intents = discord.Intents(messages=True, guilds=True)
 
 client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=discord.Intents.all(), owner_id=385049730222129152)
-
+    
 @client.remove_command("help") #remove help 
 
 @client.event
