@@ -82,7 +82,7 @@ class Help(commands.Cog):
                                 ),
 
                             ])]
-                            , delete_after=120)
+                            )
                            
         embed1 = discord.Embed(title="Utility commands",description="Utility Commands\n\n`coming soon..`",color=0xdfa3ff)    
 
