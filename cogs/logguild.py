@@ -112,25 +112,40 @@ class Logguild(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        if message.guild.id:
-            channel = self.bot.get_channel(SERVER_LOG)
+        if message.guild: #if message.guild.id:
+            if not message.author.bot:
+                channel = self.bot.get_channel(SERVER_LOG)
 
-            em = discord.Embed(color=0xDC143C,title = f"Message Deleted:")
-            em.set_footer(text=self.bot.user.name,icon_url=self.bot.user.avatar.url )
-            em.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
+                em = discord.Embed(color=0xDC143C,title = f"Message Deleted:")
+                em.set_footer(text=self.bot.user.name,icon_url=self.bot.user.avatar.url )
+                em.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
 
-            if message.attachments is not None:
-                if len(message.attachments) > 1:
-                    im = [x.proxy_url for x in message.attachments]
-                    em.add_field(name='\uFEFF',value = f"This Message Contained {len(message.attachments)} Message Attachments, Please See Below")
-                    await channel.send(' '.join(im))
-                elif message.attachments:
-                    image = message.attachments[0].proxy_url
-                    em.set_image(url=image)
-                else:
-                    em.description = f"-Deleted in: {message.channel.mention}Content: {message.clean_content}" 
+                if message.attachments is not None:
+                    if len(message.attachments) > 1:
+                        im = [x.proxy_url for x in message.attachments]
+                        em.add_field(name='\uFEFF',value = f"This Message Contained {len(message.attachments)} Message Attachments, Please See Below")
+                        await channel.send(' '.join(im))
+                    elif message.attachments:
+                        image = message.attachments[0].proxy_url
+                        em.set_image(url=image)
+                    else:
+                        em.description = f"**Deleted in:** {message.channel.mention} \n**Content:** {message.clean_content}"
 
-        await self.log_channel.send(embed=em)
+
+
+                await self.log_channel.send(embed=em)
+            else:
+                pass
+        else:
+            delem = discord.Embed(color=0xDC143C,title = f"Message Deleted:")
+            delem.set_footer(text=self.bot.user.name,icon_url=self.bot.user.avatar.url )
+            delem.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
+            delem.description = f"**Deleted in:** {message.channel} \n**Content:** {message.clean_content}"
+
+            await self.log_channel.send(embed=delem)
+
+     
+
 
 #    @commands.Cog.listener() #activity = role
 #    async def on_presence_update(self, before, after):

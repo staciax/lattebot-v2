@@ -58,6 +58,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(
                 description=f"**Leave Server\n`{member}`**",
                 color=0xdbd7d2)
+            embed.set_thumbnail(url=member.avatar.url)
             embed.set_footer(text="—・see ya good bye")
             embed.timestamp = datetime.now(timezone.utc)
 
@@ -216,18 +217,21 @@ class Moderation(commands.Cog):
 
             file.writelines(f"{str(message.author.id)}\n")
             if counter > 5:
-                embedmute = discord.Embed(title="Spam Alert",description=f"Mute {message.author.mention} **1 minutes**",color=0xffffff)
-                member = message.author
-                muter = discord.utils.get(message.guild.roles, name = MUTEROLE) 
-                if not muter:
-                    guild = message.guild
-                    await guild.create_role(name=MUTEROLE , colour=discord.Colour(COLORMUTE))
-                    for channel in guild.channels:
-                        await channel.set_permissions(muter, speak=False, send_messages=False, read_message_history=True, read_messages=False)
-                await member.add_roles(muter)
-                await message.channel.send(embed=embedmute, delete_after=10)
-                await asyncio.sleep(60)
-                await member.remove_roles(muter)
+                if not message.author.bot:
+                    embedmute = discord.Embed(title="Spam Alert",description=f"Mute {message.author.mention} **1 minutes**",color=0xffffff)
+                    member = message.author
+                    muter = discord.utils.get(message.guild.roles, name = MUTEROLE) 
+                    if not muter:
+                        guild = message.guild
+                        await guild.create_role(name=MUTEROLE , colour=discord.Colour(COLORMUTE))
+                        for channel in guild.channels:
+                            await channel.set_permissions(muter, speak=False, send_messages=False, read_message_history=True, read_messages=False)
+                    await member.add_roles(muter)
+                    await message.channel.send(embed=embedmute, delete_after=10)
+                    await asyncio.sleep(60)
+                    await member.remove_roles(muter)
+                else:
+                    pass
                 
 #            elif counter > 5:
 #                await message.guild.ban(message.author, reason="spam")
