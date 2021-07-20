@@ -108,7 +108,7 @@ class Info(commands.Cog):
         emojiregular = len([emoji for emoji in ctx.guild.emojis if not emoji.animated])
         emojianimated = len([emoji for emoji in ctx.guild.emojis if emoji.animated])
         embed.add_field(name="Activity", value=f"{emember} **Total:** {memberCount}\n{eonline} **Online:** {statuses[0]} \n{eidle} **Idle:** {statuses[1]} \n{ednd} **Dnd:** {statuses[2]} \n{eoffline} **Offline:** {statuses[3]}")
-        embed.set_thumbnail(url=self.client.user.avatar.url)
+        embed.set_thumbnail(url=ctx.guild.icon.url)
 
 #        onlines = len(ctx.status.online)
 #        offlines = len(ctx.status.offline)
