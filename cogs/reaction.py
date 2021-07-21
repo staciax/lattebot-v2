@@ -51,9 +51,10 @@ class Reaction(commands.Cog):
 
             if emoji == '861800747293212672':
                 role = discord.utils.get(guild.roles, name="Vanilla・・ ✦")
+            if emoji == '861800747293212672':
+                role = discord.utils.get(guild.roles, name="・┈・┈・┈・Level!・┈・┈・┈・⠀⠀")
 
             await member.add_roles(role)
-
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
@@ -93,6 +94,8 @@ class Reaction(commands.Cog):
 
             if emoji == '861800747293212672':
                 role = discord.utils.get(guild.roles, name="Vanilla・・ ✦")
+            if emoji == '861800747293212672':
+                role = discord.utils.get(guild.roles, name="・┈・┈・┈・Level!・┈・┈・┈・⠀⠀")
                 
             member = await(guild.fetch_member(payload.user_id))
             if member is not None:

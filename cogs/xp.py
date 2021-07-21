@@ -20,11 +20,11 @@ import utils
 from config import * 
 
 mango_url = MONGOURL
-bot_channel = 861874852050894868 , 840381588704591912
+bot_channel = 861874852050894868 , 840381588704591912 , 863394760790245379
 chat_channel = 861883647070437386 , 840398821544296480 , 863438518981361686
 
-level = ["Mystic","Vanilla","Matcha"] #role
-levelnum = [5,10,15]
+level = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
+levelnum = [3,5,10,20,30,40,45,50,60]
 
 cluster = MongoClient(mango_url)
 
@@ -71,7 +71,7 @@ class xp(commands.Cog):
         if ctx.channel.id in bot_channel: #only one ch use '==' , more use 'in'
             stats = levelling.find_one({"id": ctx.author.id})
             if stats is None:
-                embed = discord.Embed(description="You haven't sent any messages, no rank!!!")
+                embed = discord.Embed(description="You haven't sent any messages, **no xp**!!")
                 await ctx.channel.send(embed=embed)
             else:
                 xp = stats["xp"]
@@ -104,17 +104,37 @@ class xp(commands.Cog):
             embed = discord.Embed(color=0x77dd77 , timestamp=datetime.now(timezone.utc))
             embed.set_footer(text = f'{ctx.guild.name}', icon_url=ctx.guild.icon.url)
             embed.set_author(name=f"{self.client.user.name} Rankings", url=self.client.user.avatar.url) #, icon_url=ctx.guild.icon.url
+#            for x in rankings:
+#                try:
+#                    temp = ctx.guild.get_member(x["id"])
+#                    tempxp = x["xp"]       
+#                    embed.add_field(name=f"{i}: {temp.name}", value=f"Total XP: {tempxp} ", inline=False)
+#                    i += 1
+#                except:
+#                    pass
+#                if i == 11:
+#                    break
+
             for x in rankings:
                 try:
                     temp = ctx.guild.get_member(x["id"])
                     tempxp = x["xp"]       
-                    embed.add_field(name=f"{i}: {temp.name}", value=f"Total XP: {tempxp} ", inline=False)
-                    i += 1
+                    if i == 1:
+                        embed.add_field(name=f"{i}: {temp.name} {utils.emoji_converter('1st')}", value=f"Total XP: {tempxp}", inline=False)
+                    elif i == 2:
+                        embed.add_field(name=f"{i}: {temp.name} {utils.emoji_converter('2nd')}", value=f"Total XP: {tempxp}", inline=False)
+                    elif i == 3:
+                        embed.add_field(name=f"{i}: {temp.name} {utils.emoji_converter('3rd')}", value=f"Total XP: {tempxp}", inline=False)
+                    elif i == 4:
+                        embed.add_field(name=f"{i}: {temp.name}  ", value=f"Total XP: {tempxp}", inline=False)
+                    else:
+                        embed.add_field(name=f"{i}: {temp.name}", value=f"Total XP: {tempxp}", inline=False)
                 except:
                     pass
+                i += 1
                 if i == 11:
                     break
-            
+       
             await ctx.channel.send(embed=embed)
 
         else:
@@ -127,7 +147,7 @@ class xp(commands.Cog):
         if ctx.channel.id in bot_channel:       
                 stats = levelling.find_one({"id": ctx.author.id})
                 if stats is None:
-                    embed = discord.Embed(description="You haven't sent any messages, no rank!!!",color=0xffffff)
+                    embed = discord.Embed(description="You haven't sent any messages, **no xp**!!",color=0xffffff)
                     await ctx.channel.send(embed=embed)
                 else:
                     xp = stats["xp"]

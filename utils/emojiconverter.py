@@ -30,6 +30,12 @@ def emoji_converter(name):
   names_to_emojis = {
     "xmark" : "<:xmark:864416758705553418>",
     "check" : "<:check:864461829836505098>",
+    "1st" : "<a:blackjump:867350049319026698>",
+    "2nd" : "<a:nezukojump:867350058164551681>",
+    "3rd" : "<a:brownjump:867350221665861642>",
+    "4th" : "<:check:864461829836505098>",
+    "blackcrown" : "<a:blackcrown:867335151407333386>",
+    "nekocrown" : "<:nekocatroyal:867362857614966784>",
  
   }
   

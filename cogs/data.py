@@ -125,7 +125,7 @@ class Data(commands.Cog):
         embed.set_footer(text=f"Req by {ctx.author}" , icon_url = ctx.author.avatar.url) # (text=f"Req by {ctx.author} | {self.client.user.name}"
         embed.set_author(name=f"{self.client.user.name} Stats", icon_url=self.client.user.avatar.url)
 #        embed.set_image(url=ctx.guild.banner.url)
-#        embed.set_thumbnail(url=self.client.user.avatar_url)
+#        embed.set_thumbnail(url=self.client.user.avatar.url)
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['botdis', 'lattelg'])
