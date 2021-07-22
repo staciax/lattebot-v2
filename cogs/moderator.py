@@ -118,13 +118,13 @@ class Moderation(commands.Cog):
     @commands.command(description="mute member")
     @commands.has_permissions(administrator = True)
     @commands.guild_only()
-    async def mute(self, ctx, member: discord.Member, *, reason=None):
+    async def muteforce(self, ctx, member: discord.Member, *, reason=None):
         guild = ctx.guild
         mutedRole = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
 
         if not mutedRole:
             mutedRole = await guild.create_role(name=MUTEROLE , colour=discord.Colour(COLORMUTE))
-            embedcreate = discord.Embed(title="BOT SETTING UP",description=f"`your server don't have` **`Muted Role`**\n**ROLE** : `creating role...`\n**Permissions** : `setting up...`\n\n**Role permission Syncing**\n`text channel :`\n`voice channel :`\n`category :`",color=0xffffff)
+            embedcreate = discord.Embed(title="BOT SETTING UP",description=f"`your server don't have` **`Muted Role`**\n`creating role...`\n**Permissions** : `setting up...`\n\n**Role permission Syncing**\n`text channel :`\n`voice channel :`\n`category :`",color=0xffffff)
             msg = await ctx.send(embed=embedcreate)
 
             for channel in guild.channels:
@@ -133,15 +133,36 @@ class Moderation(commands.Cog):
         embed = discord.Embed(description=f"**MUTED MEMBER**\n\n`You has been mute :` `{member.display_name}#{member.discriminator}`",color=0xffffff)
         embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
 
-        embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server : {ctx.guild.name}\nReason : {reason} `\n\n",color=0xfdfd96, timestamp=datetime.now(timezone.utc))
+        embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server : {ctx.guild.name}\nReason : {reason} `\n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
         embedmute.set_footer(text=f"{self.client.user.name}",icon_url=self.client.user.avatar.url)
 
-        embedfinish = discord.Embed(title="BOT SETTING SUCCESS",description=f"**ROLE** : {mutedRole.mention}\n**Permissions**\n`speak : false`\n`send message : false`\n\n**Role permission sync**\n`text channel : sync`\n`voice channel : sync`\n`category : sync`\n\n `please move` **`Muted Role`** `above other role.`",color=0xffffff)
+        embedfinish = discord.Embed(title="BOT SETTING SUCCESS",description=f"{mutedRole.mention}\n**Permissions**\n`speak : false`\n`send message : false`\n\n**Role permission sync**\n`text channel : sync`\n`voice channel : sync`\n`category : sync`\n\n `please move` **`Muted Role`** `above other role.`",color=0xffffff)
         await ctx.send(embed = embed)
         await member.add_roles(mutedRole, reason=reason)
         await member.send(embed=embedmute)
         await msg.edit(embed = embedfinish)
 
+    @commands.command(description="mute member")
+    @commands.has_permissions(administrator = True)
+    @commands.guild_only()
+    async def mute(self, ctx, member: discord.Member, *, reason=None):
+        guild = ctx.guild
+        mutedRole = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
+
+        if not mutedRole:
+            embeddh = discord.Embed(title="MUTE ROLE",description=f"Your server don't have : **`Muted Role`**\n please use command : `lt muterole`",color=0xffffff)
+            await ctx.send(embed=embeddh)
+        else:
+            embed = discord.Embed(description=f"**MUTED MEMBER**\n\n`You has been mute`: {member.name}#{member.discriminator}",color=0xffffff)
+            embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
+
+            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n`Reason` : {reason} \n\n",color=0xfffff, timestamp=datetime.now(timezone.utc))
+            embedmute.set_footer(text=f"{self.client.user.name}",icon_url=self.client.user.avatar.url)
+
+            await ctx.send(embed = embed)
+            await member.add_roles(mutedRole, reason=reason)
+            await member.send(embed=embedmute)
+ 
     @commands.command(description="unmute member")
     @commands.has_permissions(administrator = True)
     @commands.guild_only()
@@ -153,6 +174,27 @@ class Moderation(commands.Cog):
 
         await member.remove_roles(mutedRole)
         await ctx.send(embed=embed)
+    
+    @commands.command(description="create mute role")
+    @commands.has_permissions(administrator = True)
+    @commands.guild_only()
+    async def muterole(self, ctx):
+        guild = ctx.guild
+        mutedRole = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
+
+        if not mutedRole:
+            mutedRole = await guild.create_role(name=MUTEROLE , colour=discord.Colour(COLORMUTE))
+            embedmute = discord.Embed(title="CREATE MUTE ROLE",description="`creating role...`\n`please wait 10-20 seconds`",color=0xffffff)
+            msg = await ctx.send(embed = embedmute)
+
+            for channel in guild.channels:
+                await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
+        
+            embed = discord.Embed(title="CREATE MUTE ROLE",description=f"{mutedRole.mention}\n**Permissions**\n`speak : false`\n`send message : false`\n\n**Role permission sync**\n`text channel : sync`\n`voice channel : sync`\n`category : sync`\n\n `please move` **`Muted Role`** `above other role.`",color=0xffffff)
+            await msg.edit(embed = embed)
+        else:
+            embedhm = discord.Embed(title="MUTE ROLE", description=f"{utils.emoji_converter('xmark')}Your server has a muted role.",color=0xffffff)
+            await ctx.channel.send(embed=embedhm)
 
     @commands.command(description="join voice channel")
     @commands.guild_only()

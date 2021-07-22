@@ -2,13 +2,17 @@
 import discord #import json #import os
 import asyncio
 import re
+from datetime import datetime, timedelta, timezone
 from discord.ext import commands
 
 # Third party
 from discord_components import *
 
 # Local
+import utils
+from config import *
 
+emojis = utils.emoji_converter
 
 class Help(commands.Cog): 
 
@@ -24,23 +28,28 @@ class Help(commands.Cog):
     async def help(self, ctx):
 
         embedhelp = discord.Embed(title="✧ LATTE Help", description="Prefix of this bot `lt `\nUse `selection` below for more info on an command. \n",color=0xffffff)
-#        embedhelp.add_field(name='** **', value="•**Utility**\n•**Fun**\n•**reaction**")
-#        embedhelp.add_field(name='** **', value="•**Infomation**\n•**Game**")
-#        embedhelp.add_field(name='** **', value="•**Moderation**\n•**Meta**")
+        embedhelp.add_field(name='** **', value=f"•{emojis('shidapout')} **Utility**\n•{emojis('winkai')} **Giveaway**\n•{emojis('chocolawow')} **Reaction Roles**")
+        embedhelp.add_field(name='** **', value=f"•{emojis('ShinoSmirk')} **Infomation**\n•{emojis('wowanime')} **Fun**\n•{emojis('ClevelandDeal')} **Leveling**")
+        embedhelp.add_field(name='** **', value=f"•{emojis('lutoaraka')} **Moderation**\n•{emojis('Ani1')} **Meta**\n•{emojis('tohka')} **NSFW**")
 
-        fields = [("'Utility", "`-`" , True),
-                ("Infomation", "`-`", True),
-                ("Moderation", "`-`", True),
-                ("Fun", "`-`", True),
-                ("Game", "`-`", True),
-                ("Meta", "`-`", True),
-                ("Reaction", "`-`", True),
-                ("Leveling", "`-`", True)]
+#        fields = [(f"•{emojis('shidapout')} **Utility**", "`-some useful commands`" , True),
+#                (f"•{emojis('ShinoSmirk')} **Infomation**", "`-infomation commands`", True),
+#                (f"•{emojis('lutoaraka')} **Moderation**", "`-keep your server safe`", True),
+#                (f"•{emojis('winkai')} **Giveaway**", "`-giveaway for you server`", True),
+#                (f"•{emojis('wowanime')} **Fun**", "`-have a good laugh with member `", True),
+#                (f"•{emojis('Ani1')} **Meta**", "`-bot infomation`", True),
+#                (f"•{emojis('chocolawow')} **Reaction Roles**", "`-let member pick roles`", True),
+#                (f"•{emojis('ClevelandDeal')} **Leveling**", "`-reward members for talking`", True),
+#                (f"•{emojis('tohka')} **NSFW**", "`-test`", True)]
                 
-        for name, value, inline in fields:
-            embedhelp.add_field(name=name, value=value, inline=inline)
+#        for name, value, inline in fields:
+#            embedhelp.add_field(name=name, value=value, inline=inline)
         embedhelp.add_field(name='** **', value="**Support**\n[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=bot%20applications.commands) | [Support Server](https://discord.gg/eNK44ngRvn) | [Github](https://github.com/staciax)", inline=False)
-        embedhelp.set_thumbnail(url=self.client.user.avatar.url)
+        lastup = datetime(UYEAR, UMONTH, UDATE)
+        dt = lastup.strftime("%d %B %Y") #%A,
+        embedhelp.set_footer(text=f"Recently Updated • {dt}")
+#        embedhelp.set_thumbnail(url=self.client.user.avatar.url)
+        embedhelp.set_image(url="https://i.imgur.com/3jz8m3V.png")
       
         msg = await ctx.send(embed=embedhelp,
         components=
@@ -50,83 +59,99 @@ class Help(commands.Cog):
                                     label="Utility",
                                     value="test1.2",
                                     description="Utility Commands",
-                                    emoji=self.client.get_emoji(864930911869992980)
+                                    emoji=self.client.get_emoji(867683219733348363)
                                 ),
                                 SelectOption(
                                     label="Infomation",
                                     value="test2.2",
                                     description="Infomation commands",
-                                    emoji=self.client.get_emoji(864921120468369438)
+                                    emoji=self.client.get_emoji(867686091501994004)
                                 ),
                                 SelectOption(
                                     label="Moderation",
                                     value="test3.2",
                                     description="Moderation commands",
-                                    emoji=self.client.get_emoji(864921119873695774)
+                                    emoji=self.client.get_emoji(867683214298054696)
+                                ),
+                                SelectOption(
+                                    label="Giveaway",
+                                    value="test4.2",
+                                    description="Giveaway commands",
+                                    emoji=self.client.get_emoji(867701465983615006)
                                 ),
                                 SelectOption(
                                     label="Fun",
-                                    value="test4.2",
-                                    description="Fun commands",
-                                    emoji=self.client.get_emoji(864921119072059463)
-                                ),
-                                SelectOption(
-                                    label="Game",
                                     value="test5.2",
-                                    description="Game commands",
-                                    emoji=self.client.get_emoji(864921121319944212) #""
+                                    description="Fun commands",
+                                    emoji=self.client.get_emoji(867701428998635522) #""
                                 ),
                                 SelectOption(
                                     label="Meta",
                                     value="test6.2",
                                     description="Game commands",
-                                    emoji=self.client.get_emoji(864921118296506418)
+                                    emoji=self.client.get_emoji(867705949933666324)
                                 ),
                                 SelectOption(
                                     label="Reaction",
                                     value="test7.2",
                                     description="Reaction roles",
-                                    emoji=self.client.get_emoji(864921120226279504)
+                                    emoji=self.client.get_emoji(867704973865254922)
                                 ),
                                 SelectOption(
                                     label="Leveling",
-                                    value="test7.3",
+                                    value="test8.2",
                                     description="Leveling",
-                                    emoji=self.client.get_emoji(864921120226279504)
+                                    emoji=self.client.get_emoji(867693328560947200)
+                                ),
+                                SelectOption(
+                                    label="NSFW",
+                                    value="test9.2",
+                                    description="NSFW",
+                                    emoji=self.client.get_emoji(867707490379628564)
                                 ),
                                 SelectOption(
                                     label="Help",
-                                    value="test8.3",
-                                    description="Help",
+                                    value="test10.2",
+                                    description="back to main page",
                                     emoji=self.client.get_emoji(864921120226279504)
                                 ),
-
                             ])]
                             )
                            
         embed1 = discord.Embed(title="Utility commands",description="Utility Commands\n\n`coming soon..`",color=0xffffff)
-        embed1.set_author(name=f"{ctx.author.name} Stats", icon_url=ctx.author.avatar.url)
+        embed1.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+#        embed1.set_thumbnail(url=self.client.user.avatar.url)
 
-        embed2 = discord.Embed(title="Infomation Commands",description="Infomation Commands\n\n`userinfo [targer] :` show userinfo infomation\n\n`serverinfo :` show server infomation\n\n`avatar [targer]:` show user avatar profile",color=0xffffff)
-        embed1.set_author(name=f"{ctx.author.name} Stats", icon_url=ctx.author.avatar.url)
+        embed2 = discord.Embed(title="Infomation Commands",description="Infomation Commands\n\n`userinfo , ui [targer] :` show userinfo infomation\n\n`serverinfo , sv :` show server infomation\n\n`avatar , av [targer] :` show user avatar profile",color=0xffffff)
+        embed2.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+#        embed2.set_thumbnail(url=self.client.user.avatar.url)
 
-        embed3 = discord.Embed(title="Moderation Commands",description="Moderation Commands\n\n`clear [number]:` clear message\n\n`mute [target] :` mute member\n\n`unmute [target] :` unmute member\n\n`kick [target]:` kick member\n\n`ban [target]:` ban member\n\n`unban [target]:`unban member",color=0xffffff)
-        embed1.set_author(name=f"{ctx.author.name} Stats", icon_url=ctx.author.avatar.url)
+        embed3 = discord.Embed(title="Moderation Commands",description="Moderation Commands\n\n`clear [number]:` clear message\n\n`muterole :` create muterole\n\n`mute [target] :` mute member\n\n`unmute [target] :` unmute member\n\n`kick [target]:` kick member\n\n`ban [target]:` ban member\n\n`unban [target]:`unban member",color=0xffffff)
+        embed2.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+#        embed3.set_thumbnail(url=self.client.user.avatar.url)
 
-        embed4 = discord.Embed(title="Fun Commands",description="Fun Commands\n\n`coming soon..`",color=0xffffff)
-        embed1.set_author(name=f"{ctx.author.name} Stats", icon_url=ctx.author.avatar.url)
+        embed4 = discord.Embed(title="Giveaway Commands",description="Giveaway Commands\n\n`giveaway , g :` The group command for managing giveaways\n\n`reroll :` reroll giveaway",color=0xffffff)
+        embed4.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+#        embed4.set_thumbnail(url=self.client.user.avatar.url)
 
-        embed5 = discord.Embed(title="Game Commands",description="Game Commands\n\n`coming soon..`",color=0xffffff)
-        embed1.set_author(name=f"{ctx.author.name} Stats", icon_url=ctx.author.avatar.url)
+        embed5 = discord.Embed(title="Fun Commands",description="Fun Commands\n\n`bm [message]:` Let the bot send the message\n\n`poll [message]:` poll in your server",color=0xffffff)
+        embed5.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+#        embed5.set_thumbnail(url=self.client.user.avatar.url)
 
-        embed6 = discord.Embed(title="Meta Commands",description="Meta Commands\n\n`ping : check ping , respondtime of bot`\n\n`invite :` invite the bot!!\n\n`support :` Get the invite link for the support server!\n\n`vote :`  Get the voting link for the bot",color=0xffffff)
-        embed1.set_author(name=f"{ctx.author.name} Stats", icon_url=ctx.author.avatar.url)
+        embed6 = discord.Embed(title="Meta Commands",description="Meta Commands\n\n`ping :` check latency bot\n\n`stats :` show stats bot\n\n`invite :` invite the bot!!\n\n`feedback` : send message to bot developer\n\n`support :` Get the invite link for the support server!\n\n`vote :`  Get the voting link for the bot",color=0xffffff)
+        embed6.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+#        embed6.set_thumbnail(url=self.client.user.avatar.url)
         
-        embed7 = discord.Embed(title="Reaction",description="Reaction Roles\n\n`coming soon..`",color=0xffffff)
-        embed1.set_author(name=f"{ctx.author.name} Stats", icon_url=ctx.author.avatar.url)
+        embed7 = discord.Embed(title="Reaction",description="Reaction Roles\n\nGive color role: <#840380566862823425>",color=0xffffff)
+        embed7.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+#        embed7.set_thumbnail(url=self.client.user.avatar.url)
 
-        embed8 = discord.Embed(title="Leveling",description="Leveling Commands\n\n`coming soon..`",color=0xffffff)
-        embed1.set_author(name=f"{ctx.author.name} Stats", icon_url=ctx.author.avatar.url)
+        embed8 = discord.Embed(title="Leveling",description="Leveling Commands\n\n`level , xp :` check my level\n\n`rank :` show ranking level all member",color=0xffffff)
+        embed8.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+#        embed8.set_thumbnail(url=self.client.user.avatar.url)
+
+        embed9 = discord.Embed(title="NSFW",description="NSFW Commands\n\n`coming soon..`",color=0xffffff)
+        embed9.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 
         while True:
             try:
@@ -153,13 +178,13 @@ class Help(commands.Cog):
                         type=7
                     )
                 
-                elif label == "Fun":
+                elif label == "Giveaway":
                     await msg.edit(embed=embed4)
                     await event.respond(                        
                         type=7
                     )
                 
-                elif label == "Game":
+                elif label == "Fun":
                     await msg.edit(embed=embed5)
                     await event.respond(                        
                         type=7
@@ -179,6 +204,11 @@ class Help(commands.Cog):
                 
                 elif label == "Leveling":
                     await msg.edit(embed=embed8)
+                    await event.respond(                        
+                        type=7
+                    )
+                elif label == "NSFW":
+                    await msg.edit(embed=embed9)
                     await event.respond(                        
                         type=7
                     )

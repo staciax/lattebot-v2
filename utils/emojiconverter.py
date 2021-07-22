@@ -36,6 +36,20 @@ def emoji_converter(name):
     "4th" : "<:check:864461829836505098>",
     "blackcrown" : "<a:blackcrown:867335151407333386>",
     "nekocrown" : "<:nekocatroyal:867362857614966784>",
+    "moderation" : "<:moderation:867680516987420722>",
+    "lutoaraka" : "<:lutoarakablush:867683214298054696>",
+    "shidapout" : "<:shidapout:867683219733348363>",
+    "ShinoSmirk" : "<:ShinoSmirk:867686091501994004>",
+    "hanaji" : "<:hanaji:867688774914015253>",
+    "sayuwoah" : "<:sayuwoah:867683372896878602>",
+    "ClevelandDeal" : "<:ClevelandDeal:867693328560947200>",
+    "Aoba" : "<:Aoba:867693003693883433>",
+    "wowanime" : "<:wowanime:867701428998635522>", 
+    "winkai" : "<:winkai:867701465983615006>", 
+    "Ani1" : "<:Ani1:867705949933666324>",
+    "chocolawow" : "<:chocolawow:867704973865254922>",
+    "tohka" : "<:tohka:867707490379628564>",
+    "whiteheart" : "<a:white_heart1:867855190472523806>",  
  
   }
   

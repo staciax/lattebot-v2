@@ -2,8 +2,11 @@
 PREFIX = 'lt '
 TOKEN = 'ODYxMTc5OTUyNTc2ODU2MDY1.YOGCVA.ybEvJEqnfuDjVwCyLPEYN8cJA3g'
 
-#data
-BOTVERSION = 'v2.0 beta'
+#data , last update time
+BOTVERSION = 'v2.0 pre release'
+UYEAR = 2021
+UMONTH = 7
+UDATE = 23
  
 #welcone, leave alert
 WELCOME = '♢・welcome'

@@ -139,34 +139,36 @@ class Data(commands.Cog):
         await ctx.send(embed=embed) 
         await self.client.logout()
     
-    @commands.command(name='bs')
-    async def givebotsent(self, ctx, *, message=None):
-        embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify what message the bot send | `prefix` `bs [message]`",color=0xffffff)
+    @commands.command(name="bm")
+    async def bm(self, ctx, *, message=None):
+        embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify what message bot send the message | `prefix` `bm [message]`",color=0xffffff)
         if message == None:
             message = await ctx.send(embed=embed)
         else:
             await ctx.send(f'{message}')
             await ctx.message.delete()
     
-    @commands.command(aliases=['report', 'bug'])
-    async def reportbug(self, ctx):
-
+    @commands.command(aliases=['report','bug','fb'])
+    async def feedback(self, ctx):
         def check(m):
             return m.author == ctx.author and m.channel == ctx.channel
-
-        await ctx.send("report bug?")
+        embedwait = discord.Embed(title="FEED BACK",description=f"Please write a feedback.\n\n`note: within 1 minute`",color=0xffffff)
+        embedfail = discord.Embed(title="FEED BACK",description=f"{utils.emoji_converter('xmark')} You took to long, please try again.",color=0xffffff)
+        await ctx.send(embed=embedwait)
         try:
-            msg1 = await self.client.wait_for('message', check=check, timeout=30.0)
+            msg1 = await self.client.wait_for('message', check=check, timeout=60.0)
         except asyncio.TimeoutError:
-            await ctx.send("You took to long, please try again.")
+            await ctx.send(embed=embedfail)
 
-        reportembed = discord.Embed(title="BUG Report",
+        reportembed = discord.Embed(title="FEED BACK",
                                  description=f"{msg1.content}",
                                  color=0xffffff)
         reportembed.set_thumbnail(url=ctx.author.avatar.url)
 
+        embedsc = discord.Embed(title="FEED BACK",description=f"{ctx.author.mention} Thank you for feedback {utils.emoji_converter('whiteheart')} !",color=0xffffff)
+
         await self.log_channel.send(embed=reportembed)
-        await ctx.send("thanks")
+        await ctx.send(embed=embedsc)
 
 # dm message to my text channel   
 #    @commands.Cog.listener()

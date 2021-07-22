@@ -265,10 +265,10 @@ class Info(commands.Cog):
 
     @commands.command()
     async def poll(self, ctx,*,message):
-        emb=discord.Embed(title=" POLL", description=f"{message}")
-        msg=await ctx.channel.send(embed=emb)
-        await msg.add_reaction(f'{utils.emoji_converter("xmark")}')
+        embed = discord.Embed(title="POLL", description=f"{message}",color=0xffffff)
+        msg = await ctx.channel.send(embed=embed)
         await msg.add_reaction(f'{utils.emoji_converter("check")}')
+        await msg.add_reaction(f'{utils.emoji_converter("xmark")}')
         await ctx.message.delete()
 
     @commands.command()
@@ -290,6 +290,14 @@ class Info(commands.Cog):
         except ApiException as e:
             print("Exception when calling DefaultApi->gifs_search_get: %s\n" % e)
 
+
+#error
+    @poll.error
+    async def poll_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify message | `poll` `[message]`",color=0xffffff)
+            await ctx.message.delete()
+            await ctx.send(embed=embedar)
 
 
 def setup(client):
