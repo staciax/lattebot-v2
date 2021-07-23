@@ -19,6 +19,7 @@ class Logguild(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         self.log_channel = self.bot.get_channel(SERVER_LOG)
+        self.log2_channel = self.bot.get_channel(EMOJISERVER_LOG)
         print(f"-{self.__class__.__name__}")
 
     @commands.Cog.listener()
@@ -35,6 +36,7 @@ class Logguild(commands.Cog):
                     embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
             
                 await self.log_channel.send(embed=embed)
+                await self.log2_channel.send(embed=embed)
 
 
             if before.discriminator != after.discriminator:
@@ -50,6 +52,7 @@ class Logguild(commands.Cog):
                     embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
             
                 await self.log_channel.send(embed=embed)
+                await self.log2_channel.send(embed=embed)
         
 
             if before.avatar.url != after.avatar.url:
@@ -61,10 +64,12 @@ class Logguild(commands.Cog):
                 embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
 
                 await self.log_channel.send(embed=embed)
+                await self.log2_channel.send(embed=embed)
 
     
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
+        if before.guild.id == MYGUILD:
             if before.display_name != after.display_name:
                 embed = discord.Embed(title="Nickname change",
                                     colour=0xFFDF00, #colour=after.colour,
@@ -79,6 +84,7 @@ class Logguild(commands.Cog):
                     embed.set_footer(text="", icon_url=after.avatar.url)
 
                 await self.log_channel.send(embed=embed)
+                await self.log2_channel.send(embed=embed)
         
 
             elif before.roles != after.roles:
@@ -94,6 +100,9 @@ class Logguild(commands.Cog):
                     embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
 
                 await self.log_channel.send(embed=embed)
+                await self.log2_channel.send(embed=embed)
+        else:
+            pass
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
@@ -112,6 +121,7 @@ class Logguild(commands.Cog):
                         embed.set_footer(text=f"{after.author.display_name}", icon_url=after.author.avatar.url)
                 
                     await self.log_channel.send(embed=embed)
+                    await self.log2_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
@@ -131,6 +141,7 @@ class Logguild(commands.Cog):
                             await channel.send(' '.join(im))
                         elif message.attachments:
                             image = message.attachments[0].proxy_url
+                            em.description = f"**Deleted in:** {message.channel.mention}"
                             em.set_image(url=image)
                         else:
                             em.description = f"**Deleted in:** {message.channel.mention} \n**Content:** {message.clean_content}"
@@ -138,6 +149,7 @@ class Logguild(commands.Cog):
 
 
                     await self.log_channel.send(embed=em)
+                    await self.log2_channel.send(embed=em)
                 else:
                     pass
             else:
@@ -147,6 +159,7 @@ class Logguild(commands.Cog):
                 delem.description = f"**Deleted in:** {message.channel} \n**Content:** {message.clean_content}"
 
                 await self.log_channel.send(embed=delem)
+                await self.log2_channel.send(embed=delem)
 
      
 

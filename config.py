@@ -1,6 +1,8 @@
 #standard
 PREFIX = 'lt '
-TOKEN = 'ODYxMTc5OTUyNTc2ODU2MDY1.YOGCVA.ybEvJEqnfuDjVwCyLPEYN8cJA3g'
+TOKEN = 'ODU0MTM0NDAyOTU0ODIxNjQz.YMfgpg.nAFyoLIAJ3K0jLFLEp0AAkJ6s9k'
+
+MYGUILD = 840379510704046151
 
 #data , last update time
 BOTVERSION = 'v2.0 pre release'
@@ -22,6 +24,7 @@ COLORMUTE = 0xff9f9f #when don't have mute role
 
 #moderation
 SERVER_LOG = 859789105507598346 #guildlog /cog/logguild
+EMOJISERVER_LOG = 868099215799246858
 LOG_GIVEAWAY = 840396784299147315 #giveaway /cog/giveaway
 REPORTBUG = 865609918945820692 #reportbug /cog/data
 ONLYIMG = 865640540032991242 #chennel only images /cog/moderator
