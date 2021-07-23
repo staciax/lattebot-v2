@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 # Local
 from config import *
 
-
+private_channel = 850507964938715196 , 863075138441707580 , 861883647070437386 #nsfw #onlyfans
 
 class Logguild(commands.Cog):
 
@@ -23,126 +23,132 @@ class Logguild(commands.Cog):
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
-        if before.name != after.name:
-            embed = discord.Embed(title="Username change",colour=after.colour,timestamp=datetime.utcnow())
+        if not before.channel.id and after.channel.id in private_channel:
+            if before.name != after.name:
+                embed = discord.Embed(title="Username change",colour=after.colour,timestamp=datetime.utcnow())
 
-            fields = [("`Before`", before.name, False),
-					  ("`After`", after.name, False)]
+                fields = [("`Before`", before.name, False),
+					    ("`After`", after.name, False)]
 
-            for name, value, inline in fields:
-                embed.add_field(name=name, value=value, inline=inline)
-                embed.set_thumbnail(url=after.avatar.url)
-                embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
+                for name, value, inline in fields:
+                    embed.add_field(name=name, value=value, inline=inline)
+                    embed.set_thumbnail(url=after.avatar.url)
+                    embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
             
-            await self.log_channel.send(embed=embed)
+                await self.log_channel.send(embed=embed)
+
+        if not before.channel.id and after.channel.id in private_channel:
+            if before.discriminator != after.discriminator:
+                embed = discord.Embed(title="Discriminator change",
+                                    colour=0xffffff, #after.colour
+                                    timestamp=datetime.utcnow())
+
+                fields = [("`Before`",f"#{before.discriminator}", False),
+					    ("`After`",f"#{after.discriminator}", False)]
+            
+                for name, value, inline in fields:
+                    embed.add_field(name=name, value=value, inline=inline)
+                    embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
+            
+                await self.log_channel.send(embed=embed)
         
-        if before.discriminator != after.discriminator:
-            embed = discord.Embed(title="Discriminator change",
-                                colour=0xffffff, #after.colour
-                                timestamp=datetime.utcnow())
-
-            fields = [("`Before`",f"#{before.discriminator}", False),
-					  ("`After`",f"#{after.discriminator}", False)]
-            
-            for name, value, inline in fields:
-                embed.add_field(name=name, value=value, inline=inline)
+        if not before.channel.id and after.channel.id in private_channel:
+            if before.avatar.url != after.avatar.url:
+                embed = discord.Embed(title="Avatar change",description="New image is below, old to the right.",
+						    colour=self.log_channel.guild.get_member(after.id).colour,
+						    timestamp=datetime.utcnow())
+                embed.set_thumbnail(url=before.avatar.url)
+                embed.set_image(url=after.avatar.url)
                 embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
-            
-            await self.log_channel.send(embed=embed)
-        
-        if before.avatar.url != after.avatar.url:
-            embed = discord.Embed(title="Avatar change",description="New image is below, old to the right.",
-						  colour=self.log_channel.guild.get_member(after.id).colour,
-						  timestamp=datetime.utcnow())
-            embed.set_thumbnail(url=before.avatar.url)
-            embed.set_image(url=after.avatar.url)
-            embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
 
-            await self.log_channel.send(embed=embed)
+                await self.log_channel.send(embed=embed)
 
     
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        if before.display_name != after.display_name:
-            embed = discord.Embed(title="Nickname change",
-                                colour=0xFFDF00, #colour=after.colour,
-						        timestamp=datetime.utcnow())
+        if not before.channel.id and after.channel.id in private_channel:
+            if before.display_name != after.display_name:
+                embed = discord.Embed(title="Nickname change",
+                                    colour=0xFFDF00, #colour=after.colour,
+						            timestamp=datetime.utcnow())
 
-            fields = [("`Before`", before.display_name, False),
-					  ("`After`", after.display_name, False)]
+                fields = [("`Before`", before.display_name, False),
+					    ("`After`", after.display_name, False)]
 
-            for name, value, inline in fields:
-                embed.add_field(name=name, value=value, inline=inline)
-                embed.set_thumbnail(url=after.avatar.url)
-                embed.set_footer(text="", icon_url=after.avatar.url)
-
-            await self.log_channel.send(embed=embed)
-        
-
-        elif before.roles != after.roles:
-            embed = discord.Embed(title="Role updates",
-                                colour=0xb19cd9, #colour=after.colour,
-						        timestamp=datetime.utcnow())
-
-            fields = [(" `Before`", ", ".join([r.mention for r in before.roles]), False),
-					  ("`After`", ", ".join([r.mention for r in after.roles]), False)]
-
-            for name, value, inline in fields:
-                embed.add_field(name=name, value=value, inline=inline)
-                embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
-
-            await self.log_channel.send(embed=embed)
-
-    @commands.Cog.listener()
-    async def on_message_edit(self, before, after):
-        if not after.author.bot:
-            if before.content != after.content:
-                embed = discord.Embed(title="Message edit",
-                            colour=0xFF8C00, #after.author.colour,
-                            timestamp=datetime.utcnow())
-                
-                fields = [("`Before`", before.content , False),
-						  ("`After`", after.content, False)]
-                
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
-                    embed.set_footer(text=f"{after.author.display_name}", icon_url=after.author.avatar.url)
-                
+                    embed.set_thumbnail(url=after.avatar.url)
+                    embed.set_footer(text="", icon_url=after.avatar.url)
+
+                await self.log_channel.send(embed=embed)
+        
+
+            elif before.roles != after.roles:
+                embed = discord.Embed(title="Role updates",
+                                    colour=0xb19cd9, #colour=after.colour,
+						            timestamp=datetime.utcnow())
+
+                fields = [(" `Before`", ", ".join([r.mention for r in before.roles]), False),
+					    ("`After`", ", ".join([r.mention for r in after.roles]), False)]
+
+                for name, value, inline in fields:
+                    embed.add_field(name=name, value=value, inline=inline)
+                    embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
+
                 await self.log_channel.send(embed=embed)
 
     @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        if not before.channel.id and after.channel.id in private_channel:
+            if not after.author.bot:
+                if before.content != after.content:
+                    embed = discord.Embed(title="Message edit",
+                                colour=0xFF8C00, #after.author.colour,
+                                timestamp=datetime.utcnow())
+                
+                    fields = [("`Before`", before.content , False),
+						    ("`After`", after.content, False)]
+                
+                    for name, value, inline in fields:
+                        embed.add_field(name=name, value=value, inline=inline)
+                        embed.set_footer(text=f"{after.author.display_name}", icon_url=after.author.avatar.url)
+                
+                    await self.log_channel.send(embed=embed)
+
+    @commands.Cog.listener()
     async def on_message_delete(self, message):
-        if message.guild: #if message.guild.id:
-            if not message.author.bot:
-                channel = self.bot.get_channel(SERVER_LOG)
+        if not message.channel.id in private_channel:
+            if message.guild: #if message.guild.id:
+                if not message.author.bot:
+                    channel = self.bot.get_channel(SERVER_LOG)
 
-                em = discord.Embed(color=0xDC143C,title = f"Message Deleted:")
-                em.set_footer(text=self.bot.user.name,icon_url=self.bot.user.avatar.url )
-                em.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
+                    em = discord.Embed(color=0xDC143C,title = f"Message Deleted:")
+                    em.set_footer(text=self.bot.user.name,icon_url=self.bot.user.avatar.url )
+                    em.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
 
-                if message.attachments is not None:
-                    if len(message.attachments) > 1:
-                        im = [x.proxy_url for x in message.attachments]
-                        em.add_field(name='\uFEFF',value = f"This Message Contained {len(message.attachments)} Message Attachments, Please See Below")
-                        await channel.send(' '.join(im))
-                    elif message.attachments:
-                        image = message.attachments[0].proxy_url
-                        em.set_image(url=image)
-                    else:
-                        em.description = f"**Deleted in:** {message.channel.mention} \n**Content:** {message.clean_content}"
+                    if message.attachments is not None:
+                        if len(message.attachments) > 1:
+                            im = [x.proxy_url for x in message.attachments]
+                            em.add_field(name='\uFEFF',value = f"This Message Contained {len(message.attachments)} Message Attachments, Please See Below")
+                            await channel.send(' '.join(im))
+                        elif message.attachments:
+                            image = message.attachments[0].proxy_url
+                            em.set_image(url=image)
+                        else:
+                            em.description = f"**Deleted in:** {message.channel.mention} \n**Content:** {message.clean_content}"
 
 
 
-                await self.log_channel.send(embed=em)
+                    await self.log_channel.send(embed=em)
+                else:
+                    pass
             else:
-                pass
-        else:
-            delem = discord.Embed(color=0xDC143C,title = f"Message Deleted:")
-            delem.set_footer(text=self.bot.user.name,icon_url=self.bot.user.avatar.url )
-            delem.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
-            delem.description = f"**Deleted in:** {message.channel} \n**Content:** {message.clean_content}"
+                delem = discord.Embed(color=0xDC143C,title = f"Message Deleted:")
+                delem.set_footer(text=self.bot.user.name,icon_url=self.bot.user.avatar.url )
+                delem.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
+                delem.description = f"**Deleted in:** {message.channel} \n**Content:** {message.clean_content}"
 
-            await self.log_channel.send(embed=delem)
+                await self.log_channel.send(embed=delem)
 
      
 
