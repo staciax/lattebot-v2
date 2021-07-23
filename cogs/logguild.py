@@ -23,7 +23,6 @@ class Logguild(commands.Cog):
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
-        if not before.channel.id and after.channel.id in private_channel:
             if before.name != after.name:
                 embed = discord.Embed(title="Username change",colour=after.colour,timestamp=datetime.utcnow())
 
@@ -37,7 +36,7 @@ class Logguild(commands.Cog):
             
                 await self.log_channel.send(embed=embed)
 
-        if not before.channel.id and after.channel.id in private_channel:
+
             if before.discriminator != after.discriminator:
                 embed = discord.Embed(title="Discriminator change",
                                     colour=0xffffff, #after.colour
@@ -52,7 +51,7 @@ class Logguild(commands.Cog):
             
                 await self.log_channel.send(embed=embed)
         
-        if not before.channel.id and after.channel.id in private_channel:
+
             if before.avatar.url != after.avatar.url:
                 embed = discord.Embed(title="Avatar change",description="New image is below, old to the right.",
 						    colour=self.log_channel.guild.get_member(after.id).colour,
@@ -66,7 +65,6 @@ class Logguild(commands.Cog):
     
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        if not before.channel.id and after.channel.id in private_channel:
             if before.display_name != after.display_name:
                 embed = discord.Embed(title="Nickname change",
                                     colour=0xFFDF00, #colour=after.colour,
