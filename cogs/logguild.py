@@ -97,7 +97,7 @@ class Logguild(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
-        if not before.channel.id and after.channel.id in private_channel:
+        if not before.channel.id in private_channel:
             if not after.author.bot:
                 if before.content != after.content:
                     embed = discord.Embed(title="Message edit",
