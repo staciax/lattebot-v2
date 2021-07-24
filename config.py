@@ -8,7 +8,7 @@ MYGUILD = 840379510704046151
 BOTVERSION = 'v2.0 pre release'
 UYEAR = 2021
 UMONTH = 7
-UDATE = 23
+UDATE = 24
  
 #welcone, leave alert
 WELCOME = '♢・welcome'
