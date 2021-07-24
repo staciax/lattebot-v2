@@ -57,8 +57,8 @@ class Reaction(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
-        ColourID = VERIFY
-        VerifyID = COLOR
+        ColourID = COLOR
+        VerifyID = VERIFY
 
         if ColourID == payload.message_id:
             guild = await(self.client.fetch_guild(payload.guild_id))
