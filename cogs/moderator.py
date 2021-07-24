@@ -235,6 +235,24 @@ class Moderation(commands.Cog):
             await channel.set_permissions(ctx.guild.default_role, overwrite=overwrites)
             await ctx.send(embed=embed3)
 
+    @commands.command()
+    async def changenick(self, ctx , member: discord.Member, nick):
+        embed = discord.Embed(description=f"Nickname was changed for {member.display_name}",color=0xffffff)
+        await member.edit(nick=nick)
+        await ctx.channel.send(embed=embed)
+    
+    @commands.command()
+    async def slowmode(self, ctx ,*, seconds: int= None):
+            if seconds == None:
+                embed = discord.Embed(title="SLOW MODE",description=f"Disable slowmode this channel",color=0xffffff)
+                await ctx.channel.edit(slowmode_delay=0)
+                await ctx.channel.send(embed=embed)
+            else:
+                embed = discord.Embed(title="SLOW MODE",description=f"Set the slowmode delay in this channel to {seconds} **seconds!**",color=0xffffff)
+                await ctx.channel.edit(slowmode_delay=seconds)
+                await ctx.channel.send(embed=embed)
+
+
     @commands.Cog.listener()
     async def on_message(self, message):
         def _check(m):

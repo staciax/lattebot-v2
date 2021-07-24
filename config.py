@@ -8,11 +8,11 @@ MYGUILD = 840379510704046151
 BOTVERSION = 'v2.0 pre release'
 UYEAR = 2021
 UMONTH = 7
-UDATE = 24
+UDATE = 25
  
 #welcone, leave alert
 WELCOME = '♢・welcome'
-LEAVE = '♢・m-leave' 
+LEAVE = '♢・m-leave'
 
 #reactionrole
 VERIFY = 861849112386469908
