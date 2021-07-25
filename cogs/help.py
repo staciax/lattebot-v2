@@ -146,7 +146,7 @@ class Help(commands.Cog):
         embed7.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 #        embed7.set_thumbnail(url=self.client.user.avatar.url)
 
-        embed8 = discord.Embed(title="Leveling",description="Leveling Commands\n\n`level , xp :` check my level\n\n`rank :` show ranking level all member",color=0xffffff)
+        embed8 = discord.Embed(title="Leveling",description="Leveling Commands\nways you can get experience\ntalk in <#861883647070437386> <#840398821544296480>\n\n`level , xp :` check my level\n\n`rank :` show ranking level all member",color=0xffffff)
         embed8.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 #        embed8.set_thumbnail(url=self.client.user.avatar.url)
 

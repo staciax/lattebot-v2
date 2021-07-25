@@ -156,7 +156,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(description=f"**MUTED MEMBER**\n\n`You has been mute`: {member.name}#{member.discriminator}",color=0xffffff)
             embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
 
-            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n`Reason` : {reason} \n\n",color=0xfffff, timestamp=datetime.now(timezone.utc))
+            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n`Reason` : {reason} \n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
             embedmute.set_footer(text=f"{self.client.user.name}",icon_url=self.client.user.avatar.url)
 
             await ctx.send(embed = embed)
