@@ -66,8 +66,9 @@ class Moderation(commands.Cog):
 
     @commands.command(description="ban member")
     @commands.guild_only()
-    @commands.has_permissions(administrator = True)
+#    @commands.has_permissions(administrator = True)
 #    @commands.has_permissions(ban_members=True)
+    @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *, reason = None):
         embed = discord.Embed(title="Banned Member", description=f'{member.name}#{member.discriminator} has been banned from server\nReason: {reason}',timestamp=datetime.now(timezone.utc),color=0xffffff)
         embed.set_footer(text=f"Banned by {ctx.author}" , icon_url = ctx.author.avatar.url)
@@ -313,6 +314,59 @@ class Moderation(commands.Cog):
 #                await message.delete()
 #                await message.channel.send("You can't send images here.", delete_after=10)
 
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(ban_members=True)
+    async def tempban(self, ctx, member: utils.BetterMemberConverter, duration: utils.DurationConverter):
+
+        multiplier = {'s': 1, 'm': 60, 'd': 86400, 'w': 604800, 'm': 2629746, 'y': 31556952 }
+        amount, unit = duration
+        embed = discord.Embed(title="Banned Member", description=f'{member.name} has been banned from server\n\n`Duration` : {amount}{unit}',timestamp=datetime.now(timezone.utc),color=0xffffff)
+        embed.set_footer(text=f"Banned by {ctx.author}" , icon_url = ctx.author.avatar.url)
+
+        await ctx.guild.ban(member)
+        await ctx.send(embed=embed)
+        await asyncio.sleep(amount * multiplier[unit])
+        await ctx.guild.unban(member)
+    
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(administrator = True)
+#    @commands.has_permissions(manage_channels=True, manage_roles=True) 
+    async def tempmute(self, ctx, member: utils.MemberConverter, duration: utils.DurationConverter):
+        roles1 = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
+        multiplier = {'s': 1, 'm': 60, 'd': 86400, 'w': 604800, 'm': 2629746, 'y': 31556952  }
+        amount, unit = duration
+        guild = ctx.guild
+        
+        if not roles1:
+            embeddh = discord.Embed(title="MUTE ROLE",description=f"Your server don't have : **`Muted Role`**\n please use command : `lt muterole`",color=RED)
+            await ctx.send(embed=embeddh)
+        else:
+            embed = discord.Embed(description=f"**MUTED MEMBER**\n\n`You has been mute`: {member.name}#{member.discriminator}\n\n`Duration` : {amount}{unit}",color=0xffffff)
+            embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
+            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n\n`Duration` : {amount}{unit} \n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
+            embedmute.set_footer(text=f"{self.client.user.name}",icon_url=self.client.user.avatar.url)
+            
+            await member.add_roles(roles1)
+            await ctx.send(embed = embed)
+            await member.send(embed=embedmute)
+            await asyncio.sleep(amount * multiplier[unit])
+            await member.remove_roles(roles1)
+#        else:
+#            await ctx.guild.create_role(name=MUTEROLE)
+#            role = get(ctx.guild.roles, name=MUTEROLE)
+#            role1721 = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
+#            permissions = discord.Permissions()
+#            permissions.update(add_reactions=False, send_messages=False, send_tts_messages=False, attach_files=False, connect=False)
+#            await role.edit(reason = "abcd", colour = discord.Colour.red(), permissions=permissions)
+#            await member.add_roles(role)
+#            for channel in ctx.guild.text_channels:
+#                await channel.set_permissions(role1721, add_reactions=False, send_messages=False, send_tts_messages=False, attach_files=False, connect=False)    
+#        await ctx.guild.ban(member)
+#        await ctx.send(f'{member} has been banned for {amount}{unit}.')
+#        await asyncio.sleep(amount * multiplier[unit])
+#        await ctx.guild.unban(member)
 
 ## error commands
 

@@ -1,50 +1,59 @@
 import discord, re, random
 from discord.ext import commands
-from discord.http import Route
+#from discord.http import Route
 
-class BetterMemberConverter(commands.Converter):
-  async def convert(self, ctx, argument):
-    try:
-      user = await commands.MemberConverter().convert(ctx, argument)
-    except commands.MemberNotFound:
-      user = None
-
-    if user == None:
-      tag = re.match(r"#?(\d{4})",argument)
-      if tag:
+class MemberConverter(commands.Converter):
+    async def convert(self, ctx, argument):
+        """
+        This will raise MemberNotFound if the member is not found.
+        """
+        try:
+            return await commands.MemberConverter().convert(ctx, argument)
+        except commands.MemberNotFound:
+            # Let's try a utils.find:
+            def check(member):
+                return (
+                    member.name.lower() == argument.lower() or
+                    member.display_name.lower() == argument.lower() or
+                    str(member).lower() == argument.lower() or
+                    str(member.id) == argument
+                )
+            if found := discord.utils.find(check, ctx.guild.members):
+                return found
+            raise commands.MemberNotFound(argument)
+        
+        
+class UserConverter(commands.Converter):
+    async def convert(self, ctx, argument):
+        """
+        This will take into account members if a guild exists.
+        Raises UserNotFound if the user is not found.
+        """
         if ctx.guild:
-          test=discord.utils.get(ctx.guild.members, discriminator = tag.group(1))
-          user = test or ctx.author
+            try:
+                return await MemberConverter().convert(ctx, argument)
+            except commands.MemberNotFound:
+                pass
 
-        if ctx.guild is None:
-          user = await BetterUserconverter().convert(ctx,argument)
-          user = user or ctx.author
-               
-    return user
+        try:
+            return await commands.UserConverter().convert(ctx, argument)
+        except commands.UserNotFound:
+            def check(user):
+                return (
+                    user.name.lower() == argument.lower() or
+                    str(user).lower() == argument.lower() or
+                    str(user.id) == argument
+                )
+            if found := discord.utils.find(check, ctx.bot.users):
+                return found
+            raise commands.UserNotFound(argument)
 
-class BetterUserconverter(commands.Converter):
+class DurationConverter(commands.Converter):
   async def convert(self, ctx, argument):
-    try:
-     user=await commands.UserConverter().convert(ctx,argument)
-    except commands.UserNotFound:
-      user = None
-    if not user and ctx.guild:
-      user=ctx.guild.get_member_named(argument)
+    amount = argument[:-1]
+    unit = argument[-1]
 
-    if user == None:
-      role = None
-
-      with contextlib.suppress(commands.RoleNotFound, commands.NoPrivateMessage):
-        role = await commands.RoleConverter().convert(ctx, argument)
-      
-      if role:
-        if role.is_bot_managed():
-          user=role.tags.bot_id
-          user = ctx.client.get_user(user) or await ctx.bot.fetch_user(user)
-
-    if user == None:
-      tag = re.match(r"#?(\d{4})",argument)
-      if tag:
-        test=discord.utils.get(ctx.bot.users, discriminator = tag.group(1))
-        user = test or ctx.author
-    return user
+    if amount.isdigit() and unit in ['s', 'm']:
+      return (int(amount), unit)
+    
+    raise commands.BadArgument(message='Not a valid duration')
