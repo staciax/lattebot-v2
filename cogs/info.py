@@ -1,10 +1,6 @@
 # Standard 
-import discord
-import random
-import time
-import re
-import os
-from discord.ext import commands
+import discord , random , time , re , os , typing , unicodedata , emoji
+from discord.ext import commands, menus
 from datetime import datetime, timedelta, timezone
 
 
@@ -289,7 +285,36 @@ class Info(commands.Cog):
             await ctx.channel.send(embed=emb)
         except ApiException as e:
             print("Exception when calling DefaultApi->gifs_search_get: %s\n" % e)
+    
+    @commands.command(brief = "gives info on emoji_id and emoji image.")
+    async def emoji_id(self, ctx, *, emoji : typing.Optional [typing.Union[discord.PartialEmoji, discord.Message, utils.EmojiBasic]] = None):
 
+        if isinstance(emoji, discord.Message):
+            emoji_message = emoji.content
+            emoji = None
+      
+            with contextlib.suppress(commands.CommandError, commands.BadArgument):
+                emoji = await utils.EmojiBasic.convert(ctx, emoji_message) or await commands.PartialEmojiConverter().convert(ctx, emoji_message)
+
+        if emoji:
+            embed = discord.Embed(description=f" Emoji ID: {emoji.id}",color=random.randint(0, 16777215))
+            embed.set_image(url=emoji.url)
+            await ctx.send(embed=embed)
+
+        else:
+            await ctx.send("Not a valid emoji id.")
+    
+    @commands.command(brief="takes smallest and largest numbers then does a random number between.")
+    async def random_number(self , ctx , *numbers: typing.Union[int,str]):
+        numbers=sorted(list(filter(lambda x: isinstance(x, int), numbers)))
+        if len(numbers) < 2:
+            await ctx.send("Not enough numbers")
+
+        else:
+            embed = discord.Embed(title=f"Random Number: {random.randint(numbers[0],numbers[-1])} ",color=random.randint(0, 16777215))
+            embed.add_field(name="Lowest Number:",value=f"{numbers[0]}")
+            embed.add_field(name="Highest Number:",value=f"{numbers[-1]}")
+            await ctx.send(embed=embed)
 
 #error
     @poll.error

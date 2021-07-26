@@ -1,6 +1,8 @@
 import discord, re, random
 from discord.ext import commands
 #from discord.http import Route
+from datetime import datetime, timedelta, timezone
+import time
 
 class MemberConverter(commands.Converter):
     async def convert(self, ctx, argument):
@@ -53,7 +55,14 @@ class DurationConverter(commands.Converter):
     amount = argument[:-1]
     unit = argument[-1]
 
-    if amount.isdigit() and unit in ['s', 'm']:
+    if amount.isdigit() and unit in ['s', 'm', 'h', 'd', 'w' 'y']:
       return (int(amount), unit)
     
     raise commands.BadArgument(message='Not a valid duration')
+
+class TimeConverter(commands.Converter):
+    
+    async def convert(self, ctx, *, time: str):
+        arser = _parse_time(time) # returns datetime.timedelta object
+        human_time = _human_time(parser)
+        return parser, human_time
