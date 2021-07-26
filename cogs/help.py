@@ -126,7 +126,7 @@ class Help(commands.Cog):
         embed2.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 #        embed2.set_thumbnail(url=self.client.user.avatar.url)
 
-        embed3 = discord.Embed(title="Moderation Commands",description="Moderation Commands\n\n`clear [number]:` clear message\n\n`muterole :` create muterole\n\n`mute [target] :` mute member\n\n`unmute [target] :` unmute member\n\n`kick [target]:` kick member\n\n`ban [target]:` ban member\n\n`unban [target]:`unban member\n\n`lockdown :`disable text channel\n\n`changenick [member]:` change nickname member\n\n`slowmode [seconds]:` set slowmode in channel",color=0xffffff)
+        embed3 = discord.Embed(title="Moderation Commands",description="Moderation Commands\n\n`clear [number] or all :` clear message\n\n`muterole :` create muterole\n\n`mute [target] :` mute member\n\n`unmute [target] :` unmute member\n\n`kick [target]:` kick member\n\n`ban [target]:` ban member\n\n`unban [target]:`unban member\n\n`lockdown :`disable text channel\n\n`changenick [member]:` change nickname member\n\n`slowmode [seconds]:` set slowmode in channel",color=0xffffff)
         embed2.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 #        embed3.set_thumbnail(url=self.client.user.avatar.url)
 
