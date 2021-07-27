@@ -21,15 +21,15 @@ class Data(commands.Cog):
         self.client = client
         self.client.launch_time = datetime.utcnow()
     
-#    async def process_commands(self, message):
-#        ctx = await self.get_context(message, cls=Context)
+    async def process_commands(self, message):
+        ctx = await self.get_context(message, cls=Context)
 
-#        if ctx.command is not None and ctx.guild is not None:            
-#            if not self.ready:
-#                await ctx.send("I'm not ready to receive commands. Please wait a few seconds.")
+        if ctx.command is not None and ctx.guild is not None:            
+            if not self.ready:
+                await ctx.send("I'm not ready to receive commands. Please wait a few seconds.")
             
-#            else:
-#                await self.invoke(ctx)
+            else:
+                await self.invoke(ctx)
 
     @commands.Cog.listener()
     async def on_ready(self):

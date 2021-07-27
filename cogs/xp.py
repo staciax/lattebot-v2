@@ -1,5 +1,5 @@
 # Standard 
-import discord 
+import discord , random
 import asyncio
 from discord.ext import commands 
 from datetime import datetime, timedelta, timezone
@@ -25,10 +25,11 @@ chat_channel = 861883647070437386 , 840398821544296480 , 863438518981361686
 
 level = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
 levelnum = [3,5,10,20,30,40,45,50,60]
+colorlvl = [0xc39b7d,0xffbfd7,0xc39b7d,0xffbfd7,0xc39b7d,0xc1e7b8,0xc5ffff,0xec6fc1,0xb98fe4]
 
 cluster = MongoClient(mango_url)
 
-levelling = cluster["discord"]["levelling"]
+levelling = cluster["database"]["new"]
 
 class xp(commands.Cog):
 
@@ -65,7 +66,7 @@ class xp(commands.Cog):
                                 embed = discord.Embed(title="ROLE UPDATE!",description=f"{message.author.mention} **LEVEL UP!** you have gotten role **{level[i]}**!!!",color=0xffffff)
                                 embed.set_thumbnail(url=message.author.avatar.url)
                                 await message.channel.send(embed=embed)
-    
+                 
     @commands.command()
     async def testlevel(self, ctx):
         if ctx.channel.id in bot_channel: #only one ch use '==' , more use 'in'
@@ -98,7 +99,7 @@ class xp(commands.Cog):
 
     @commands.command(aliases=['rank', 'ranking'])
     async def leaderboard(self, ctx): #only one ch use '==' , more use 'in'
-        if (ctx.channel.id in bot_channel):
+#        if (ctx.channel.id in bot_channel):
             rankings = levelling.find().sort("xp",-1)
             i = 1
             embed = discord.Embed(color=0x77dd77 , timestamp=datetime.now(timezone.utc))
@@ -137,15 +138,15 @@ class xp(commands.Cog):
        
             await ctx.channel.send(embed=embed)
 
-        else:
-            embedbot = discord.Embed(title="BOT COMMAND ERROR",description=f"please use bot command in <#861874852050894868> !",color=0xffffff)
-            await ctx.message.delete()
-            await ctx.channel.send(embed=embedbot , delete_after=10)
+#        else:
+#            embedbot = discord.Embed(title="BOT COMMAND ERROR",description=f"please use bot command in <#861874852050894868> !",color=0xffffff)
+#            await ctx.message.delete()
+#            await ctx.channel.send(embed=embedbot , delete_after=10)
 
     @commands.command(aliases=['lv', 'lvl' , 'xp' , 'exp'])
     async def level(self, ctx):
-        if ctx.channel.id in bot_channel:       
-                stats = levelling.find_one({"id": ctx.author.id})
+#        if ctx.channel.id in bot_channel:       
+                stats = levelling.find({"id": ctx.author.id} , {"guild_id" : ctx.guild.id})
                 if stats is None:
                     embed = discord.Embed(description="You haven't sent any messages, **no xp**!!",color=0xffffff)
                     await ctx.channel.send(embed=embed)
@@ -299,11 +300,38 @@ class xp(commands.Cog):
 
                     await ctx.channel.send(file=file, embed=embedlv)
 
-        else:
-            embedbot = discord.Embed(title="BOT COMMAND ERROR",description=f"please use bot command in <#861874852050894868> !",color=0xffffff)
-            await ctx.message.delete()
-            await ctx.channel.send(embed=embedbot , delete_after=10)
+#        else:
+#            embedbot = discord.Embed(title="BOT COMMAND ERROR",description=f"please use bot command in <#861874852050894868> !",color=0xffffff)
+#            await ctx.message.delete()
+#            await ctx.channel.send(embed=embedbot , delete_after=10)
+  
+    @commands.command()
+    async def xprole(self, ctx):
+        embed = discord.Embed(description="", color=PTYELLOW)
+        embed.title = "XP ROLE!"
+        lvlbar = "・┈・┈・┈・Level!・┈・┈・┈・⠀⠀"
+        lvlbar2 = discord.utils.get(ctx.author.guild.roles, name=lvlbar)
+        if not lvlbar2:
+            await ctx.guild.create_role(name=lvlbar , colour=0x18191c)
+        embed.description += f"{lvlbar2.mention}\n"
+        
+        for x, y in zip(reversed(level), reversed(colorlvl)):
+            checkrole = discord.utils.get(ctx.author.guild.roles, name=level)
+            if not checkrole:
+                await ctx.guild.create_role(name=x , colour=y)
+            else:
+                return
+
+        for i in reversed(range(len(level))):
+            roles = discord.utils.get(ctx.author.guild.roles, name=level[i])
+            if roles:
+                embed.description += f"{roles.mention}\n"
+
+        await ctx.channel.send(embed=embed)
+
+    
 
     
 def setup(client):
+
     client.add_cog(xp(client))

@@ -367,8 +367,6 @@ class Moderation(commands.Cog):
 #        await asyncio.sleep(amount * multiplier[unit])
 #        await ctx.guild.unban(member)
 
-
-
     @commands.command() #testonlyme
     @utils.is_me()
     async def only_test(self, ctx):
@@ -467,9 +465,6 @@ class Moderation(commands.Cog):
             embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} You doesn't have enough **permission!**",color=0xffffff)
 #            await ctx.message.delete()
             await ctx.send(embed=embedpr)
-
-
-
 
 def setup(client):
     client.add_cog(Moderation(client))

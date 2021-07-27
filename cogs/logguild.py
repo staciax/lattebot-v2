@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 # Local
 from config import *
 
-private_channel = 850507964938715196 , 863075138441707580 , 861883647070437386 #nsfw #onlyfans
+private_channel = 850507964938715196 , 863075138441707580 , 861883647070437386 , 869305100156420106 #chat #nsfw #onlyfans #underworld
 
 class Logguild(commands.Cog):
 
