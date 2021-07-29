@@ -1,11 +1,5 @@
 # Standard 
-import discord
-import json
-import os
-import datetime
-import random
-import asyncio
-import re
+import discord , json , os , datetime , random , asyncio , re
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta
 
@@ -31,13 +25,36 @@ async def on_ready():
     print(f"\nCogs list\n-----")
 
 @client.command()
+@commands.is_owner()
 async def load(ctx, extension):
-    client.load_extension(f'cogs.{extension}')
+    try:
+        client.load_extension(f'cogs.{extension}')
+    except Exception as e:
+        await ctx.send("Could not load cog")
+        return
+    await ctx.send(f"Cog loaded : {extension}")
 
 @client.command()
+@commands.is_owner()
 async def unload(ctx, extension):
-    client.unload_extension(f'cogs.{extension}')
-    client.load_extension(f'cogs.{extension}')
+    try:
+        client.unload_extension(f'cogs.{extension}')
+    except Exception as e:
+        await ctx.send("Could not unload cog")
+        return
+    await ctx.send(f"Cog unloaded : {extension}")
+#    client.load_extension(f'cogs.{extension}')
+
+@client.command()
+@commands.is_owner()
+async def reload(ctx, extension):
+    try:
+        client.unload_extension(f'cogs.{extension}')
+        client.load_extension(f'cogs.{extension}')
+    except Exception as e:
+        await ctx.send("Could not reload cog")
+        return
+    await ctx.send(f"Cog reloaded : {extension}")
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):

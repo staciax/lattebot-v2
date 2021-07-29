@@ -1,7 +1,5 @@
 # Standard 
-import discord #import json #import os
-import asyncio
-import re
+import discord , asyncio , re #import json #import os
 from datetime import datetime, timedelta, timezone
 from discord.ext import commands
 

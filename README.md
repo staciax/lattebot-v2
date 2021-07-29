@@ -19,11 +19,10 @@ My first discord bot write with python and use cogs
 
 ```bash
 # Windows
-pip install git+https://github.com/Rapptz/discord.py discord_components jishaku requests Pillow giphy_client pymongo
+pip install -r requirements.txt
 
 # Config.py
-change : token , prefix , welcome , leave , verifyreaction , colorrolereaction , 
-mute role , server log , giveaway log
+change : token , prefix 
 
 ## Help 
 My discord : ꜱᴛᴀᴄɪᴀ.#7475

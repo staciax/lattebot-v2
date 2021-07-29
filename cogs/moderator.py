@@ -1,11 +1,8 @@
 # Standard 
-import discord
-import datetime
-import asyncio
+import discord , datetime , asyncio
 import json
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
-
 
 # Third party
 from re import search
@@ -25,6 +22,7 @@ class Moderation(commands.Cog):
 #        self.url_regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
         self.only_images = (ONLYIMG,)
 #        self.images_allowed = (861874852050894868,)
+        self.testing_only = (ONLYTESTING,)
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -253,7 +251,6 @@ class Moderation(commands.Cog):
                 await ctx.channel.edit(slowmode_delay=seconds)
                 await ctx.channel.send(embed=embed)
 
-
     @commands.Cog.listener()
     async def on_message(self, message):
         def _check(m):
@@ -266,10 +263,17 @@ class Moderation(commands.Cog):
                 embedspam = discord.Embed(title="Spam Alert\n",description="Don't spam mentions!",color=0xffffff)
                 await message.channel.send(embed=embedspam, delete_after=10)
             
-            elif message.channel.id in self.only_images :
-                await message.delete()
-                await message.channel.send("You can't send message in this channel.", delete_after=10)
-
+            if (message.channel.id in self.only_images
+			 	and any([hasattr(a, "width") for a in message.attachments])):             
+                return
+            else:
+                if message.channel.id in self.only_images:
+                    em = discord.Embed(description="You can't send message in this channel.",color=PTRED2)
+                    await message.delete()
+                    await message.channel.send(embed=em , delete_after=10)
+                else:
+                    return
+                                   
         counter = 0
         with open("data/spam_detect.txt", "r+") as file:
             for lines in file:
@@ -305,7 +309,7 @@ class Moderation(commands.Cog):
 #                if len(unmutes):
 #                    await message.channel.send("You can't use that word here.", delete_after=10)
             
-#            elif message.channel.id not in self.links_allowed and search(self.url_regex, message.content):
+#            elif message.channel.id not in self.links_allowedr and seach(self.url_regex, message.content):
 #                await message.delete()
 #                await message.channel.send("You can't send links in this channel.", delete_after=10)
             

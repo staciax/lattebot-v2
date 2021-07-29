@@ -1,9 +1,5 @@
 # Standard 
-import discord
-import random
-import datetime
-import asyncio
-import re
+import discord , random , datetime , asyncio , re
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 

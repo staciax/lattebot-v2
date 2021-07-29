@@ -1,8 +1,5 @@
 # Standard 
-import discord
-import platform
-import os
-import asyncio
+import discord , platform , os , asyncio
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 from time import time
@@ -79,6 +76,7 @@ class Data(commands.Cog):
         await message.edit(embed=embedres)
 
     @commands.command(name="stats")
+    @commands.is_owner()
     async def stats(self, ctx):
 
         BotVersion = BOTVERSION

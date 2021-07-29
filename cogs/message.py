@@ -38,6 +38,7 @@ class Message(commands.Cog):
             await message.channel.send('no no prefix bot is **LT ** > `lt help`', delete_after=10)
         
         if message.content.startswith('underworld'):
+            if message.author.voice:
                 chname = '♢'
                 checkvoice = get_channel_by_name(message.channel.guild, channel_name=chname)
                 if checkvoice is None:
@@ -50,6 +51,8 @@ class Message(commands.Cog):
                 else:
                     await message.author.move_to(checkvoice)
                     await message.delete()
+            else:
+                await message.delete()
 
         if self.client.user.mentioned_in(message):
             await message.channel.send("You can type `lt help` for more info")

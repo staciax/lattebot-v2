@@ -1,6 +1,5 @@
 # Standard 
-import discord, random, os
-import platform
+import discord, random, os , platform
 from discord.ext import commands
 from time import time
 from datetime import datetime, timedelta, timezone
