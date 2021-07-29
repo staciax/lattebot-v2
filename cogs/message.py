@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 # Third party
 # Local
 import utils
+from utils import create_voice_channel , get_channel_by_name , get_category_by_name
 
 class Message(commands.Cog):
 
@@ -35,6 +36,20 @@ class Message(commands.Cog):
         if message.content.startswith('it'):
 #            await message.delete()
             await message.channel.send('no no prefix bot is **LT ** > `lt help`', delete_after=10)
+        
+        if message.content.startswith('underworld'):
+                chname = '♢'
+                checkvoice = get_channel_by_name(message.channel.guild, channel_name=chname)
+                if checkvoice is None:
+                    channel = await create_voice_channel(message.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Admin Only 」♡")
+                    
+                    if channel is not None:
+                        await message.author.move_to(channel)
+                        await message.delete()
+                    
+                else:
+                    await message.author.move_to(checkvoice)
+                    await message.delete()
 
         if self.client.user.mentioned_in(message):
             await message.channel.send("You can type `lt help` for more info")

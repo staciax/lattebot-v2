@@ -19,17 +19,17 @@ import requests
 import utils
 from config import * 
 
+#xpchannel
+bot_channel = BOT_CH
+chat_channel = CHAT_CH
+
+#mongodb
 mango_url = MONGOURL
-bot_channel = 861874852050894868 , 840381588704591912 , 863394760790245379
-chat_channel = 861883647070437386 , 840398821544296480 , 863438518981361686
-
-level = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
-levelnum = [3,5,10,20,30,40,45,50,60]
-colorlvl = [0xc39b7d,0xffbfd7,0xc39b7d,0xffbfd7,0xc39b7d,0xc1e7b8,0xc5ffff,0xec6fc1,0xb98fe4]
-
+level = LVLROLE #level role
+levelnum = LVLNUM #level number
+colorlvl = LVLROLECOLOR #level role color
 cluster = MongoClient(mango_url)
-
-levelling = cluster["database"]["new"]
+levelling = cluster[MGDATABASE][MGDOCUMENT]
 
 class xp(commands.Cog):
 

@@ -6,7 +6,7 @@ My first discord bot write with python and use cogs
 
 ## Prerequisites
 
-| Required                            | version  |
+| Required                            | version   |
 | ------------------------------------| --------- | 
 | **Python**                          | 3.9.5     | 
 | **discord.py**                      | 2.0.0a    | 
@@ -19,7 +19,7 @@ My first discord bot write with python and use cogs
 
 ```bash
 # Windows
-py -3.9.5 -m pip install discord.py discord-py-slash-command , discord-components
+pip install git+https://github.com/Rapptz/discord.py discord_components jishaku requests Pillow giphy_client pymongo
 
 # Config.py
 change : token , prefix , welcome , leave , verifyreaction , colorrolereaction , 

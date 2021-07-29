@@ -16,13 +16,12 @@ from pymongo import MongoClient
 # Local
 from config import *
 
-
 intents = discord.Intents()
 intents.all()
 intents.members = True 
 intents = discord.Intents(messages=True, guilds=True)
 
-client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=discord.Intents.all(), owner_id=385049730222129152)
+client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=discord.Intents.all(), owner_id=DEV_OWNER_ID)
     
 @client.remove_command("help") #remove help 
 
@@ -45,6 +44,5 @@ for filename in os.listdir('./cogs'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
 client.load_extension('jishaku')
-
 
 client.run(TOKEN)

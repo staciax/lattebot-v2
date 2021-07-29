@@ -8,10 +8,13 @@ from datetime import datetime, timezone
 # Third party
 # Local
 from config import *
+from utils import create_voice_channel , get_channel_by_name
 
-private_channel = 850507964938715196 , 863075138441707580 , 861883647070437386 , 869305100156420106 #chat #nsfw #onlyfans #underworld
+private_channel = PRIVATE_LOGS #chat #nsfw #onlyfans #underworld
 
 class Logguild(commands.Cog):
+
+    current_streamers = list()
 
     def __init__(self, client):
         self.bot = client
@@ -160,9 +163,74 @@ class Logguild(commands.Cog):
 
                 await self.log_channel.send(embed=delem)
                 await self.log2_channel.send(embed=delem)
-
-     
-
+    
+    @commands.Cog.listener()
+    async def on_voice_state_update(self , member, before, after):
+        embed = discord.Embed(description="",timestamp=datetime.utcnow(),color=WHITE)
+        if member.bot:
+            return
+        
+        if not before.channel:
+            embed.description += f"**join channel** : `{after.channel.name}`"
+            embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
+            await self.log_channel.send(embed=embed)
+#            print(f'{member.name} Join {after.channel.name}') 
+        
+        if before.channel and not after.channel:
+            embed.description += f"**left channel** : `{before.channel.name}`"
+            embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
+#            print(f"{member.name} left channel {before.channel.name}")
+            await self.log_channel.send(embed=embed)
+        
+        if before.channel and after.channel:
+            if before.channel.id != after.channel.id:
+                embed.description += f"**switched channels** : `{before.channel.name}` to `{after.channel.name}`"
+                embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
+                await self.log_channel.send(embed=embed)
+#                print("user switched voice channels")
+            else:
+                print("something else happend!")
+                if member.voice.self_stream:
+                    embed.description += f"**started streaming in** : `{before.channel.name}`"
+                    embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
+#                    print("user started streaming")
+                    self.current_streamers.append(member.id)
+                    await self.log_channel.send(embed=embed)
+                elif member.voice.self_mute:
+                    print("User muted")
+                elif member.voice.self_deaf:
+                    print("user deafened")
+                elif member.voice.mute:
+                    print(f"{member.name} User muted")
+                elif member.voice.deaf:
+                    print("guild user deafened")
+                elif member.self_video:
+                    print("member live stream")
+                else:
+                    print("we are here")
+                    for streamer in self.current_streamers:
+                        if member.id == streamer:
+                            if not member.voice.self_stream:
+                                print("user stopped streaming")
+                                self.current_streamers.remove(member.id)
+                            break
+        
+#        if after.channel is not None:
+#            if after.channel.name == "✧・Game":
+#                chname = '♢'
+#                checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
+#                if checkvoice is None:
+#                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Admin Only 」♡")
+#                    
+#                    if channel is not None:
+#                        await member.move_to(channel)
+#                    
+#                else:
+#                    await member.move_to(checkvoice)
+        
+            
+            
+        
 
 #    @commands.Cog.listener() #activity = role
 #    async def on_presence_update(self, before, after):
