@@ -8,11 +8,12 @@ from datetime import datetime, timedelta, timezone
 import giphy_client 
 import typing
 from typing import Union
+from giphy_client.rest import ApiException
 
 # Local
 import utils
 from config import *
-from giphy_client.rest import ApiException
+
 
 intents = discord.Intents.default()
 intents.members = True
@@ -266,25 +267,6 @@ class Info(commands.Cog):
         await msg.add_reaction(f'{utils.emoji_converter("check")}')
         await msg.add_reaction(f'{utils.emoji_converter("xmark")}')
         await ctx.message.delete()
-
-    @commands.command()
-    async def gif(self, ctx,*,q="random"):
-
-        api_instance = giphy_client.DefaultApi()
-        api_key = GIPHYAPI
-
-        try: 
-        
-            api_response = api_instance.gifs_search_get(api_key, q, limit=5, rating='g')
-            lst = list(api_response.data)
-            giff = random.choice(lst)
-
-            emb = discord.Embed(title=q,color=0xffffff)
-            emb.set_image(url = f'https://media.giphy.com/media/{giff.id}/giphy.gif')
-
-            await ctx.channel.send(embed=emb)
-        except ApiException as e:
-            print("Exception when calling DefaultApi->gifs_search_get: %s\n" % e)
     
     @commands.command(brief = "gives info on emoji_id and emoji image.")
     async def emoji_id(self, ctx, *, emoji : typing.Optional [typing.Union[discord.PartialEmoji, discord.Message, utils.EmojiBasic]] = None):

@@ -145,7 +145,7 @@ class xp(commands.Cog):
     @commands.command(aliases=['lv', 'lvl' , 'xp' , 'exp'])
     async def level(self, ctx):
 #        if ctx.channel.id in bot_channel:       
-                stats = levelling.find({"id": ctx.author.id} , {"guild_id" : ctx.guild.id})
+                stats = levelling.find_one({"id": ctx.author.id})
                 if stats is None:
                     embed = discord.Embed(description="You haven't sent any messages, **no xp**!!",color=0xffffff)
                     await ctx.channel.send(embed=embed)

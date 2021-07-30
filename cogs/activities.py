@@ -10,7 +10,7 @@ from utils import create_voice_channel , get_channel_by_name
 
 private_channel = PRIVATE_LOGS #chat #nsfw #onlyfans #underworld
 
-class Logguild(commands.Cog):
+class Activities(commands.Cog):
 
     current_streamers = list()
 
@@ -53,7 +53,6 @@ class Logguild(commands.Cog):
             
                 await self.log_channel.send(embed=embed)
         
-
             if before.avatar.url != after.avatar.url:
                 embed = discord.Embed(title="Avatar change",description="New image is below, old to the right.",
 						    colour=self.log_channel.guild.get_member(after.id).colour,
@@ -64,7 +63,6 @@ class Logguild(commands.Cog):
 
                 await self.log_channel.send(embed=embed)
 
-    
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
         if before.guild.id == MYGUILD:
@@ -140,8 +138,6 @@ class Logguild(commands.Cog):
                             em.set_image(url=image)
                         else:
                             em.description = f"**Deleted in:** {message.channel.mention} \n**Content:** {message.clean_content}"
-
-
 
                     await self.log_channel.send(embed=em)
                 else:
@@ -259,4 +255,4 @@ class Logguild(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(Logguild(client))
+    client.add_cog(Activities(client))

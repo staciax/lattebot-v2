@@ -2,14 +2,20 @@
 import discord , platform , os , asyncio
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
-from time import time
+from time import time , perf_counter
 
 # Third party
-import hyperlink
+import pymongo 
+from pymongo import MongoClient
 
 # Local
 import utils
 from config import *
+
+#mongodb
+mango_url = MONGOURL
+cluster = MongoClient(mango_url)
+levelling = cluster[MGDATABASE][MGDOCUMENT]
 
 intents = discord.Intents.default()
 intents.members = True
@@ -36,7 +42,6 @@ class Data(commands.Cog):
         self.bug_channel = self.client.get_channel(865609918945820692)
         print(f"-{self.__class__.__name__}")
 
-
     @commands.command()
     @commands.is_owner()
     async def status(self, ctx, statusType: str, *, statusText):
@@ -58,7 +63,7 @@ class Data(commands.Cog):
 
     @commands.command()
     async def invite(self, ctx):
-        embed = discord.Embed(title=f"**invite bot**",description=f"**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.client.guilds)}** servers︰𓂃 ꒱\n\n⸝⸝﹒[`click to invite bot`](https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=bot%20applications.commands) ꒱",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
+        embed = discord.Embed(title=f"**invite bot**",description=f"**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.client.guilds)}** servers︰𓂃 ꒱\n\n⸝⸝﹒{INVITELINK} ꒱",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
         embed.set_thumbnail(url=self.client.user.avatar.url)
 #       embed.set_image(url='https://i.imgur.com/rzGqQwn.png')
 #         embed.set_footer(text = f'Req by {ctx.author}', icon_url = ctx.author.avatar.url)
@@ -67,14 +72,21 @@ class Data(commands.Cog):
     
     @commands.command(description="check latency bot")
     async def ping(self, ctx):
+        embed = discord.Embed(description="",color=0xc4cfcf)
+
         start = time()
-        embed = discord.Embed(description=(f'` latency: {round(self.client.latency * 1000)} ms`'),color=0xc4cfcf)
+        embed.add_field(name=f"{utils.emoji_converter('latteicon')} Latency", value=f"```nim\n{round(self.client.latency * 1000)} ms```", inline=True)
         message = await ctx.send(embed = embed)
         end = time()
-        embedres = discord.Embed(description=(f'` latency: {round(self.client.latency * 1000)} ms | Response time: {(end-start)*1000:,.0f} ms.`'),color=0xc4cfcf)
+        embed.add_field(name=f"{utils.emoji_converter('typing')} Typing", value=f"```nim\n{(end-start)*1000:,.0f} ms```", inline=True)
+        await message.edit(embed=embed)
 
-        await message.edit(embed=embedres)
-
+        dbstart = time()
+        levelling
+        dbend = time()
+        embed.add_field(name=f"{utils.emoji_converter('mongodb')} Database", value=f"```nim\n{(dbend-dbstart)*1000:,.2f} ms```", inline=True)
+        await message.edit(embed=embed)
+    
     @commands.command(name="stats")
     @commands.is_owner()
     async def stats(self, ctx):

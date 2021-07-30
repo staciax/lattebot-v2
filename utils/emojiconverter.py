@@ -49,7 +49,10 @@ def emoji_converter(name):
     "Ani1" : "<:Ani1:867705949933666324>",
     "chocolawow" : "<:chocolawow:867704973865254922>",
     "tohka" : "<:tohka:867707490379628564>",
-    "whiteheart" : "<a:white_heart1:867855190472523806>",  
+    "whiteheart" : "<a:white_heart1:867855190472523806>",
+    "mongodb" : "<:mongo:870397578242568202>", 
+    "latteicon" : "<:latteicon:870419352632045568>", 
+    "typing" : "<a:typing:870418148602552422>",  
  
   }
   

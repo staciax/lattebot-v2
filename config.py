@@ -4,6 +4,11 @@ TOKEN = 'ODU0MTM0NDAyOTU0ODIxNjQz.YMfgpg.nAFyoLIAJ3K0jLFLEp0AAkJ6s9k'
 MYGUILD = 840379510704046151
 DEV_OWNER_ID = 385049730222129152
 
+#helpcommands
+INVITELINK = '[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=bot%20applications.commands)'
+SUPPORT_SERVER = '[Support Server](https://discord.gg/G37yAVuAff)'
+GITHUB_DEV = '[Github](https://github.com/staciax)'
+
 #data , last update time
 BOTVERSION = 'v2.0 pre release'
 UYEAR = 2021
@@ -42,8 +47,8 @@ GIPHYAPI = '8DkQhUOR3dPIMPAzJCgonC7ZW5pnjU3V'
 
 #mongoDB
 MONGOURL = 'mongodb+srv://xstacia:kNxTCMtGzVZVQF5j@stacia.welr1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-MGDATABASE = "database"
-MGDOCUMENT = "new"
+MGDATABASE = "discord"
+MGDOCUMENT = "levelling"
 LVLROLE = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
 LVLNUM = [3,5,10,20,30,40,45,50,60]
 LVLROLECOLOR = [0xc39b7d,0xffbfd7,0xc39b7d,0xffbfd7,0xc39b7d,0xc1e7b8,0xc5ffff,0xec6fc1,0xb98fe4]

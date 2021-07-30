@@ -42,7 +42,7 @@ class Help(commands.Cog):
                 
 #        for name, value, inline in fields:
 #            embedhelp.add_field(name=name, value=value, inline=inline)
-        embedhelp.add_field(name='** **', value="**Support**\n[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=bot%20applications.commands) | [Support Server](https://discord.gg/eNK44ngRvn) | [Github](https://github.com/staciax)", inline=False)
+        embedhelp.add_field(name='** **', value=f"**Support**\n {INVITELINK} | {SUPPORT_SERVER} | {GITHUB_DEV}", inline=False)
         lastup = datetime(UYEAR, UMONTH, UDATE)
         dt = lastup.strftime("%d %B %Y") #%A,
         embedhelp.set_footer(text=f"Recently Updated • {dt}")
@@ -159,62 +159,62 @@ class Help(commands.Cog):
                 label = event.component[0].label
 
                 if label == "Utility":
-                    await msg.edit(embed=embed1)
                     await event.respond(
-                        type=7
+                        type=7,
+                        embed=embed1
                     )
 
                 elif label == "Infomation":
-                    await msg.edit(embed=embed2)
                     await event.respond(
-                        type=7                        
+                        type=7,
+                        embed=embed2                    
                     )
           
                 elif label == "Moderation":
-                    await msg.edit(embed=embed3)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed3
                     )
                 
                 elif label == "Giveaway":
-                    await msg.edit(embed=embed4)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed4
                     )
                 
                 elif label == "Fun":
-                    await msg.edit(embed=embed5)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed5
                     )
 
                 elif label == "Meta":
-                    await msg.edit(embed=embed6)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed6
                     )
 
                 elif label == "Reaction":
-                    await msg.edit(embed=embed7)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed7
                     )
                 
                 elif label == "Leveling":
-                    await msg.edit(embed=embed8)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed8
                     )
                 elif label == "NSFW":
-                    await msg.edit(embed=embed9)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed9
                     )
 
                 elif label == "Help":
-                    await msg.edit(embed=embedhelp)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embedhelp
                     )
 
             except discord.NotFound:
