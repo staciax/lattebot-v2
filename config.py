@@ -13,7 +13,7 @@ GITHUB_DEV = '[Github](https://github.com/staciax)'
 BOTVERSION = 'v2.0 pre release'
 UYEAR = 2021
 UMONTH = 7
-UDATE = 29
+UDATE = 30
  
 #welcone, leave alert
 WELCOME = '♢・welcome'
