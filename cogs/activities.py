@@ -17,6 +17,12 @@ class Activities(commands.Cog):
     def __init__(self, client):
         self.bot = client
         self.client = client
+        self.invites = {}
+
+        def find_invite_by_code(invite_list, code):
+            for inv in invite_list:
+                if inv.code == code:
+                    return inv
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -229,7 +235,18 @@ class Activities(commands.Cog):
 #                else:
 #                    await member.move_to(checkvoice)
         
-            
+    @commands.Cog.listener()
+    async def on_invite_create(self, invite: discord.Invite):
+        for guild in self.bot.guilds:
+            now = datetime.now(timezone.utc)
+            max_use_count = "Unlimited" if invite.max_uses == 0 else invite.max_uses
+            embed = discord.Embed(title=f"{invite.inviter} created an invite.", timestamp=now, colour=WHITE)
+            embed.add_field(name="Max Uses:", value=f"{max_use_count}")
+            embed.add_field(name="Channel:", value=f"#{invite.channel}")
+            embed.add_field(name="Inivte Code:", value=f"||{invite.code}||")
+            embed.set_footer(text = f'Req by {invite.inviter.name}', icon_url =invite.inviter.avatar.url)
+            await self.log_channel.send(embed=embed)
+            return
             
         
 

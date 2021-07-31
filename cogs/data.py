@@ -133,8 +133,11 @@ class Data(commands.Cog):
             
         for name, value, inline in fields:
             embed.add_field(name=name, value=value, inline=inline)
-
-        embed.set_footer(text=f"Req by {ctx.author}" , icon_url = ctx.author.avatar.url) # (text=f"Req by {ctx.author} | {self.client.user.name}"
+        
+        lastup = datetime(UYEAR, UMONTH, UDATE)
+        dt = lastup.strftime("%d %B %Y") #%A,
+        embed.set_footer(text=f"Recently Updated • {dt}")
+#        embed.set_footer(text=f"Req by {ctx.author}" , icon_url = ctx.author.avatar.url) # (text=f"Req by {ctx.author} | {self.client.user.name}"
         embed.set_author(name=f"{self.client.user.name} Stats", icon_url=self.client.user.avatar.url)
 #        embed.set_image(url=ctx.guild.banner.url)
 #        embed.set_thumbnail(url=self.client.user.avatar.url)

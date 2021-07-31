@@ -12,9 +12,6 @@ from config import *
 
 intents = discord.Intents()
 intents.all()
-intents.members = True 
-intents = discord.Intents(messages=True, guilds=True)
-
 client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=discord.Intents.all(), owner_id=DEV_OWNER_ID)
     
 @client.remove_command("help") #remove help 

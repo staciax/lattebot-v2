@@ -62,7 +62,7 @@ class xp(commands.Cog):
                         for i in range(len(level)):
                             if lvl == levelnum[i]:
                                 await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
-                                embed = discord.Embed(title="ROLE UPDATE!",description=f"{message.author.mention} **LEVEL UP!** you have gotten role **{level[i]}**!!!",color=0xffffff)
+                                embed = discord.Embed(description=f"{message.author.mention}you have gotten role **{level[i]}**!!!",color=0xffffff)
                                 embed.set_thumbnail(url=message.author.avatar.url)
                                 await message.channel.send(embed=embed)
                  
@@ -143,9 +143,12 @@ class xp(commands.Cog):
 #            await ctx.channel.send(embed=embedbot , delete_after=10)
 
     @commands.command(aliases=['lv', 'lvl' , 'xp' , 'exp'])
-    async def level(self, ctx):
-#        if ctx.channel.id in bot_channel:       
-                stats = levelling.find_one({"id": ctx.author.id})
+    async def level(self, ctx, member: discord.Member = None): 
+                if not member:  # if member is no mentioned
+                    member = ctx.message.author
+                member_id = member.id
+#        if ctx.channel.id in bot_channel:   
+                stats = levelling.find_one({"id": member_id})
                 if stats is None:
                     embed = discord.Embed(description="You haven't sent any messages, **no xp**!!",color=0xffffff)
                     await ctx.channel.send(embed=embed)
@@ -167,7 +170,7 @@ class xp(commands.Cog):
                     final_xp = (200*((1/2)*lvl))
 
                     background = Image.open('data/images/level.png')
-                    url = ctx.author.avatar.url
+                    url = member.avatar.url
                     response = requests.get(url)
                     logo = Image.open(BytesIO(response.content)).resize((300, 300))
                     whitecc =  Image.new("RGB", (310, 310), (119, 221, 119))
@@ -294,7 +297,7 @@ class xp(commands.Cog):
                     buffer.seek(0)
                     file=discord.File(fp=buffer, filename='latte-level.png')
 
-                    embedlv = discord.Embed(title="{}'s level stats".format(ctx.author.name),color=0x77dd77)
+                    embedlv = discord.Embed(title="{}'s level stats".format(member.name),color=0x77dd77)
                     embedlv.set_image(url="attachment://latte-level.png")
 
                     await ctx.channel.send(file=file, embed=embedlv)

@@ -1,0 +1,34 @@
+
+
+cd 
+
+sudo apt-get install python3-venv
+
+sudo apt-get update 
+
+sudo apt-get install python3-venv (y)
+
+----
+
+python3 -m venv venv
+source venv/bin/activate
+
+--------
+(add key token)
+touch config.py
+vim config.py 
+BytesIO
+----python3 main.py
+
+pip3 install -r requiments.txt
+
+python3 bot.py
+
+nohup python3 -u bot.py &>> activity.log &
+
+exit
+
+git clone https://ghp_{token}:x-oauth-basic@github.com/{LINK}
+
+
+https://github.com/staciax/Latte-bot-v2-dpy-v2.0.0a
