@@ -18,6 +18,7 @@ UDATE = 30
 #welcone, leave alert
 WELCOME = '♢・welcome'
 LEAVE = '♢・m-leave'
+SERVER_LOG_INVITE = "server-log"
 
 #reactionrole
 VERIFY = 861849112386469908
@@ -47,8 +48,8 @@ GIPHYAPI = '8DkQhUOR3dPIMPAzJCgonC7ZW5pnjU3V'
 
 #mongoDB
 MONGOURL = 'mongodb+srv://xstacia:kNxTCMtGzVZVQF5j@stacia.welr1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-MGDATABASE = "discord"
-MGDOCUMENT = "levelling"
+MGDATABASE = "database"
+MGDOCUMENT = "new"
 LVLROLE = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
 LVLNUM = [3,5,10,20,30,40,45,50,60]
 LVLROLECOLOR = [0xc39b7d,0xffbfd7,0xc39b7d,0xffbfd7,0xc39b7d,0xc1e7b8,0xc5ffff,0xec6fc1,0xb98fe4]

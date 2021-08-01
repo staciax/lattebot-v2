@@ -12,8 +12,6 @@ from config import *
 
 intents = discord.Intents()
 intents.all()
-intents.members = True 
-intents = discord.Intents(messages=True, guilds=True)
 
 class Moderation(commands.Cog):
 
@@ -32,35 +30,6 @@ class Moderation(commands.Cog):
             await asyncio.sleep(10)
             with open("data/spam_detect.txt", "r+") as file:
                 file.truncate(0)
-
-    @commands.Cog.listener()
-    async def on_member_join(self, member):
-        channel = discord.utils.get(member.guild.text_channels, name=WELCOME)
-        if channel:
-            embed=discord.Embed(
-        description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n‧˚₊ ପ <:a_pink_dot:860493678723072000>︰<#861774918290636800> ଓ ♡ ˖˚˳\n♡ ꒷ get latte roles~︰𓂃 ꒱\n\n⸝⸝﹒{member.mention} ꒱ <a:S_wtfemoji:860490611048054845>", #⊹₊˚**‧Welcome‧**˚₊⊹ 
-        timestamp=datetime.now(timezone.utc),
-        color=0xc4cfcf
-    
-        )
-        embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
-        embed.set_thumbnail(url=member.avatar.url)
-        embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
-
-        await channel.send(embed=embed) #(content=f"||{member.mention}||", embed=embed)
-
-    @commands.Cog.listener()
-    async def on_member_remove(self, member):
-        channel = discord.utils.get(member.guild.text_channels, name=LEAVE)
-        if channel:
-            embed = discord.Embed(
-                description=f"**Leave Server\n`{member}`**",
-                color=0xdbd7d2)
-            embed.set_thumbnail(url=member.avatar.url)
-            embed.set_footer(text="—・see ya good bye")
-            embed.timestamp = datetime.now(timezone.utc)
-
-        await channel.send(embed = embed)  #await channel.send(f"{member} has left the server")
 
     @commands.command(description="ban member")
     @commands.guild_only()
@@ -106,13 +75,25 @@ class Moderation(commands.Cog):
         await member.kick(reason=reason)
         await ctx.send(embed=embedkick)
     
-    @commands.command(description="clear message")
+    @commands.command(description="clear message" , aliases=['purge'])
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, amount: str):
         if amount == 'all':
-             await ctx.channel.purge()
+            embed = discord.Embed(
+            title=f"{ctx.author.name} purged: {ctx.channel.name}",
+            description=f"{amount} messages were cleared",
+            color=WHITE
+        )
+            await ctx.channel.purge()
+            await ctx.send(embed=embed, delete_after=10)
         else:
+            embed = discord.Embed(
+            title=f"{ctx.author.name} purged: {ctx.channel.name}",
+            description=f"{amount} messages were cleared",
+            color=WHITE
+        )
             await ctx.channel.purge(limit=(int(amount) + 1))
+            await ctx.send(embed=embed, delete_after=10)
 
     @commands.command(description="mute member")
     @commands.has_permissions(administrator = True)

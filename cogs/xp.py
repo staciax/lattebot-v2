@@ -11,7 +11,6 @@ import pymongo
 from pymongo import MongoClient
 from PIL import Image, ImageDraw , ImageFont , ImageEnhance , ImageFilter
 from io import BytesIO
-import numpy
 import requests
 
 # Local

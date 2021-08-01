@@ -6,7 +6,11 @@ from datetime import datetime, timezone
 # Third party
 # Local
 from config import *
+import utils
 from utils import create_voice_channel , get_channel_by_name
+
+intents = discord.Intents()
+intents.all()
 
 private_channel = PRIVATE_LOGS #chat #nsfw #onlyfans #underworld
 
@@ -18,17 +22,96 @@ class Activities(commands.Cog):
         self.bot = client
         self.client = client
         self.invites = {}
-
-        def find_invite_by_code(invite_list, code):
-            for inv in invite_list:
-                if inv.code == code:
-                    return inv
-
+                
     @commands.Cog.listener()
     async def on_ready(self):
         self.log_channel = self.bot.get_channel(SERVER_LOG)
         self.log_voice = self.bot.get_channel(VOICE_LOG)
         print(f"-{self.__class__.__name__}")
+        for guild in self.client.guilds:
+            self.invites[guild.id] = await guild.invites()
+    
+    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        if member.guild.id == MYGUILD: #only my guild
+            """welcome log""" 
+
+            invites_before_join = self.invites[member.guild.id]
+            invites_after_join = await member.guild.invites()
+            for invite in invites_before_join:
+                if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:
+                    embed2 = discord.Embed(
+                        title="Member join",
+                        color=PTGREEN,
+                        timestamp=datetime.now(timezone.utc)
+                    )
+                    embed2.add_field(name="Name:", value=f"{member.name}", inline=False)
+                    embed2.add_field(name="Invite Code:", value=f"||{invite.code}||", inline=False)
+                    embed2.set_thumbnail(url=member.avatar.url)
+#                    embed2.set_footer(text=member.guild, icon_url=member.guild.icon.url)
+                    embed2.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
+                    await self.log_channel.send(embed=embed2)
+                    self.invites[member.guild.id] = invites_after_join
+#                    return     
+
+            """welcome embed"""
+        
+
+            channel = discord.utils.get(member.guild.text_channels, name=WELCOME)
+            if channel:
+                embed=discord.Embed(
+            description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
+            timestamp=datetime.now(timezone.utc),
+            color=0xc4cfcf
+    
+            )
+            embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
+            embed.set_thumbnail(url=member.avatar.url)
+            embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
+
+            await channel.send(embed=embed) #(content=f"||{member.mention}||", embed=embed)
+            #‧˚₊ ପ <:a_pink_dot:860493678723072000>︰<#861774918290636800> ଓ ♡ ˖˚˳\n
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        if member.guild.id == MYGUILD: #only my guild
+            embed3 = discord.Embed(
+                        title="Member leave",
+                        color=PTRED2,
+                        timestamp=datetime.now(timezone.utc)
+                    )
+            embed3.add_field(name="Name:", value=f"{member.name}#{member.discriminator}", inline=False)
+            embed3.set_thumbnail(url=member.avatar.url)
+#           embed3.set_footer(text=member.guild, icon_url=member.guild.icon.url)
+            await self.log_channel.send(embed=embed3)
+            self.invites[member.guild.id] = await member.guild.invites()
+
+            """welcome embed"""
+
+            channel = discord.utils.get(member.guild.text_channels, name=LEAVE)
+            if channel:
+                embed = discord.Embed(
+                    description=f"**Leave Server\n`{member}`**",
+                    color=0xdbd7d2)
+                embed.set_thumbnail(url=member.avatar.url)
+                embed.set_footer(text="—・see ya good bye")
+                embed.timestamp = datetime.now(timezone.utc)
+
+            await channel.send(embed = embed) #await channel.send(f"{member} has left the server")
+    
+    @commands.Cog.listener()
+    async def on_invite_create(self, invite: discord.Invite):
+        if invite.guild.id == MYGUILD:
+            now = datetime.now(timezone.utc)
+            max_use_count = "Unlimited" if invite.max_uses == 0 else invite.max_uses
+            embed = discord.Embed(title=f"{invite.inviter} created an invite.", timestamp=now, colour=WHITE)
+            embed.add_field(name="Max Uses:", value=f"{max_use_count}")
+            embed.add_field(name="Channel:", value=f"#{invite.channel}")
+            embed.add_field(name="Inivte Code:", value=f"||{invite.code}||")
+            embed.set_footer(text = f'Created by {invite.inviter.name}', icon_url =invite.inviter.avatar.url)
+            await self.log_channel.send(embed=embed)
+
+            
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
@@ -235,19 +318,7 @@ class Activities(commands.Cog):
 #                else:
 #                    await member.move_to(checkvoice)
         
-    @commands.Cog.listener()
-    async def on_invite_create(self, invite: discord.Invite):
-        for guild in self.bot.guilds:
-            now = datetime.now(timezone.utc)
-            max_use_count = "Unlimited" if invite.max_uses == 0 else invite.max_uses
-            embed = discord.Embed(title=f"{invite.inviter} created an invite.", timestamp=now, colour=WHITE)
-            embed.add_field(name="Max Uses:", value=f"{max_use_count}")
-            embed.add_field(name="Channel:", value=f"#{invite.channel}")
-            embed.add_field(name="Inivte Code:", value=f"||{invite.code}||")
-            embed.set_footer(text = f'Req by {invite.inviter.name}', icon_url =invite.inviter.avatar.url)
-            await self.log_channel.send(embed=embed)
-            return
-            
+    
         
 
 #    @commands.Cog.listener() #activity = role

@@ -38,3 +38,15 @@ def get_category_by_name(guild, category_name):
                 category = c
                 break
         return category
+
+async def upsert_custom(
+        self, filter_dict, update_data, option="set", *args, **kwargs
+        ):
+        await self.update_by_custom(
+                filter_dict, update_data, option, upsert=True, *args, **kwargs
+        )
+
+def find_invite_by_code(invite_list, code):
+        for inv in invite_list:
+            if inv.code == code:
+                return inv
