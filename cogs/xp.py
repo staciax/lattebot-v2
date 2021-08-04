@@ -56,14 +56,14 @@ class xp(commands.Cog):
                         lvl += 1
                     xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
                     if xp == 0:
-                        emlvup = discord.Embed(title="LEVEL UP!", description=f"Congratulations, {message.author.mention} you leveled up to **level {lvl}.**!",color=0xFF8C00)
-                        await message.channel.send(embed=emlvup)
+                        emlvup = discord.Embed(title="LEVEL UP!", description=f"Congratulations, {message.author.mention} you leveled up to **level {lvl}.**!",color=0xffffff)
+                        msg = await message.channel.send(embed=emlvup)
                         for i in range(len(level)):
                             if lvl == levelnum[i]:
                                 await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
-                                embed = discord.Embed(description=f"{message.author.mention}you have gotten role **{level[i]}**!!!",color=0xffffff)
-                                embed.set_thumbnail(url=message.author.avatar.url)
-                                await message.channel.send(embed=embed)
+                                embed = discord.Embed(title="LEVEL UP!",description=f"Congratulations, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
+#                                embed.set_thumbnail(url=message.author.avatar.url)
+                                await msg.edit(embed=embed)
                  
     @commands.command()
     async def testlevel(self, ctx):
@@ -309,26 +309,27 @@ class xp(commands.Cog):
     @commands.command()
     async def xprole(self, ctx):
         embed = discord.Embed(description="", color=PTYELLOW)
-        embed.title = "XP ROLE!"
+        embed.title = "✧ LATTE XP ROLE!"
         lvlbar = "・┈・┈・┈・Level!・┈・┈・┈・⠀⠀"
         lvlbar2 = discord.utils.get(ctx.author.guild.roles, name=lvlbar)
         if not lvlbar2:
             await ctx.guild.create_role(name=lvlbar , colour=0x18191c)
-        embed.description += f"{lvlbar2.mention}\n"
+            embed.description += f"{lvlbar.mention}\n"
+            embed.description += f"{lvlbar2.mention}\n"
         
-        for x, y in zip(reversed(level), reversed(colorlvl)):
-            checkrole = discord.utils.get(ctx.author.guild.roles, name=level)
-            if not checkrole:
-                await ctx.guild.create_role(name=x , colour=y)
-            else:
-                return
+            for x, y in zip(reversed(level), reversed(colorlvl)):
+                checkrole = discord.utils.get(ctx.author.guild.roles, name=level)
+                if not checkrole:
+                    await ctx.guild.create_role(name=x , colour=y)
+                else:
+                    return
+        elif lvlbar2:
+            for i in reversed(range(len(level))):
+                roles = discord.utils.get(ctx.author.guild.roles, name=level[i])
+                if roles:
+                    embed.description += f"{roles.mention}\n"
 
-        for i in reversed(range(len(level))):
-            roles = discord.utils.get(ctx.author.guild.roles, name=level[i])
-            if roles:
-                embed.description += f"{roles.mention}\n"
-
-        await ctx.channel.send(embed=embed)
+            await ctx.channel.send(embed=embed)
 
     
 

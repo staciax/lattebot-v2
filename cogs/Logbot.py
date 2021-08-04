@@ -10,7 +10,6 @@ from datetime import datetime, timedelta, timezone
 intents = discord.Intents.default()
 intents.members = True
 
-
 class Logbot(commands.Cog):
 
     def __init__(self, client):
