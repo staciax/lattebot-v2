@@ -20,12 +20,14 @@ class Reaction(commands.Cog):
     async def on_raw_reaction_add(self, payload):
         ColourID = COLOR
         VerifyID = VERIFY
+        MatchaID = VERIFYMATCHA
+
+        member = payload.member
+        guild = member.guild
+        emoji = str(payload.emoji.id)
 
         if ColourID == payload.message_id:
-            member = payload.member
-            guild = member.guild
 
-            emoji = str(payload.emoji.id)
             if emoji == '861130565804621835':
                 role = discord.utils.get(guild.roles, name="⠀ latte ੭")
             if emoji == '861128977828806686':
@@ -46,9 +48,6 @@ class Reaction(commands.Cog):
             await member.add_roles(role)
 
         if VerifyID == payload.message_id:
-            member = payload.member
-            guild = member.guild
-            emoji = str(payload.emoji.id)
 
             if emoji == '861800747293212672':
                 role = discord.utils.get(guild.roles, name="Vanilla・・ ✦")
@@ -56,14 +55,28 @@ class Reaction(commands.Cog):
 
             await member.add_roles(role , role2)
 
+        """ MATCHA SERVER """
+
+        if MatchaID == payload.message_id:
+            if emoji == '838466200035786822':
+                role = discord.utils.get(guild.roles, name="♡ ~ 𝙈𝘼𝙄𝘿𝙀𝙉 ~♡")
+            if emoji == '862658789916016640':
+                role = discord.utils.get(guild.roles, name="✭ : 𝘽𝙐𝙏𝙇𝙀𝙍 : ✭")
+            
+            await member.add_roles(role)
+            
+
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
         ColourID = COLOR
         VerifyID = VERIFY
+        MatchaID = VERIFYMATCHA
+
+        guild = await(self.client.fetch_guild(payload.guild_id))
+        emoji = str(payload.emoji.id)
+        member = await(guild.fetch_member(payload.user_id))
 
         if ColourID == payload.message_id:
-            guild = await(self.client.fetch_guild(payload.guild_id))
-            emoji = str(payload.emoji.id)
 
             if emoji == '861130565804621835':
                 role = discord.utils.get(guild.roles, name="⠀ latte ੭")
@@ -82,11 +95,10 @@ class Reaction(commands.Cog):
             if emoji == '861128979313328128':
                 role = discord.utils.get(guild.roles, name="⠀ mint ੭") 
 
-            member = await(guild.fetch_member(payload.user_id))
             if member is not None:
-              await member.remove_roles(role)
+                await member.remove_roles(role)
             else:
-              print("Member Not Fount")
+                print("Member Not Fount")
     
         if VerifyID == payload.message_id:
             guild = await(self.client.fetch_guild(payload.guild_id))
@@ -96,9 +108,21 @@ class Reaction(commands.Cog):
                 role = discord.utils.get(guild.roles, name="Vanilla・・ ✦")
                 role2 = discord.utils.get(guild.roles, name="・┈・┈・┈・Level!・┈・┈・┈・⠀⠀")
                 
-            member = await(guild.fetch_member(payload.user_id))
             if member is not None:
                 await member.remove_roles(role , role2)
+            else:
+                print("Member Not Fount")
+        
+        """ MATCHA SERVER """
+
+        if MatchaID == payload.message_id:
+            if emoji == '838466200035786822':
+                role = discord.utils.get(guild.roles, name="♡ ~ 𝙈𝘼𝙄𝘿𝙀𝙉 ~♡")
+            if emoji == '862658789916016640':
+                role = discord.utils.get(guild.roles, name="✭ : 𝘽𝙐𝙏𝙇𝙀𝙍 : ✭")
+            
+            if member is not None:
+                await member.remove_roles(role)
             else:
                 print("Member Not Fount")
 

@@ -1,6 +1,5 @@
 # Standard 
-import discord 
-import asyncio
+import discord , random , asyncio
 from discord.ext import commands 
 from datetime import datetime, timedelta, timezone
 
@@ -8,31 +7,17 @@ intents = discord.Intents.default()
 intents.members = True
 
 # Third party
-import pymongo 
-from pymongo import MongoClient
-from PIL import Image, ImageDraw , ImageFont , ImageEnhance , ImageFilter ,ImageOps
+from PIL import Image, ImageDraw , ImageFont , ImageEnhance , ImageFilter
 from io import BytesIO
-import numpy
 import requests
 
 # Local
 import utils
 from config import * 
 
-mango_url = MONGOURL
-bot_channel = 861874852050894868 , 840381588704591912 , 863394760790245379
-chat_channel = 861883647070437386 , 840398821544296480 , 863438518981361686
-
-level = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
-levelnum = [3,5,10,20,30,40,45,50,60]
-
-cluster = MongoClient(mango_url)
-
-levelling = cluster["discord"]["levelling"]
-
-def invert_func(bytes_returned):
+def level_images(member ,final_xp , lvl , rank , xp):
     background = Image.open('data/images/level.png')
-    url = ctx.author.avatar.url
+    url = member.avatar.url
     response = requests.get(url)
     logo = Image.open(BytesIO(response.content)).resize((300, 300))
     whitecc =  Image.new("RGB", (310, 310), (119, 221, 119))
@@ -80,7 +65,7 @@ def invert_func(bytes_returned):
     levely = 220
     draw.text((levelx , levely + 27), "LEVEL", font=big_font, fill="#fff")
 
-                    #rank
+    #rank
 
     text_size = draw.textsize(f"#{rank}", font=textrank)
     rank_x = 1250 - 15 - text_size[0]
@@ -102,11 +87,11 @@ def invert_func(bytes_returned):
 
     # Left Circle
     draw.ellipse(
-    (bar_offset_x - circle_size // 2, bar_offset_y, bar_offset_x + circle_size // 2, bar_offset_y_1), fill="#727175")                    
+        (bar_offset_x - circle_size // 2, bar_offset_y, bar_offset_x + circle_size // 2, bar_offset_y_1), fill="#727175")                    
 
     # Right Circle
     draw.ellipse(
-    (bar_offset_x_1 - circle_size // 2, bar_offset_y, bar_offset_x_1 + circle_size // 2, bar_offset_y_1), fill="#727175")
+        (bar_offset_x_1 - circle_size // 2, bar_offset_y, bar_offset_x_1 + circle_size // 2, bar_offset_y_1), fill="#727175")
                     
     bar_length = bar_offset_x_1 - bar_offset_x
     progress = (final_xp - xp) * 100 / final_xp
@@ -119,11 +104,12 @@ def invert_func(bytes_returned):
 
     # Left Circle
     draw.ellipse(
-    (bar_offset_x - circle_size // 2, bar_offset_y, bar_offset_x + circle_size // 2, bar_offset_y_1), fill="#77dd77")                    
+        (bar_offset_x - circle_size // 2, bar_offset_y, bar_offset_x + circle_size // 2, bar_offset_y_1), fill="#77dd77")                    
 
     # Right Circle
     draw.ellipse(
-    (bar_offset_x_1 - circle_size // 2, bar_offset_y, bar_offset_x_1 + circle_size // 2, bar_offset_y_1), fill="#77dd77")
+        (bar_offset_x_1 - circle_size // 2, bar_offset_y, bar_offset_x_1 + circle_size // 2, bar_offset_y_1), fill="#77dd77"
+    )
 
     #final_exp 
 
@@ -140,11 +126,11 @@ def invert_func(bytes_returned):
     draw.text((offset_x, offset_y), f"{xp}", font=medium_font, fill="#fff")
 
 
-                    # Blitting Name
+    # Blitting Name
     #text_size = draw.textsize(ctx.author.name, font=big_font)
 
     #offset_x = bar_offset_x
-     #offset_y = bar_offset_y - text_size[1] - 5
+    #offset_y = bar_offset_y - text_size[1] - 5
     #draw.text((offset_x , offset_y -240 ), ctx.author.name, font=big_font, fill="#fff")
 
     # Discriminator
@@ -156,8 +142,8 @@ def invert_func(bytes_returned):
     buffer = BytesIO()
     background.save(buffer, 'png')
     buffer.seek(0)
-    file=discord.File(fp=buffer, filename='latte-level.png')
-
+    file=discord.File(buffer, filename='latte-level.png')
+    
     return file
-
+                   
 
