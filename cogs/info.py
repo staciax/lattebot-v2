@@ -1,6 +1,6 @@
 # Standard 
-import discord , random , time , re , os , typing , unicodedata , emoji
-from discord.ext import commands, menus
+import discord , random , time , re , os , typing , unicodedata
+from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 
 

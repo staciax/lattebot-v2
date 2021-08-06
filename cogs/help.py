@@ -21,9 +21,13 @@ class Help(commands.Cog):
     async def on_ready(self):
         DiscordComponents(self.client)
         print(f"-{self.__class__.__name__}")
-
+    
     @commands.command()
     async def help(self, ctx):
+        await ctx.send("บัคแดก รอแก้")
+
+    @commands.command()
+    async def help2(self, ctx):
 
         embedhelp = discord.Embed(title="✧ LATTE Help", description="Prefix of this bot `lt `\nUse `selection` below for more info on an command. \n",color=0xffffff)
         embedhelp.add_field(name='** **', value=f"•{emojis('shidapout')} **Utility**\n•{emojis('winkai')} **Giveaway**\n•{emojis('chocolawow')} **Reaction Roles**")
