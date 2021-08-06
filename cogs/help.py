@@ -155,66 +155,65 @@ class Help(commands.Cog):
             try:
 
                 event = await self.client.wait_for("select_option", check=None)
-
                 label = event.component[0].label
 
                 if label == "Utility":
-                    await msg.edit(embed=embed1)
                     await event.respond(
-                        type=7
+                        type=7,
+                        embed=embed1
                     )
 
                 elif label == "Infomation":
-                    await msg.edit(embed=embed2)
                     await event.respond(
-                        type=7                  
+                        type=7,
+                        embed=embed2                    
                     )
           
                 elif label == "Moderation":
-                    await msg.edit(embed=embed3)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed3
                     )
                 
                 elif label == "Giveaway":
-                    await msg.edit(embed=embed4)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed4
                     )
                 
                 elif label == "Fun":
-                    await msg.edit(embed=embed5)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed5
                     )
 
                 elif label == "Meta":
-                    await msg.edit(embed=embed6)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed6
                     )
 
                 elif label == "Reaction":
-                    await msg.edit(embed=embed7)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed7
                     )
                 
                 elif label == "Leveling":
-                    await msg.edit(embed=embed8)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed8
                     )
                 elif label == "NSFW":
-                    await msg.edit(embed=embed9)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embed9
                     )
 
                 elif label == "Help":
-                    await msg.edit(embed=embedhelp)
                     await event.respond(                        
-                        type=7
+                        type=7,
+                        embed=embedhelp
                     )
 
             except discord.NotFound:
