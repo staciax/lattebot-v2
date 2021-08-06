@@ -10,7 +10,7 @@ SUPPORT_SERVER = '[Support Server](https://discord.gg/G37yAVuAff)'
 GITHUB_DEV = '[Github](https://github.com/staciax)'
 
 #data , last update time
-BOTVERSION = 'v2.0 mystic-version'
+BOTVERSION = 'v2.0 pre release'
 UYEAR = 2021
 UMONTH = 8
 UDATE = 6

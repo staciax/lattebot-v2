@@ -144,7 +144,7 @@ class Help(commands.Cog):
         embed7.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 #        embed7.set_thumbnail(url=self.client.user.avatar.url)
 
-        embed8 = discord.Embed(title="Leveling",description="Leveling Commands\nways you can get experience\ntalk in <#861883647070437386> <#840398821544296480>\n\n`level , xp :` check my level\n\n`rank :` show ranking level all member",color=0xffffff)
+        embed8 = discord.Embed(title="Leveling",description="Leveling Commands\nways you can get experience\ntalk in <#861883647070437386> <#840398821544296480> <#859960606761549835> \n\n`xp [target]:` check my level\n\n`rank :` show ranking level all member",color=0xffffff)
         embed8.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 #        embed8.set_thumbnail(url=self.client.user.avatar.url)
 
@@ -159,62 +159,62 @@ class Help(commands.Cog):
                 label = event.component[0].label
 
                 if label == "Utility":
+                    await msg.edit(embed=embed1)
                     await event.respond(
-                        type=7,
-                        embed=embed1
+                        type=7
                     )
 
                 elif label == "Infomation":
+                    await msg.edit(embed=embed2)
                     await event.respond(
-                        type=7,
-                        embed=embed2                    
+                        type=7                  
                     )
           
                 elif label == "Moderation":
+                    await msg.edit(embed=embed3)
                     await event.respond(                        
-                        type=7,
-                        embed=embed3
+                        type=7
                     )
                 
                 elif label == "Giveaway":
+                    await msg.edit(embed=embed4)
                     await event.respond(                        
-                        type=7,
-                        embed=embed4
+                        type=7
                     )
                 
                 elif label == "Fun":
+                    await msg.edit(embed=embed5)
                     await event.respond(                        
-                        type=7,
-                        embed=embed5
+                        type=7
                     )
 
                 elif label == "Meta":
+                    await msg.edit(embed=embed6)
                     await event.respond(                        
-                        type=7,
-                        embed=embed6
+                        type=7
                     )
 
                 elif label == "Reaction":
+                    await msg.edit(embed=embed7)
                     await event.respond(                        
-                        type=7,
-                        embed=embed7
+                        type=7
                     )
                 
                 elif label == "Leveling":
+                    await msg.edit(embed=embed8)
                     await event.respond(                        
-                        type=7,
-                        embed=embed8
+                        type=7
                     )
                 elif label == "NSFW":
+                    await msg.edit(embed=embed9)
                     await event.respond(                        
-                        type=7,
-                        embed=embed9
+                        type=7
                     )
 
                 elif label == "Help":
+                    await msg.edit(embed=embedhelp)
                     await event.respond(                        
-                        type=7,
-                        embed=embedhelp
+                        type=7
                     )
 
             except discord.NotFound:
