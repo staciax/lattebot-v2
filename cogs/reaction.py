@@ -58,9 +58,9 @@ class Reaction(commands.Cog):
         """ MATCHA SERVER """
 
         if MatchaID == payload.message_id:
-            if emoji == '838466200035786822':
+            if emoji == '873028548724670555':
                 role = discord.utils.get(guild.roles, name="♡ ~ 𝙈𝘼𝙄𝘿𝙀𝙉 ~♡")
-            if emoji == '862658789916016640':
+            if emoji == '873029782592446464':
                 role = discord.utils.get(guild.roles, name="✭ : 𝘽𝙐𝙏𝙇𝙀𝙍 : ✭")
             
             await member.add_roles(role)
@@ -116,9 +116,9 @@ class Reaction(commands.Cog):
         """ MATCHA SERVER """
 
         if MatchaID == payload.message_id:
-            if emoji == '838466200035786822':
+            if emoji == '873028548724670555':
                 role = discord.utils.get(guild.roles, name="♡ ~ 𝙈𝘼𝙄𝘿𝙀𝙉 ~♡")
-            if emoji == '862658789916016640':
+            if emoji == '873029782592446464':
                 role = discord.utils.get(guild.roles, name="✭ : 𝘽𝙐𝙏𝙇𝙀𝙍 : ✭")
             
             if member is not None:

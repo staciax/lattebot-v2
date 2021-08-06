@@ -1,6 +1,6 @@
 #standard
-PREFIX = 'l.'
-TOKEN = 'ODU0MTM0NDAyOTU0ODIxNjQz.YMfgpg.nAFyoLIAJ3K0jLFLEp0AAkJ6s9k'
+PREFIX = 'lt '
+TOKEN = 'ODYxMTc5OTUyNTc2ODU2MDY1.YOGCVA.ybEvJEqnfuDjVwCyLPEYN8cJA3g'
 MYGUILD = 840379510704046151
 DEV_OWNER_ID = 385049730222129152
 
@@ -12,8 +12,8 @@ GITHUB_DEV = '[Github](https://github.com/staciax)'
 #data , last update time
 BOTVERSION = 'v2.0 pre release'
 UYEAR = 2021
-UMONTH = 7
-UDATE = 30
+UMONTH = 8
+UDATE = 6
  
 #welcone, leave alert
 WELCOME = '♢・welcome'
@@ -23,7 +23,7 @@ SERVER_LOG_INVITE = "server-log"
 #reactionrole
 VERIFY = 861849112386469908
 COLOR = 861212646057443338
-VERIFYMATCHA = 872775273165242398
+VERIFYMATCHA = 873042881189920809
 
 #mute
 MUTEROLE = '୭ muted ୭'
@@ -49,8 +49,8 @@ GIPHYAPI = '8DkQhUOR3dPIMPAzJCgonC7ZW5pnjU3V'
 
 #mongoDB
 MONGOURL = 'mongodb+srv://xstacia:kNxTCMtGzVZVQF5j@stacia.welr1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-MGDATABASE = "database"
-MGDOCUMENT = "new"
+MGDATABASE = "discord"
+MGDOCUMENT = "levelling"
 LVLROLE = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
 LVLNUM = [3,5,10,20,30,40,45,50,60]
 LVLROLECOLOR = [0xc39b7d,0xffbfd7,0xc39b7d,0xffbfd7,0xc39b7d,0xc1e7b8,0xc5ffff,0xec6fc1,0xb98fe4]
