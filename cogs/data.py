@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 from time import time , perf_counter
 
 # Third party
+import psutil
 import pymongo 
 from pymongo import MongoClient
 
@@ -48,13 +49,10 @@ class Data(commands.Cog):
 
         if statusType.lower() == "playing":  # Setting `Playing ` status
             await self.client.change_presence(activity=discord.Game(name=statusText))
-
         if statusType.lower() == "streaming": # Setting `Streaming ` status
             await self.client.change_presence(activity=discord.Streaming(name=statusText, url=""))
-
-        if statusType.lower() == "listening": # Setting `Listening ` status
+        if statusType.lower() == "listening": # Setting `Listening ` statu
             await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=statusText))
-
         if statusType.lower() == "watching": # Setting `Watching ` status
             await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=statusText))
 
@@ -91,6 +89,7 @@ class Data(commands.Cog):
     @commands.is_owner()
     async def stats(self, ctx):
 
+        # bot / version data
         BotVersion = BOTVERSION
         pythonVersion = platform.python_version()
         dpyVersion = discord.__version__
@@ -98,7 +97,8 @@ class Data(commands.Cog):
         memberCount = len(set(self.client.get_all_members()))
         totalcogs = len(self.client.cogs)
         totalcommands = len(self.client.commands)
-        
+
+        # time
         delta_uptime = datetime.utcnow() - self.client.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
         minutes, seconds = divmod(remainder, 60)
@@ -118,8 +118,24 @@ class Data(commands.Cog):
             minutes = ""
         else:
             minutes = f"{minutes}m "
+        
+        # psutil server data
+        process = psutil.Process()
+        CPU_Usage = round(psutil.cpu_percent(), 1)
+        Aviable_CPU = round(100 - CPU_Usage, 1) 
+        CPU_Cores = psutil.cpu_count(logical=False)
+        CPU_Thread = psutil.cpu_count()
+        used_MemoryGB = round(round(psutil.virtual_memory().used) / 102400000) / 10
+        used_MemoryPC = round(psutil.virtual_memory().percent, 1)
+        total_Ram = round(round(psutil.virtual_memory().total) / 102400000) / 10
+        free_Memory = round(total_Ram - used_MemoryGB, 1)
 
-        embed = discord.Embed(description='\uFEFF', colour=0xffffff, timestamp=datetime.now(timezone.utc)) #title=f'{self.client.user.name} Stats',
+        # psutil bot data
+        bot_ramUsage = f"{process.memory_info().rss / 1048576:.01f}"
+        bot_ramUsagePC = f"{process.memory_percent():.01f}"
+
+        embed = discord.Embed(description='\uFEFF', colour=0xffffff) #title=f'{self.client.user.name} Stats',
+#        embed.timestamp=datetime.now(timezone.utc)
         
         fields = [("Bot version:",f"```{BotVersion}```", True),
                     ("Python version:",f"```{pythonVersion}```", True),
@@ -129,7 +145,13 @@ class Data(commands.Cog):
                     ("Uptime:",f"```{days}{hours}{minutes}{seconds}s```", True),
                     ("Total Cogs:",f"```{totalcogs}```", True),
 					("Total Commands:",f"```{totalcommands}```", True),
-                    ("Bot developers:","```ꜱᴛᴀᴄɪᴀ.#0001 (385049730222129152)```", False)]
+                    ("Bot developers:","```ꜱᴛᴀᴄɪᴀ.#0001 (385049730222129152)```\n\n", False),
+                    ("CPU usage:",f"```{CPU_Usage} %```", True),
+                    ("CPU Cores / Threads:",f"```{CPU_Cores}/{CPU_Thread}```", True),
+                    ("Total RAM:",f"```{total_Ram} GB```", True),
+                    ("RAM Usage:",f"```{used_MemoryGB} GB ({used_MemoryPC} %)```", True),
+                    ("Bot RAM usage:",f"```{bot_ramUsage} MB ({bot_ramUsagePC} %)```", True),
+                ]
             
         for name, value, inline in fields:
             embed.add_field(name=name, value=value, inline=inline)

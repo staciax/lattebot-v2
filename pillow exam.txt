@@ -1,0 +1,18 @@
+import aiohttp
+
+async with aiohttp.ClientSession() as session:
+    async with session.get(<some url>) as response:
+        image_bytes = await response.read()
+
+# in an executor
+from io import BytesIO
+from PIL import Image
+
+with Image.open(BytesIO(avatar_bytes)) as my_image:
+    # do whatever with your image
+    output_buffer = BytesIO()
+    my_image.save(output_buffer, "png")  # or whatever format
+    output_buffer.seek(0)
+
+# back in your async function
+await ctx.send(file=discord.File(fp=output_buffer, filename="my_file.png"))

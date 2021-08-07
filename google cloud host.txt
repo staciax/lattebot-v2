@@ -32,3 +32,15 @@ git clone https://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:x-oauth-basic@github.
 
 
 https://github.com/staciax/Latte-bot-v2-dpy-v2.0.0a
+
+jishaku
+python3 -m pip install "pymongo[srv]"
+requests
+numpy
+pip install Pillow
+pip install discord_components
+giphy_client
+pymongo
+scord.py
+pip install wheel
+pip install -U git+https://github.com/Rapptz/discord.py

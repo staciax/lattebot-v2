@@ -189,11 +189,11 @@ class Moderation(commands.Cog):
 #        await ctx.message.delete()
         await ctx.voice_client.disconnect()
 
-    @commands.command(description="lock text channel" , aliases=['lock', 'lockch'])
+    @commands.command(description="lock text channel" , aliases=['lock', 'lockdown'])
     @commands.guild_only()
     @commands.has_guild_permissions(manage_channels=True)
 #    @commands.bot_has_guild_permissions(manage_channels=True)
-    async def lock_channel(self, ctx, channel: discord.TextChannel=None):
+    async def lock_down(self, ctx, channel: discord.TextChannel=None):
         channel = channel or ctx.channel
         if ctx.guild.default_role not in channel.overwrites:
             embed1 = discord.Embed(description=f"{channel.name} is **lockdown.**\n\n`Note : use this cmd again for remove lockdown!`",color=0xffffff)
