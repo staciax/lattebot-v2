@@ -183,19 +183,32 @@ class Activities(commands.Cog):
             elif before.roles != after.roles:
                 new_roles = [x.mention for x in after.roles if x not in before.roles]
                 old_roles = [x.mention for x in before.roles if x not in after.roles]
+                if new_roles:
+                    name = "**Add role**"
+                    nr_str = str(new_roles)[2:-2]
+                    nr_valur = ", ".join([r.mention for r in before.roles])
+                    color = 0x52D452
+                else:
+                    name = "**Remove role**"
+                    nr_str = str(old_roles)[2:-2]
+                    nr_valur = ", ".join([r.mention for r in after.roles])
+                    color = 0xFF6961
                 offline = ['<@&873693874198052876>']
-                if new_roles or old_roles == offline:
+                if new_roles == offline:
                     return
-                embed = discord.Embed(title="Role updates",
-                                    colour=0xb19cd9, #colour=after.colour,
+                if old_roles == offline:
+                    return
+                embed = discord.Embed(colour=color, #colour=after.colour,
 						            timestamp=datetime.now(timezone.utc))
+                
+                embed.set_author(name=f"{after.display_name} | Role updates", icon_url=after.avatar.url)
 
-                fields = [(" `Before`", ", ".join([r.mention for r in before.roles]), False),
-					        ("`After`", ", ".join([r.mention for r in after.roles]), False)]
+                fields = [("**Current role**", nr_valur , False),
+					        (name , nr_str , False)]
 
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
-                    embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
+#                    embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
 
                 await self.log_roles.send(embed=embed)
             else:
