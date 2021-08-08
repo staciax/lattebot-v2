@@ -37,12 +37,12 @@ class Message(commands.Cog):
 #            await message.delete()
             await message.channel.send('no no prefix bot is **LT ** > `lt help`', delete_after=10)
         
-        if message.content.startswith('underworld'):
+        if message.content.startswith('uw'):
             if message.author.voice:
-                chname = '♢'
+                chname = "ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ"
                 checkvoice = get_channel_by_name(message.channel.guild, channel_name=chname)
                 if checkvoice is None:
-                    channel = await create_voice_channel(message.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Admin Only 」♡")
+                    channel = await create_voice_channel(message.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Private 」♡")
                     
                     if channel is not None:
                         await message.author.move_to(channel)

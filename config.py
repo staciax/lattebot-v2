@@ -1,6 +1,6 @@
 #standard
 PREFIX = 'l '
-TOKEN = 'ODYxMTc5OTUyNTc2ODU2MDY1.YOGCVA.ybEvJEqnfuDjVwCyLPEYN8cJA3g'
+TOKEN = 'ODU0MTM0NDAyOTU0ODIxNjQz.YMfgpg.nAFyoLIAJ3K0jLFLEp0AAkJ6s9k'
 MYGUILD = 840379510704046151
 DEV_OWNER_ID = 385049730222129152
 
@@ -32,7 +32,12 @@ COLORMUTE = 0xff9f9f #when don't have mute role
 #moderation
 SERVER_LOG = 859789105507598346 #guildlog /cog/logguild
 VOICE_LOG = 870173863726682112 #voicelog /cog/logguild
-LOG_GIVEAWAY = 840396784299147315 #giveaway /cog/giveaway
+GIVEAWAY_LOG = 840396784299147315 #giveaway /cog/giveaway
+MESSAGE_LOG = 873690030751748206 #message /cog/activies
+ROLES_LOG = 873688581682634762 #roles /cog/activies
+
+
+
 REPORTBUG = 865609918945820692 #reportbug /cog/data
 ONLYIMG = 865640540032991242 #chennel only images /cog/moderator
 ONLYTESTING = 844462710526836756
@@ -49,8 +54,8 @@ GIPHYAPI = '8DkQhUOR3dPIMPAzJCgonC7ZW5pnjU3V'
 
 #mongoDB
 MONGOURL = 'mongodb+srv://xstacia:kNxTCMtGzVZVQF5j@stacia.welr1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-MGDATABASE = "discord"
-MGDOCUMENT = "levelling"
+MGDATABASE = "database" #discord 
+MGDOCUMENT = "new" #new
 LVLROLE = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
 LVLNUM = [3,5,10,20,30,40,45,50,60]
 LVLROLECOLOR = [0xc39b7d,0xffbfd7,0xc39b7d,0xffbfd7,0xc39b7d,0xc1e7b8,0xc5ffff,0xec6fc1,0xb98fe4]

@@ -64,7 +64,7 @@ class Moderation(commands.Cog):
             if (user.name, user.discriminator) == (member_name, member_discriminator):
                 await ctx.guild.unban(user)
                 await ctx.send(embed=embedub)
-
+    
     @commands.command(name="kick", description="kick member", pass_context=True)
     @commands.has_permissions(kick_members=True)
     @commands.guild_only()

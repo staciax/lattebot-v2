@@ -54,7 +54,7 @@ class xp(commands.Cog):
                         if xp < ((50*(lvl**2))+(50*lvl)):
                             break
                         lvl += 1
-                    print(f'now level{lvl}')
+#                    print(f'now level{lvl}')
                     xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
                     if xp == 0:
                         emlvup = discord.Embed(description=f"Congratulations, {message.author.mention} you leveled up to **level {lvl}.**!",color=0xffffff)
@@ -103,8 +103,9 @@ class xp(commands.Cog):
             rankings = levelling.find().sort("xp",-1)
             i = 1
             embed = discord.Embed(color=0x77dd77 , timestamp=datetime.now(timezone.utc))
-            embed.set_footer(text = f'{ctx.guild.name}', icon_url=ctx.guild.icon.url)
-            embed.set_author(name=f"{self.client.user.name} Rankings", url=self.client.user.avatar.url) #, icon_url=ctx.guild.icon.url
+#           embed.set_author(name=f"{self.client.user.name} Rankings", url=self.client.user.avatar.url) #, icon_url=ctx.guild.icon.url            
+            embed.set_author(name=f"{ctx.guild.name} Rankings", url=ctx.guild.icon.url , icon_url=ctx.guild.icon.url)
+            embed.set_footer(text = f'{self.client.user.name}') # icon_url=self.client.user.avatar.url
 #            for x in rankings:
 #                try:
 #                    temp = ctx.guild.get_member(x["id"])

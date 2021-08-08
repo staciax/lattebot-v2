@@ -103,7 +103,7 @@ class Giveaway(commands.Cog):
 #                                 color=0xffffff)
 #        logembed.set_thumbnail(url=ctx.author.avatar.url)
 
-#        logchannel = ctx.guild.get_channel(LOG_GIVEAWAY) 
+#        logchannel = ctx.guild.get_channel(GIVEAWAY_LOG) 
 #        await logchannel.send(embed=logembed)
 
         futuredate = datetime.utcnow() + timedelta(seconds=timewait)

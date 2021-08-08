@@ -27,6 +27,8 @@ class Activities(commands.Cog):
     async def on_ready(self):
         self.log_channel = self.bot.get_channel(SERVER_LOG)
         self.log_voice = self.bot.get_channel(VOICE_LOG)
+        self.log_message = self.bot.get_channel(MESSAGE_LOG)
+        self.log_roles = self.bot.get_channel(ROLES_LOG)
         print(f"-{self.__class__.__name__}")
         for guild in self.client.guilds:
             self.invites[guild.id] = await guild.invites()
@@ -56,7 +58,6 @@ class Activities(commands.Cog):
 
             """welcome embed"""
         
-
             channel = discord.utils.get(member.guild.text_channels, name=WELCOME)
             if channel:
                 embed=discord.Embed(
@@ -71,6 +72,17 @@ class Activities(commands.Cog):
 
             await channel.send(embed=embed) #(content=f"||{member.mention}||", embed=embed)
             #‧˚₊ ପ <:a_pink_dot:860493678723072000>︰<#861774918290636800> ଓ ♡ ˖˚˳\n
+    
+    @commands.Cog.listener()
+    async def on_member_ban(self, guild, member):
+            embed = discord.Embed(
+                description=f"**Member ban\n`{member}`**",
+                color=PTRED)
+            embed.set_thumbnail(url=member.avatar.url)
+            embed.set_footer(text="—・good bye bro")
+            embed.timestamp = datetime.now(timezone.utc)
+
+            await self.log_channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
@@ -86,7 +98,7 @@ class Activities(commands.Cog):
             await self.log_channel.send(embed=embed3)
             self.invites[member.guild.id] = await member.guild.invites()
 
-            """welcome embed"""
+            """leave embed"""
 
             channel = discord.utils.get(member.guild.text_channels, name=LEAVE)
             if channel:
@@ -110,8 +122,6 @@ class Activities(commands.Cog):
             embed.add_field(name="Inivte Code:", value=f"||{invite.code}||")
             embed.set_footer(text = f'Created by {invite.inviter.name}', icon_url =invite.inviter.avatar.url)
             await self.log_channel.send(embed=embed)
-
-            
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
@@ -170,22 +180,26 @@ class Activities(commands.Cog):
 
                 await self.log_channel.send(embed=embed)
         
-
             elif before.roles != after.roles:
+                new_roles = [x.mention for x in after.roles if x not in before.roles]
+                old_roles = [x.mention for x in before.roles if x not in after.roles]
+                offline = ['<@&873693874198052876>']
+                if new_roles or old_roles == offline:
+                    return
                 embed = discord.Embed(title="Role updates",
                                     colour=0xb19cd9, #colour=after.colour,
 						            timestamp=datetime.now(timezone.utc))
 
                 fields = [(" `Before`", ", ".join([r.mention for r in before.roles]), False),
-					    ("`After`", ", ".join([r.mention for r in after.roles]), False)]
+					        ("`After`", ", ".join([r.mention for r in after.roles]), False)]
 
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
                     embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
 
-                await self.log_channel.send(embed=embed)
-        else:
-            pass
+                await self.log_roles.send(embed=embed)
+            else:
+                return
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
@@ -203,14 +217,14 @@ class Activities(commands.Cog):
                         embed.add_field(name=name, value=value, inline=inline)
                         embed.set_footer(text=f"{after.author.display_name}", icon_url=after.author.avatar.url)
                 
-                    await self.log_channel.send(embed=embed)
+                    await self.log_message.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         if not message.channel.id in private_channel:
             if message.guild: #if message.guild.id:
                 if not message.author.bot:
-                    channel = self.bot.get_channel(SERVER_LOG)
+                    channel = self.bot.get_channel(MESSAGE_LOG)
 
                     em = discord.Embed(color=0xDC143C,title = f"Message Deleted:")
                     em.set_footer(text=self.bot.user.name,icon_url=self.bot.user.avatar.url )
@@ -228,7 +242,7 @@ class Activities(commands.Cog):
                         else:
                             em.description = f"**Deleted in:** {message.channel.mention} \n**Content:** {message.clean_content}"
 
-                    await self.log_channel.send(embed=em)
+                    await self.log_message.send(embed=em)
                 else:
                     pass
             else:
@@ -305,22 +319,21 @@ class Activities(commands.Cog):
             return
 
 #            print(f'{member.name} guild undeaf')
-#        if after.channel is not None:
-#            if after.channel.name == "✧・Game":
-#                chname = '♢'
-#                checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
-#                if checkvoice is None:
-#                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Admin Only 」♡")
-#                    
-#                    if channel is not None:
-#                        await member.move_to(channel)
-#                    
-#                else:
-#                    await member.move_to(checkvoice)
-        
-    
-        
-
+        if after.channel is not None:
+            if after.channel.name == "・ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ・":
+                chname = "ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ"
+                checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
+                if checkvoice is None:
+                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Private 」♡")
+                    
+                    if channel is not None:
+                        await member.move_to(channel)
+                    
+                elif checkvoice:
+                    await member.move_to(checkvoice)
+                else:
+                    return
+                
 #    @commands.Cog.listener() #activity = role
 #    async def on_presence_update(self, before, after):
 #        games = ["game1", "game2", "game3"]
@@ -332,15 +345,17 @@ class Activities(commands.Cog):
 #            if role in after.roles: 
 #                await after.remove_roles(role)
 
-#    @commands.Cog.listener() #online offlie = role
-#    async def on_presence_update(self, before, after):
-#        if str(before.status) == "online":
-#            if str(after.status) == "offline":
-#                guild = self.bot.get_guild(840379510704046151)
-#                role = discord.utils.find(lambda r: r.name == '୨ offline role ୧', guild.roles)
-#                await after.add_roles(role)
-#                await before.remove_roles(role)
-
-
+    @commands.Cog.listener() #online offlie = role
+    async def on_presence_update(self, before, after):
+        guild = self.bot.get_guild(840379510704046151)
+        role = discord.utils.find(lambda r: r.name == '୨ offline ୧', guild.roles)
+        if before.guild.id == MYGUILD:
+            if str(after.status) == "online" or "dnd" and "idle":
+                await before.remove_roles(role)
+            if str(after.status) == "offline":
+                await after.add_roles(role)
+            else:
+                return
+        
 def setup(client):
     client.add_cog(Activities(client))
