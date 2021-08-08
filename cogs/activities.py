@@ -128,8 +128,8 @@ class Activities(commands.Cog):
             if before.name != after.name:
                 embed = discord.Embed(title="Username change",colour=after.colour,timestamp=datetime.now(timezone.utc))
 
-                fields = [("`Before`", before.name, False),
-					    ("`After`", after.name, False)]
+                fields = [("**Before**", f"```{before.name}```", False),
+					    ("**After**", f"```{after.name}```", False)]
 
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
@@ -143,8 +143,8 @@ class Activities(commands.Cog):
                                     colour=0xffffff, #after.colour
                                     timestamp=datetime.now(timezone.utc))
 
-                fields = [("`Before`",f"#{before.discriminator}", False),
-					    ("`After`",f"#{after.discriminator}", False)]
+                fields = [("**Before**",f"```#{before.discriminator}```", False),
+					    ("**After**",f"```#{after.discriminator}```", False)]
             
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
@@ -170,8 +170,8 @@ class Activities(commands.Cog):
                                     colour=0xFFDF00, #colour=after.colour,
 						            timestamp=datetime.now(timezone.utc))
 
-                fields = [("`Before`", before.display_name, False),
-					    ("`After`", after.display_name, False)]
+                fields = [("**Before**", f"```{before.display_name}```", False),
+					    ("**After**", f"```{after.display_name}```", False)]
 
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
@@ -186,7 +186,7 @@ class Activities(commands.Cog):
                 if new_roles:
                     name = "**Add role**"
                     nr_str = str(new_roles)[2:-2]
-                    nr_valur = ", ".join([r.mention for r in before.roles])
+                    nr_valur = ", ".join([r.mention for r in after.roles])
                     color = 0x52D452
                 else:
                     name = "**Remove role**"
@@ -219,16 +219,17 @@ class Activities(commands.Cog):
         if not before.channel.id in private_channel:
             if not after.author.bot:
                 if before.content != after.content:
-                    embed = discord.Embed(title="Message edit",
+                    embed = discord.Embed(description=f"**Edited in**: {after.channel.mention}\n**Message link:** ||[**click to jump**]({after.jump_url})||",
                                 colour=0xFF8C00, #after.author.colour,
                                 timestamp=datetime.now(timezone.utc))
+                    embed.set_author(name=after.author.display_name , url=after.jump_url ,icon_url=after.author.avatar.url)
+                    embed.set_footer(text="Message edit")
                 
-                    fields = [("`Before`", before.content , False),
-						    ("`After`", after.content, False)]
+                    fields = [("**Before**", f"```{before.content}```" , False),
+						    ("**After**", f"```{after.content}```", False)]
                 
                     for name, value, inline in fields:
                         embed.add_field(name=name, value=value, inline=inline)
-                        embed.set_footer(text=f"{after.author.display_name}", icon_url=after.author.avatar.url)
                 
                     await self.log_message.send(embed=embed)
 
@@ -239,9 +240,8 @@ class Activities(commands.Cog):
                 if not message.author.bot:
                     channel = self.bot.get_channel(MESSAGE_LOG)
 
-                    em = discord.Embed(color=0xDC143C,title = f"Message Deleted:")
-                    em.set_footer(text=self.bot.user.name,icon_url=self.bot.user.avatar.url )
-                    em.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
+                    em = discord.Embed(color=0xDC143C , timestamp=datetime.now(timezone.utc))
+                    em.set_author(name=message.author.display_name, url=message.jump_url ,icon_url=message.author.avatar.url)
 
                     if message.attachments is not None:
                         if len(message.attachments) > 1:
@@ -252,17 +252,21 @@ class Activities(commands.Cog):
                             image = message.attachments[0].proxy_url
                             em.description = f"**Deleted in:** {message.channel.mention}"
                             em.set_image(url=image)
+                            em.set_footer(text="Message delete")
                         else:
-                            em.description = f"**Deleted in:** {message.channel.mention} \n**Content:** {message.clean_content}"
+                            em.description = f"**Deleted in:** {message.channel.mention}"
+                            em.add_field(name=f"**Content:**", value=f"```{message.clean_content}```", inline=False)
+                            em.set_footer(text="Message delete")
 
                     await self.log_message.send(embed=em)
                 else:
                     pass
             else:
-                delem = discord.Embed(color=0xDC143C,title = f"Message Deleted:")
-                delem.set_footer(text=self.bot.user.name,icon_url=self.bot.user.avatar.url )
+                delem = discord.Embed(color=0xDC143C , timestamp=datetime.now(timezone.utc))
                 delem.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
-                delem.description = f"**Deleted in:** {message.channel} \n**Content:** {message.clean_content}"
+                delem.description = f"**Message deleted in:** {message.channel}"
+                delem.add_field(name=f"**Content:**", value=f"```{message.clean_content}```", inline=False)
+                delem.set_footer(text="Message delete")
 
                 await self.log_channel.send(embed=delem)
     
