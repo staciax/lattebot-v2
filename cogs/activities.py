@@ -219,7 +219,7 @@ class Activities(commands.Cog):
         if not before.channel.id in private_channel:
             if not after.author.bot:
                 if before.content != after.content:
-                    embed = discord.Embed(description=f"**Edited in**: {after.channel.mention}\n**Message link:** ||[**click to jump**]({after.jump_url})||",
+                    embed = discord.Embed(description=f"**Edited in**: {after.channel.mention}\n**Message link:** ||[click]({after.jump_url})||",
                                 colour=0xFF8C00, #after.author.colour,
                                 timestamp=datetime.now(timezone.utc))
                     embed.set_author(name=after.author.display_name , url=after.jump_url ,icon_url=after.author.avatar.url)
