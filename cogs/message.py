@@ -55,7 +55,7 @@ class Message(commands.Cog):
                 await message.delete()
 
         if self.client.user.mentioned_in(message):
-            await message.channel.send("You can type `lt help` for more info")
+            await message.channel.send("You can type `lt help` for more info" , delete_after=15)
     
     @commands.command(name='bdm')
     @commands.has_permissions(administrator = True)

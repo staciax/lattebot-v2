@@ -57,12 +57,12 @@ class xp(commands.Cog):
 #                    print(f'now level{lvl}')
                     xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
                     if xp == 0:
-                        emlvup = discord.Embed(description=f"Congratulations, {message.author.mention} you leveled up to **level {lvl}.**!",color=0xffffff)
+                        emlvup = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!",color=0xffffff)
                         msg = await message.channel.send(embed=emlvup)
                         for i in range(len(level)):
                             if lvl == levelnum[i]:
                                 await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
-                                embed = discord.Embed(description=f"Congratulations, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
+                                embed = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
 #                                embed.set_thumbnail(url=message.author.avatar.url)
 
                                 await msg.edit(embed=embed)
@@ -146,6 +146,7 @@ class xp(commands.Cog):
 
     @commands.command(aliases=['lv', 'lvl' , 'xp' , 'exp'])
     async def level(self, ctx, member: discord.Member = None): 
+        async with ctx.typing():
                 if not member:  # if member is no mentioned
                     member = ctx.message.author
                 member_id = member.id
