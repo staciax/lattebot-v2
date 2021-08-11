@@ -351,8 +351,8 @@ class Activities(commands.Cog):
                 else:
                     return
                     
-            if after.channel.name == "・ᴾᴿᴵVᴬᵀᴱ・":
-                chname = "ᴾᴿᴵVᴬᵀᴱ"
+            if after.channel.name == "・ᴹᴼᴼᴺᴸᴵᴳᴴᵀ・":
+                chname = "ᴹᴼᴼᴺᴸᴵᴳᴴᵀ"
                 checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
                 if checkvoice is None:
                     channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Private 」♡")

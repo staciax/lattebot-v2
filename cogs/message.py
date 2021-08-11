@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 # Local
 import utils
 from utils import create_voice_channel , get_channel_by_name , get_category_by_name
+from config import *
 
 class Message(commands.Cog):
 
@@ -35,7 +36,7 @@ class Message(commands.Cog):
 
         if message.content.startswith('it'):
 #            await message.delete()
-            await message.channel.send('no no prefix bot is **LT ** > `lt help`', delete_after=10)
+            await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=10)
         
         if message.content.startswith('uw'):
             if message.author.voice:
@@ -55,7 +56,7 @@ class Message(commands.Cog):
                 await message.delete()
 
         if self.client.user.mentioned_in(message):
-            await message.channel.send("You can type `lt help` for more info" , delete_after=15)
+            await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=15)
     
     @commands.command(name='bdm')
     @commands.has_permissions(administrator = True)

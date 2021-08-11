@@ -1,6 +1,6 @@
 #standard
-PREFIX = 'l'
-TOKEN = 'ODU0MTM0NDAyOTU0ODIxNjQz.YMfgpg.nAFyoLIAJ3K0jLFLEp0AAkJ6s9k'
+PREFIX = ["lt ","l "]
+TOKEN = 'ODYxMTc5OTUyNTc2ODU2MDY1.YOGCVA.ybEvJEqnfuDjVwCyLPEYN8cJA3g'
 MYGUILD = 840379510704046151
 DEV_OWNER_ID = 385049730222129152
 
@@ -13,11 +13,11 @@ GITHUB_DEV = '[Github](https://github.com/staciax)'
 BOTVERSION = 'v2.0 pre release'
 UYEAR = 2021
 UMONTH = 8
-UDATE = 11
+UDATE = 12
  
 #welcone, leave alert
 WELCOME = '♢・welcome'
-LEAVE = '♢・m-leave'
+LEAVE = '♢・leave'
 SERVER_LOG_INVITE = "server-log"
 
 #reactionrole

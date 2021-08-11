@@ -18,8 +18,15 @@ client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=disc
 
 @client.event
 async def on_ready():
+    await client.change_presence(
+        activity=discord.Activity(type=discord.ActivityType.listening, name="lt help")
+    )
     print(f"{client.user} in online")
     print(f"\nCogs list\n-----")
+
+@client.command()
+async def prefix(ctx):
+    await ctx.send("This is my prefix `lt ` or `l `")
 
 @client.command()
 @commands.is_owner()
