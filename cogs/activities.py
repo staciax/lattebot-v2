@@ -350,6 +350,20 @@ class Activities(commands.Cog):
                     await member.move_to(checkvoice)
                 else:
                     return
+                    
+            if after.channel.name == "・ᴾᴿᴵVᴬᵀᴱ・":
+                chname = "ᴾᴿᴵVᴬᵀᴱ"
+                checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
+                if checkvoice is None:
+                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Private 」♡")
+                    
+                    if channel is not None:
+                        await member.move_to(channel)
+                    
+                elif checkvoice:
+                    await member.move_to(checkvoice)
+                else:
+                    return
                 
 #    @commands.Cog.listener() #activity = role
 #    async def on_presence_update(self, before, after):

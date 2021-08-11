@@ -16,6 +16,7 @@ import requests
 # Local
 import utils
 from config import * 
+from utils import Pag
 
 #xpchannel
 bot_channel = BOT_CH

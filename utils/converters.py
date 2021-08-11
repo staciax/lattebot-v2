@@ -4,6 +4,15 @@ from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 import time
 
+from discord.ext.buttons import Paginator
+
+class Pag(Paginator):
+    async def teardown(self):
+        try:
+            await self.page.clear_reactions()
+        except discord.HTTPException:
+            pass
+
 class MemberConverter(commands.Converter):
     async def convert(self, ctx, argument):
         """
