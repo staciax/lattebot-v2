@@ -149,7 +149,7 @@ class Moderation(commands.Cog):
     async def unmute(self, ctx, member: discord.Member):
         mutedRole = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
 
-        embed = discord.Embed(description=f"**UNMUTED MEMBER**\n\n`You has been unmute :` `{member.display_name}#{member.discriminator}`",color=0xffffff)
+        embed = discord.Embed(description=f"**UNMUTED MEMBER**\n\n`You has been unmute :` `{member.name}#{member.discriminator}`",color=0xffffff)
         embed.set_footer(text=f"Unmuted by {ctx.author}", icon_url = ctx.author.avatar.url)
 
         await member.remove_roles(mutedRole)
