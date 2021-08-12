@@ -127,6 +127,7 @@ class Reaction(commands.Cog):
                 print("Member Not Fount")
 
     @commands.command(description='add emoji in message')
+    @commands.guild_only()
     async def ar(self, ctx, msg_id: int = None, channel: discord.TextChannel = None, emote=None):
         if not msg_id:
             channel = self.client.get_channel(f'{channel}') 

@@ -60,6 +60,7 @@ class Data(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    @commands.guild_only()
     async def invite(self, ctx):
         embed = discord.Embed(title=f"**invite bot**",description=f"**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.client.guilds)}** servers︰𓂃 ꒱\n\n⸝⸝﹒{INVITELINK} ꒱",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
         embed.set_thumbnail(url=self.client.user.avatar.url)
@@ -69,6 +70,7 @@ class Data(commands.Cog):
         await ctx.send(embed=embed)
     
     @commands.command(description="check latency bot")
+    @commands.guild_only()
     async def ping(self, ctx):
         embed = discord.Embed(description="",color=0xc4cfcf)
 

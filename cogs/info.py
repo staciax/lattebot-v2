@@ -40,6 +40,7 @@ class Info(commands.Cog):
         print(f"-{self.__class__.__name__}")
 
     @commands.command(aliases=['sv'])
+    @commands.guild_only()
     async def serverinfo(self, ctx):
 
         embed = discord.Embed(title=f"Server info - {ctx.guild.name}",color=0xffffff)
@@ -124,6 +125,7 @@ class Info(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['ui'] , pass_context=True)
+    @commands.guild_only()
     async def userinfo(self, ctx, member: discord.Member = None):
         if not member:  # if member is no mentioned
             member = ctx.message.author  # set member as the author
@@ -201,16 +203,18 @@ class Info(commands.Cog):
         await ctx.send(embed=embed) #text=f"You're our {member.guild.member_count} members ෆ"
 
     @commands.command(aliases=['av'])
+    @commands.guild_only()
     async def avatar(self, ctx, *, member: discord.Member = None):
         if not member:
             member = ctx.message.author
 
         embed = discord.Embed(title = f"{member.name}'s avatar", color = 0xc4cfcf)
         embed.set_image(url =  member.avatar.url) # Shows the avatar
-        embed.set_footer(text = f'Requested by {ctx.author}', icon_url = ctx.author.avatar.url)
+#        embed.set_footer(text = f'Requested by {ctx.author}', icon_url = ctx.author.avatar.url)
         await ctx.send(embed = embed)
 
     @commands.command(name="emojiinfo", aliases=["ei"])
+    @commands.guild_only()
     async def emoji_info(self, ctx, emoji: discord.Emoji = None):
         if not emoji:
 #            embed = discord.Embed()
@@ -261,6 +265,7 @@ class Info(commands.Cog):
         await ctx.send("not found")
 
     @commands.command()
+    @commands.guild_only()
     async def poll(self, ctx,*,message):
         embed = discord.Embed(title="POLL", description=f"{message}",color=0xffffff)
         msg = await ctx.channel.send(embed=embed)
@@ -269,6 +274,7 @@ class Info(commands.Cog):
         await ctx.message.delete()
     
     @commands.command(brief = "gives info on emoji_id and emoji image.")
+    @commands.guild_only()
     async def emoji_id(self, ctx, *, emoji : typing.Optional [typing.Union[discord.PartialEmoji, discord.Message, utils.EmojiBasic]] = None):
 
         if isinstance(emoji, discord.Message):
@@ -286,7 +292,9 @@ class Info(commands.Cog):
         else:
             await ctx.send("Not a valid emoji id.")
     
-    @commands.command(brief="takes smallest and largest numbers then does a random number between.")
+    @commands.command(name="rn", brief="takes smallest and largest numbers then does a random number between.")
+    @commands.guild_only()
+    @commands.has_role('୨ bot developer ୧')
     async def random_number(self , ctx , *numbers: typing.Union[int,str]):
         numbers=sorted(list(filter(lambda x: isinstance(x, int), numbers)))
         if len(numbers) < 2:

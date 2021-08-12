@@ -23,6 +23,7 @@ class Help_con(commands.Cog):
         print(f"-{self.__class__.__name__}")
     
     @commands.command()
+    @commands.guild_only()
     async def help(self, ctx, *, category=None):
 
         if category == None:

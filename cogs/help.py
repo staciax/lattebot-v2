@@ -23,6 +23,7 @@ class Help(commands.Cog):
         print(f"-{self.__class__.__name__}")
     
     @commands.command()
+    @commands.guild_only()
     async def help2(self, ctx):
 
         embedhelp = discord.Embed(title="✧ LATTE Help", description="Prefix of this bot `lt ` or `l `\nUse `selection` below for more info on an command. \n",color=0xffffff)

@@ -99,6 +99,7 @@ class xp(commands.Cog):
                 await ctx.channel.send(embed=embed)
 
     @commands.command(aliases=['rank', 'ranking'])
+    @commands.guild_only()
     async def leaderboard(self, ctx): #only one ch use '==' , more use 'in'
 #        if (ctx.channel.id in bot_channel):
             rankings = levelling.find().sort("xp",-1)
@@ -146,6 +147,7 @@ class xp(commands.Cog):
 #            await ctx.channel.send(embed=embedbot , delete_after=10)
 
     @commands.command(aliases=['lv', 'lvl' , 'xp' , 'exp'])
+    @commands.guild_only()
     async def level(self, ctx, member: discord.Member = None): 
         async with ctx.typing():
                 if not member:  # if member is no mentioned
@@ -183,6 +185,7 @@ class xp(commands.Cog):
 #            await ctx.channel.send(embed=embedbot , delete_after=10)
   
     @commands.command()
+    @commands.guild_only()
     async def xprole(self, ctx):
         embed = discord.Embed(description="", color=PTYELLOW)
         embed.title = "✧ LATTE XP ROLE!"

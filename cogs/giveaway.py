@@ -18,6 +18,7 @@ class Giveaway(commands.Cog):
         print(f"-{self.__class__.__name__}")
         
     @commands.command(aliases=['start', 'g'])
+    @commands.guild_only()
     @commands.has_permissions(manage_guild=True) #@commands.has_permissions(administrator = True)
     async def giveaway(self, ctx):
         await ctx.send("Select the channel.")

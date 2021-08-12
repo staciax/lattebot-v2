@@ -29,6 +29,7 @@ class Fun(commands.Cog):
         await ctx.send(text_to_owo(ctx.message.content))
     
     @commands.command()
+    @commands.guild_only()
     @commands.is_owner()
     async def poke(self, ctx, member: discord.Member = None):
 
@@ -39,6 +40,7 @@ class Fun(commands.Cog):
             await ctx.send("Please use @mention to poke someone.")
     
     @commands.command(brief="Random picture of a meow")
+    @commands.guild_only()
     async def cat(self, ctx):
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
@@ -51,18 +53,20 @@ class Fun(commands.Cog):
                     await ctx.send(embed=embed)
     
     @commands.command(brief="Random picture of a floofy")
+    @commands.guild_only()
     async def fox(self, ctx):
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
                 async with cs.get("http://randomfox.ca/floof/") as r:
                     data = await r.json()
 
-                    embed = discord.Embed(title="Floof", color=0xffffff)
+                    embed = discord.Embed(title="Fox", color=0xffffff)
                     embed.set_image(url=data['image'])
 
                     await ctx.send(embed=embed)
 
     @commands.command(aliases=['ani', 'anigif'])
+    @commands.guild_only()
     async def anime_img(self, ctx , category=None):
             embed = discord.Embed(color=0xffffff)
             try:
@@ -93,22 +97,25 @@ class Fun(commands.Cog):
                 return
 
     @commands.command(aliases=['hentai', 'nsfw'])
+    @commands.guild_only()
     async def anime_img_nsfw(self, ctx):
-            embed = discord.Embed(color=0xffffff)
             try:
                 if ctx.channel.is_nsfw():
+                    embed = discord.Embed(color=0xffffff)
                     img_list = ['hentai', 'boobs']
                     nsfw_random = random.choice(img_list)
                     nsfw_url = anime.get_nsfw(f"{nsfw_random}")
                     embed.set_image(url=nsfw_url)
                     await ctx.send(embed=embed)
                 else:
+                    embed = discord.Embed(color=0xffffff)
                     embed.description = "This is not a NSFW channel, **NSFW** is alollowed in <#850507964938715196>"
                     await ctx.send(embed=embed)          
             except:
                 return
     
     @commands.command(aliases=['gif'])
+    @commands.guild_only()
     async def giphy(self, ctx, *, search=None):
         embed = discord.Embed(colour=0xffffff)
         session = aiohttp.ClientSession()

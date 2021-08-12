@@ -76,6 +76,7 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embedkick)
     
     @commands.command(description="clear message" , aliases=['purge'])
+    @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, amount: str):
         if amount == 'all':
@@ -189,7 +190,7 @@ class Moderation(commands.Cog):
 #        await ctx.message.delete()
         await ctx.voice_client.disconnect()
 
-    @commands.command(description="lock text channel" , aliases=['lock', 'lockdown'])
+    @commands.command(description="lockdown or unlock text channel" , aliases=['lock', 'lockdown'])
     @commands.guild_only()
     @commands.has_guild_permissions(manage_channels=True)
 #    @commands.bot_has_guild_permissions(manage_channels=True)
@@ -216,12 +217,14 @@ class Moderation(commands.Cog):
             await ctx.send(embed=embed3)
 
     @commands.command()
+    @commands.guild_only()
     async def changenick(self, ctx , member: discord.Member, nick):
         embed = discord.Embed(description=f"Nickname was changed for {member.display_name}",color=0xffffff)
         await member.edit(nick=nick)
         await ctx.channel.send(embed=embed)
     
     @commands.command()
+    @commands.guild_only()
     async def slowmode(self, ctx ,*, seconds: int= None):
             if seconds == None:
                 embed = discord.Embed(title="SLOW MODE",description=f"Disable slowmode this channel",color=0xffffff)
@@ -357,7 +360,8 @@ class Moderation(commands.Cog):
     async def only_test(self, ctx):
         await ctx.send('Only you!')
         
-    @commands.command() 
+    @commands.command()
+    @commands.guild_only()
     async def roles_test(self, ctx, *, member: utils.MemberRoles):
         await ctx.send('I see the following roles: ' + ', '.join(member))
 
