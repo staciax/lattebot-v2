@@ -208,7 +208,7 @@ class Info(commands.Cog):
         if not member:
             member = ctx.message.author
 
-        embed = discord.Embed(title = f"{member.name}'s avatar", color = 0xc4cfcf)
+        embed = discord.Embed(title = f"{member.name}'s avatar", color = 0xffffff)
         embed.set_image(url =  member.avatar.url) # Shows the avatar
 #        embed.set_footer(text = f'Requested by {ctx.author}', icon_url = ctx.author.avatar.url)
         await ctx.send(embed = embed)
