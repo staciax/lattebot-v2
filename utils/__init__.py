@@ -4,3 +4,4 @@ from .bettterconverter import *
 from .checkplus import *
 from .activities import *
 from .xpimg import *
+from .help_converter import*
