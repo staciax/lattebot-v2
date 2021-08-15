@@ -3,17 +3,15 @@ import discord , datetime , time
 from discord.ext import commands
 from datetime import datetime, timezone
 
+# Third party
 import io
-import aiohttp
-import random
-import anime_images_api
-import hmtai
-import requests
-import json
+import aiohttp , random , anime_images_api , requests , json
 
 anime = anime_images_api.Anime_Images()
 
-# Third party
+import typing , unicodedata
+from typing import Union
+
 # Local
 from config import *
 from utils import text_to_owo , notify_user
@@ -134,6 +132,19 @@ class Fun(commands.Cog):
         await session.close()
 
         await ctx.send(embed=embed)
+    
+    @commands.command(name="rn", brief="takes smallest and largest numbers then does a random number between.")
+    @commands.guild_only()
+    async def random_number(self , ctx , *numbers: typing.Union[int,str]):
+        numbers=sorted(list(filter(lambda x: isinstance(x, int), numbers)))
+        if len(numbers) < 2:
+            await ctx.send("Not enough numbers")
+
+        else:
+            embed = discord.Embed(title=f"Random Number: {random.randint(numbers[0],numbers[-1])} ",color=random.randint(0, 16777215))
+            embed.add_field(name="Lowest Number:",value=f"{numbers[0]}")
+            embed.add_field(name="Highest Number:",value=f"{numbers[-1]}")
+            await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(Fun(client))

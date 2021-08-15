@@ -12,7 +12,6 @@ async def create_text_channel(guild, channel_name):
         return channel
 
 async def create_voice_channel(guild, channel_name , category_name="PRIVATELATTE" , user_limit=None):
-
         category = get_category_by_name(guild, category_name)
         await guild.create_voice_channel(channel_name, category=category , user_limit=user_limit)
         channel = get_channel_by_name(guild, channel_name)
@@ -22,7 +21,6 @@ async def voice_move_user(guild, channel_name , category_name):
         channel = get_channel_by_name(guild, channel_name)
         return channel
         
-
 def get_channel_by_name(guild, channel_name):
         channel = None
         for c in guild.channels:
@@ -50,3 +48,6 @@ def find_invite_by_code(invite_list, code):
         for inv in invite_list:
             if inv.code == code:
                 return inv
+
+async def edited(self, ctx, channel: discord.TextChannel, *, new_name):
+        await channel.edit(name=new_name)

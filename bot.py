@@ -18,8 +18,8 @@ client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=disc
 
 @client.event
 async def on_ready():
-    await client.change_presence(
-        activity=discord.Activity(type=discord.ActivityType.listening, name="lt help")
+    await client.change_presence(activity=discord.Activity(
+        type=discord.ActivityType.listening, name=f"lt help")
     )
     print(f"{client.user} in online")
     print(f"\nCogs list\n-----")

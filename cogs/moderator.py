@@ -371,55 +371,45 @@ class Moderation(commands.Cog):
     async def ban_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **ban!**",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedar)
         if isinstance(error, commands.MissingPermissions):
             embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} Only **administrators** can use this command!",color=0xffffff)
-#            await ctx.message.delete()
-            await ctx.send(embed=embedpr) #("`You doesn't have enough permission to ban someone.`")
+            await ctx.send(embed=embedpr)
 
     @unban.error
     async def unban_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **unban**",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedar)
         if isinstance(error, commands.MissingPermissions):
             embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} Only **administrators** can use this command.",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedpr)
    
     @kick.error
     async def kick_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **kick!**",color=0xffffff)
-            await ctx.message.delete()
             await ctx.send(embed=embedar)
         if isinstance(error, commands.MissingPermissions):
             embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} You doesn't have enough **permission!**",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedpr)
 
     @mute.error
     async def mute_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **mute!**",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedar)
         if isinstance(error, commands.MissingPermissions):
             embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} You doesn't have enough **permission!**",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedpr)
     
     @unmute.error
     async def unmute_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **unmute!**",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedar)
         if isinstance(error, commands.MissingPermissions):
             embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} You doesn't have enough **permission!**",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedpr)
 
     @clear.error
@@ -437,29 +427,19 @@ class Moderation(commands.Cog):
     async def tempban_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} **Ban Error** | `tempban` `member` `duration`",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedar)
         if isinstance(error, commands.MissingPermissions):
             embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} Only **administrators** can use this command!",color=0xffffff)
-#            await ctx.message.delete()
-            await ctx.send(embed=embedpr) #("`You doesn't have enough permission to ban someone.`")
+            await ctx.send(embed=embedpr)
     
     @tempmute.error
     async def tempmute_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} **Mute Error** | `tempmute` `member` `duration`",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedar)
         if isinstance(error, commands.MissingPermissions):
             embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} You doesn't have enough **permission!**",color=0xffffff)
-#            await ctx.message.delete()
             await ctx.send(embed=embedpr)
 
 def setup(client):
     client.add_cog(Moderation(client))
-
-#auto riole event
-##@client.event  // auto role
-##async def on_member_join(member):
-##  role = get(member.guild.roles, id=role_id)
-##  await member.add_roles(role)

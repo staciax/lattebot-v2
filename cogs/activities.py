@@ -1,7 +1,9 @@
 # Standard 
-import discord , datetime , time
-from discord.ext import commands
+import discord , datetime , time , os
+from discord.ext import commands , tasks
 from datetime import datetime, timezone
+from discord.channel import TextChannel
+from asyncio import sleep
 
 # Third party
 # Local
@@ -12,7 +14,7 @@ from utils import create_voice_channel , get_channel_by_name
 intents = discord.Intents()
 intents.all()
 
-private_channel = PRIVATE_LOGS #chat #nsfw #onlyfans #underworld
+private_channel = PRIVATE_LOGS #chat #nsfw #onlyfans #underworld #
 
 class Activities(commands.Cog):
 
@@ -22,9 +24,43 @@ class Activities(commands.Cog):
         self.bot = client
         self.client = client
         self.invites = {}
-                
+        self.index = 0
+        self.member_counted.start()
+    
+    def cog_unload(self):
+        self.member_counted.cancel()
+
+    @tasks.loop(minutes=30)
+    async def member_counted(self):
+        print(self.index)
+        guild = self.bot.get_guild(840379510704046151)
+        if self.index != guild.member_count:
+            self.index = guild.member_count
+            your_channel = guild.get_channel(840379926792110120)
+            await your_channel.edit(name=guild.member_count)
+
+    @member_counted.before_loop
+    async def before_member_counted(self):
+        await self.bot.wait_until_ready()
+
+#    @commands.Cog.listener()
+#    async def on_member_join(self, member):
+#        if member.guild.id == 867729118308204564:
+#	        await sleep(60*10)
+#	        for channel in member.guild.channels:
+#		        if channel.name.startswith('♢・latte'):
+#			        await channel.edit(name=f'♢・latte・{member.guild.member_count}')
+#			        break
+#auto riole event
+##@client.event  // auto role
+##async def on_member_join(member):
+##  role = get(member.guild.roles, id=role_id)
+##  await member.add_roles(role)
+
     @commands.Cog.listener()
     async def on_ready(self):
+        self.log_welcome = self.bot.get_channel(WELCOME_LOG)
+        self.log_leave = self.bot.get_channel(lEAVE_LOG)
         self.log_channel = self.bot.get_channel(SERVER_LOG)
         self.log_voice = self.bot.get_channel(VOICE_LOG)
         self.log_message = self.bot.get_channel(MESSAGE_LOG)
@@ -36,8 +72,7 @@ class Activities(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         if member.guild.id == MYGUILD: #only my guild
-            """welcome log""" 
-
+            """welcome log"""
             invites_before_join = self.invites[member.guild.id]
             invites_after_join = await member.guild.invites()
             for invite in invites_before_join:
@@ -50,7 +85,6 @@ class Activities(commands.Cog):
                     embed2.add_field(name="Name:", value=f"{member.name}", inline=False)
                     embed2.add_field(name="Invite Code:", value=f"||{invite.code}||", inline=False)
                     embed2.set_thumbnail(url=member.avatar.url)
-#                    embed2.set_footer(text=member.guild, icon_url=member.guild.icon.url)
                     embed2.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
                     await self.log_channel.send(embed=embed2)
                     self.invites[member.guild.id] = invites_after_join
@@ -58,23 +92,21 @@ class Activities(commands.Cog):
 
             """welcome embed"""
         
-            channel = discord.utils.get(member.guild.text_channels, name=WELCOME)
-            if channel:
-                embed=discord.Embed(
-            description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
-            timestamp=datetime.now(timezone.utc),
-            color=0xc4cfcf
+            embed=discord.Embed(
+                            description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
+                            timestamp=datetime.now(timezone.utc),
+                            color=0xc4cfcf
     
-            )
+                )
             embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
             embed.set_thumbnail(url=member.avatar.url)
             embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
 
-            await channel.send(embed=embed) #(content=f"||{member.mention}||", embed=embed)
-            #‧˚₊ ପ <:a_pink_dot:860493678723072000>︰<#861774918290636800> ଓ ♡ ˖˚˳\n
+            await self.log_welcome.send(embed=embed)
     
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
+        if member.guild.id == MYGUILD:
             embed = discord.Embed(
                 description=f"**Member ban\n`{member}`**",
                 color=PTRED)
@@ -100,16 +132,14 @@ class Activities(commands.Cog):
 
             """leave embed"""
 
-            channel = discord.utils.get(member.guild.text_channels, name=LEAVE)
-            if channel:
-                embed = discord.Embed(
-                    description=f"**Leave Server\n`{member}`**",
-                    color=0xdbd7d2)
-                embed.set_thumbnail(url=member.avatar.url)
-                embed.set_footer(text="—・see ya good bye")
-                embed.timestamp = datetime.now(timezone.utc)
+            embed = discord.Embed(
+                        description=f"**Leave Server\n`{member}`**",
+                        color=0xdbd7d2)
+            embed.set_thumbnail(url=member.avatar.url)
+            embed.set_footer(text="—・see ya good bye")
+            embed.timestamp = datetime.now(timezone.utc)
 
-            await channel.send(embed = embed) #await channel.send(f"{member} has left the server")
+            await self.log_leave.send(embed = embed) #await channel.send(f"{member} has left the server")
     
     @commands.Cog.listener()
     async def on_invite_create(self, invite: discord.Invite):
@@ -154,7 +184,7 @@ class Activities(commands.Cog):
         
             if before.avatar.url != after.avatar.url:
                 embed = discord.Embed(title="Avatar change",description="New image is below, old to the right.",
-						    colour=self.log_channel.guild.get_member(after.id).colour,
+						    colour=0xf3d4b4,
 						    timestamp=datetime.now(timezone.utc))
                 embed.set_thumbnail(url=before.avatar.url)
                 embed.set_image(url=after.avatar.url)
@@ -208,7 +238,6 @@ class Activities(commands.Cog):
 
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
-#                    embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
 
                 await self.log_roles.send(embed=embed)
             else:
@@ -282,13 +311,11 @@ class Activities(commands.Cog):
                 embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
                 embed.color=PTGREEN
                 await self.log_voice.send(embed=embed)
-#               print(f'{member.name} Join {after.channel.name}') 
         
             if before.channel and not after.channel:
                 embed.description += f"**LEFT CHANNEL** : `{before.channel.name}`"
                 embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
                 embed.color=PTRED2
-#            print(f"{member.name} left channel {before.channel.name}")
                 await self.log_voice.send(embed=embed)
         
             if before.channel and after.channel:
@@ -297,9 +324,7 @@ class Activities(commands.Cog):
                     embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
                     embed.color=PTYELLOW2
                     await self.log_voice.send(embed=embed)
-#                print("user switched voice channels")
                 else:
-#                print("something else happend!")
                     if member.voice.self_stream:
                         embedstm = discord.Embed(description=f"**STREAMING in** : `{before.channel.name}`",timestamp=datetime.now(timezone.utc))
                         embedstm.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
@@ -319,11 +344,7 @@ class Activities(commands.Cog):
                         embeddeaf.colour=PTRED
                         await self.log_voice.send(embed=embeddeaf)
 
-#                   elif member.voice.requested_to_speak_at:
-#                       print("testing req speak")
-
                     else:
-#                    print("we are here")
                         if member.voice.deaf:
                             print("unmuted")
                         for streamer in self.current_streamers:
@@ -335,7 +356,6 @@ class Activities(commands.Cog):
         else:
             return
 
-#            print(f'{member.name} guild undeaf')
         if after.channel is not None:
             if after.channel.name == "・ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ・":
                 chname = "ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ"

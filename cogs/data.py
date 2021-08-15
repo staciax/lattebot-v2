@@ -2,7 +2,8 @@
 import discord , platform , os , asyncio
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
-from time import time , perf_counter
+import time
+from time import perf_counter
 
 # Third party
 import psutil
@@ -16,7 +17,7 @@ from config import *
 #mongodb
 mango_url = MONGOURL
 cluster = MongoClient(mango_url)
-levelling = cluster[MGDATABASE][MGDOCUMENT]
+check_ping = cluster[MGDATABASE][LATTEDOCUMENT]
 
 intents = discord.Intents.default()
 intents.members = True
@@ -72,20 +73,22 @@ class Data(commands.Cog):
     @commands.command(description="check latency bot")
     @commands.guild_only()
     async def ping(self, ctx):
+        bot_latency = round(self.client.latency * 1000)
+
+        typings = time.monotonic()
+        await ctx.trigger_typing()
+        typinge = time.monotonic()
+        typingms = round((typinge - typings) * 1000)
+
+        dbstart = time.monotonic()
+        check_ping
+        dbend = time.monotonic()
+       
         embed = discord.Embed(description="",color=0xc4cfcf)
-
-        start = time()
-        embed.add_field(name=f"{utils.emoji_converter('latteicon')} Latency", value=f"```nim\n{round(self.client.latency * 1000)} ms```", inline=True)
-        message = await ctx.send(embed = embed)
-        end = time()
-        embed.add_field(name=f"{utils.emoji_converter('typing')} Typing", value=f"```nim\n{(end-start)*1000:,.0f} ms```", inline=True)
-        await message.edit(embed=embed)
-
-        dbstart = time()
-        levelling
-        dbend = time()
+        embed.add_field(name=f"{utils.emoji_converter('latteicon')} Latency", value=f"```nim\n{bot_latency} ms```", inline=True)
+        embed.add_field(name=f"{utils.emoji_converter('typing')} Typing", value=f"```nim\n{typingms} ms```", inline=True)
         embed.add_field(name=f"{utils.emoji_converter('mongodb')} Database", value=f"```nim\n{(dbend-dbstart)*1000:,.2f} ms```", inline=True)
-        await message.edit(embed=embed)
+        await ctx.send(embed=embed)
     
     @commands.command(name="stats")
     @commands.is_owner()
@@ -105,21 +108,7 @@ class Data(commands.Cog):
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
         minutes, seconds = divmod(remainder, 60)
         days, hours = divmod(hours, 24)
-
-        if days == 0:
-            days = ""
-        else:
-            days = f"{days}d "
-
-        if hours == 0:
-            hours = ""
-        else:
-            hours = f"{hours}h "
-               
-        if minutes == 0:
-            minutes = ""
-        else:
-            minutes = f"{minutes}m "
+        data_time = utils.data_time(seconds, minutes, hours, days)
         
         # psutil server data
         process = psutil.Process()
@@ -137,14 +126,13 @@ class Data(commands.Cog):
         bot_ramUsagePC = f"{process.memory_percent():.01f}"
 
         embed = discord.Embed(description='\uFEFF', colour=0xffffff) #title=f'{self.client.user.name} Stats',
-#        embed.timestamp=datetime.now(timezone.utc)
         
         fields = [("Bot version:",f"```{BotVersion}```", True),
                     ("Python version:",f"```{pythonVersion}```", True),
                     ("Discord.py version:",f"```{dpyVersion}```", True),
                     ("Total servers:",f"```{serverCount}```", True),
                     ("Total users:",f"```{memberCount}```", True),
-                    ("Uptime:",f"```{days}{hours}{minutes}{seconds}s```", True),
+                    ("Uptime:",f"```{data_time}s```", True),
                     ("Total Cogs:",f"```{totalcogs}```", True),
 					("Total Commands:",f"```{totalcommands}```", True),
                     ("Bot developers:","```ꜱᴛᴀᴄɪᴀ.#0001 (385049730222129152)```\n\n", False),
@@ -161,17 +149,14 @@ class Data(commands.Cog):
         lastup = datetime(UYEAR, UMONTH, UDATE)
         dt = lastup.strftime("%d %B %Y") #%A,
         embed.set_footer(text=f"Recently Updated • {dt}")
-#        embed.set_footer(text=f"Req by {ctx.author}" , icon_url = ctx.author.avatar.url) # (text=f"Req by {ctx.author} | {self.client.user.name}"
         embed.set_author(name=f"{self.client.user.name} Stats", icon_url=self.client.user.avatar.url)
-#        embed.set_image(url=ctx.guild.banner.url)
-#        embed.set_thumbnail(url=self.client.user.avatar.url)
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['botdis', 'lattelg'])
     @commands.is_owner()
     async def logout(self, ctx):
         embed = discord.Embed(description="`Latte bot is disconnect`",color=0xffffff,timestamp=datetime.now(timezone.utc))
-        embed.set_footer(text=f"Logout by {ctx.author}" , icon_url = ctx.author.avatar_url)
+        embed.set_footer(text=f"Logout by {ctx.author}" , icon_url = ctx.author.avatar.url)
         embed.set_author(name=f"{self.client.user.name} Logout", icon_url=self.client.user.avatar.url)
         embed.set_thumbnail(url=self.client.user.avatar.url)
 
@@ -208,6 +193,10 @@ class Data(commands.Cog):
 
         await self.log_channel.send(embed=reportembed)
         await ctx.send(embed=embedsc)
+    
+    @commands.command()
+    async def pastel(self, ctx):
+        await ctx.send("https://colorhunt.co/palettes/pastel")
 
 # dm message to my text channel   
 #    @commands.Cog.listener()
@@ -253,7 +242,6 @@ class Data(commands.Cog):
         else:
             await ctx.send(embed=embedow)
             await ctx.message.delete()
-
 
 def setup(client):
     client.add_cog(Data(client))

@@ -61,13 +61,8 @@ class Message(commands.Cog):
         if message.content.startswith('latte'):
             await message.delete()
             await message.channel.send('เอะ! เรียกเราหรอ?  <:S_CuteGWave3:859660565160001537>')
-        
-#        if message.content.startswith('latte'):
-#            await message.delete()
-#            await message.channel.send('`You can type `lt help` for more info`')
 
         if message.content.startswith('it'):
-#            await message.delete()
             await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=10)
         
         if message.content.startswith('uw'):
@@ -95,7 +90,6 @@ class Message(commands.Cog):
     async def botdm(self, ctx, member: discord.Member, reason=None):
         embedrr = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify a message! |`prefix` `bdm [member] [message]`",color=0xffffff)    
         if reason == None:
-#            await message.delete()
             return await ctx.send(embed=embedrr)
         
         embed = discord.Embed(title="",description=f"** **\nMessage : `{reason}`\n\n** **",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
@@ -107,6 +101,7 @@ class Message(commands.Cog):
         await member.send(embed=embed)
         await ctx.send(embed=embedsc)
         await message.delete()
+        
 #error commands
 
     @botdm.error

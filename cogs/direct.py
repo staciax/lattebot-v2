@@ -31,6 +31,7 @@ class Dm(commands.Cog):
         latte = self.client.get_user(834834946832203776)
         if message.author == self.client.user:
             return
+            
         if isinstance(message.channel, discord.DMChannel):
             if message.content:
                 if message.author.id == 240059262297047041: #stacia > pond

@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 from discord.ext import commands
 
 # Third party
-from discord_components import *
+#from discord_components import *
 
 # Local
 import utils
@@ -19,7 +19,7 @@ class Help_con(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        DiscordComponents(self.client)
+        #DiscordComponents(self.client)
         print(f"-{self.__class__.__name__}")
     
     @commands.command()

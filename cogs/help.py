@@ -2,9 +2,10 @@
 import discord , asyncio , re #import json #import os
 from datetime import datetime, timedelta, timezone
 from discord.ext import commands
+from discord import Embed
 
 # Third party
-from discord_components import *
+#from discord_components import *
 
 # Local
 import utils
@@ -19,7 +20,7 @@ class Help(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        DiscordComponents(self.client)
+        #DiscordComponents(self.client)
         print(f"-{self.__class__.__name__}")
     
     @commands.command()
@@ -51,8 +52,8 @@ class Help(commands.Cog):
         embedhelp.set_image(url="https://i.imgur.com/3jz8m3V.png")
       
         msg = await ctx.send(embed=embedhelp,
-        components=
-        [Select(placeholder="Select a catogory",
+        components=[
+                Select(placeholder="Select a catogory",
                             options=[
                                 SelectOption(
                                     label="Utility",
@@ -119,43 +120,34 @@ class Help(commands.Cog):
                            
         embed1 = discord.Embed(title="Utility commands",description="Utility Commands\n\n`coming soon..`",color=0xffffff)
         embed1.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-#        embed1.set_thumbnail(url=self.client.user.avatar.url)
 
         embed2 = discord.Embed(title="Infomation Commands",description="Infomation Commands\n\n`userinfo , ui [targer] :` show userinfo infomation\n\n`serverinfo , sv :` show server infomation\n\n`avatar , av [targer] :` show user avatar profile",color=0xffffff)
         embed2.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-#        embed2.set_thumbnail(url=self.client.user.avatar.url)
 
         embed3 = discord.Embed(title="Moderation Commands",description="Moderation Commands\n\n`clear [number] or all :` clear message\n\n`muterole :` create muterole\n\n`mute [target] :` mute member\n\n`unmute [target] :` unmute member\n\n`kick [target]:` kick member\n\n`ban [target]:` ban member\n\n`unban [target]:`unban member\n\n`lockdown :`disable text channel\n\n`changenick [member]:` change nickname member\n\n`slowmode [seconds]:` set slowmode in channel",color=0xffffff)
         embed2.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-#        embed3.set_thumbnail(url=self.client.user.avatar.url)
 
         embed4 = discord.Embed(title="Giveaway Commands",description="Giveaway Commands\n\n`giveaway , g :` The group command for managing giveaways\n\n`reroll :` reroll giveaway",color=0xffffff)
         embed4.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-#        embed4.set_thumbnail(url=self.client.user.avatar.url)
 
         embed5 = discord.Embed(title="Fun Commands",description="Fun Commands\n\n`bm [message]:` Let the bot send the message\n\n`poll [message]:` poll in your server",color=0xffffff)
         embed5.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-#        embed5.set_thumbnail(url=self.client.user.avatar.url)
 
         embed6 = discord.Embed(title="Meta Commands",description="Meta Commands\n\n`ping :` check latency bot\n\n`stats :` show stats bot\n\n`invite :` invite the bot!!\n\n`feedback` : send message to bot developer\n\n`support :` Get the invite link for the support server!\n\n`vote :`  Get the voting link for the bot",color=0xffffff)
         embed6.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-#        embed6.set_thumbnail(url=self.client.user.avatar.url)
         
         embed7 = discord.Embed(title="Reaction",description="Reaction Roles\n\nGive color role: <#840380566862823425>",color=0xffffff)
         embed7.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-#        embed7.set_thumbnail(url=self.client.user.avatar.url)
 
         embed8 = discord.Embed(title="Leveling",description="Leveling Commands\nways you can get experience\ntalk in <#861883647070437386> <#840398821544296480> <#859960606761549835> \n\n`xp [target]:` check my level\n\n`rank :` show ranking level all member",color=0xffffff)
         embed8.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-#        embed8.set_thumbnail(url=self.client.user.avatar.url)
 
         embed9 = discord.Embed(title="NSFW",description="NSFW Commands\n\n`coming soon..`",color=0xffffff)
         embed9.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 
         while True:
             try:
-
-                event = await self.client.wait_for("select_option", check=None)
+                event = await self.client.wait_for("select_option")
                 label = event.component[0].label
 
                 if label == "Utility":
@@ -218,7 +210,7 @@ class Help(commands.Cog):
                     )
 
             except discord.NotFound:
-                print("error.") 
+                print("error.")  
 
 def setup(client):
     client.add_cog(Help(client))
