@@ -24,23 +24,89 @@ class Activities(commands.Cog):
         self.bot = client
         self.client = client
         self.invites = {}
-        self.index = 0
-        self.member_counted.start()
+        self.total_ = 0
+        self.member_ = 0
+        self.bot_ = 0
+        self.role_ = 0
+        self.channel_ = 0
+        self.text_ = 0
+        self.voice_ = 0
+        self.boost_ = 0
+        self.counted.start()
     
     def cog_unload(self):
-        self.member_counted.cancel()
+        self.counted.cancel()
 
     @tasks.loop(minutes=30)
-    async def member_counted(self):
+    async def counted(self):
         guild = self.bot.get_guild(840379510704046151)
-        if self.index != guild.member_count:
-            self.index = guild.member_count
-            your_channel = guild.get_channel(840379926792110120)
-            new_name = f"♢・welcome・{guild.member_count}"
-            await your_channel.edit(name=new_name)
 
-    @member_counted.before_loop
-    async def before_member_counted(self):
+        total_count = guild.member_count
+        if self.total_ != total_count:
+            self.total_ = total_count
+            total_channel = guild.get_channel(876738880282431489)
+            total_name = f"ᴛᴏᴛᴀʟ‌・{self.total_}"
+            print(total_name)
+            await total_channel.edit(name=total_name)
+        
+        member_count = len([member for member in guild.members if not member.bot])
+        if self.member_ != member_count:
+            self.member_ = member_count
+            member_channel = guild.get_channel(876712142160678923)
+            member_name = f"ᴍᴇᴍʙᴇʀs・{self.member_}"
+            print(member_name)
+            await member_channel.edit(name=member_name)
+
+        bot_count = len([Member for Member in guild.members if Member.bot])
+        if self.bot_ != bot_count:
+            self.bot_ = bot_count
+            bot_channel = guild.get_channel(876724022686150687)
+            bot_name = f"ʙᴏᴛs‌・{self.bot_}"
+            print(bot_name)
+            await bot_channel.edit(name=bot_name)
+        
+        role_count = len(guild.roles)
+        if self.role_ != role_count:
+            self.role_ = role_count
+            role_channel = guild.get_channel(876712169662742588)
+            role_name = f"ʀᴏʟᴇs‌・{self.role_}"
+            print(role_name)
+            await role_channel.edit(name=role_name)
+        
+        channel_count = len(guild.channels)
+        if self.channel_ != channel_count:
+            self.channel_ = channel_count
+            channel_channel = guild.get_channel(876712200214024192)
+            channel_name = f"ᴄʜᴀɴɴᴇʟs・{self.channel_}"
+            print(channel_name)
+            await channel_channel.edit(name=channel_name)
+        
+        text_channel_count = len(guild.text_channels)
+        if self.text_ != text_channel_count:
+            self.text_ = text_channel_count
+            text_channel = guild.get_channel(876740437505871922)
+            text_name = f"ᴛᴇxᴛ・{self.text_}"
+            print(text_name)
+            await text_channel.edit(name=text_name)
+        
+        voice_channel_count = len(guild.voice_channels)
+        if self.voice_ != voice_channel_count:
+            self.voice_ = voice_channel_count
+            voice_channel = guild.get_channel(876740515863879711)
+            voice_name = f"ᴠᴏɪᴄᴇ・{self.voice_}"
+            print(voice_name)
+            await voice_channel.edit(name=voice_name)
+        
+        boost_count = guild.premium_subscription_count
+        if self.boost_ != boost_count:
+            self.boost_ = boost_count
+            boost_channel = guild.get_channel(876737270051389470)
+            boost_name = f"ʙᴏᴏꜱᴛꜱ・{self.boost_}"
+            print(boost_name)
+            await boost_channel.edit(name=boost_name)
+
+    @counted.before_loop
+    async def before_counted(self):
         await self.bot.wait_until_ready()
 
 #    @commands.Cog.listener()

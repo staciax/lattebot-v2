@@ -61,6 +61,10 @@ class Message(commands.Cog):
         if message.content.startswith('latte'):
             await message.delete()
             await message.channel.send('เอะ! เรียกเราหรอ?  <:S_CuteGWave3:859660565160001537>')
+        
+        if message.content.startswith('invite'):
+            await message.delete()
+            await message.channel.send('https://discord.gg/bvwpZ2B4rj' , delete_after=15)
 
         if message.content.startswith('it'):
             await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=10)

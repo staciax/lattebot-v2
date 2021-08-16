@@ -7,7 +7,7 @@ intents = discord.Intents.default()
 intents.members = True
 
 # Third party
-from PIL import Image, ImageDraw , ImageFont , ImageEnhance , ImageFilter
+from PIL import Image, ImageDraw , ImageFont , ImageEnhance , ImageFilter , ImageSequence
 from io import BytesIO
 import requests
 
@@ -17,7 +17,7 @@ from config import *
 
 def level_images(member ,final_xp , lvl , rank , xp):
     background = Image.open('data/images/level.png')
-    url = member.avatar.url
+    url = member.avatar.replace(format='png') #when avater gif = convert gif to png 
     response = requests.get(url)
     logo = Image.open(BytesIO(response.content)).resize((300, 300))
     whitecc =  Image.new("RGB", (310, 310), (119, 221, 119))
@@ -145,5 +145,3 @@ def level_images(member ,final_xp , lvl , rank , xp):
     file=discord.File(buffer, filename='latte-level.png')
     
     return file
-                   
-

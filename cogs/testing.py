@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 # Third party
 #from discord_components import *
+import utils
 
 # Local
 
@@ -20,8 +21,8 @@ class Testing(commands.Cog):
 
     @commands.command()
     async def embed(self, ctx):
-        embed = discord.Embed(title="testing")
-        await ctx.send(embed=embed)
+        member = ctx.author
+        utils.level_gif(member)
     
     @commands.command()
     async def select(self, ctx):

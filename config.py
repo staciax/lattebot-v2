@@ -5,6 +5,7 @@ MYGUILD = 840379510704046151
 DEV_OWNER_ID = 385049730222129152
 
 #helpcommands
+INVITE_LATTE = 'https://discord.gg/bvwpZ2B4rj'
 INVITELINK = '[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=bot%20applications.commands)'
 SUPPORT_SERVER = '[Support Server](https://discord.gg/dZ5NgjnycR)'
 GITHUB_DEV = '[Github](https://github.com/staciax)'
