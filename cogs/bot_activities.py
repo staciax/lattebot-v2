@@ -10,7 +10,7 @@ from datetime import datetime, timedelta, timezone
 intents = discord.Intents.default()
 intents.members = True
 
-class Logbot(commands.Cog):
+class Bot_activities(commands.Cog):
 
     def __init__(self, client):
         self.client = client
@@ -57,4 +57,4 @@ class Logbot(commands.Cog):
         await self.client.get_channel(863811115238948864).send(embed=embed)
 
 def setup(client):
-    client.add_cog(Logbot(client))
+    client.add_cog(Bot_activities(client))

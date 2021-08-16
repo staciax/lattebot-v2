@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, timezone
 
 # Local
 from config import *
+import utils
 
 class Giveaway(commands.Cog):
 
@@ -137,7 +138,7 @@ class Giveaway(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def reroll(self, ctx):
-        async for message in ctx.channel.history(limit=100, oldest_first=False):
+        async for message in ctx.channel.history(limit=30, oldest_first=False):
             if message.author.id == self.client.user.id and message.embeds:
                 reroll = await ctx.fetch_message(message.id)
                 users = await reroll.reactions[0].users().flatten()
@@ -153,14 +154,16 @@ class Giveaway(commands.Cog):
         else:
             await ctx.send("No giveaways going on in this channel.")
 
-    @reroll.error
-    async def reroll_error(self, ctx, error):
-        if isinstance(error, commands.MissingPermissions):
-            await ctx.message.delete()
-            await ctx.send("`Only administrators can use this command.`")
-        else:
-            await ctx.message.delete()
-            await ctx.send("`Error reroll pls check giveaway message again`")
+#    @reroll.error
+#    async def reroll_error(self, ctx, error):
+#        if isinstance(error, commands.MissingPermissions):
+#            embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Only administrators can use this command!",color=0xffffff)
+#            await ctx.message.delete()
+#            await ctx.send(embed=embed , delete_after=15)
+#        else:
+#            embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} **Reroll Error** pls check your giveaway again!",color=0xffffff)
+#            await ctx.message.delete()
+#            await ctx.send(embed=embed , delete_after=15)
 
             
 def setup(client):

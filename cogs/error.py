@@ -40,17 +40,18 @@ class Error(commands.Cog):
         elif isinstance(error, commands.EmojiNotFound):
             cm_error = "I can't find that emoji!"
         elif isinstance(error, commands.MissingPermissions):
-            cm_error = f"You don't have **{str(error)[15:-35]}** permission(s) to run this command!"
+            cm_error = f"You don't have **{str(error)[15:-35]}** **permission(s)** to run this command!"
         elif isinstance(error, commands.MissingRole):
             cm_error = f"You don't have **{error.missing_role}** role(s) to run this command!"
         elif isinstance(error, commands.MissingAnyRole):
             cm_error = f"You don't have **{error.missing_role}** role(s) to run this command!"
         elif isinstance(error, commands.MissingRequiredArgument):
             cm_error = "You didn't pass a required argument!"
+        elif isinstance(error, commands.CheckFailure):
+            cm_error = f"You do not own this bot!"
         else:
             cm_error = f"{error}"
-        embed.add_field(name="Command Error!", value=f"{cm_error}")
-        embed.set_footer(text=self.client.user.name , icon_url=self.client.user.avatar.url)
+        embed.add_field(name="Error!", value=f"{cm_error}")
         await ctx.send(embed=embed, delete_after=15)
     
     @commands.command(name="role_error")

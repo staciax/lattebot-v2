@@ -30,7 +30,7 @@ colorlvl = LVLROLECOLOR #level role color
 cluster = MongoClient(mango_url)
 levelling = cluster[MGDATABASE][MGDOCUMENT]
 
-class xp(commands.Cog):
+class XP(commands.Cog):
 
     def __init__(self, client):
         self.client = client
@@ -213,4 +213,4 @@ class xp(commands.Cog):
     
 def setup(client):
 
-    client.add_cog(xp(client))
+    client.add_cog(XP(client))

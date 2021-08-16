@@ -14,7 +14,7 @@ intents.all()
 
 my_discord = [240059262297047041 , 385049730222129152]
 
-class Dm(commands.Cog):
+class DM_Message(commands.Cog):
 
     def __init__(self, client):
         self.client = client
@@ -66,4 +66,4 @@ class Dm(commands.Cog):
                 await message.delete()
 
 def setup(client):
-    client.add_cog(Dm(client))
+    client.add_cog(DM_Message(client))

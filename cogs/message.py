@@ -104,12 +104,12 @@ class Message(commands.Cog):
         
 #error commands
 
-    @botdm.error
-    async def botdm_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify a member! |`prefix` `bdm [member] [message]`",color=0xffffff)  
+#    @botdm.error
+#    async def botdm_error(self, ctx, error):
+#        if isinstance(error, commands.MissingRequiredArgument):
+#            embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify a member! |`prefix` `bdm [member] [message]`",color=0xffffff)  
 #           await ctx.message.delete()
-            await ctx.send(embed=embed)
+#            await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(Message(client))

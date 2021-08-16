@@ -18,10 +18,11 @@ client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=disc
 
 @client.event
 async def on_ready():
+    bot_activity = "lt help"
     await client.change_presence(activity=discord.Activity(
-        type=discord.ActivityType.listening, name=f"lt help")
+        type=discord.ActivityType.listening, name=bot_activity)
     )
-    print(f"{client.user} in online")
+    print(f"\nName : {client.user}\nActivity : {bot_activity}\nServer : {len(client.guilds)}\nMembers : {len(set(client.get_all_members()))}")
     print(f"\nCogs list\n-----")
 
 @client.command()
@@ -65,5 +66,15 @@ for filename in os.listdir('./cogs'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
 client.load_extension('jishaku')
+
+def owner_bot():
+    def pred(ctx):
+        owner_ids = [385049730222129152, 240059262297047041]
+        if ctx.author.id in owner_ids:
+            return True
+        return False
+    return commands.check(pred)
+
+client.owner_bot = owner_bot()
 
 client.run(TOKEN)

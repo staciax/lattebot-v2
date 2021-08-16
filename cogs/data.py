@@ -15,12 +15,11 @@ import utils
 from config import *
 
 #mongodb
-mango_url = MONGOURL
-cluster = MongoClient(mango_url)
+cluster = MongoClient(MONGOURL)
 check_ping = cluster[MGDATABASE][LATTEDOCUMENT]
 
-intents = discord.Intents.default()
-intents.members = True
+intents = discord.Intents()
+intents.all()
 
 class Data(commands.Cog):
 
@@ -44,8 +43,9 @@ class Data(commands.Cog):
         self.bug_channel = self.client.get_channel(865609918945820692)
         print(f"-{self.__class__.__name__}")
 
+    @utils.owner_bot()
     @commands.command()
-    @commands.is_owner()
+#    @commands.is_owner()
     async def status(self, ctx, statusType: str, *, statusText):
 
         if statusType.lower() == "playing":  # Setting `Playing ` status
@@ -90,8 +90,8 @@ class Data(commands.Cog):
         embed.add_field(name=f"{utils.emoji_converter('mongodb')} Database", value=f"```nim\n{(dbend-dbstart)*1000:,.2f} ms```", inline=True)
         await ctx.send(embed=embed)
     
+    @utils.owner_bot()
     @commands.command(name="stats")
-    @commands.is_owner()
     async def stats(self, ctx):
 
         # bot / version data
@@ -197,6 +197,15 @@ class Data(commands.Cog):
     @commands.command()
     async def pastel(self, ctx):
         await ctx.send("https://colorhunt.co/palettes/pastel")
+    
+    @commands.command()
+    @commands.has_permissions(view_audit_log=True)
+    async def audit(self,ctx, num: int=None):
+        embed=discord.Embed(title='Audit Logs',description="", color=0xffffff)
+        embed.set_footer(text=f"Requested by {ctx.author}")
+        async for entry in ctx.guild.audit_logs(limit=num):
+            embed.description += f'**User:** `{entry.user}` **Action:** `{entry.action}`  **Target:** `{entry.target}`  **Category:** `{entry.category}` **Time:** `{entry.created_at.strftime("%a, %#d %B %Y, %I:%M %p")}\n\n`'
+        await ctx.reply(embed=embed, mention_author=False)
 
 # dm message to my text channel   
 #    @commands.Cog.listener()
@@ -227,21 +236,21 @@ class Data(commands.Cog):
 
 # error commands
 
-    @logout.error
-    async def logout_error(self, ctx, error):
-        embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} You do not own this bot.",color=0xffffff)
-        await ctx.send(embed=embed)
-        await ctx.message.delete()
+#    @logout.error
+#    async def logout_error(self, ctx, error):
+#        embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} You do not own this bot.",color=0xffffff)
+#        await ctx.send(embed=embed , delete_after=15)
+#        await ctx.message.delete()
 
-    @status.error
-    async def status_error(self, ctx, error):
-        embedra = discord.Embed(description=f"{utils.emoji_converter('xmark')} `prefix status` `[statustype]` `[statustext]`\n\n `Status Type` : `playing` | `Streaming` | `Listening` | `Watching`",color=0xffffff)
-        embedow = discord.Embed(description=f"{utils.emoji_converter('xmark')}You do not own this bot.",color=0xffffff)
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(embed=embedra)
-        else:
-            await ctx.send(embed=embedow)
-            await ctx.message.delete()
+#    @status.error
+#    async def status_error(self, ctx, error):
+#        embedra = discord.Embed(description=f"{utils.emoji_converter('xmark')} `prefix status` `[statustype]` `[statustext]`\n\n `Status Type` : `playing` | `Streaming` | `Listening` | `Watching`",color=0xffffff)
+#        embedow = discord.Embed(description=f"{utils.emoji_converter('xmark')}You do not own this bot.",color=0xffffff)
+#        if isinstance(error, commands.MissingRequiredArgument):
+#            await ctx.send(embed=embedra , delete_after=15)
+#        else:
+#            await ctx.send(embed=embedow , delete_after=15)
+#            await ctx.message.delete()
 
 def setup(client):
     client.add_cog(Data(client))

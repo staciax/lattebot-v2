@@ -19,7 +19,7 @@ intents.members = True
 
 emoji_s = utils.emoji_converter
 
-class Info(commands.Cog):
+class Infomation(commands.Cog):
 
     def __init__(self, client):
         self.client = client
@@ -38,7 +38,7 @@ class Info(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
 
-    @commands.command(aliases=['sv'])
+    @commands.command(aliases=["sv", "serverinformation", "serverinformations" , "guildinfo"])
     @commands.guild_only()
     async def serverinfo(self, ctx):
 
@@ -57,7 +57,7 @@ class Info(commands.Cog):
 
         embed = discord.Embed(title=f"Server info - {ctx.guild.name}",color=0xffffff)
         fields = [("Server name",ctx.guild.name, True),
-				("Server Owner",f"{ctx.guild.owner.display_name}#{ctx.guild.owner.discriminator}", True),
+				("Server Owner",f"{ctx.guild.owner.mention}", True),
                 ("Server Region",str(ctx.guild.region).title(), True),
                 ("Server Member",len([member for member in ctx.guild.members if not member.bot]), True),
                 ("Server Bots",len([Member for Member in ctx.guild.members if Member.bot]), True),
@@ -79,9 +79,9 @@ class Info(commands.Cog):
             embed.add_field(name=name, value=value, inline=inline)
         embed.set_thumbnail(url=ctx.guild.icon.url)
     
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed , mention_author=False)
 
-    @commands.command(aliases=["ui", "userinformation", "userinformations"] , pass_context=True)
+    @commands.command(aliases=["ui", "userinformation", "userinformations"])
     async def userinfo(self, ctx, member: discord.Member = None):
         if not member:
             member = ctx.message.author  
@@ -101,8 +101,9 @@ class Info(commands.Cog):
         members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
         member_activity = f"{str(member.activity.type).title().split('.')[1]} {member.activity.name}" if member.activity is not None else "** **"
         roles = [role for role in member.roles]
+        role_str = []
         if len(member.roles) > 1:
-            role_string = ' '.join([r.mention for r in member.roles][1:])
+            role_string = ' '.join(reversed([r.mention for r in member.roles][1:]))
 
         embed = discord.Embed(colour=0xffffff)  #timestamp=ctx.message.created_at, #title=f"User Info - {member}")        embed.set_author(name=f"User info - {member}", icon_url=member.avatar.url)
         fields = [("Nickname",f"{member.display_name}", True),
@@ -114,7 +115,7 @@ class Info(commands.Cog):
                 ("Status",f"{desktop}\n{mobiles}\n{Web}", True),
                 ("Badge :",f"{badges}** **", True),
                 ("Top Role",member.top_role.mention, False),
-                ("Roles ({})\n".format(len(member.roles)-1),role_string, False)]
+                ("Roles ({})\n".format(len(member.roles)-1), role_string , False)]
 
         for name , value , inline in fields:
             embed.add_field(name=name , value=value , inline=inline)
@@ -210,17 +211,18 @@ class Info(commands.Cog):
 
 #error
 
-    @emoji_info.error
-    async def emoji_info_error(self , ctx , error):
-        await ctx.send("not found")
+#    @emoji_info.error
+#    async def emoji_info_error(self , ctx , error):
+#        embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Emoji not found",color=0xffffff)
+#        await ctx.send(embed=embedar , delete_after=15)
 
-    @poll.error
-    async def poll_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify message | `poll` `[message]`",color=0xffffff)
-            await ctx.message.delete()
-            await ctx.send(embed=embedar)
+#    @poll.error
+#    async def poll_error(self, ctx, error):
+#        if isinstance(error, commands.MissingRequiredArgument):
+#            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify message to poll | `poll` `[message]`",color=0xffffff)
+#            await ctx.message.delete()
+#            await ctx.send(embed=embedar , delete_after=15)
 
 
 def setup(client):
-    client.add_cog(Info(client))
+    client.add_cog(Infomation(client))

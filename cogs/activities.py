@@ -32,12 +32,12 @@ class Activities(commands.Cog):
 
     @tasks.loop(minutes=30)
     async def member_counted(self):
-        print(self.index)
         guild = self.bot.get_guild(840379510704046151)
         if self.index != guild.member_count:
             self.index = guild.member_count
             your_channel = guild.get_channel(840379926792110120)
-            await your_channel.edit(name=guild.member_count)
+            new_name = f"♢・welcome・{guild.member_count}"
+            await your_channel.edit(name=new_name)
 
     @member_counted.before_loop
     async def before_member_counted(self):
@@ -52,8 +52,8 @@ class Activities(commands.Cog):
 #			        await channel.edit(name=f'♢・latte・{member.guild.member_count}')
 #			        break
 #auto riole event
-##@client.event  // auto role
-##async def on_member_join(member):
+#@commands.Cog.listener()
+#async def on_member_join(self, member):
 ##  role = get(member.guild.roles, id=role_id)
 ##  await member.add_roles(role)
 

@@ -12,7 +12,7 @@ from config import *
 
 emojis = utils.emoji_converter
 
-class Help_con(commands.Cog): 
+class Help_support(commands.Cog): 
 
     def __init__(self, client):
         self.client = client
@@ -67,4 +67,4 @@ class Help_con(commands.Cog):
             await ctx.send(embed=utils.NSFW(ctx), delete_after=100)
       
 def setup(client):
-    client.add_cog(Help_con(client))
+    client.add_cog(Help_support(client))
