@@ -8,14 +8,20 @@ from time import perf_counter
 # Third party
 import psutil
 import pymongo 
+import json
 from pymongo import MongoClient
 
 # Local
 import utils
 from config import *
 
+#open_json
+with open('bot_config/secrets.json') as f:
+    data = json.load(f)
+
 #mongodb
-cluster = MongoClient(MONGOURL)
+mango_url = data["mongo"]
+cluster = MongoClient(mango_url)
 check_ping = cluster[MGDATABASE][LATTEDOCUMENT]
 
 intents = discord.Intents()
@@ -43,8 +49,8 @@ class Data(commands.Cog):
         self.bug_channel = self.client.get_channel(865609918945820692)
         print(f"-{self.__class__.__name__}")
 
-    @utils.owner_bot()
     @commands.command()
+    @utils.owner_bot()
 #    @commands.is_owner()
     async def status(self, ctx, statusType: str, *, statusText):
 
@@ -61,7 +67,6 @@ class Data(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
-    @commands.guild_only()
     async def invite(self, ctx):
         embed = discord.Embed(title=f"**invite bot**",description=f"**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.client.guilds)}** servers︰𓂃 ꒱\n\n⸝⸝﹒{INVITELINK} ꒱",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
         embed.set_thumbnail(url=self.client.user.avatar.url)
@@ -90,8 +95,8 @@ class Data(commands.Cog):
         embed.add_field(name=f"{utils.emoji_converter('mongodb')} Database", value=f"```nim\n{(dbend-dbstart)*1000:,.2f} ms```", inline=True)
         await ctx.send(embed=embed)
     
-    @utils.owner_bot()
     @commands.command(name="stats")
+    @utils.owner_bot()
     async def stats(self, ctx):
 
         # bot / version data
@@ -164,6 +169,7 @@ class Data(commands.Cog):
         await self.client.logout()
     
     @commands.command(name="bm")
+    @commands.guild_only()
     async def bm(self, ctx, *, message=None):
         embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify what message bot send the message | `prefix` `bm [message]`",color=0xffffff)
         if message == None:
@@ -199,6 +205,7 @@ class Data(commands.Cog):
         await ctx.send("https://colorhunt.co/palettes/pastel")
     
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(view_audit_log=True)
     async def audit(self,ctx, num: int=None):
         embed=discord.Embed(title='Audit Logs',description="", color=0xffffff)

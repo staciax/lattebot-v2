@@ -20,10 +20,14 @@ class Message(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.afk={}
+        self.afk = {}
+        self.sniped_message = {}
+        self.sniped_text = {}
+        self.sniped_img = {}
         print(f"-{self.__class__.__name__}")
 
     @commands.command() 
+    @commands.guild_only()
     async def afk(self, ctx, *, reason=None):
         if reason is None:
             reason = "personal problems"
@@ -89,7 +93,80 @@ class Message(commands.Cog):
         if self.client.user.mentioned_in(message):
             await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=15)
     
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        if message.guild.id == MYGUILD:
+            if message.author == self.client.user:
+                return
+            if message.content:
+                self.sniped_text[message.guild.id] = (message.content, message.author, message.channel.name, message.created_at)
+
+            if message.attachments:
+                image = message.attachments[0].proxy_url
+                self.sniped_img[message.guild.id] = (image , message.author, message.channel.name, message.created_at)
+            else:
+                image = "none"
+
+            self.sniped_message[message.guild.id] = (image , message.content, message.author, message.channel.name, message.created_at)
+        
+    @commands.command(name="snipe", aliases=["sni", "blackmail"] ,description="snipe message and image")
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def snipe(self , ctx , choice=None):
+        embed = discord.Embed(description= "" ,color=0xffffff)
+        text_aliases = ["t", "text"]
+        images_aliases = ["i", "image" , "images"]
+        if choice == None:
+            if self.sniped_message:
+                try:
+                    image , content , author , channel_name, time = self.sniped_message[ctx.guild.id]
+                except:
+                    await ctx.channel.send("Couldn't find a message to snipe!")
+                    return
+                if image == "none":
+                    embed.description += f"{content}"
+                    embed.timestamp = time
+                    embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
+                    embed.set_footer(text=f"Deleted in : {channel_name}")
+                    await ctx.channel.send(embed=embed)
+                else:
+                    embed.description += f"{content}"
+                    embed.timestamp = time
+                    embed.set_image(url=image)
+                    embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
+                    embed.set_footer(text=f"Deleted in : {channel_name}")
+                    await ctx.channel.send(embed=embed)
+            else:
+                await ctx.channel.send("Couldn't find a message to snipe!")
+                return
+
+        elif choice in images_aliases: #snipe image
+            try:
+                image , author , channel_name, time = self.sniped_img[ctx.guild.id]
+            except:
+                await ctx.channel.send("Couldn't find a message to snipe!")
+                return
+
+            embed = discord.Embed(color=0xffffff , timestamp=time)
+            embed.set_image(url=image)
+            embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
+            embed.set_footer(text=f"Deleted in : {channel_name}")
+            await ctx.channel.send(embed=embed)
+  
+        elif choice in text_aliases: #snipe text
+            try:
+                content , author , channel_name, time = self.sniped_text[ctx.guild.id]
+            except:
+                await ctx.channel.send("Couldn't find a message to snipe!")
+                return
+                
+            embed = discord.Embed(description=content , color=0xffffff , timestamp=time)
+            embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
+            embed.set_footer(text=f"Deleted in : {channel_name}")
+            await ctx.channel.send(embed=embed)
+
     @commands.command(name='bdm')
+    @commands.guild_only()
     @commands.has_permissions(administrator = True)
     async def botdm(self, ctx, member: discord.Member, reason=None):
         embedrr = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify a message! |`prefix` `bdm [member] [message]`",color=0xffffff)    

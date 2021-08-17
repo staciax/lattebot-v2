@@ -82,6 +82,7 @@ class Infomation(commands.Cog):
         await ctx.send(embed=embed , mention_author=False)
 
     @commands.command(aliases=["ui", "userinformation", "userinformations"])
+    @commands.guild_only()
     async def userinfo(self, ctx, member: discord.Member = None):
         if not member:
             member = ctx.message.author  

@@ -1,11 +1,14 @@
 # Standard 
-import discord , datetime , asyncio
+import discord , datetime , asyncio , os
 import json
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 
 # Third party
 from re import search
+from io import BytesIO
+import aiohttp
+
 # Local
 import utils
 from config import *
@@ -339,6 +342,7 @@ class Moderation(commands.Cog):
             await member.send(embed=embedmute)
             await asyncio.sleep(amount * multiplier[unit])
             await member.remove_roles(roles1)
+
 #        else:
 #            await ctx.guild.create_role(name=MUTEROLE)
 #            role = get(ctx.guild.roles, name=MUTEROLE)
@@ -353,6 +357,36 @@ class Moderation(commands.Cog):
 #        await ctx.send(f'{member} has been banned for {amount}{unit}.')
 #        await asyncio.sleep(amount * multiplier[unit])
 #        await ctx.guild.unban(member)
+    
+    @commands.command(aliases=["createei","create_emoji", "add_emoji"], description="create emoji from link")
+    @commands.guild_only()
+    @commands.has_permissions(manage_emojis=True)
+    async def createemoji(self, ctx, url: str, *, name):
+        guild = ctx.guild
+        async with aiohttp.ClientSession() as ses:
+            async with ses.get(url) as r:
+                try:
+                    img_or_gif = BytesIO(await r.read())
+                    b_value = img_or_gif.getvalue()
+                    if r.status in range(200, 299):
+                        emoji = await guild.create_custom_emoji(image=b_value, name=name)
+                        await ctx.send(f'Successfully created emoji: <:{name}:{emoji.id}>')
+                        await ses.close()
+                    else:
+                        await ctx.send(f'Error when making request | {r.status} response.')
+                        await ses.close()
+                except discord.HTTPException:
+                    await ctx.send('File size is too big!')
+
+    @commands.command(aliases=["delei","delete_emoji", "del-ei"], description="delete emoji")
+    @commands.guild_only()
+    @commands.has_permissions(manage_emojis=True)
+    async def deleteemoji(self, ctx, emoji: discord.Emoji):
+        try:
+            await ctx.send(f'Successfully deleted : {emoji}')
+            await emoji.delete()
+        except:
+            await ctx.send('error delete emoji!')
 
     @commands.command() #testonlyme
     @utils.is_me()

@@ -55,6 +55,7 @@ class Error(commands.Cog):
         await ctx.send(embed=embed, delete_after=15)
     
     @commands.command(name="role_error")
+    @commands.guild_only()
     @commands.has_permissions(kick_members=True)
     async def role_error(self, ctx):
         await ctx.send("error role")

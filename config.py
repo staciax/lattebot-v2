@@ -1,7 +1,6 @@
 #standard
 PREFIX = ["lt ","l " , "-"]
-TOKEN = 'ODU0MTM0NDAyOTU0ODIxNjQz.YMfgpg.nAFyoLIAJ3K0jLFLEp0AAkJ6s9k'
-MYGUILD = 840379510704046151
+MYGUILD = 840379510704046151 #latte
 DEV_OWNER_ID = 385049730222129152
 
 #helpcommands
@@ -11,10 +10,10 @@ SUPPORT_SERVER = '[Support Server](https://discord.gg/dZ5NgjnycR)'
 GITHUB_DEV = '[Github](https://github.com/staciax)'
 
 #data , last update time
-BOTVERSION = 'v2.0 pre release'
+BOTVERSION = 'v2.0 bata'
 UYEAR = 2021
 UMONTH = 8
-UDATE = 12
+UDATE = 17
  
 #welcone, leave alert
 WELCOME = '♢・welcome'
@@ -52,11 +51,7 @@ CHAT_CH = 861883647070437386 , 840398821544296480 , 863438518981361686 , 8599606
 PRIVATE_LOGS = 850507964938715196 , 863075138441707580 , 869305100156420106 , 844462710526836756 , 875284204781449227 , 861874852050894868
 #nsfw , onlyfans , underworld , bot-2 , nsfw2 , bot-1
 
-#fun
-GIPHYAPI = '8DkQhUOR3dPIMPAzJCgonC7ZW5pnjU3V'
-
 #mongoDB
-MONGOURL = 'mongodb+srv://xstacia:kNxTCMtGzVZVQF5j@stacia.welr1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 MGDATABASE = "discord" #database
 MGDOCUMENT = "levelling" #new
 LATTEDOCUMENT = "latte_guild"

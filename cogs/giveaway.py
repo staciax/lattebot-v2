@@ -136,6 +136,7 @@ class Giveaway(commands.Cog):
         await ctx.send(f"You won giveaway **{winnerstosend}** Please contact Host **{ctx.author.mention}**")
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def reroll(self, ctx):
         async for message in ctx.channel.history(limit=30, oldest_first=False):

@@ -1,0 +1,181 @@
+cd folder
+
+sudo apt-get install python3-venv
+
+sudo apt-get update 
+
+sudo apt-get install python3-venv (y)
+
+----
+
+python3 -m venv venv
+source venv/bin/activate
+
+--------
+
+touch config.py (add key token when dont have token file)
+vim config.py 
+
+----python3 main.py
+
+pip3 install -r requiments.txt
+
+python3 bot.py
+
+nohup python3 -u bot.py &>> activity.log &
+
+exit
+
+git clone https://ghp_{token_github}:x-oauth-basic@github.com/staciax/Latte-bot-v2-dpy-v2.0.0a
+
+rm -rf folder
+
+pip install -m "pymongo[srv]" 
+pip install jishaku
+pip install requests
+pip install numpy
+pip install Pillow
+pip install discord_components
+pip install giphy_client
+pip install pymongo
+pip install wheel
+pip install -U git+https://github.com/Rapptz/discord.py
+pip install anime-images-api
+pip install hmtai
+pip install psutil
+
+----------------------json load
+
+import json
+
+#for reading the file
+with open('database/file.json') as f:
+    data = json.load(f)
+
+#for writing to the file
+with open('database/file.json','w') as f:
+    json.dump(data,f)
+
+
+---------------------- pillow 
+
+import aiohttp
+
+async with aiohttp.ClientSession() as session:
+    async with session.get(<some url>) as response:
+        image_bytes = await response.read()
+
+# in an executor
+from io import BytesIO
+from PIL import Image
+
+with Image.open(BytesIO(avatar_bytes)) as my_image:
+    # do whatever with your image
+    output_buffer = BytesIO()
+    my_image.save(output_buffer, "png")  # or whatever format
+    output_buffer.seek(0)
+
+# back in your async function
+await ctx.send(file=discord.File(fp=output_buffer, filename="my_file.png"))
+
+
+---------------------- permissions
+@commands.guild_only()
+# Command cannot be used in private messages.
+
+@commands.is_owner()
+# Command can only be used by the bot owner.
+
+@commands.is_nsfw()
+# Command can only be used in NSFW channels
+
+@commands.has_role("name") 
+# Check if member has a role with the name "name"
+
+@commands.bot_has_role(11132312313213) 
+# As above, but for the bot itself. (name can be replaced with id)
+
+@commands.has_any_role(["role1","foo",11132312313213]) 
+# Check if user has any of the roles with the names "role1", "foo", or the role with id 11132312313213
+
+@commands.bot_has_any_role(*roles) 
+# As above, but for the bot itself
+
+@commands.has_permissions([ban_members=True, kick_members=True]) 
+# Check if user has all of the passed permissions 
+#  e.g. this command will require both kick and ban permissions
+
+@commands.bot_has_permissions(**perms)
+# As above, but for the bot itself.
+
+@commands.has_guild_permissions(**perms)
+@commands.bot_has_guild_permissions(**perms)
+# As for the two above, but for guild permissions rather than channel permissions.
+
+@commands.check(myfunction)
+# Check against your own function that returns those able to use your command
+
+@commands.check_any(*myfunctions)
+# Command will be ran if the conditions of any of your own check functions are met
+
+from discord.ext.commands.cooldowns import BucketType
+# BucketType can be BucketType.default, member, user, guild, role, or channel
+@commands.cooldown(rate,per,BucketType) 
+# Limit how often a command can be used, (num per, seconds, BucketType)
+
+@commands.max_concurrency(number, per=BucketType.default, *, wait=False)
+# Limit how many instances of the command can be running at the same time.
+# Setting wait=True will queue up additional commands. False will raise MaxConcurrencyReached
+
+https://discordpy.readthedocs.io/en/latest/api.html#discord.Permissions
+
+manage_channels
+manage_emojis
+manage_guild
+manage_messages
+manage_nicknames
+manage_permissions
+manage_roles
+manage_webhooks
+mention_everyone
+move_members
+mute_members
+priority_speaker
+read_message_history
+read_messages
+request_to_speak
+send_messages
+send_tts_messages
+speak
+stream
+use_external_emojis
+use_slash_commands
+use_voice_activation
+value
+view_audit_log
+view_channel
+view_guild_insights
+
+
+----
+
+@welcome.command(name="create")
+    @commands.cooldown(rate=1, per=20, type=commands.BucketType.guild)
+    async def start(self, ctx):
+        """  Creates a json welcome for you!  """
+        fileopen = r"data/sc/" + str(ctx.guild.id) + ".welcome.json"
+        file = open(fileopen, "w", encoding="utf-8")
+        data = {}
+        data["guild"] = f"NAME={ctx.guild.name} ID={ctx.guild.id} OWNER={ctx.guild.owner}"
+        data["welcome_message"] = "Not specified"
+        data["channel"] = f"{ctx.channel.id}"
+        data["user"] = "ID: " + str(ctx.message.author.id) + " Username: " + str(
+            ctx.message.author.name) + "#" + str(ctx.message.author.discriminator) + " <<< Creator"
+        json.dump(data, file, ensure_ascii=False)
+        file.close()
+        embed = discord.Embed(
+            title="Welcomer",
+            description=f"Welcomer has started! Remember to use an id when editing the channel\nWelcomer has been set to {ctx.channel.name} by default",
+            color=0xFFA500
+        )
+        await ctx.send(embed=embed)

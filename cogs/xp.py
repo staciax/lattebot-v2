@@ -7,6 +7,7 @@ intents = discord.Intents.default()
 intents.members = True
 
 # Third party
+import json
 import pymongo 
 from pymongo import MongoClient
 from PIL import Image, ImageDraw , ImageFont , ImageEnhance , ImageFilter
@@ -14,6 +15,7 @@ from io import BytesIO
 import requests
 
 # Local
+import json
 import utils
 from config import * 
 from utils import Pag
@@ -22,8 +24,12 @@ from utils import Pag
 bot_channel = BOT_CH
 chat_channel = CHAT_CH
 
+#open_json
+with open('bot_config/secrets.json') as f:
+    data = json.load(f)
+
 #mongodb
-mango_url = MONGOURL
+mango_url = data["mongo"]
 level = LVLROLE #level role
 levelnum = LVLNUM #level number
 colorlvl = LVLROLECOLOR #level role color
@@ -65,11 +71,10 @@ class XP(commands.Cog):
                                 await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
                                 embed = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
 #                                embed.set_thumbnail(url=message.author.avatar.url)
-
                                 await msg.edit(embed=embed)
                  
-    @commands.command()
-    async def testlevel(self, ctx):
+    @commands.command(name="xp2")
+    async def level_2(self, ctx):
         if ctx.channel.id in bot_channel: #only one ch use '==' , more use 'in'
             stats = levelling.find_one({"id": ctx.author.id})
             if stats is None:
@@ -90,12 +95,13 @@ class XP(commands.Cog):
                     rank += 1
                     if stats["id"] == x["id"]:
                         break
-                embed = discord.Embed(title="{}'s level stats".format(ctx.author.name))
-                embed.add_field(name="Name" , value=ctx.author.mention , inline=True)
+                embed = discord.Embed(color=0xffffff)
+#                embed.add_field(name="Name" , value=ctx.author.mention , inline=True)
+                embed.set_author(name=f'{ctx.author.name}s level stats', icon_url=ctx.author.avatar.url)
                 embed.add_field(name="XP", value=f"{xp}/{int(200*((1/2)*lvl))}", inline=True)
-                embed.add_field(name="XP", value=str(lvl), inline=True)
+                embed.add_field(name="Level", value=str(lvl), inline=True)
                 embed.add_field(name="Rank", value=f"{rank}/{ctx.guild.member_count}", inline=True)
-                embed.add_field(name="Progress bar [lvl]", value=boxes * "<a:Aqua_panic:864932442191560735>" + (20-boxes) * ":white_large_square:", inline=False)
+                embed.add_field(name="Progress bar [lvl]", value="<:start_full:876998828048416849>" + boxes * "<:mid_full:876998976774234183>" + (17-boxes) * "<:mid_empty:876998865734221865>" + "<:end_blank:876998841818292224>", inline=False)
                 await ctx.channel.send(embed=embed)
 
     @commands.command(aliases=['rank', 'ranking'])

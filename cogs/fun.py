@@ -4,9 +4,9 @@ from discord.ext import commands
 from datetime import datetime, timezone
 
 # Third party
+import json
 import io
 import aiohttp , random , anime_images_api , requests , json
-
 anime = anime_images_api.Anime_Images()
 
 import typing , unicodedata
@@ -22,6 +22,7 @@ class Fun(commands.Cog):
         self.client = client
 
     @commands.command(brief="Any message to owo")
+    @commands.guild_only()
     @commands.is_owner()
     async def owo(self, ctx):
         await ctx.send(text_to_owo(ctx.message.content))
@@ -115,16 +116,16 @@ class Fun(commands.Cog):
     @commands.command(aliases=['gif'])
     @commands.guild_only()
     async def giphy(self, ctx, *, search=None):
+        gipht_apis = self.client.giphy_api_
         embed = discord.Embed(colour=0xffffff)
         session = aiohttp.ClientSession()
-
         if search == None:
-            response = await session.get('https://api.giphy.com/v1/gifs/random?api_key=8DkQhUOR3dPIMPAzJCgonC7ZW5pnjU3V')
+            response = await session.get(f'https://api.giphy.com/v1/gifs/random?api_key={gipht_apis}')
             data = json.loads(await response.text())
             embed.set_image(url=data['data']['images']['original']['url'])
         else:
             search.replace(' ', '+')
-            response = await session.get('http://api.giphy.com/v1/gifs/search?q=' + search + '&api_key=8DkQhUOR3dPIMPAzJCgonC7ZW5pnjU3V&limit=10')
+            response = await session.get('http://api.giphy.com/v1/gifs/search?q=' + search + f'&api_key={gipht_apis}&limit=10')
             data = json.loads(await response.text())
             gif_choice = random.randint(0, 9)
             embed.set_image(url=data['data'][gif_choice]['images']['original']['url'])

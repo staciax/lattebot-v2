@@ -1,14 +1,16 @@
 # Standard 
-import discord , json , os , datetime , random , asyncio , re
+import discord , json , os , datetime , random , asyncio , re , io , contextlib , logging
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta
 
 # Third party 
-import pymongo
-from pymongo import MongoClient
+import textwrap
+from traceback import format_exception
 
 # Local
 from config import *
+import utils.json_loader
+from utils import clean_code , Pag
 
 intents = discord.Intents()
 intents.all()
@@ -24,6 +26,12 @@ async def on_ready():
     )
     print(f"\nName : {client.user}\nActivity : {bot_activity}\nServer : {len(client.guilds)}\nMembers : {len(set(client.get_all_members()))}")
     print(f"\nCogs list\n-----")
+
+#json_secret_file
+secret_file = utils.json_loader.read_json("secrets")
+client.config_token = secret_file["token"]
+client.connection_url = secret_file["mongo"]
+client.giphy_api_ = secret_file["giphy"]
 
 @client.command()
 async def prefix(ctx):
@@ -65,6 +73,46 @@ for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
+@client.command(name="eval", aliases=["exec"])
+@commands.is_owner()
+async def _eval(ctx, *, code):
+#    await ctx.reply("Let me evaluate this code for you! Won't be a sec")
+    code = clean_code(code)
+
+    local_variables = {
+        "discord": discord,
+        "commands": commands,
+        "bot": client,
+        "ctx": ctx,
+        "channel": ctx.channel,
+        "author": ctx.author,
+        "guild": ctx.guild,
+        "message": ctx.message,
+    }
+
+    stdout = io.StringIO()
+
+    try:
+        with contextlib.redirect_stdout(stdout):
+            exec(
+                f"async def func():\n{textwrap.indent(code, '    ')}", local_variables,
+            )
+
+            obj = await local_variables["func"]()
+            result = f"{stdout.getvalue()}\n-- {obj}\n"
+    except Exception as e:
+        result = "".join(format_exception(e, e, e.__traceback__))
+
+    pager = Pag(
+        timeout=100,
+        entries=[result[i : i + 2000] for i in range(0, len(result), 2000)],
+        length=1,
+        prefix="```py\n",
+        suffix="```",
+    )
+
+    await pager.start(ctx)
+
 client.load_extension('jishaku')
 
 def owner_bot():
@@ -77,4 +125,4 @@ def owner_bot():
 
 client.owner_bot = owner_bot()
 
-client.run(TOKEN)
+client.run(client.config_token)
