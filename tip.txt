@@ -26,11 +26,11 @@ nohup python3 -u bot.py &>> activity.log &
 
 exit
 
-git clone https://ghp_{token_github}:x-oauth-basic@github.com/staciax/Latte-bot-v2-dpy-v2.0.0a
+git clone https://ghp_{}:x-oauth-basic@github.com/staciax/Latte-bot-v2-dpy-v2.0.0a
 
 rm -rf folder
 
-pip install -m "pymongo[srv]" 
+python3 -m pip install "pymongo[srv]"
 pip install jishaku
 pip install requests
 pip install numpy
@@ -43,6 +43,8 @@ pip install -U git+https://github.com/Rapptz/discord.py
 pip install anime-images-api
 pip install hmtai
 pip install psutil
+py -version -m pip install buttons
+scordpy:~/Latt
 
 ----------------------json load
 
