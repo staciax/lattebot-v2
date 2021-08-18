@@ -87,7 +87,7 @@ class Fun(commands.Cog):
                         await ctx.send(embed=embed)
                     else:
                         embed.description = "This is not a NSFW channel, **NSFW** is alollowed in <#850507964938715196>"
-                        await ctx.send(embed=embed)          
+                        await ctx.send(embed=embed, delete_after=15)        
                 else:
                     img_link = anime.get_sfw(f"{category}")
                     embed.set_image(url=img_link)
@@ -109,7 +109,7 @@ class Fun(commands.Cog):
                 else:
                     embed = discord.Embed(color=0xffffff)
                     embed.description = "This is not a NSFW channel, **NSFW** is alollowed in <#850507964938715196>"
-                    await ctx.send(embed=embed)          
+                    await ctx.send(embed=embed , delete_after=15)          
             except:
                 return
     
