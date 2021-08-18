@@ -16,46 +16,77 @@ class Latte_config(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        with open("bot_config/latte.json", "r" , encoding='UTF8') as f:
-            self.latte = json.load(f)
-
+    
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
+        self.welcome = {}
+        self.leave = {}
 
-    @commands.command()
-    async def welcome_(self, ctx , channel: discord.TextChannel=None):
+    #set_welcome_channel
+    @commands.group(invoke_without_command=True)
+    async def set(self, ctx):
+        await ctx.send(embed=utils.set_channel_embed(ctx))
+            
+    @set.group(invoke_without_command=True)
+    async def welcome(self, ctx , channel: discord.TextChannel=None): 
         if channel is None:
-            channel = ctx.channel  
-        channel_name = channel.name
+            await ctx.send(embed=utils.welcome_help(ctx))
+            return
 
-        self.latte["welcome"] = channel_name
-
-        with open("bot_config/latte.json", "w" , encoding='UTF8') as welcome_change:
-            json.dump(self.latte, welcome_change, indent=4)
-        
-        await ctx.send(f"set welcome channel : {self.latte['welcome']}")
-        
+        self.welcome[ctx.guild.id] = channel.id
+        with open("bot_config/set_welcome.json", "w") as welcome_: #encoding='UTF8'
+            json.dump(self.welcome, welcome_ , indent=4)
+            
+        await ctx.send(f"set welcome channel : {channel.mention}")
     
-    @commands.command()
-    async def leave_(self, ctx , channel: discord.TextChannel=None):
+    @welcome.command(name="delete")
+    async def delete_(self ,ctx):
+        self.welcome[ctx.guild.id] = None
+
+        with open("bot_config/set_welcome.json", "w") as welcome_: #encoding='UTF8'
+            json.dump(self.welcome, welcome_, indent=4)
+        
+        await ctx.send(f"channel is deleted")
+    
+    #set_leave_channel
+    @set.group(invoke_without_command=True)
+    async def leave(self, ctx , channel: discord.TextChannel=None): 
         if channel is None:
-            channel = ctx.channel
-        channel_name = channel.name
+            await ctx.send('You havent defined text channel!')
+            return
+        self.leave[ctx.guild.id] = channel.id
+        with open("bot_config/set_leave.json", "w") as welcome_change: #encoding='UTF8'
+            json.dump(self.leave, welcome_change, indent=4)
 
-        self.latte["leave"] = channel_name
+        await ctx.send(f"set leave channel : {channel.mention}")
+    
+    @leave.command(name="delete")
+    async def delete__(self, ctx):
+        self.leave[ctx.guild.id] = None
+        with open("bot_config/set_leave.json", "w") as welcome_change: #encoding='UTF8'
+            json.dump(self.leave, welcome_change, indent=4)
+        
+        await ctx.send(f"set leave channel : {self.leave[ctx.guild.id]}")
 
-        with open("bot_config/latte.json", "w" , encoding='UTF8') as welcome_change:
-            json.dump(self.latte, welcome_change, indent=4)
+#    @commands.command(name="del-w-off")
+#    async def del_welcome_(self, ctx):
+#        with open('bot_config/welcome.json', 'w') as w:
+#            with open('bot_config/welcome.json', 'r') as r:
+#                for line in r:
+#                    element = json.loads(line.strip())
+#                    if f"{ctx.guild.id}" in element:
+#                        del element[f"{ctx.guild.id}"]
+#                    w.write(json.dumps(element))
+#        
+#       await ctx.send("test")
 
 #    @commands.command()
-#    async def set_welcome(self, ctx):
-#        file = open('bot_config/latte.json', 'w',encoding='UTF8')
-#        data = {}
-#        data["welcome"] = f"{ctx.channel.name}"
-#        data
-#        json.dump(data, file, ensure_ascii=False)
-#        file.close()
+#    async def test_wel(self, ctx):
+#        data = utils.json_loader.read_json("welcome")
+#        channel = data[f"{ctx.guild.id}"]
+#
+#        await ctx.send(channel)
         
 def setup(client):
     client.add_cog(Latte_config(client))

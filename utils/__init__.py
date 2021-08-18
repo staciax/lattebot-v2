@@ -6,3 +6,4 @@ from .xpimg import *
 from .help_converter import*
 from .owner import *
 from .json_loader import *
+from .embed_converter import *

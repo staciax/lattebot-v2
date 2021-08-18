@@ -189,7 +189,7 @@ class Moderation(commands.Cog):
 
     @commands.command(description="leave voice channel")
     @commands.guild_only()
-    async def leave(self, ctx):
+    async def leave_(self, ctx):
 #        await ctx.message.delete()
         await ctx.voice_client.disconnect()
 

@@ -1,14 +1,18 @@
 # Standard 
-import discord , datetime , time , os
+import discord , datetime , time , os , io
 from discord.ext import commands , tasks
 from datetime import datetime, timezone
 from discord.channel import TextChannel
 from asyncio import sleep
 
 # Third party
+import json
+import requests
+
 # Local
 from config import *
 import utils
+import utils.json_loader
 from utils import create_voice_channel , get_channel_by_name
 
 intents = discord.Intents()
@@ -36,6 +40,18 @@ class Activities(commands.Cog):
     
     def cog_unload(self):
         self.counted.cancel()
+    
+    @commands.Cog.listener()
+    async def on_ready(self):
+        self.log_welcome = self.bot.get_channel(WELCOME_LOG)
+        self.log_leave = self.bot.get_channel(lEAVE_LOG)
+        self.log_channel = self.bot.get_channel(SERVER_LOG)
+        self.log_voice = self.bot.get_channel(VOICE_LOG)
+        self.log_message = self.bot.get_channel(MESSAGE_LOG)
+        self.log_roles = self.bot.get_channel(ROLES_LOG)
+        print(f"-{self.__class__.__name__}")
+        for guild in self.client.guilds:
+            self.invites[guild.id] = await guild.invites()
 
     @tasks.loop(minutes=30)
     async def counted(self):
@@ -124,20 +140,7 @@ class Activities(commands.Cog):
 ##  await member.add_roles(role)
 
     @commands.Cog.listener()
-    async def on_ready(self):
-        self.log_welcome = self.bot.get_channel(WELCOME_LOG)
-        self.log_leave = self.bot.get_channel(lEAVE_LOG)
-        self.log_channel = self.bot.get_channel(SERVER_LOG)
-        self.log_voice = self.bot.get_channel(VOICE_LOG)
-        self.log_message = self.bot.get_channel(MESSAGE_LOG)
-        self.log_roles = self.bot.get_channel(ROLES_LOG)
-        print(f"-{self.__class__.__name__}")
-        for guild in self.client.guilds:
-            self.invites[guild.id] = await guild.invites()
-    
-    @commands.Cog.listener()
     async def on_member_join(self, member):
-        if member.guild.id == MYGUILD: #only my guild
             """welcome log"""
             invites_before_join = self.invites[member.guild.id]
             invites_after_join = await member.guild.invites()
@@ -157,18 +160,26 @@ class Activities(commands.Cog):
 #                    return     
 
             """welcome embed"""
-        
-            embed=discord.Embed(
+            with open("bot_config/set_welcome.json", "r" , encoding='UTF8') as f:
+                self.welcome = json.load(f)
+            data = self.welcome[f'{member.guild.id}']
+            if data is None:
+                print("channel is none")
+                return
+            elif data:
+                guild = self.client.get_guild(member.guild.id)
+                channel = guild.get_channel(data)
+                embed=discord.Embed(
                             description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
                             timestamp=datetime.now(timezone.utc),
                             color=0xc4cfcf
     
                 )
-            embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
-            embed.set_thumbnail(url=member.avatar.url)
-            embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
+                embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
+                embed.set_thumbnail(url=member.avatar.url)
+                embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
 
-            await self.log_welcome.send(embed=embed)
+                await channel.send(embed=embed)
     
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
@@ -197,15 +208,23 @@ class Activities(commands.Cog):
             self.invites[member.guild.id] = await member.guild.invites()
 
             """leave embed"""
-
-            embed = discord.Embed(
+            with open("bot_config/set_leave.json", "r" , encoding='UTF8') as f:
+                self.leave = json.load(f)
+            data = self.leave[f'{member.guild.id}']
+            if data is None:
+                print("channel is none")
+                return
+            elif data:
+                guild = self.client.get_guild(member.guild.id)
+                channel = guild.get_channel(data)
+                embed = discord.Embed(
                         description=f"**Leave Server\n`{member}`**",
                         color=0xdbd7d2)
-            embed.set_thumbnail(url=member.avatar.url)
-            embed.set_footer(text="—・see ya good bye")
-            embed.timestamp = datetime.now(timezone.utc)
+                embed.set_thumbnail(url=member.avatar.url)
+                embed.set_footer(text="—・see ya good bye")
+                embed.timestamp = datetime.now(timezone.utc)
 
-            await self.log_leave.send(embed = embed) #await channel.send(f"{member} has left the server")
+                await channel.send(embed = embed) 
     
     @commands.Cog.listener()
     async def on_invite_create(self, invite: discord.Invite):

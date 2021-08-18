@@ -1,12 +1,14 @@
 #standard
-PREFIX = ["lt ","l " , "-"]
+PREFIX = ["lt ","l " , ".."]
 MYGUILD = 840379510704046151 #latte
 DEV_OWNER_ID = 385049730222129152
+
+# \u200b 
 
 #helpcommands
 INVITE_LATTE = 'https://discord.gg/bvwpZ2B4rj'
 INVITELINK = '[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=bot%20applications.commands)'
-SUPPORT_SERVER = '[Support Server](https://discord.gg/dZ5NgjnycR)'
+SUPPORT_SERVER = '[Support Server](https://discord.gg/bmRhc6DyqB)'
 GITHUB_DEV = '[Github](https://github.com/staciax)'
 
 #data , last update time
@@ -86,5 +88,3 @@ PTYELLOW2 = 0xfcfc64
 PTRED = 0xFF3D33
 PTRED2 = 0xd34e4e
 PTGREEN = 0x77dd77
-
-# \u200b 
