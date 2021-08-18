@@ -134,13 +134,15 @@ class Message(commands.Cog):
                         content_check = f"\n**Content:** ```{content}```"
                     else:
                         content_check = ""
-                    embed.description += f"**Deleted in:** {channel_name}{content_check}"
+                    embed.description += f"**Deleted in:** {channel_name}{content_check}\n**Attachments :** [**URL**]({image})"
                     embed.timestamp = time
-                    embed.set_image(url=image)
+                    try:
+                        embed.set_image(url=image)
+                    except:
+                        pass
                     embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
                     embed.set_footer(text=f"Message delete")
 
-                    await ctx.message.delete()
                     await ctx.channel.send(embed=embed)
             else:
                 await ctx.channel.send("Couldn't find a message to snipe!")
@@ -153,12 +155,14 @@ class Message(commands.Cog):
                 await ctx.channel.send("Couldn't find a message to snipe!")
                 return
 
-            embed = discord.Embed(description=f"**Deleted in:** {channel_name}\n",color=0xffffff , timestamp=time)
-            embed.set_image(url=image)
+            embed = discord.Embed(description=f"**Deleted in:** {channel_name}\n**Attachments :** [**URL**]({image})",color=0xffffff , timestamp=time)
+            try:
+                embed.set_image(url=image)
+            except:
+                pass
             embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
             embed.set_footer(text=f"Message delete")
             await ctx.channel.send(embed=embed)
-            await ctx.message.delete()
   
         elif choice in text_aliases: #snipe text
             try:
@@ -170,7 +174,6 @@ class Message(commands.Cog):
             embed = discord.Embed(description=f"**Deleted in:** {channel_name}\n**Content:** ```{content}```" , color=0xffffff , timestamp=time)
             embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
             embed.set_footer(text=f"Message delete")
-            await ctx.message.delete()
             await ctx.channel.send(embed=embed)
 
     @commands.command(name='bdm')

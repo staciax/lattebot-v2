@@ -1,5 +1,5 @@
 #standard
-PREFIX = ["lt ","l " , ".."]
+PREFIX = ["lt ","l " , "."]
 MYGUILD = 840379510704046151 #latte
 DEV_OWNER_ID = 385049730222129152
 
@@ -15,7 +15,7 @@ GITHUB_DEV = '[Github](https://github.com/staciax)'
 BOTVERSION = 'v2.0 bata'
 UYEAR = 2021
 UMONTH = 8
-UDATE = 17
+UDATE = 18
  
 #welcone, leave alert
 WELCOME = '♢・welcome'

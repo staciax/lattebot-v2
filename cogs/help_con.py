@@ -28,15 +28,15 @@ class Help_support(commands.Cog):
 
         if category == None:
             embedhelp = discord.Embed(title="✧ LATTE Help", description="Prefix of this bot `lt ` or `l `\nUse `commands` below for more info on an command. \n",color=0xffffff)
-            fields = [(f"•{emojis('shidapout')} **Utility**", "`-lt help util`" , True),
-                    (f"•{emojis('ShinoSmirk')} **Infomation**", "`-lt help info`", True),
-                    (f"•{emojis('lutoaraka')} **Moderation**", "`-lt help mod`", True),
-                    (f"•{emojis('winkai')} **Giveaway**", "`-lt help gw`", True),
-                    (f"•{emojis('wowanime')} **Fun**", "`-lt help fun`", True),
-                    (f"•{emojis('Ani1')} **Meta**", "`-lt help meta`", True),
-                    (f"•{emojis('chocolawow')} **Reaction Roles**", "`-lt help rr`", True),
-                    (f"•{emojis('ClevelandDeal')} **Leveling**", "`-lt help level`", True),
-                    (f"•{emojis('tohka')} **NSFW**", "`-lt help nsfw`", True)]
+            fields = [(f"•{emojis('shidapout')} **Utility**", "`lt help util`" , True),
+                    (f"•{emojis('ShinoSmirk')} **Infomation**", "`lt help info`", True),
+                    (f"•{emojis('lutoaraka')} **Moderation**", "`lt help mod`", True),
+                    (f"•{emojis('winkai')} **Giveaway**", "`lt help gw`", True),
+                    (f"•{emojis('wowanime')} **Fun**", "`lt help fun`", True),
+                    (f"•{emojis('Ani1')} **Meta**", "`lt help meta`", True),
+                    (f"•{emojis('chocolawow')} **Reaction Roles**", "`lt help rr`", True),
+                    (f"•{emojis('ClevelandDeal')} **Leveling**", "`lt help level`", True),
+                    (f"•{emojis('tohka')} **NSFW**", "`lt help nsfw`", True)]
                 
             for name, value, inline in fields:
                 embedhelp.add_field(name=name, value=value, inline=inline)
