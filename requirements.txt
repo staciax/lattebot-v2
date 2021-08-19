@@ -1,0 +1,12 @@
+wheel
+git+https://github.com/Rapptz/discord.py
+jishaku
+requests
+Pillow
+giphy_client
+pymongo
+anime-images-api
+psutil
+parsedatetime
+buttons
+pymongo[srv]

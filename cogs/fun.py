@@ -1,5 +1,5 @@
 # Standard 
-import discord , datetime , time
+import discord , datetime , time , asyncio
 from discord.ext import commands
 from datetime import datetime, timezone
 
@@ -20,6 +20,18 @@ class Fun(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+    
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f"-{self.__class__.__name__}")
+    
+    @commands.command(name="pastel" , description="pastel color")
+    async def pastel(self, ctx):
+        await ctx.send("https://colorhunt.co/palettes/pastel")
+    
+    @commands.command(name="color", description="color hex")
+    async def color(self, ctx):
+        await ctx.send("https://www.color-hex.com/")
 
     @commands.command(brief="Any message to owo")
     @commands.guild_only()

@@ -96,6 +96,30 @@ class Message(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         if message.guild.id == MYGUILD:
+            #.
+            if message.content.startswith('.sni'):
+                return
+            if message.content.startswith('.snipe'):
+                return
+            if message.content.startswith('.blackmail'):
+                return
+
+            #l
+            if message.content.startswith('l sni'):
+                return
+            if message.content.startswith('l snipe'):
+                return
+            if message.content.startswith('l blackmail'):
+                return
+
+            #lt
+            if message.content.startswith('lt sni'):
+                return
+            if message.content.startswith('lt snipe'):
+                return
+            if message.content.startswith('lt blackmail'):
+                return
+            
             if message.author == self.client.user:
                 return
             if message.content:

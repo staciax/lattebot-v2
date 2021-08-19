@@ -44,16 +44,20 @@ class Reaction(commands.Cog):
                 role = discord.utils.get(guild.roles, name="⠀ blue sky ੭")
             if emoji == '861128979313328128':
                 role = discord.utils.get(guild.roles, name="⠀ mint ੭")
-        
-            await member.add_roles(role)
+
+            role_lvl = discord.utils.get(guild.roles, name="・ ──────꒰ ・ colors ・ ꒱────── ・")
+
+            await member.add_roles(role_lvl , role)
 
         if VerifyID == payload.message_id:
 
-            if emoji == '861800747293212672':
+            if emoji == '861800747293212672':    
                 role = discord.utils.get(guild.roles, name="Vanilla・・ ✦")
-                role2 = discord.utils.get(guild.roles, name="・┈・┈・┈・Level!・┈・┈・┈・⠀⠀")
+                role2 = discord.utils.get(guild.roles, name="・ ──────꒰ ・ colors ・ ꒱────── ・")
+                role3 = discord.utils.get(guild.roles, name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
+                role4 = discord.utils.get(guild.roles, name="・ ──────꒰ ・ levels ・ ꒱────── ・")
 
-            await member.add_roles(role , role2)
+            await member.add_roles(role , role2 , role3 , role4)
 
         """ MATCHA SERVER """
 
@@ -104,12 +108,14 @@ class Reaction(commands.Cog):
             guild = await(self.client.fetch_guild(payload.guild_id))
             emoji = str(payload.emoji.id)
 
-            if emoji == '861800747293212672':
+            if emoji == '861800747293212672':    
                 role = discord.utils.get(guild.roles, name="Vanilla・・ ✦")
-                role2 = discord.utils.get(guild.roles, name="・┈・┈・┈・Level!・┈・┈・┈・⠀⠀")
+                role2 = discord.utils.get(guild.roles, name="・ ──────꒰ ・ colors ・ ꒱────── ・")
+                role3 = discord.utils.get(guild.roles, name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
+                role4 = discord.utils.get(guild.roles, name="・ ──────꒰ ・ levels ・ ꒱────── ・")
                 
             if member is not None:
-                await member.remove_roles(role , role2)
+                await member.remove_roles(role , role2 , role3 , role4)
             else:
                 print("Member Not Fount")
         

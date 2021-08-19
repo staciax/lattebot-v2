@@ -48,7 +48,8 @@ class Error(commands.Cog):
         elif isinstance(error, commands.MissingRequiredArgument):
             cm_error = "You didn't pass a required argument!"
         elif isinstance(error, commands.CheckFailure):
-            cm_error = f"You do not own this bot!"
+            print(f"check fail {ctx.author.name}")
+            return
         else:
             cm_error = f"{error}"
         embed.add_field(name="Error!", value=f"{cm_error}")

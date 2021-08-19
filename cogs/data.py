@@ -46,6 +46,7 @@ class Data(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         self.log_channel = self.client.get_channel(REPORTBUG)
+        self.request_message = self.client.get_channel(REQUEST_ME)
         self.bug_channel = self.client.get_channel(865609918945820692)
         print(f"-{self.__class__.__name__}")
 
@@ -178,7 +179,7 @@ class Data(commands.Cog):
             await ctx.send(f'{message}')
             await ctx.message.delete()
     
-    @commands.command(aliases=['report','bug','fb'])
+    @commands.command(aliases=['report','bug'])
     async def feedback(self, ctx):
         def check(m):
             return m.author == ctx.author and m.channel == ctx.channel
@@ -200,9 +201,26 @@ class Data(commands.Cog):
         await self.log_channel.send(embed=reportembed)
         await ctx.send(embed=embedsc)
     
-    @commands.command()
-    async def pastel(self, ctx):
-        await ctx.send("https://colorhunt.co/palettes/pastel")
+    @commands.command(aliases=['req','Requests'])
+    @utils.is_latte_guild()
+    async def request(self, ctx):
+        def check(m):
+            return m.author == ctx.author and m.channel == ctx.channel
+
+        await ctx.send("write what you want to requests?")
+        try:
+            msg1 = await self.client.wait_for('message', check=check, timeout=30.0)
+        except asyncio.TimeoutError:
+            await ctx.send("You took to long, please try again.")
+
+        embedq = discord.Embed(title="Request",
+                                 description=f"{msg1.content}",
+                                 color=0xffffff)
+
+        embedf = discord.Embed(description="Thanks for your request!")
+
+        await self.request_message.send(embed=embedq)
+        await ctx.send(embed=embedf)
     
     @commands.command()
     @commands.guild_only()

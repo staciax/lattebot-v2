@@ -68,7 +68,7 @@ class Latte_config(commands.Cog):
             json.dump(self.leave, welcome_change, indent=4)
         
         await ctx.send(f"set leave channel : {self.leave[ctx.guild.id]}")
-
+    
 #    @commands.command(name="del-w-off")
 #    async def del_welcome_(self, ctx):
 #        with open('bot_config/welcome.json', 'w') as w:

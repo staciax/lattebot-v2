@@ -1,6 +1,9 @@
 import discord, re, random
 from discord.ext import commands
 from discord.http import Route
+import humanize
+import datetime
+from datetime import datetime, timedelta, timezone
 
 from utils import emoji_converter
 
@@ -116,11 +119,12 @@ def system_channel(ctx):
     return sy
 
 def check_boost(ctx):
+    format_relative = lambda dt: discord.utils.format_dt(dt, 'R')
     if ctx.guild.premium_tier != 0:
         boosts = f'**Level:** {ctx.guild.premium_tier}\n**Boosts:** {ctx.guild.premium_subscription_count}'
         last_boost = max(ctx.guild.members, key=lambda m: m.premium_since or ctx.guild.created_at)
         if last_boost.premium_since is not None:
-            boosts = f'{boosts}\n**Last Boost:**\n{last_boost}'
+            boosts = f'{boosts}\n**Last Boost:**\n{last_boost} ({format_relative(last_boost.premium_since)})'
     else:
         boosts_1 = f'**Level:** \n**Boosts:** '
         boosts = f'{boosts_1}\n**Last Boost:**\n'
