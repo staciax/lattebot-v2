@@ -43,8 +43,6 @@ class Activities(commands.Cog):
     
     @commands.Cog.listener()
     async def on_ready(self):
-        self.log_welcome = self.bot.get_channel(WELCOME_LOG)
-        self.log_leave = self.bot.get_channel(lEAVE_LOG)
         self.log_channel = self.bot.get_channel(SERVER_LOG)
         self.log_voice = self.bot.get_channel(VOICE_LOG)
         self.log_message = self.bot.get_channel(MESSAGE_LOG)
@@ -62,7 +60,7 @@ class Activities(commands.Cog):
             self.total_ = total_count
             total_channel = guild.get_channel(876738880282431489)
             total_name = f"ᴛᴏᴛᴀʟ‌・{self.total_}"
-            print(total_name)
+            print(f"\n\n{total_name}")
             await total_channel.edit(name=total_name)
         
         member_count = len([member for member in guild.members if not member.bot])
@@ -160,11 +158,9 @@ class Activities(commands.Cog):
 #                    return     
 
             """welcome embed"""
-            with open("bot_config/set_welcome.json", "r" , encoding='UTF8') as f:
-                self.welcome = json.load(f)
-            data = self.welcome[f'{member.guild.id}']
+            welcome_ch = utils.json_loader.read_json("welcome")
+            data = welcome_ch[str(member.guild.id)]
             if data is None:
-                print("channel is none")
                 return
             elif data:
                 guild = self.client.get_guild(member.guild.id)
@@ -208,11 +204,9 @@ class Activities(commands.Cog):
             self.invites[member.guild.id] = await member.guild.invites()
 
             """leave embed"""
-            with open("bot_config/set_leave.json", "r" , encoding='UTF8') as f:
-                self.leave = json.load(f)
-            data = self.leave[f'{member.guild.id}']
+            leave_ch = utils.json_loader.read_json("leave")
+            data = leave_ch[str(member.guild.id)]
             if data is None:
-                print("channel is none")
                 return
             elif data:
                 guild = self.client.get_guild(member.guild.id)

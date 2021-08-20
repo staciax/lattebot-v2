@@ -32,14 +32,13 @@ MUTEROLE = '୭ muted ୭'
 COLORMUTE = 0xff9f9f #when don't have mute role
 
 #moderation
-WELCOME_LOG = 840379926792110120 #memberjoin /cog/activies
-lEAVE_LOG = 864227597696499713 #memberleave /cog/activies
 SERVER_LOG = 859789105507598346 #guildlog /cog/logguild
 VOICE_LOG = 870173863726682112 #voicelog /cog/logguild
-GIVEAWAY_LOG = 840396784299147315 #giveaway /cog/giveaway
 MESSAGE_LOG = 873690030751748206 #message /cog/activies
 ROLES_LOG = 873688581682634762 #roles /cog/activies
 REQUEST_ME = 877885398263668746 #request /cog/data
+GIVEAWAY_LOG = 840396784299147315 #giveaway /cog/giveaway
+
 
 #other
 REPORTBUG = 865609918945820692 #reportbug /cog/data

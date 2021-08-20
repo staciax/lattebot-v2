@@ -51,9 +51,12 @@ class Error(commands.Cog):
             print(f"check fail {ctx.author.name}")
             return
         else:
-            cm_error = f"{error}"
-        embed.add_field(name="Error!", value=f"{cm_error}")
-        await ctx.send(embed=embed, delete_after=15)
+            print(error)
+            return
+
+#            cm_error = f"{error}"
+#        embed.add_field(name="Error!", value=f"{cm_error}")
+#        await ctx.send(embed=embed, delete_after=15)
     
     @commands.command(name="role_error")
     @commands.guild_only()

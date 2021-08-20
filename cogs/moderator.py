@@ -99,7 +99,7 @@ class Moderation(commands.Cog):
             await ctx.channel.purge(limit=(int(amount) + 1))
             await ctx.send(embed=embed, delete_after=10)
 
-    @commands.command(description="mute member")
+    @commands.command(aliases=["fmute"],description="mute member")
     @commands.has_permissions(administrator = True)
     @commands.guild_only()
     async def muteforce(self, ctx, member: discord.Member, *, reason=None):
@@ -195,7 +195,7 @@ class Moderation(commands.Cog):
 
     @commands.command(description="lockdown or unlock text channel" , aliases=['lock', 'lockdown'])
     @commands.guild_only()
-    @commands.has_guild_permissions(manage_channels=True)
+    @utils.admin_or_permissions(manage_channels=True)
 #    @commands.bot_has_guild_permissions(manage_channels=True)
     async def lock_down(self, ctx, channel: discord.TextChannel=None):
         channel = channel or ctx.channel
@@ -219,14 +219,16 @@ class Moderation(commands.Cog):
             await channel.set_permissions(ctx.guild.default_role, overwrite=overwrites)
             await ctx.send(embed=embed3)
 
-    @commands.command()
+    @commands.command(aliases=["nick"])
+    @utils.admin_or_permissions(manage_nicknames=True)
     @commands.guild_only()
     async def changenick(self, ctx , member: discord.Member, nick):
         embed = discord.Embed(description=f"Nickname was changed for {member.display_name}",color=0xffffff)
         await member.edit(nick=nick)
         await ctx.channel.send(embed=embed)
     
-    @commands.command()
+    @commands.command(aliases=["slow"])
+    @utils.admin_or_permissions(manage_channels=True)
     @commands.guild_only()
     async def slowmode(self, ctx ,*, seconds: int= None):
             if seconds == None:
@@ -238,6 +240,7 @@ class Moderation(commands.Cog):
                 await ctx.channel.edit(slowmode_delay=seconds)
                 await ctx.channel.send(embed=embed)
 
+    #spam_alert
     @commands.Cog.listener()
     async def on_message(self, message):
         def _check(m):
@@ -305,7 +308,7 @@ class Moderation(commands.Cog):
 #                await message.delete()
 #                await message.channel.send("You can't send images here.", delete_after=10)
     
-    @commands.command()
+    @commands.command(aliases=["tban"])
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def tempban(self, ctx, member: utils.BetterMemberConverter, duration: utils.DurationConverter):
@@ -318,7 +321,7 @@ class Moderation(commands.Cog):
         await asyncio.sleep(amount * multiplier[unit])
         await ctx.guild.unban(member)
 
-    @commands.command()
+    @commands.command(aliases=["tmute"])
     @commands.guild_only()
     @commands.has_permissions(administrator = True)
 #    @commands.has_permissions(manage_channels=True, manage_roles=True) 

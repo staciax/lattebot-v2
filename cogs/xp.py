@@ -53,6 +53,9 @@ class XP(commands.Cog):
                 if stats is None:
                     newuser = {"id" : message.author.id, "xp" : 100}
                     levelling.insert_one(newuser)
+                    guild = message.guild
+                    lvl_bar = discord.utils.get(guild.roles, id = 854503041775566879)#・ ──────꒰ ・ levels ・ ꒱────── ・
+                    await message.author.add_roles(lvl_bar)
                 else:
                     xp = stats["xp"] + 5
                     levelling.update_one({"id":message.author.id}, {"$set":{"xp":xp}})
