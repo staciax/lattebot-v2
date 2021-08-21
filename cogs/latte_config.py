@@ -178,8 +178,39 @@ class Latte_config(commands.Cog):
         except:
             print("error")
 
-    #testing
-    @commands.command()
+    #start_only
+    @commands.group(invoke_without_command=True)
+    async def only(self, ctx):
+        await ctx.send("server , message , voice , role")
+
+    #only_image     
+    @only.group(invoke_without_command=True)
+    async def image(self, ctx , channel: discord.TextChannel=None): 
+        if channel is None:
+            channel = ctx.channel
+        
+        data = utils.json_loader.read_json("latte")
+
+        data["only-image"] = channel.id
+        try:
+            utils.json_loader.write_json(data, "latte")
+            await ctx.send(f'set server-log log channel : {data["only-image"]}')
+        except:
+            print("error")
+
+    @image.command(name="delete")
+    async def delete_image(self ,ctx):
+        data = utils.json_loader.read_json("latte")
+        data["only-image"] = None
+        try:
+            utils.json_loader.write_json(data, "latte")
+            await ctx.send(f"server-log channel is deleted")
+        except:
+            print("error")
+
+
+    #view_config
+    @commands.command(aliases=["lconfig"])
     @utils.owner_bot()
     async def latte_config(self, ctx, *, json_config = None):
         guild = self.bot.get_guild(840379510704046151)

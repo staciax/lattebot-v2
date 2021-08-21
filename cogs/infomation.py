@@ -128,19 +128,15 @@ class Infomation(commands.Cog):
     @commands.command(aliases=['av'])
     @commands.guild_only()
     async def avatar(self, ctx, *, member: discord.Member = None):
-        if not member:
-            member = ctx.message.author
-
-        embed = discord.Embed(title = f"{member.name}'s avatar", color = 0xffffff)
-        embed.set_image(url =  member.avatar.url) # Shows the avatar
+        member = member or ctx.author
+        embed = discord.Embed(title = f"{member.name}'s Avatar:", color=0xffffff).set_image(url = member.avatar.url)
         await ctx.send(embed = embed)
 
     @commands.command(name="emojiinfo", aliases=["ei"])
     @commands.guild_only()
     async def emoji_info(self, ctx, emoji: discord.Emoji = None):
         if not emoji:
-#            embed = discord.Embed()
-            return await ctx.invoke(self.client.get_command("help"), entity="emojiinfo")
+            return await ctx.invoke(self.client.get_command("custom_help"))
 
         try:
             emoji = await emoji.guild.fetch_emoji(emoji.id)
@@ -181,15 +177,6 @@ class Infomation(commands.Cog):
         )
         embed.set_thumbnail(url=emoji.url)
         await ctx.send(embed=embed)
-
-    @commands.command()
-    @commands.guild_only()
-    async def poll(self, ctx,*,message):
-        embed = discord.Embed(title="POLL", description=f"{message}",color=0xffffff)
-        msg = await ctx.channel.send(embed=embed)
-        await msg.add_reaction(f'{utils.emoji_converter("check")}')
-        await msg.add_reaction(f'{utils.emoji_converter("xmark")}')
-        await ctx.message.delete()
     
     @commands.command(brief = "gives info on emoji_id and emoji image.")
     @commands.guild_only()

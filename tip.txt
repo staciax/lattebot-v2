@@ -182,3 +182,11 @@ view_guild_insights
             color=0xFFA500
         )
         await ctx.send(embed=embed)
+
+Bot.get_channel(channel_id) # ➔ discord.TextChannel / discord.VoiceChannel / discord.CategoryChannel / discord.DMChannel
+Bot.get_guild(guild_id) # ➔ discord.Guild
+Guild.get_channel(channel_id) # ➔ discord.TextChannel / discord.VoiceChannel / discord.CategoryChannel / discord.DMChannel
+Guild.get_member(member_id) # ➔ discord.Member
+discord.utils.get(Guild.roles, name='my role') # ➔ discord.Role
+discord.utils.get(Guild.roles, id=role_id) # ➔ discord.Role
+discord.utils.find(lambda r: r.name == 'my role', Guild.roles) #

@@ -1,25 +1,21 @@
 #standard
 PREFIX = ["lt ","l " , "."]
 MYGUILD = 840379510704046151 #latte
-DEV_OWNER_ID = 385049730222129152
+DEV_OWNER_ID = 240059262297047041 #385049730222129152
 
-# \u200b 
-
-#helpcommands
-INVITE_LATTE = 'https://discord.gg/bvwpZ2B4rj'
-INVITELINK = '[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=bot%20applications.commands)'
-SUPPORT_SERVER = '[Support Server](https://discord.gg/bmRhc6DyqB)'
-GITHUB_DEV = '[Github](https://github.com/staciax)'
-
-#data , last update time
-BOTVERSION = 'v2.0 bata'
+#last update time #\u200b 
+BOTVERSION = "v2.0 bata"
 UYEAR = 2021
 UMONTH = 8
-UDATE = 18
- 
-#welcone, leave alert
-WELCOME = '♢・welcome'
-LEAVE = '♢・leave'
+UDATE = 22
+
+#helpcommands
+INVITE_LATTE = "https://discord.gg/bvwpZ2B4rj"
+INVITELINK = "[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=bot%20applications.commands)"
+SUPPORT_SERVER = "[Support Server](https://discord.gg/bmRhc6DyqB)"
+GITHUB_DEV = "[Github](https://github.com/staciax)"
+
+#invite_log
 SERVER_LOG_INVITE = "server-log"
 
 #reactionrole
@@ -28,7 +24,7 @@ COLOR = 861212646057443338
 VERIFYMATCHA = 873042881189920809
 
 #mute
-MUTEROLE = '୭ muted ୭'
+MUTEROLE = "୭ muted ୭"
 COLORMUTE = 0xff9f9f #when don't have mute role
 
 #moderation
@@ -38,7 +34,6 @@ MESSAGE_LOG = 873690030751748206 #message /cog/activies
 ROLES_LOG = 873688581682634762 #roles /cog/activies
 REQUEST_ME = 877885398263668746 #request /cog/data
 GIVEAWAY_LOG = 840396784299147315 #giveaway /cog/giveaway
-
 
 #other
 REPORTBUG = 865609918945820692 #reportbug /cog/data
@@ -57,6 +52,8 @@ PRIVATE_LOGS = 850507964938715196 , 863075138441707580 , 869305100156420106 , 84
 MGDATABASE = "discord" #database
 MGDOCUMENT = "levelling" #new
 LATTEDOCUMENT = "latte_guild"
+
+#level_system
 LVLROLE = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
 LVLNUM = [3,5,10,20,30,40,45,50,60]
 LVLROLECOLOR = [0xeedad1,0xc39b7d,0xffbfd7,0xdbc6eb,0xfdffbc,0xc1e7b8,0xc5ffff,0xec6fc1,0xb98fe4]

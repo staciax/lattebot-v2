@@ -8,7 +8,7 @@ import utils
 #from discord_components import *
 #import humanize
 from utils import Pag
-#from discord.ext import menus
+from discord.ext import menus
 
 # Local
 

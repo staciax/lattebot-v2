@@ -73,12 +73,11 @@ class XP(commands.Cog):
                             if lvl == levelnum[i]:
                                 await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
                                 embed = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
-#                                embed.set_thumbnail(url=message.author.avatar.url)
                                 await msg.edit(embed=embed)
                  
     @commands.command(name="xp2")
     async def level_2(self, ctx):
-        if ctx.channel.id in bot_channel: #only one ch use '==' , more use 'in'
+        if ctx.channel.id in bot_channel: 
             stats = levelling.find_one({"id": ctx.author.id})
             if stats is None:
                 embed = discord.Embed(description="You haven't sent any messages, **no xp**!!")
@@ -196,9 +195,9 @@ class XP(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def xprole(self, ctx):
-        embed = discord.Embed(description="", color=PTYELLOW)
+        embed = discord.Embed(description="", color=0xffffff)
         embed.title = "✧ LATTE XP ROLE!"
-        lvlbar = "・┈・┈・┈・Level!・┈・┈・┈・⠀⠀"
+        lvlbar = "・ ──────꒰ ・ levels ・ ꒱────── ・"
         lvlbar2 = discord.utils.get(ctx.author.guild.roles, name=lvlbar)
         if not lvlbar2:
             await ctx.guild.create_role(name=lvlbar , colour=0x18191c)

@@ -2,5 +2,6 @@
     "server-log": null,
     "message-log": null,
     "voice-log": null,
-    "role-log": null
+    "role-log": null,
+    "only-image": null
 }

@@ -4,7 +4,6 @@ from datetime import datetime, timedelta, timezone
 from discord.ext import commands
 
 # Third party
-#from discord_components import *
 
 # Local
 import utils
@@ -19,13 +18,11 @@ class Help_support(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        #DiscordComponents(self.client)
         print(f"-{self.__class__.__name__}")
     
-    @commands.command()
+    @commands.command(name="help" , aliases=["latte"])
     @commands.guild_only()
-    async def help(self, ctx, *, category=None):
-
+    async def custom_help(self, ctx, *, category=None):
         if category == None:
             embedhelp = discord.Embed(title="✧ LATTE Help", description="Prefix of this bot `lt ` or `l `\nUse `commands` below for more info on an command. \n",color=0xffffff)
             fields = [(f"•{emojis('shidapout')} **Utility**", "`lt help util`" , True),

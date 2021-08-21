@@ -26,6 +26,7 @@ class Reaction(commands.Cog):
         guild = member.guild
         emoji = str(payload.emoji.id)
 
+        #latte_color
         if ColourID == payload.message_id:
 
             if emoji == '861130565804621835':
@@ -45,27 +46,25 @@ class Reaction(commands.Cog):
             if emoji == '861128979313328128':
                 role = discord.utils.get(guild.roles, name="⠀ mint ੭")
 
-            role_lvl = discord.utils.get(guild.roles, name="・ ──────꒰ ・ colors ・ ꒱────── ・")
+            role_lvl = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
 
-            await member.add_roles(role_lvl , role)
-
+            await member.add_roles(role)
+        
+        #latte_verify
         if VerifyID == payload.message_id:
-
             if emoji == '861800747293212672':    
-                role = discord.utils.get(guild.roles, name="Vanilla・・ ✦")
-                role2 = discord.utils.get(guild.roles, name="・ ──────꒰ ・ colors ・ ꒱────── ・")
-                role3 = discord.utils.get(guild.roles, name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
-                role4 = discord.utils.get(guild.roles, name="・ ──────꒰ ・ levels ・ ꒱────── ・")
+                role = discord.utils.get(guild.roles, id = 842309176104976387) #name="Vanilla・・ ✦")
+                role2 = discord.utils.get(guild.roles, id = 854503426977038338) #name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
+                role3 = discord.utils.get(guild.roles, id = 854503041775566879) #name="・ ──────꒰ ・ levels ・ ꒱────── ・")
 
-            await member.add_roles(role , role2 , role3 , role4)
+            await member.add_roles(role , role2 , role3)
 
         """ MATCHA SERVER """
-
         if MatchaID == payload.message_id:
             if emoji == '873028548724670555':
-                role = discord.utils.get(guild.roles, name="♡ ~ 𝙈𝘼𝙄𝘿𝙀𝙉 ~♡")
+                role = discord.utils.get(guild.roles, id = 735500646882607156) #name="♡ ~ 𝙈𝘼𝙄𝘿𝙀𝙉 ~♡")
             if emoji == '873029782592446464':
-                role = discord.utils.get(guild.roles, name="✭ : 𝘽𝙐𝙏𝙇𝙀𝙍 : ✭")
+                role = discord.utils.get(guild.roles, id = 858186876494151716) # name="✭ : 𝘽𝙐𝙏𝙇𝙀𝙍 : ✭")
             
             await member.add_roles(role)
             
@@ -80,6 +79,7 @@ class Reaction(commands.Cog):
         emoji = str(payload.emoji.id)
         member = await(guild.fetch_member(payload.user_id))
 
+        #latte_color
         if ColourID == payload.message_id:
 
             if emoji == '861130565804621835':
@@ -99,33 +99,34 @@ class Reaction(commands.Cog):
             if emoji == '861128979313328128':
                 role = discord.utils.get(guild.roles, name="⠀ mint ੭") 
 
+            role_lvl = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
+
             if member is not None:
-                await member.remove_roles(role)
+                await member.remove_roles(role , role_lvl)
             else:
                 print("Member Not Fount")
-    
+
+        #latte_verify
         if VerifyID == payload.message_id:
             guild = await(self.client.fetch_guild(payload.guild_id))
             emoji = str(payload.emoji.id)
 
             if emoji == '861800747293212672':    
-                role = discord.utils.get(guild.roles, name="Vanilla・・ ✦")
-                role2 = discord.utils.get(guild.roles, name="・ ──────꒰ ・ colors ・ ꒱────── ・")
-                role3 = discord.utils.get(guild.roles, name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
-                role4 = discord.utils.get(guild.roles, name="・ ──────꒰ ・ levels ・ ꒱────── ・")
+                role = discord.utils.get(guild.roles, id = 842309176104976387)#name="Vanilla・・ ✦")
+                role2 = discord.utils.get(guild.roles, id = 854503426977038338) #name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
+                role3 = discord.utils.get(guild.roles, id = 854503041775566879) #name="・ ──────꒰ ・ levels ・ ꒱────── ・")
                 
             if member is not None:
-                await member.remove_roles(role , role2 , role3 , role4)
+                await member.remove_roles(role , role2 , role3)
             else:
                 print("Member Not Fount")
         
         """ MATCHA SERVER """
-
         if MatchaID == payload.message_id:
             if emoji == '873028548724670555':
-                role = discord.utils.get(guild.roles, name="♡ ~ 𝙈𝘼𝙄𝘿𝙀𝙉 ~♡")
+                role = discord.utils.get(guild.roles, id = 735500646882607156) #name="♡ ~ 𝙈𝘼𝙄𝘿𝙀𝙉 ~♡")
             if emoji == '873029782592446464':
-                role = discord.utils.get(guild.roles, name="✭ : 𝘽𝙐𝙏𝙇𝙀𝙍 : ✭")
+                role = discord.utils.get(guild.roles, id = 858186876494151716) # name="✭ : 𝘽𝙐𝙏𝙇𝙀𝙍 : ✭")
             
             if member is not None:
                 await member.remove_roles(role)

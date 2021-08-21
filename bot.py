@@ -12,11 +12,15 @@ from config import *
 import utils.json_loader
 from utils import clean_code , Pag
 
-intents = discord.Intents()
-intents.all()
-client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=discord.Intents.all(), owner_id=DEV_OWNER_ID)
-    
-@client.remove_command("help") #remove help 
+#owner
+secrets = utils.json_loader.read_json("secrets")
+owner = secrets["owner"]
+
+intents = discord.Intents.all()
+client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=intents, owner_id=owner)
+
+#remove_default_help
+@client.remove_command("help")
 
 @client.event
 async def on_ready():
@@ -33,10 +37,12 @@ client.config_token = secret_file["token"]
 client.connection_url = secret_file["mongo"]
 client.giphy_api_ = secret_file["giphy"]
 
+#prefix
 @client.command()
 async def prefix(ctx):
     await ctx.send("This is my prefix `lt ` or `l `")
 
+#cogs
 @client.command()
 @commands.is_owner()
 async def load(ctx, extension):
@@ -56,7 +62,6 @@ async def unload(ctx, extension):
         await ctx.send("Could not unload cog")
         return
     await ctx.send(f"Cog unloaded : {extension}")
-#    client.load_extension(f'cogs.{extension}')
 
 @client.command()
 @commands.is_owner()
@@ -69,10 +74,12 @@ async def reload(ctx, extension):
         return
     await ctx.send(f"Cog reloaded : {extension}")
 
+#cogs
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
+#eval
 @client.command(name="eval", aliases=["exec"])
 @commands.is_owner()
 async def _eval(ctx, *, code):
@@ -113,16 +120,17 @@ async def _eval(ctx, *, code):
 
     await pager.start(ctx)
 
+#jishaku
 client.load_extension('jishaku')
 
-def owner_bot():
-    def pred(ctx):
-        owner_ids = [385049730222129152, 240059262297047041]
-        if ctx.author.id in owner_ids:
-            return True
-        return False
-    return commands.check(pred)
+#bot_config_read
+@client.command(name="botconfig", aliases=["bconfig"])
+@utils.owner_bot()
+async def bot_config_(ctx):
+    with open('config.py' , encoding='utf-8') as f:
+        lines = f.read()
+        embed = discord.Embed(description=f"```nim\n{lines}```",color=0xffffff)
+        await ctx.send(embed=embed)
 
-client.owner_bot = owner_bot()
-
+#token
 client.run(client.config_token)

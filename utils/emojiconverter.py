@@ -59,6 +59,7 @@ def emoji_converter(name):
     "online" : "<:Online:864171414466592788>",
     "member" : "<:member:864219999954796615>",
     "invisible" : "<:invisible:873598381073768469>",
+    "what":"<a:question_:867701480797765642>"
  
   }
   

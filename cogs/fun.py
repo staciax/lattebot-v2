@@ -158,6 +158,15 @@ class Fun(commands.Cog):
             embed.add_field(name="Lowest Number:",value=f"{numbers[0]}")
             embed.add_field(name="Highest Number:",value=f"{numbers[-1]}")
             await ctx.send(embed=embed)
+    
+    @commands.command()
+    @commands.guild_only()
+    async def poll(self, ctx,*,message):
+        embed = discord.Embed(title="POLL", description=f"{message}",color=0xffffff)
+        msg = await ctx.channel.send(embed=embed)
+        await msg.add_reaction(f'{utils.emoji_converter("check")}')
+        await msg.add_reaction(f'{utils.emoji_converter("xmark")}')
+        await ctx.message.delete()
 
 def setup(client):
     client.add_cog(Fun(client))

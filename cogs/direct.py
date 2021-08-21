@@ -1,18 +1,14 @@
 # Standard 
-import discord
+import discord , asyncio
 from discord.ext import commands
 from datetime import datetime, timezone
-import asyncio
 
 # Third party
+
 # Local
 import utils
-from utils import create_voice_channel , get_channel_by_name , get_category_by_name
 
-intents = discord.Intents()
-intents.all()
-
-my_discord = [240059262297047041 , 385049730222129152]
+intents = discord.Intents.all()
 
 class DM_Message(commands.Cog):
 
@@ -35,19 +31,19 @@ class DM_Message(commands.Cog):
         if isinstance(message.channel, discord.DMChannel):
             if message.content:
                 if message.author.id == 240059262297047041: #stacia > pond
-                    await pond.send(f"{message.clean_content}", delete_after=3600)
+                    await pond.send(f"{message.clean_content}", delete_after=30)
                 if message.author.id == 371230466319187969: #pond > stacia
-                    await stacia.send(f"{message.clean_content}" , delete_after=3600)
-                if message.author.id == 834834946832203776: #pond > stacia
-                    await stacia.send(f"{message.clean_content}" , delete_after=3600)
+                    await stacia.send(f"{message.clean_content}" , delete_after=30)
+                if message.author.id == 834834946832203776: #latte > stacia
+                    await stacia.send(f"{message.clean_content}" , delete_after=30)
             if message.attachments:
                 image = message.attachments[0].proxy_url
                 if message.author.id == 240059262297047041: #stacia > pond
-                    await pond.send(image, delete_after=3600)
+                    await pond.send(image, delete_after=30)
                 if message.author.id == 371230466319187969: #pond > stacia
-                    await stacia.send(image, delete_after=3600)
+                    await stacia.send(image, delete_after=30)
                 if message.author.id == 834834946832203776: #latte > stacia
-                    await stacia.send(image, delete_after=3600)
+                    await stacia.send(image, delete_after=30)
                         
         if message.channel.id == 874942964462391357:
             if message.content:

@@ -10,13 +10,12 @@ import json
 import requests
 
 # Local
-from config import *
 import utils
 import utils.json_loader
+from config import *
 from utils import create_voice_channel , get_channel_by_name
 
-intents = discord.Intents()
-intents.all()
+intents = discord.Intents.all()
 
 private_channel = PRIVATE_LOGS #chat #nsfw #onlyfans #underworld #
 
@@ -51,6 +50,7 @@ class Activities(commands.Cog):
         for guild in self.client.guilds:
             self.invites[guild.id] = await guild.invites()
 
+    #channel_stats
     @tasks.loop(minutes=30)
     async def counted(self):
         guild = self.bot.get_guild(840379510704046151)
@@ -234,6 +234,7 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
+            #username_log
             if before.name != after.name:
                 embed = discord.Embed(title="Username change",colour=after.colour,timestamp=datetime.now(timezone.utc))
 
@@ -247,6 +248,7 @@ class Activities(commands.Cog):
             
                 await self.log_channel.send(embed=embed)
 
+            #discriminator_log
             if before.discriminator != after.discriminator:
                 embed = discord.Embed(title="Discriminator change",
                                     colour=0xffffff, #after.colour
@@ -260,7 +262,8 @@ class Activities(commands.Cog):
                     embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
             
                 await self.log_channel.send(embed=embed)
-        
+
+            #avatar_log
             if before.avatar.url != after.avatar.url:
                 embed = discord.Embed(title="Avatar change",description="New image is below, old to the right.",
 						    colour=0xf3d4b4,
@@ -274,6 +277,7 @@ class Activities(commands.Cog):
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
         if before.guild.id == MYGUILD:
+            #nickname_log
             if before.display_name != after.display_name:
                 embed = discord.Embed(title="Nickname change",
                                     colour=0xFFDF00, #colour=after.colour,
@@ -288,7 +292,8 @@ class Activities(commands.Cog):
                     embed.set_footer(text="", icon_url=after.avatar.url)
 
                 await self.log_channel.send(embed=embed)
-        
+
+            #role_log
             elif before.roles != after.roles:
                 new_roles = [x.mention for x in after.roles if x not in before.roles]
                 old_roles = [x.mention for x in before.roles if x not in after.roles]
@@ -384,7 +389,8 @@ class Activities(commands.Cog):
             embed = discord.Embed(description="",timestamp=datetime.now(timezone.utc))
             if member.bot:
                 return
-        
+
+            #voice_log
             if not before.channel:
                 embed.description += f"**JOIN CHANNEL** : `{after.channel.name}`"
                 embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
@@ -435,6 +441,7 @@ class Activities(commands.Cog):
         else:
             return
 
+        #temp_channel
         if after.channel is not None:
             if after.channel.name == "・ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ・":
                 chname = "ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ"

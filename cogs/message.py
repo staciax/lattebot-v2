@@ -1,5 +1,5 @@
 # Standard 
-import discord
+import discord , json
 from discord.ext import commands
 from datetime import datetime, timezone
 import asyncio
@@ -10,6 +10,7 @@ import aiohttp
 
 # Local
 import utils
+import utils.json_loader
 from utils import create_voice_channel , get_channel_by_name , get_category_by_name
 from config import *
 
@@ -37,15 +38,22 @@ class Message(commands.Cog):
         await asyncio.sleep(10)
         await ctx.message.delete()
 
-    @commands.command()
-    async def latte(self, ctx):
-        await ctx.send('เราชอบกินลาเต้นะ')
-
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.client.user:
             return
 
+        #setting_only_image_channel
+        data = utils.json_loader.read_json("latte")
+        only_image = data["only-image"]
+        if message.channel.id == only_image:
+            if message.content:
+                if message.content and message.attachments:
+                    return
+                elif message.content:
+                    await message.delete()
+
+        #afk
         if message.content.startswith("lt afk"):
             return
         if message.content.startswith("l afk"):
@@ -62,6 +70,7 @@ class Message(commands.Cog):
                 embed.set_image(url="https://media.giphy.com/media/LPETDRbj82wbrYm7q6/source.gif")
                 await message.channel.send(embed=embed , delete_after=10)
 
+        #message
         if message.content.startswith('latte'):
             await message.delete()
             await message.channel.send('เอะ! เรียกเราหรอ?  <:S_CuteGWave3:859660565160001537>')
@@ -73,6 +82,7 @@ class Message(commands.Cog):
         if message.content.startswith('it'):
             await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=10)
         
+        #temp_channel
         if message.content.startswith('uw'):
             if message.author.voice:
                 chname = "ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ"
@@ -90,11 +100,13 @@ class Message(commands.Cog):
             else:
                 await message.delete()
 
+        #when_mention_bot
         if self.client.user.mentioned_in(message):
             await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=15)
     
     @commands.Cog.listener()
     async def on_message_delete(self, message):
+        #snipe_message
         if message.guild.id == MYGUILD:
             #.
             if message.content.startswith('.sni'):
@@ -200,32 +212,28 @@ class Message(commands.Cog):
             embed.set_footer(text=f"Message delete")
             await ctx.channel.send(embed=embed)
 
-    @commands.command(name='bdm')
+    @commands.command(name='dm' , description="direct message user")
     @commands.guild_only()
     @commands.has_permissions(administrator = True)
-    async def botdm(self, ctx, member: discord.Member, reason=None):
-        embedrr = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify a message! |`prefix` `bdm [member] [message]`",color=0xffffff)    
-        if reason == None:
-            return await ctx.send(embed=embedrr)
+    async def botdm(self, ctx, user: discord.Member=None,* , args=None):       
+        if user != None and args != None:
+            try:
+                embed = discord.Embed(title="",description=f"** **\nMessage : `{args}`\n\n** **",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
+                embed.set_footer(text=f"{self.client.user.name}" , icon_url = self.client.user.avatar.url)
+                embed.set_author(name=f"{ctx.guild.name} | Direct Message", icon_url= ctx.guild.icon.url)
+
+                embedsc = discord.Embed(title=f"{self.client.user.name} | Direct Message",description=f"Bot has been sent message to `{user.name}#{user.discriminator}`\n\nMessage : `{args}`\n\n",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
+                embedsc.set_footer(text=f"Req by {ctx.guild.name} " , icon_url = ctx.guild.icon.url)
+                await user.send(embed=embed)
+                await ctx.channel.send(embed=embedsc)
+
+            except:
+                embed = discord.Embed(description="Couldn't dm the given user.", color=0xffffff)
+                await ctx.channel.send(embed)
         
-        embed = discord.Embed(title="",description=f"** **\nMessage : `{reason}`\n\n** **",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
-        embed.set_footer(text=f"{self.client.user.name}" , icon_url = self.client.user.avatar.url)
-        embed.set_author(name=f"{ctx.guild.name} | Direct Message", icon_url= ctx.guild.icon.url)
-
-        embedsc = discord.Embed(title=f"{self.client.user.name} | Direct Message",description=f"Bot has been sent message to `{member.name}#{member.discriminator}`\n\nMessage : `{reason}`\n\n",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
-        embedsc.set_footer(text=f"Req by {ctx.guild.name} " , icon_url = ctx.guild.icon.url)
-        await member.send(embed=embed)
-        await ctx.send(embed=embedsc)
-        await message.delete()
+        else:
+            embed = discord.Embed(description="You didn't provide a user's id and/or a message.", color=0xffffff)
+            await ctx.channel.send(embed=embed)
         
-#error commands
-
-#    @botdm.error
-#    async def botdm_error(self, ctx, error):
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify a member! |`prefix` `bdm [member] [message]`",color=0xffffff)  
-#           await ctx.message.delete()
-#            await ctx.send(embed=embed)
-
 def setup(client):
     client.add_cog(Message(client))

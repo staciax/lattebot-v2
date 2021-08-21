@@ -1,5 +1,5 @@
 # Standard 
-import discord , platform , os , asyncio
+import discord , platform , os , asyncio , re , platform 
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 import time
@@ -24,8 +24,7 @@ mango_url = data["mongo"]
 cluster = MongoClient(mango_url)
 check_ping = cluster[MGDATABASE][LATTEDOCUMENT]
 
-intents = discord.Intents()
-intents.all()
+intents = discord.Intents.all()
 
 class Data(commands.Cog):
 
@@ -49,10 +48,36 @@ class Data(commands.Cog):
         self.request_message = self.client.get_channel(REQUEST_ME)
         self.bug_channel = self.client.get_channel(865609918945820692)
         print(f"-{self.__class__.__name__}")
+    
+    @commands.command(aliases=["botinfo", "about"])
+    async def latte_info_(self, ctx):
+        stacia = self.client.get_user(385049730222129152) or await self.client.fetch_user(385049730222129152)
+        embed = discord.Embed(
+            title=f"{self.client.user.name} Info about ",
+            color=0xffffff
+        )
+        
+        fields = [
+            ("Prefix" , "``lt ``" , True),
+            ("Language" , "`Python`" , True),
+            ("Library" , f"`Discord.py {discord.__version__}`" , True),
+            ("DataBase" , "`MongoDB`" , True),
+            ("Platform", f"`{platform.system()} {platform.release()}`", True),
+            ("Developer" , f"`{str(self.client.get_user(self.client.owner_id))}`" , True),
+            ("Open Source", "`Yes. but not now.`", True),
+            ("Bot created", f"{utils.format_relative(self.client.user.created_at)}", True)
+
+        ]
+
+        for name , value , inline in fields:
+            embed.add_field(name=name , value=value , inline=inline)
+
+        embed.set_thumbnail(url=self.client.user.avatar.url)
+        
+        await ctx.send(embed=embed, mention_author=False)
 
     @commands.command()
     @utils.owner_bot()
-#    @commands.is_owner()
     async def status(self, ctx, statusType: str, *, statusText):
 
         if statusType.lower() == "playing":  # Setting `Playing ` status
@@ -67,13 +92,10 @@ class Data(commands.Cog):
         embed = discord.Embed(description=f"{utils.emoji_converter('check')} **Status Changed!**\n\n`{statusText}`",color=0xffffff)
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(description="invite bot")
     async def invite(self, ctx):
         embed = discord.Embed(title=f"**invite bot**",description=f"**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.client.guilds)}** servers︰𓂃 ꒱\n\n⸝⸝﹒{INVITELINK} ꒱",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
-        embed.set_thumbnail(url=self.client.user.avatar.url)
-#       embed.set_image(url='https://i.imgur.com/rzGqQwn.png')
-#         embed.set_footer(text = f'Req by {ctx.author}', icon_url = ctx.author.avatar.url)
-        
+        embed.set_thumbnail(url=self.client.user.avatar.url)    
         await ctx.send(embed=embed)
     
     @commands.command(description="check latency bot")
@@ -158,20 +180,45 @@ class Data(commands.Cog):
         embed.set_author(name=f"{self.client.user.name} Stats", icon_url=self.client.user.avatar.url)
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['botdis', 'lattelg'])
+    @commands.command(aliases=['botdis'])
     @commands.is_owner()
-    async def logout(self, ctx):
-        embed = discord.Embed(description="`Latte bot is disconnect`",color=0xffffff,timestamp=datetime.now(timezone.utc))
-        embed.set_footer(text=f"Logout by {ctx.author}" , icon_url = ctx.author.avatar.url)
-        embed.set_author(name=f"{self.client.user.name} Logout", icon_url=self.client.user.avatar.url)
-        embed.set_thumbnail(url=self.client.user.avatar.url)
+    async def logout(self, ctx): #ทำเหมือน giveaway version x
+        embed = discord.Embed(color=0xffffff)
+        embed.set_author(name=f"{self.client.user.name} Logout",icon_url=self.client.user.avatar.url)
+        embed.description = f"are you sure? {utils.emoji_converter('what')}"
 
-        await ctx.send(embed=embed) 
+        m = await ctx.send("Are these all valid?", embed=embed , delete_after=60)
+        await m.add_reaction("✅")
+        await m.add_reaction("🇽")
+
+        try:
+            reaction, member = await self.client.wait_for(
+                "reaction_add",
+                timeout=60,
+                check=lambda reaction, user: user == ctx.author
+                and reaction.message.channel == ctx.channel
+            )
+        except asyncio.TimeoutError:
+            await ctx.send("Confirmation Failure. Please try again.")
+            return
+        
+        if str(reaction.emoji) not in ["✅", "🇽"] or str(reaction.emoji) == "🇽":
+            await ctx.message.delete()
+            await ctx.send("logout cancelling", delete_after=10)
+            await m.delete()
+            return
+        
+        await m.delete()
+        embed_lg = discord.Embed(color=0xffffff)
+        embed_lg.set_footer(text=f"{self.client.user.name} is disconnect" , icon_url=self.client.user.avatar.url)
+
+        await ctx.message.delete()
+        await ctx.send(embed=embed_lg, delete_after=10)
         await self.client.logout()
     
-    @commands.command(name="bm")
+    @commands.command()
     @commands.guild_only()
-    async def bm(self, ctx, *, message=None):
+    async def echo(self, ctx, *, message=None):
         embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify what message bot send the message | `prefix` `bm [message]`",color=0xffffff)
         if message == None:
             message = await ctx.send(embed=embed)
@@ -258,24 +305,6 @@ class Data(commands.Cog):
 #                    await message.channel.send("message relayed to bot developer")            
 #            else:
 #                await self.process_commands(message)
-
-# error commands
-
-#    @logout.error
-#    async def logout_error(self, ctx, error):
-#        embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} You do not own this bot.",color=0xffffff)
-#        await ctx.send(embed=embed , delete_after=15)
-#        await ctx.message.delete()
-
-#    @status.error
-#    async def status_error(self, ctx, error):
-#        embedra = discord.Embed(description=f"{utils.emoji_converter('xmark')} `prefix status` `[statustype]` `[statustext]`\n\n `Status Type` : `playing` | `Streaming` | `Listening` | `Watching`",color=0xffffff)
-#        embedow = discord.Embed(description=f"{utils.emoji_converter('xmark')}You do not own this bot.",color=0xffffff)
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            await ctx.send(embed=embedra , delete_after=15)
-#        else:
-#            await ctx.send(embed=embedow , delete_after=15)
-#            await ctx.message.delete()
 
 def setup(client):
     client.add_cog(Data(client))

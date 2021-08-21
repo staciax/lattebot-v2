@@ -253,16 +253,16 @@ class Moderation(commands.Cog):
                 embedspam = discord.Embed(title="Spam Alert\n",description="Don't spam mentions!",color=0xffffff)
                 await message.channel.send(embed=embedspam, delete_after=10)
             
-            if (message.channel.id in self.only_images
-			 	and any([hasattr(a, "width") for a in message.attachments])):             
-                return
-            else:
-                if message.channel.id in self.only_images:
-                    em = discord.Embed(description="You can't send message in this channel.",color=PTRED2)
-                    await message.delete()
-                    await message.channel.send(embed=em , delete_after=10)
-                else:
-                    return
+#            if (message.channel.id in self.only_images
+#			 	and any([hasattr(a, "width") for a in message.attachments])):             
+#                return
+#            else:
+#                if message.channel.id in self.only_images:
+#                    em = discord.Embed(description="You can't send message in this channel.",color=PTRED2)
+#                    await message.delete()
+#                    await message.channel.send(embed=em , delete_after=10)
+#                else:
+#                    return
                                    
         counter = 0
         with open("data/spam_detect.txt", "r+") as file:
