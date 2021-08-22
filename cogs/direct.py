@@ -31,19 +31,19 @@ class DM_Message(commands.Cog):
         if isinstance(message.channel, discord.DMChannel):
             if message.content:
                 if message.author.id == 240059262297047041: #stacia > pond
-                    await pond.send(f"{message.clean_content}", delete_after=300)
+                    await pond.send(f"{message.clean_content}", delete_after=1800)
                 if message.author.id == 371230466319187969: #pond > stacia
-                    await stacia.send(f"{message.clean_content}" , delete_after=300)
+                    await stacia.send(f"{message.clean_content}" , delete_after=1800)
                 if message.author.id == 834834946832203776: #latte > stacia
-                    await stacia.send(f"{message.clean_content}" , delete_after=300)
+                    await stacia.send(f"{message.clean_content}" , delete_after=1800)
             if message.attachments:
                 image = message.attachments[0].proxy_url
                 if message.author.id == 240059262297047041: #stacia > pond
-                    await pond.send(image, delete_after=300)
+                    await pond.send(image, delete_after=1800)
                 if message.author.id == 371230466319187969: #pond > stacia
-                    await stacia.send(image, delete_after=300)
+                    await stacia.send(image, delete_after=1800)
                 if message.author.id == 834834946832203776: #latte > stacia
-                    await stacia.send(image, delete_after=300)
+                    await stacia.send(image, delete_after=1800)
                         
         if message.channel.id == 874942964462391357:
             if message.content:
