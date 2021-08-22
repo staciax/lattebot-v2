@@ -145,6 +145,9 @@ class Message(commands.Cog):
 
             self.sniped_message[message.guild.id] = (image , message.content, message.author, message.channel.mention, message.created_at)
         
+        else:
+            return
+            
     @commands.command(name="snipe", aliases=["sni", "blackmail"] ,description="snipe message and image")
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)

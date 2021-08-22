@@ -140,6 +140,12 @@ class Activities(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
             """welcome log"""
+            user_update = utils.json_loader.read_json("latte")
+            self.server_log = self.bot.get_channel(user_update["server-log"])
+
+            if self.server_log is None:
+                print("on_member_ban channel is None")
+                return
             invites_before_join = self.invites[member.guild.id]
             invites_after_join = await member.guild.invites()
             for invite in invites_before_join:
@@ -153,7 +159,7 @@ class Activities(commands.Cog):
                     embed2.add_field(name="Invite Code:", value=f"||{invite.code}||", inline=False)
                     embed2.set_thumbnail(url=member.avatar.url)
                     embed2.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
-                    await self.log_channel.send(embed=embed2)
+                    await self.server_log.send(embed=embed2)
                     self.invites[member.guild.id] = invites_after_join
 #                    return     
 
@@ -179,6 +185,13 @@ class Activities(commands.Cog):
     
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
+        user_update = utils.json_loader.read_json("latte")
+        self.server_log = self.bot.get_channel(user_update["server-log"])
+
+        if self.server_log is None:
+            print("on_member_ban channel is None")
+            return
+
         if member.guild.id == MYGUILD:
             embed = discord.Embed(
                 description=f"**Member ban\n`{member}`**",
@@ -187,11 +200,18 @@ class Activities(commands.Cog):
             embed.set_footer(text="—・good bye bro")
             embed.timestamp = datetime.now(timezone.utc)
 
-            await self.log_channel.send(embed=embed)
+            await self.server_log.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         if member.guild.id == MYGUILD: #only my guild
+            user_update = utils.json_loader.read_json("latte")
+            self.server_log = self.bot.get_channel(user_update["server-log"])
+
+            if self.server_log is None:
+                print("on_member_remove channel is None")
+                return
+
             embed3 = discord.Embed(
                         title="Member leave",
                         color=PTRED2,
@@ -199,8 +219,7 @@ class Activities(commands.Cog):
                     )
             embed3.add_field(name="Name:", value=f"{member.name}#{member.discriminator}", inline=False)
             embed3.set_thumbnail(url=member.avatar.url)
-#           embed3.set_footer(text=member.guild, icon_url=member.guild.icon.url)
-            await self.log_channel.send(embed=embed3)
+            await self.server_log.send(embed=embed3)
             self.invites[member.guild.id] = await member.guild.invites()
 
             """leave embed"""
@@ -222,6 +241,13 @@ class Activities(commands.Cog):
     
     @commands.Cog.listener()
     async def on_invite_create(self, invite: discord.Invite):
+        user_update = utils.json_loader.read_json("latte")
+        self.server_log = self.bot.get_channel(user_update["server-log"])
+
+        if self.server_log is None:
+            print("on_invite_create channel is None")
+            return
+            
         if invite.guild.id == MYGUILD:
             now = datetime.now(timezone.utc)
             max_use_count = "Unlimited" if invite.max_uses == 0 else invite.max_uses
@@ -230,10 +256,18 @@ class Activities(commands.Cog):
             embed.add_field(name="Channel:", value=f"#{invite.channel}")
             embed.add_field(name="Inivte Code:", value=f"||{invite.code}||")
             embed.set_footer(text = f'Created by {invite.inviter.name}', icon_url =invite.inviter.avatar.url)
-            await self.log_channel.send(embed=embed)
+            await self.server_log.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
+            #load_json
+            user_update = utils.json_loader.read_json("latte")
+            self.server_log = self.bot.get_channel(user_update["server-log"])
+
+            if self.server_log is None:
+                print("on_user_update channel is None")
+                return
+
             #username_log
             if before.name != after.name:
                 embed = discord.Embed(title="Username change",colour=after.colour,timestamp=datetime.now(timezone.utc))
@@ -246,7 +280,7 @@ class Activities(commands.Cog):
                     embed.set_thumbnail(url=after.avatar.url)
                     embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
             
-                await self.log_channel.send(embed=embed)
+                await self.server_log.send(embed=embed)
 
             #discriminator_log
             if before.discriminator != after.discriminator:
@@ -261,7 +295,7 @@ class Activities(commands.Cog):
                     embed.add_field(name=name, value=value, inline=inline)
                     embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
             
-                await self.log_channel.send(embed=embed)
+                await self.server_log.send(embed=embed)
 
             #avatar_log
             if before.avatar.url != after.avatar.url:
@@ -276,6 +310,19 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
+        #load_json
+        member_update = utils.json_loader.read_json("latte")
+        self.server_log = self.bot.get_channel(member_update["server-log"])
+        self.roles_log = self.bot.get_channel(member_update["role-log"])
+
+        if self.server_log is None:
+            print("server_log is None")
+            return
+            
+        if self.roles_log is None:
+            print("roles_log is None")
+            return
+
         if before.guild.id == MYGUILD:
             #nickname_log
             if before.display_name != after.display_name:
@@ -291,7 +338,7 @@ class Activities(commands.Cog):
                     embed.set_thumbnail(url=after.avatar.url)
                     embed.set_footer(text="", icon_url=after.avatar.url)
 
-                await self.log_channel.send(embed=embed)
+                await self.server_log.send(embed=embed)
 
             #role_log
             elif before.roles != after.roles:
@@ -324,12 +371,20 @@ class Activities(commands.Cog):
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
 
-                await self.log_roles.send(embed=embed)
+                await self.roles_log.send(embed=embed)
+
             else:
                 return
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
+        message_channel = utils.json_loader.read_json("latte")
+        self.message_log = self.bot.get_channel(message_channel["message-log"])
+
+        if self.message_log is None:
+            print("message_log is None")
+            return
+
         if not before.channel.id in private_channel:
             if not after.author.bot:
                 if before.content != after.content:
@@ -344,15 +399,23 @@ class Activities(commands.Cog):
                 
                     for name, value, inline in fields:
                         embed.add_field(name=name, value=value, inline=inline)
-                
-                    await self.log_message.send(embed=embed)
+                    
+                    #load_json
+                    message_channel = utils.json_loader.read_json("latte")
+                    await self.message_log.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
+        message_channel = utils.json_loader.read_json("latte")
+        self.message_log = self.bot.get_channel(message_channel["message-log"])
+
+        if self.message_log is None:
+            print("message_log is None")
+            return
+
         if not message.channel.id in private_channel:
             if message.guild: #if message.guild.id:
                 if not message.author.bot:
-                    channel = self.bot.get_channel(MESSAGE_LOG)
 
                     em = discord.Embed(color=0xDC143C , timestamp=datetime.now(timezone.utc))
                     em.set_author(name=message.author.display_name, url=message.jump_url ,icon_url=message.author.avatar.url)
@@ -361,7 +424,8 @@ class Activities(commands.Cog):
                         if len(message.attachments) > 1:
                             im = [x.proxy_url for x in message.attachments]
                             em.add_field(name='\uFEFF',value = f"This Message Contained {len(message.attachments)} Message Attachments, Please See Below")
-                            await channel.send(' '.join(im))
+                            await self.message_log.send(' '.join(im))
+
                         elif message.attachments:
                             image = message.attachments[0].proxy_url
                             em.description = f"**Deleted in:** {message.channel.mention}"
@@ -372,7 +436,7 @@ class Activities(commands.Cog):
                             em.add_field(name=f"**Content:**", value=f"```{message.clean_content}```", inline=False)
                             em.set_footer(text="Message delete")
 
-                    await self.log_message.send(embed=em)
+                    await self.message_log.send(embed=em)
                 else:
                     pass
             else:
@@ -382,10 +446,18 @@ class Activities(commands.Cog):
                 delem.add_field(name=f"**Content:**", value=f"```{message.clean_content}```", inline=False)
                 delem.set_footer(text="Message delete")
 
-                await self.log_message.send(embed=delem)
+                await self.message_log.send(embed=delem)
     
     @commands.Cog.listener()
     async def on_voice_state_update(self , member, before, after):
+        #load_json
+        voice_channel = utils.json_loader.read_json("latte")
+        self.voice_log = self.bot.get_channel(voice_channel["voice-log"])
+
+        if self.voice_log is None:
+            print("voice_log is None")
+            return
+
         if member.guild.id == MYGUILD:
             embed = discord.Embed(description="",timestamp=datetime.now(timezone.utc))
             if member.bot:
@@ -396,39 +468,40 @@ class Activities(commands.Cog):
                 embed.description += f"**JOIN CHANNEL** : `{after.channel.name}`"
                 embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
                 embed.color=PTGREEN
-                await self.log_voice.send(embed=embed)
+                
+                await self.voice_log.send(embed=embed)
         
             if before.channel and not after.channel:
                 embed.description += f"**LEFT CHANNEL** : `{before.channel.name}`"
                 embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
                 embed.color=PTRED2
-                await self.log_voice.send(embed=embed)
+                await self.voice_log.send(embed=embed)
         
             if before.channel and after.channel:
                 if before.channel.id != after.channel.id:
                     embed.description += f"**SWITCHED CHANNELS** : `{before.channel.name}` to `{after.channel.name}`"
                     embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
                     embed.color=PTYELLOW2
-                    await self.log_voice.send(embed=embed)
+                    await self.voice_log.send(embed=embed)
                 else:
                     if member.voice.self_stream:
                         embedstm = discord.Embed(description=f"**STREAMING in** : `{before.channel.name}`",timestamp=datetime.now(timezone.utc))
                         embedstm.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
                         embedstm.colour=PURPLE
                         self.current_streamers.append(member.id)
-                        await self.log_voice.send(embed=embedstm)
+                        await self.voice_log.send(embed=embedstm)
 
                     elif member.voice.mute:
                         embedmute = discord.Embed(description=f"**SERVER MUTED** in `{after.channel.name}`")
                         embedmute.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
                         embedmute.colour=PTRED
-                        await self.log_voice.send(embed=embedmute)
+                        await self.voice_log.send(embed=embedmute)
 
                     elif member.voice.deaf:
                         embeddeaf = discord.Embed(description=f"**SERVER DEAFEN** in `{after.channel.name}`")
                         embeddeaf.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
                         embeddeaf.colour=PTRED
-                        await self.log_voice.send(embed=embeddeaf)
+                        await self.voice_log.send(embed=embeddeaf)
 
                     else:
                         if member.voice.deaf:

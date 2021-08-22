@@ -3,6 +3,5 @@
     "message-log": null,
     "voice-log": null,
     "role-log": null,
-    "only-image": null,
-    "log-channel": null
+    "only-image": null
 }

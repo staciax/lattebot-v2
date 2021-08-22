@@ -229,14 +229,6 @@ class Latte_config(commands.Cog):
             await ctx.send(f'set log_channel log channel : {data["log-channel"]}')
         except:
             print("error")
-    
-    @commands.command()
-    async def check_test(self, ctx):
-        data = utils.json_loader.read_json("latte")
-        x = data["log-channel"]
-        if ctx.channel.id in x:
-            print(x)
-        
 
     #view_config
     @commands.command(aliases=["lconfig"])
