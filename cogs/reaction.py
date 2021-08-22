@@ -21,6 +21,7 @@ class Reaction(commands.Cog):
         ColourID = COLOR
         VerifyID = VERIFY
         MatchaID = VERIFYMATCHA
+        MatchaColor = MATCHA_COLOR
 
         member = payload.member
         guild = member.guild
@@ -60,6 +61,35 @@ class Reaction(commands.Cog):
             await member.add_roles(role , role2 , role3)
 
         """ MATCHA SERVER """
+        if MatchaColor == payload.message_id:
+            emoji = str(payload.emoji.name)
+            if emoji == '🍓':
+                role = discord.utils.get(guild.roles, id=837729400241520640)
+            elif emoji == '🍊':
+                role = discord.utils.get(guild.roles, id=837729404548284487)
+            elif emoji == '🍌':
+                role = discord.utils.get(guild.roles, id=837729407643811861)
+            elif emoji == '🍏':
+                role = discord.utils.get(guild.roles, id=837729411272540211)
+            elif emoji == '🖤':
+                role = discord.utils.get(guild.roles, id=837729413259984906)
+            elif emoji == '🥶':
+                role = discord.utils.get(guild.roles, id=837729413826347120)
+            elif emoji == '🍇':
+                role = discord.utils.get(guild.roles, id=837729414099894273)
+            elif emoji == '☁️':
+                role = discord.utils.get(guild.roles, id=837729506226864180)
+            elif emoji == '🌺':
+                role = discord.utils.get(guild.roles, id=837729508378935326)
+            elif emoji == '🌸':
+                role = discord.utils.get(guild.roles, id=854262148062511135)
+            elif emoji == '🌊':
+                role = discord.utils.get(guild.roles, id=854261956408246323)
+            elif emoji == '🥤':
+                role = discord.utils.get(guild.roles, id=854316816805527553) 
+
+            await member.add_roles(role)
+
         if MatchaID == payload.message_id:
             if emoji == '873028548724670555':
                 role = discord.utils.get(guild.roles, id = 735500646882607156) #name="♡ ~ 𝙈𝘼𝙄𝘿𝙀𝙉 ~♡")
@@ -74,6 +104,7 @@ class Reaction(commands.Cog):
         ColourID = COLOR
         VerifyID = VERIFY
         MatchaID = VERIFYMATCHA
+        MatchaColor = MATCHA_COLOR
 
         guild = await(self.client.fetch_guild(payload.guild_id))
         emoji = str(payload.emoji.id)
@@ -108,9 +139,6 @@ class Reaction(commands.Cog):
 
         #latte_verify
         if VerifyID == payload.message_id:
-            guild = await(self.client.fetch_guild(payload.guild_id))
-            emoji = str(payload.emoji.id)
-
             if emoji == '861800747293212672':    
                 role = discord.utils.get(guild.roles, id = 842309176104976387)#name="Vanilla・・ ✦")
                 role2 = discord.utils.get(guild.roles, id = 854503426977038338) #name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
@@ -122,6 +150,39 @@ class Reaction(commands.Cog):
                 print("Member Not Fount")
         
         """ MATCHA SERVER """
+        
+        if MatchaColor == payload.message_id:
+            emoji = str(payload.emoji.name)
+            if emoji == '🍓':
+                role = discord.utils.get(guild.roles, id=837729400241520640)
+            elif emoji == '🍊':
+                role = discord.utils.get(guild.roles, id=837729404548284487)
+            elif emoji == '🍌':
+                role = discord.utils.get(guild.roles, id=837729407643811861)
+            elif emoji == '🍏':
+                role = discord.utils.get(guild.roles, id=837729411272540211)
+            elif emoji == '🖤':
+                role = discord.utils.get(guild.roles, id=837729413259984906)
+            elif emoji == '🥶':
+                role = discord.utils.get(guild.roles, id=837729413826347120)
+            elif emoji == '🍇':
+                role = discord.utils.get(guild.roles, id=837729414099894273)
+            elif emoji == '☁️':
+                role = discord.utils.get(guild.roles, id=837729506226864180)
+            elif emoji == '🌺':
+                role = discord.utils.get(guild.roles, id=837729508378935326)
+            elif emoji == '🌸':
+                role = discord.utils.get(guild.roles, id=854262148062511135)
+            elif emoji == '🌊':
+                role = discord.utils.get(guild.roles, id=854261956408246323)
+            elif emoji == '🥤':
+                role = discord.utils.get(guild.roles, id=854316816805527553) 
+
+            if member is not None:
+                await member.remove_roles(role)
+            else:
+                print("Member Not Fount")
+
         if MatchaID == payload.message_id:
             if emoji == '873028548724670555':
                 role = discord.utils.get(guild.roles, id = 735500646882607156) #name="♡ ~ 𝙈𝘼𝙄𝘿𝙀𝙉 ~♡")

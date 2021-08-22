@@ -300,12 +300,13 @@ class Activities(commands.Cog):
                 if new_roles:
                     name = "**Add role**"
                     nr_str = str(new_roles)[2:-2]
-                    nr_valur = ", ".join([r.mention for r in after.roles])
+                    nr_valur = " ".join(reversed([r.mention for r in after.roles]))
                     color = 0x52D452
                 else:
                     name = "**Remove role**"
                     nr_str = str(old_roles)[2:-2]
-                    nr_valur = ", ".join([r.mention for r in after.roles])
+                    nr_valur = " ".join(reversed([r.mention for r in after.roles])) #' '.join(reversed([r.mention for r in member.roles][1:]))
+                    
                     color = 0xFF6961
                 offline = ['<@&873693874198052876>']
                 if new_roles == offline:
@@ -317,7 +318,7 @@ class Activities(commands.Cog):
                 
                 embed.set_author(name=f"{after.display_name} | Role updates", icon_url=after.avatar.url)
 
-                fields = [("**Current role**", nr_valur , False),
+                fields = [("**Current role**", nr_valur[:-22] , False),
 					        (name , nr_str , False)]
 
                 for name, value, inline in fields:
@@ -381,7 +382,7 @@ class Activities(commands.Cog):
                 delem.add_field(name=f"**Content:**", value=f"```{message.clean_content}```", inline=False)
                 delem.set_footer(text="Message delete")
 
-                await self.log_channel.send(embed=delem)
+                await self.log_message.send(embed=delem)
     
     @commands.Cog.listener()
     async def on_voice_state_update(self , member, before, after):

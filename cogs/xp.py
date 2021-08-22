@@ -156,12 +156,15 @@ class XP(commands.Cog):
 
     @commands.command(aliases=['lv', 'lvl' , 'xp' , 'exp'])
     @commands.guild_only()
-    async def level(self, ctx, member: discord.Member = None): 
+    async def level(self, ctx, member: discord.Member = None):
+        if ctx.channel.id == 861883647070437386:
+            embed = discord.Embed(description="please use bot command in <#861874852050894868>" , color=WHITE)
+            await ctx.message.delete()
+            return await ctx.send(embed=embed , delete_after=10)
         async with ctx.typing():
-                if not member:  # if member is no mentioned
+                if not member:
                     member = ctx.message.author
-                member_id = member.id
-#        if ctx.channel.id in bot_channel:   
+                member_id = member.id 
                 stats = levelling.find_one({"id": member_id})
                 if stats is None:
                     embed = discord.Embed(description="You haven't sent any messages, **no xp**!!",color=0xffffff)
@@ -182,18 +185,15 @@ class XP(commands.Cog):
                         if stats["id"] == x["id"]:
                             break
                     final_xp = (200*((1/2)*lvl))
-
+                    
                     embedlv = discord.Embed(title=f"{member.name}'s level stats | {ctx.guild.name}",color=0x77dd77)
                     embedlv.set_image(url="attachment://latte-level.png")
-
+                    
                     await ctx.channel.send(file=utils.level_images(member, final_xp, lvl, rank, xp), embed=embedlv)
-#        else:
-#            embedbot = discord.Embed(title="BOT COMMAND ERROR",description=f"please use bot command in <#861874852050894868> !",color=0xffffff)
-#            await ctx.message.delete()
-#            await ctx.channel.send(embed=embedbot , delete_after=10)
   
     @commands.command()
     @commands.guild_only()
+    @utils.admin_or_permissions(manage_roles=True)
     async def xprole(self, ctx):
         embed = discord.Embed(description="", color=0xffffff)
         embed.title = "✧ LATTE XP ROLE!"

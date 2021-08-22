@@ -85,3 +85,10 @@ async def dev_bot(self , ctx):
     user = self.client.get_user(385049730222129152) or await self.client.fetch_user(385049730222129152)
 
     return user
+
+async def check_chat():
+    def pred(ctx):
+        if ctx.channel.id == 861883647070437386:
+            return False
+        return True
+    return commands.check(pred)

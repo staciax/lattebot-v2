@@ -207,7 +207,36 @@ class Latte_config(commands.Cog):
             await ctx.send(f"server-log channel is deleted")
         except:
             print("error")
+    
+    #log_channel_ignor
+    @commands.command(name="ignor-channel")
+    async def log_channel(self, ctx): 
+        def check(m):
+            return m.author == ctx.author and m.channel == ctx.channel
+        embedwait = discord.Embed(description=f"Edit channel log",color=0xffffff)
+        embedfail = discord.Embed(description=f"You took to long, please try again.",color=0xffffff)
+        await ctx.send(embed=embedwait)
+        try:
+            msg = await self.client.wait_for('message', check=check, timeout=60.0)
+        except asyncio.TimeoutError:
+            await ctx.send(embed=embedfail)
 
+        data = utils.json_loader.read_json("latte")
+        
+        data["log-channel"] = [msg.clean_content]
+        try:
+            utils.json_loader.write_json(data, "latte")
+            await ctx.send(f'set log_channel log channel : {data["log-channel"]}')
+        except:
+            print("error")
+    
+    @commands.command()
+    async def check_test(self, ctx):
+        data = utils.json_loader.read_json("latte")
+        x = data["log-channel"]
+        if ctx.channel.id in x:
+            print(x)
+        
 
     #view_config
     @commands.command(aliases=["lconfig"])

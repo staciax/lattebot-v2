@@ -80,6 +80,52 @@ class Infomation(commands.Cog):
         embed.set_thumbnail(url=ctx.guild.icon.url)
     
         await ctx.send(embed=embed , mention_author=False)
+    
+    @commands.command(aliases=["servericon","si","guildicon"])
+    @commands.guild_only()
+    async def server_icon(self, ctx , *, guild_id: int = None):
+        if guild_id is None:
+            guild = ctx.guild
+        else:
+            guild = self.client.get_guild(guild_id)
+        
+        try:
+            embed = discord.Embed(title = f"{guild.name}'s Icon:", color=0xffffff).set_image(url = guild.icon.url)
+            await ctx.send(embed = embed)
+        except:
+            embed = discord.Embed(description="guild not found" , color=WHITE)
+            await ctx.send(embed=embed)
+    
+    @commands.command(aliases=["serverbanner","sb","guildbanner"])
+    @commands.guild_only()
+    async def server_banner(self, ctx , *, guild_id: int = None):
+        if guild_id is None:
+            guild = ctx.guild
+        else:
+            guild = self.client.get_guild(guild_id)
+        
+        try:
+            embed = discord.Embed(title = f"{guild.name}'s Banner:", color=0xffffff).set_image(url = guild.banner.url)
+            await ctx.send(embed = embed)
+        except:
+            embed = discord.Embed(description="guild not found" , color=WHITE)
+            await ctx.send(embed=embed)
+    
+    @commands.command(aliases=["serversplash","ss","guildsplash","splash","invitebanner"])
+    @commands.guild_only()
+    async def server_invite_splash(self, ctx , *, guild_id: int = None):
+        if guild_id is None:
+            guild = ctx.guild
+        else:
+            guild = self.client.get_guild(guild_id)
+        
+        try:
+            embed = discord.Embed(title = f"{guild.name}'s Invite banner:", color=0xffffff).set_image(url = guild.splash.url)
+            await ctx.send(embed = embed)
+        except:
+            embed = discord.Embed(description="guild not found" , color=WHITE)
+            await ctx.send(embed=embed)
+        
 
     @commands.command(aliases=["ui", "userinformation", "userinformations"])
     @commands.guild_only()
