@@ -278,6 +278,14 @@ class Data(commands.Cog):
         async for entry in ctx.guild.audit_logs(limit=num):
             embed.description += f'**User:** `{entry.user}` **Action:** `{entry.action}`  **Target:** `{entry.target}`  **Category:** `{entry.category}` **Time:** `{entry.created_at.strftime("%a, %#d %B %Y, %I:%M %p")}\n\n`'
         await ctx.reply(embed=embed, mention_author=False)
+    
+    @commands.command(aliases=['temp','tempinvite'])
+    @commands.guild_only()
+    async def temp_invite(self, ctx):
+        if not ctx.guild.id == MYGUILD:
+            return
+        await ctx.message.delete()
+        await ctx.channel.send('https://discord.gg/f6adY5B8k2' , delete_after=15)
 
 # dm message to my text channel   
 #    @commands.Cog.listener()

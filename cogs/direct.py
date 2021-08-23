@@ -22,12 +22,14 @@ class DM_Message(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message(self, message):
+        if message.author == self.client.user:
+            return
+        
+        #DM_to_DM
         stacia = self.client.get_user(240059262297047041)
         pond = self.client.get_user(371230466319187969)
         latte = self.client.get_user(834834946832203776)
-        if message.author == self.client.user:
-            return
-            
+
         if isinstance(message.channel, discord.DMChannel):
             if message.content:
                 if message.author.id == 240059262297047041: #stacia > pond
@@ -36,6 +38,7 @@ class DM_Message(commands.Cog):
                     await stacia.send(f"{message.clean_content}" , delete_after=1800)
                 if message.author.id == 834834946832203776: #latte > stacia
                     await stacia.send(f"{message.clean_content}" , delete_after=1800)
+
             if message.attachments:
                 image = message.attachments[0].proxy_url
                 if message.author.id == 240059262297047041: #stacia > pond

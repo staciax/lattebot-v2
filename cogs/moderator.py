@@ -243,6 +243,9 @@ class Moderation(commands.Cog):
     #spam_alert
     @commands.Cog.listener()
     async def on_message(self, message):
+        if message.author == self.client.user:
+            return
+
         def _check(m):
             return (m.author == message.author
 					and len(m.mentions)

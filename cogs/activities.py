@@ -27,6 +27,7 @@ class Activities(commands.Cog):
         self.bot = client
         self.client = client
         self.invites = {}
+        self.invite_code = 'f6adY5B8k2'
         self.total_ = 0
         self.member_ = 0
         self.bot_ = 0
@@ -47,6 +48,8 @@ class Activities(commands.Cog):
         self.log_message = self.bot.get_channel(MESSAGE_LOG)
         self.log_roles = self.bot.get_channel(ROLES_LOG)
         print(f"-{self.__class__.__name__}")
+#        guild = self.bot.get_guild(MYGUILD)
+#        self.invites[guild.id] = await guild.invites()
         for guild in self.client.guilds:
             self.invites[guild.id] = await guild.invites()
 
@@ -146,6 +149,8 @@ class Activities(commands.Cog):
             if self.server_log is None:
                 print("on_member_ban channel is None")
                 return
+
+            #invte_log
             invites_before_join = self.invites[member.guild.id]
             invites_after_join = await member.guild.invites()
             for invite in invites_before_join:
@@ -161,9 +166,16 @@ class Activities(commands.Cog):
                     embed2.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
                     await self.server_log.send(embed=embed2)
                     self.invites[member.guild.id] = invites_after_join
-#                    return     
+                    
+                    #temp_invite
+                    if invite.code == self.invite_code:
+                        role = discord.utils.get(member.guild.roles, id = 879258879987449867)
+                        await member.add_roles(role)
+                        print(f"{member.name} temp invite")
+                        return
 
             """welcome embed"""
+
             welcome_ch = utils.json_loader.read_json("welcome")
             data = welcome_ch[str(member.guild.id)]
             if data is None:

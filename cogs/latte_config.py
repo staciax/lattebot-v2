@@ -194,7 +194,7 @@ class Latte_config(commands.Cog):
         data["only-image"] = channel.id
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f'set server-log log channel : {data["only-image"]}')
+            await ctx.send(f'set only-image channel : {data["only-image"]}')
         except:
             print("error")
 
@@ -204,7 +204,31 @@ class Latte_config(commands.Cog):
         data["only-image"] = None
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f"server-log channel is deleted")
+            await ctx.send(f"only-image channel is deleted")
+        except:
+            print("error")
+    
+    @only.group(invoke_without_command=True)
+    async def link(self, ctx , channel: discord.TextChannel=None): 
+        if channel is None:
+            channel = ctx.channel
+        
+        data = utils.json_loader.read_json("latte")
+
+        data["only-link"] = channel.id
+        try:
+            utils.json_loader.write_json(data, "latte")
+            await ctx.send(f'set only-link channel : {data["only-link"]}')
+        except:
+            print("error")
+
+    @link.command(name="delete")
+    async def delete_link(self ,ctx):
+        data = utils.json_loader.read_json("latte")
+        data["only-link"] = None
+        try:
+            utils.json_loader.write_json(data, "latte")
+            await ctx.send(f"only-link channel is deleted")
         except:
             print("error")
     

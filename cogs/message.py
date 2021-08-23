@@ -1,8 +1,8 @@
 # Standard 
-import discord , json
+import discord , json , re , asyncio
 from discord.ext import commands
 from datetime import datetime, timezone
-import asyncio
+from re import search
 
 # Third party
 import io
@@ -18,6 +18,8 @@ class Message(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+        self.url_regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+        self.links_allowed = ()
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -43,7 +45,7 @@ class Message(commands.Cog):
         if message.author == self.client.user:
             return
 
-        #setting_only_image_channel
+        #only_image_channel
         data = utils.json_loader.read_json("latte")
         only_image = data["only-image"]
         if message.channel.id == only_image:
@@ -52,6 +54,14 @@ class Message(commands.Cog):
                     return
                 elif message.content:
                     await message.delete()
+        
+        #only_link_channel
+        data = utils.json_loader.read_json("latte")
+        only_link = data["only-link"]
+        if message.channel.id == 844462710526836756 and search(self.url_regex, message.content):
+            return
+        else:
+            await message.delete()
 
         #afk
         if message.content.startswith("lt afk"):
@@ -78,6 +88,10 @@ class Message(commands.Cog):
         if message.content.startswith('invite'):
             await message.delete()
             await message.channel.send('https://discord.gg/bvwpZ2B4rj' , delete_after=15)
+        
+        if message.content.startswith('tempinvite'):
+            await message.delete()
+            await message.channel.send('https://discord.gg/f6adY5B8k2' , delete_after=15)
 
         if message.content.startswith('it'):
             await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=10)
