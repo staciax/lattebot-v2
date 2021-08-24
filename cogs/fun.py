@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 # Third party
 import json
 import io
-import aiohttp , random , anime_images_api , requests , json
+import aiohttp , random , anime_images_api , requests
 anime = anime_images_api.Anime_Images()
 
 import typing , unicodedata

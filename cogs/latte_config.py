@@ -253,6 +253,36 @@ class Latte_config(commands.Cog):
             await ctx.send(f'set log_channel log channel : {data["log-channel"]}')
         except:
             print("error")
+    
+    @commands.command(name="snipetime")
+    async def set_snipetime(self, ctx , time:int = None):
+        data = utils.json_loader.read_json("latte")
+        if time is None:
+            time = None
+
+        data["snipe-time"] = time
+
+        try:
+            utils.json_loader.write_json(data, "latte")
+            await ctx.send(f' snipetime {data["snipe-time"]}')
+        except:
+            await ctx.send('error')
+    
+    @commands.command(name="snipedtime")
+    async def set_sniped(self, ctx , time = None):
+        data = utils.json_loader.read_json("latte")
+        if time is None:
+            snipe_mode = None
+        else:
+            snipe_mode = int(time)
+
+        data["sniped"] = snipe_mode
+
+        try:
+            utils.json_loader.write_json(data, "latte")
+            await ctx.send(f' snipedtime {data["sniped"]}')
+        except:
+            await ctx.send('error')
 
     #view_config
     @commands.command(aliases=["lconfig"])

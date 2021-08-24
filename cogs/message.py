@@ -58,21 +58,23 @@ class Message(commands.Cog):
         #only_link_channel
         data = utils.json_loader.read_json("latte")
         only_link = data["only-link"]
-        if message.channel.id == 844462710526836756 and search(self.url_regex, message.content):
-            return
-        else:
-            await message.delete()
+        if message.channel.id == only_link:
+            if search(self.url_regex, message.content):
+                return
+            else:
+                await message.delete()
 
         #afk
         if message.content.startswith("lt afk"):
             return
         if message.content.startswith("l afk"):
             return
+        if message.content.startswith(".afk"):
+            return
         for id in self.afk.keys():
             if message.author.id == id:
                 del self.afk[id]
-
-                return await message.channel.send(f"{message.author.mention}, Welcome back!" , delete_after=15)
+                return await message.channel.send(f"{message.author.mention}, ยินดีต้อนรับกลับมาค่ะนายท่าน!" , delete_after=15)
             
             member = message.guild.get_member(id)
             if member.mentioned_in(message):
@@ -120,6 +122,8 @@ class Message(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message_delete(self, message):
+        if message.embeds:
+            return
         #snipe_message
         if message.guild.id == MYGUILD:
             #.
@@ -158,7 +162,18 @@ class Message(commands.Cog):
                 image = "none"
 
             self.sniped_message[message.guild.id] = (image , message.content, message.author, message.channel.mention, message.created_at)
-        
+
+            #message.channel.id or message.guild.id
+
+            #snipe_time_delete
+            data = utils.json_loader.read_json("latte")
+            snipe_time = data["snipe-time"]
+            if snipe_time:
+                await asyncio.sleep(snipe_time)
+                self.sniped_text[message.guild.id] = None
+                self.sniped_img[message.guild.id] = None
+                self.sniped_message[message.guild.id] = None
+                print("deleted")
         else:
             return
             
@@ -169,6 +184,9 @@ class Message(commands.Cog):
         embed = discord.Embed(description= "" ,color=0xffffff)
         text_aliases = ["t", "text"]
         images_aliases = ["i", "image" , "images"]
+
+        data = utils.json_loader.read_json("latte")
+        sniped_time = data["sniped"]
         if choice == None:
             if self.sniped_message:
                 try:
@@ -181,7 +199,10 @@ class Message(commands.Cog):
                     embed.timestamp = time
                     embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
                     embed.set_footer(text=f"Message delete")
-                    await ctx.channel.send(embed=embed)
+                    if sniped_time:
+                        await ctx.channel.send(embed=embed , delete_after=sniped_time)
+                    else:
+                        await ctx.channel.send(embed=embed)
                 else:
                     if content:
                         content_check = f"\n**Content:** ```{content}```"
@@ -196,16 +217,19 @@ class Message(commands.Cog):
                     embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
                     embed.set_footer(text=f"Message delete")
 
-                    await ctx.channel.send(embed=embed)
+                    if sniped_time:
+                        await ctx.channel.send(embed=embed , delete_after=sniped_time)
+                    else:
+                        await ctx.channel.send(embed=embed)
             else:
-                await ctx.channel.send("Couldn't find a message to snipe!")
+                await ctx.channel.send("Couldn't find a message to snipe!" , delete_after=15)
                 return
 
         elif choice in images_aliases: #snipe image
             try:
                 image , author , channel_name, time = self.sniped_img[ctx.guild.id]
             except:
-                await ctx.channel.send("Couldn't find a message to snipe!")
+                await ctx.channel.send("Couldn't find a message to snipe!", delete_after=15)
                 return
 
             embed = discord.Embed(description=f"**Deleted in:** {channel_name}\n**Attachments :** [**URL**]({image})",color=0xffffff , timestamp=time)
@@ -215,19 +239,25 @@ class Message(commands.Cog):
                 pass
             embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
             embed.set_footer(text=f"Message delete")
-            await ctx.channel.send(embed=embed)
+            if sniped_time:
+                await ctx.channel.send(embed=embed , delete_after=sniped_time)
+            else:
+                await ctx.channel.send(embed=embed)
   
         elif choice in text_aliases: #snipe text
             try:
                 content , author , channel_name, time = self.sniped_text[ctx.guild.id]
             except:
-                await ctx.channel.send("Couldn't find a message to snipe!")
+                await ctx.channel.send("Couldn't find a message to snipe!", delete_after=15)
                 return
                 
             embed = discord.Embed(description=f"**Deleted in:** {channel_name}\n**Content:** ```{content}```" , color=0xffffff , timestamp=time)
             embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
             embed.set_footer(text=f"Message delete")
-            await ctx.channel.send(embed=embed)
+            if sniped_time:
+                await ctx.channel.send(embed=embed , delete_after=sniped_time)
+            else:
+                await ctx.channel.send(embed=embed)
 
     @commands.command(name='dm' , description="direct message user")
     @commands.guild_only()
