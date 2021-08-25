@@ -142,7 +142,7 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        if member.guild.id == 840379510704046151:
+#        if member.guild.id == 840379510704046151:
 #            """welcome log"""
 #            await channel.send("pass guild id")
 #            user_update = utils.json_loader.read_json("latte")
