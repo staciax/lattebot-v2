@@ -18,7 +18,7 @@ vim config.py
 
 ----python3 main.py
 
-pip install -U -r requirements.txt
+pip3 install -U -r requirements.txt
 pip3 install -r requiments.txt
 
 python3 bot.py
