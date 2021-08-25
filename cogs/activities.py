@@ -63,7 +63,7 @@ class Activities(commands.Cog):
             self.total_ = total_count
             total_channel = guild.get_channel(876738880282431489)
             total_name = f"ᴛᴏᴛᴀʟ‌・{self.total_}"
-            print(f"\n\n{total_name}")
+#            print(f"\n\n{total_name}")
             await total_channel.edit(name=total_name)
         
         member_count = len([member for member in guild.members if not member.bot])
@@ -71,7 +71,7 @@ class Activities(commands.Cog):
             self.member_ = member_count
             member_channel = guild.get_channel(876712142160678923)
             member_name = f"ᴍᴇᴍʙᴇʀs・{self.member_}"
-            print(member_name)
+#            print(member_name)
             await member_channel.edit(name=member_name)
 
         bot_count = len([Member for Member in guild.members if Member.bot])
@@ -79,7 +79,7 @@ class Activities(commands.Cog):
             self.bot_ = bot_count
             bot_channel = guild.get_channel(876724022686150687)
             bot_name = f"ʙᴏᴛs‌・{self.bot_}"
-            print(bot_name)
+#            print(bot_name)
             await bot_channel.edit(name=bot_name)
         
         role_count = len(guild.roles)
@@ -87,7 +87,7 @@ class Activities(commands.Cog):
             self.role_ = role_count
             role_channel = guild.get_channel(876712169662742588)
             role_name = f"ʀᴏʟᴇs‌・{self.role_}"
-            print(role_name)
+#            print(role_name)
             await role_channel.edit(name=role_name)
         
         channel_count = len(guild.channels)
@@ -95,7 +95,7 @@ class Activities(commands.Cog):
             self.channel_ = channel_count
             channel_channel = guild.get_channel(876712200214024192)
             channel_name = f"ᴄʜᴀɴɴᴇʟs・{self.channel_}"
-            print(channel_name)
+#            print(channel_name)
             await channel_channel.edit(name=channel_name)
         
         text_channel_count = len(guild.text_channels)
@@ -103,7 +103,7 @@ class Activities(commands.Cog):
             self.text_ = text_channel_count
             text_channel = guild.get_channel(876740437505871922)
             text_name = f"ᴛᴇxᴛ・{self.text_}"
-            print(text_name)
+#            print(text_name)
             await text_channel.edit(name=text_name)
         
         voice_channel_count = len(guild.voice_channels)
@@ -111,7 +111,7 @@ class Activities(commands.Cog):
             self.voice_ = voice_channel_count
             voice_channel = guild.get_channel(876740515863879711)
             voice_name = f"ᴠᴏɪᴄᴇ・{self.voice_}"
-            print(voice_name)
+#            print(voice_name)
             await voice_channel.edit(name=voice_name)
         
         boost_count = guild.premium_subscription_count
@@ -119,7 +119,7 @@ class Activities(commands.Cog):
             self.boost_ = boost_count
             boost_channel = guild.get_channel(876737270051389470)
             boost_name = f"ʙᴏᴏꜱᴛꜱ・{self.boost_}"
-            print(boost_name)
+ #           print(boost_name)
             await boost_channel.edit(name=boost_name)
 
     @counted.before_loop
@@ -142,6 +142,7 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
+        if member.guild.id == MYGUILD:
             """welcome log"""
             user_update = utils.json_loader.read_json("latte")
             self.server_log = self.bot.get_channel(user_update["server-log"])
@@ -149,7 +150,6 @@ class Activities(commands.Cog):
             if self.server_log is None:
                 print("on_member_ban channel is None")
                 return
-
             #invte_log
             invites_before_join = self.invites[member.guild.id]
             invites_after_join = await member.guild.invites()
@@ -178,36 +178,39 @@ class Activities(commands.Cog):
 
             welcome_ch = utils.json_loader.read_json("welcome")
             data = welcome_ch[str(member.guild.id)]
+
+            #check
             if data is None:
                 return
-            elif data:
-                guild = self.client.get_guild(member.guild.id)
-                channel = guild.get_channel(data)
-                embed=discord.Embed(
-                            description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
-                            timestamp=datetime.now(timezone.utc),
-                            color=0xc4cfcf
+            
+            guild = self.client.get_guild(member.guild.id)
+            channel = guild.get_channel(data)
+            embed=discord.Embed(
+                        description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
+                        timestamp=datetime.now(timezone.utc),
+                        color=0xc4cfcf
     
-                )
-                embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
-                embed.set_thumbnail(url=member.avatar.url)
-                embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
+            )
+            embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
+            embed.set_thumbnail(url=member.avatar.url)
+            embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
 
-                await channel.send(embed=embed)
+            await channel.send(embed=embed)
     
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
-        user_update = utils.json_loader.read_json("latte")
-        self.server_log = self.bot.get_channel(user_update["server-log"])
-
-        if self.server_log is None:
-            print("on_member_ban channel is None")
-            return
-
         if member.guild.id == MYGUILD:
+            user_update = utils.json_loader.read_json("latte")
+            self.server_log = self.bot.get_channel(user_update["server-log"])
+
+            if self.server_log is None:
+                print("on_member_ban channel is None")
+                return
+
             embed = discord.Embed(
                 description=f"**Member ban\n`{member}`**",
-                color=PTRED)
+                color=PTRED
+            )
             embed.set_thumbnail(url=member.avatar.url)
             embed.set_footer(text="—・good bye bro")
             embed.timestamp = datetime.now(timezone.utc)
@@ -237,19 +240,21 @@ class Activities(commands.Cog):
             """leave embed"""
             leave_ch = utils.json_loader.read_json("leave")
             data = leave_ch[str(member.guild.id)]
+            
+            #check
             if data is None:
                 return
-            elif data:
-                guild = self.client.get_guild(member.guild.id)
-                channel = guild.get_channel(data)
-                embed = discord.Embed(
+
+            guild = self.client.get_guild(member.guild.id)
+            channel = guild.get_channel(data)
+            embed = discord.Embed(
                         description=f"**Leave Server\n`{member}`**",
                         color=0xdbd7d2)
-                embed.set_thumbnail(url=member.avatar.url)
-                embed.set_footer(text="—・see ya good bye")
-                embed.timestamp = datetime.now(timezone.utc)
+            embed.set_thumbnail(url=member.avatar.url)
+            embed.set_footer(text="—・see ya good bye")
+            embed.timestamp = datetime.now(timezone.utc)
 
-                await channel.send(embed = embed) 
+            await channel.send(embed = embed) 
     
     @commands.Cog.listener()
     async def on_invite_create(self, invite: discord.Invite):

@@ -163,7 +163,7 @@ class Data(commands.Cog):
                     ("Uptime:",f"```{data_time}s```", True),
                     ("Total Cogs:",f"```{totalcogs}```", True),
 					("Total Commands:",f"```{totalcommands}```", True),
-                    ("Bot developers:","```ꜱᴛᴀᴄɪᴀ.#0001 (385049730222129152)```\n\n", False),
+                    ("Bot developers:","```ꜱᴛᴀᴄɪᴀ.#7475 (240059262297047041)```\n\n", False),
                     ("CPU usage:",f"```{CPU_Usage} %```", True),
                     ("CPU Cores / Threads:",f"```{CPU_Cores}/{CPU_Thread}```", True),
                     ("Total RAM:",f"```{total_Ram} GB```", True),
@@ -286,6 +286,38 @@ class Data(commands.Cog):
             return
         await ctx.message.delete()
         await ctx.channel.send('https://discord.gg/f6adY5B8k2' , delete_after=15)
+    
+    @commands.command(aliases=["bot-join"])
+    @commands.guild_only()
+    @utils.owner_bot()
+    async def set_bot_join(self, ctx , channel: discord.TextChannel = None):
+        if channel is None:
+            channel = ctx.channel
+
+        data = utils.json_loader.read_json("secrets")
+        data["join"] = channel.id
+
+        try:
+            utils.json_loader.write_json(data, "secrets")
+            await ctx.send(f'set bot join : {data["join"]}')
+        except:
+            await ctx.send("error")
+    
+    @commands.command(aliases=["bot-leave"])
+    @commands.guild_only()
+    @utils.owner_bot()
+    async def set_bot_leave(self, ctx , channel: discord.TextChannel = None):
+        if channel is None:
+            channel = ctx.channel
+
+        data = utils.json_loader.read_json("secrets")
+        data["leave"] = channel.id
+
+        try:
+            utils.json_loader.write_json(data, "secrets")
+            await ctx.send(f'set bot leave : {data["leave"]}')
+        except:
+            await ctx.send("error")
 
 # dm message to my text channel   
 #    @commands.Cog.listener()

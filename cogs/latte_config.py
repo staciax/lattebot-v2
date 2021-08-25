@@ -40,9 +40,10 @@ class Latte_config(commands.Cog):
         self.welcome[str(ctx.guild.id)] = channel.id
         with open("bot_config/welcome.json", "w") as welcome_: #encoding='UTF8'
             json.dump(self.welcome, welcome_ , indent=4)
-            
-        await ctx.send(f"set welcome channel : {channel.mention}")
-    
+
+        em = discord.Embed(description=f"welcome is enable : {channel.mention}" , color=WHITE)
+        await ctx.send(embed=em)
+                
     @welcome.command(name="delete")
     async def delete_welcome(self ,ctx):
         self.welcome[str(ctx.guild.id)] = None
@@ -50,7 +51,8 @@ class Latte_config(commands.Cog):
         with open("bot_config/welcome.json", "w") as welcome_: #encoding='UTF8'
             json.dump(self.welcome, welcome_, indent=4)
         
-        await ctx.send(f"channel is deleted")
+        em = discord.Embed(description="welcome is disable" , color=WHITE)
+        await ctx.send(embed=em)
     
     #set_leave_channel
     @set.group(invoke_without_command=True)
@@ -62,7 +64,8 @@ class Latte_config(commands.Cog):
         with open("bot_config/leave.json", "w") as welcome_change: #encoding='UTF8'
             json.dump(self.leave, welcome_change, indent=4)
 
-        await ctx.send(f"set leave channel : {channel.mention}")
+        em = discord.Embed(description=f"leave is enable : {channel.mention}" , color=WHITE)
+        await ctx.send(embed=em)
     
     @leave.command(name="delete")
     async def delete_leave(self, ctx):
@@ -70,12 +73,14 @@ class Latte_config(commands.Cog):
         with open("bot_config/leave.json", "w") as welcome_change: #encoding='UTF8'
             json.dump(self.leave, welcome_change, indent=4)
         
-        await ctx.send(f"set leave channel : {self.leave[str(ctx.guild.id)]}")
+        em = discord.Embed(description="leave is disable" , color=WHITE)
+        await ctx.send(embed=em)
 
     #start_set_log_channel
     @commands.group(invoke_without_command=True)
     async def log(self, ctx):
-        await ctx.send("server , message , voice , role")
+        embed = discord.Embed(description="set log channel" , color=WHITE)
+        await ctx.send(embed=embed)
 
     #server_log      
     @log.group(invoke_without_command=True)
@@ -88,9 +93,11 @@ class Latte_config(commands.Cog):
         data["server-log"] = channel.id
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f'set server-log log channel : {data["server-log"]}')
+            em = discord.Embed(description=f'set server-log channel : {data["server-log"]}' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
 
     @server.command(name="delete")
     async def delete_server(self ,ctx):
@@ -98,9 +105,11 @@ class Latte_config(commands.Cog):
         data["server-log"] = None
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f"server-log channel is deleted")
+            em = discord.Embed(description=f"server-log channel is disable" , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
 
     #message_log
     @log.group(invoke_without_command=True)
@@ -113,9 +122,11 @@ class Latte_config(commands.Cog):
         data["message-log"] = channel.id
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f'set message-log log channel : {data["message-log"]}')
+            em = discord.Embed(description=f'set message-log log channel : {data["message-log"]}' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
 
     @message.command(name="delete")
     async def delete_message(self ,ctx):
@@ -124,9 +135,11 @@ class Latte_config(commands.Cog):
 
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f"message-log channel is deleted")
+            em = discord.Embed(description=f'message-log channel is disable' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
     
     #voice_log
     @log.group(invoke_without_command=True)
@@ -137,9 +150,11 @@ class Latte_config(commands.Cog):
         data["voice-log"] = channel.id
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f'set voice log channel : {data["voice-log"]}')
+            em = discord.Embed(description=f'set voice-log channel : {data["voice-log"]}' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
 
     @voice.command(name="delete")
     async def delete_voice(self ,ctx):
@@ -148,9 +163,11 @@ class Latte_config(commands.Cog):
 
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f"voice channel is deleted")
+            em = discord.Embed(description=f"voice-log channel is disable" , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
     
     #role_log
     @log.group(invoke_without_command=True)
@@ -163,9 +180,11 @@ class Latte_config(commands.Cog):
         data["role-log"] = channel.id
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f'set role log channel : {data["role-log"]}')
+            em = discord.Embed(description=f'set role-log channel : {data["role-log"]}' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
 
     @role.command(name="delete")
     async def delete_role(self ,ctx):
@@ -174,14 +193,17 @@ class Latte_config(commands.Cog):
         
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f"role channel is deleted")
+            em = discord.Embed(description=f'role-log channel is disable : {data["role-log"]}' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
 
     #start_only
     @commands.group(invoke_without_command=True)
     async def only(self, ctx):
-        await ctx.send("server , message , voice , role")
+        embed = discord.Embed(description="set only channel\nimage\nlink" , color=WHITE)
+        await ctx.send(embed=embed)
 
     #only_image     
     @only.group(invoke_without_command=True)
@@ -194,9 +216,11 @@ class Latte_config(commands.Cog):
         data["only-image"] = channel.id
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f'set only-image channel : {data["only-image"]}')
+            em = discord.Embed(description=f'set only-image channel : {data["only-image"]}' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
 
     @image.command(name="delete")
     async def delete_image(self ,ctx):
@@ -204,9 +228,11 @@ class Latte_config(commands.Cog):
         data["only-image"] = None
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f"only-image channel is deleted")
+            em = discord.Embed(description=f"only-image channel is disable" , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
     
     @only.group(invoke_without_command=True)
     async def link(self, ctx , channel: discord.TextChannel=None): 
@@ -218,9 +244,11 @@ class Latte_config(commands.Cog):
         data["only-link"] = channel.id
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f'set only-link channel : {data["only-link"]}')
+            em = discord.Embed(description=f'set only-link channel : {data["only-link"]}' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
 
     @link.command(name="delete")
     async def delete_link(self ,ctx):
@@ -228,11 +256,13 @@ class Latte_config(commands.Cog):
         data["only-link"] = None
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f"only-link channel is deleted")
+            em = discord.Embed(description=f"only-link channel is disable" , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
     
-    #log_channel_ignor
+    #log_channel_ignor #ยังไม่เปิดใช้งาน
     @commands.command(name="ignor-channel")
     async def log_channel(self, ctx): 
         def check(m):
@@ -250,9 +280,11 @@ class Latte_config(commands.Cog):
         data["log-channel"] = [msg.clean_content]
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f'set log_channel log channel : {data["log-channel"]}')
+            em = discord.Embed(description=f'set log_channel log channel : {data["log-channel"]}' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             print("error")
+            await ctx.send('error')
     
     @commands.command(name="snipetime")
     async def set_snipetime(self, ctx , time:int = None):
@@ -264,7 +296,8 @@ class Latte_config(commands.Cog):
 
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f' snipetime {data["snipe-time"]}')
+            em = discord.Embed(description=f' snipetime {data["snipe-time"]}' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             await ctx.send('error')
     
@@ -280,7 +313,8 @@ class Latte_config(commands.Cog):
 
         try:
             utils.json_loader.write_json(data, "latte")
-            await ctx.send(f' snipedtime {data["sniped"]}')
+            em = discord.Embed(description=f' snipedtime {data["sniped"]}' , color=WHITE)
+            await ctx.send(embed=em)
         except:
             await ctx.send('error')
 

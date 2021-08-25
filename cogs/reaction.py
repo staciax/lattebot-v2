@@ -205,10 +205,5 @@ class Reaction(commands.Cog):
         await ctx.message.delete()
         await msg.add_reaction(emote)
 
-#    @ar.error
-#    async def ar_error(self, ctx, error):
-#        await ctx.send("pls try again! | `ar` `msg_id` `ch_id` `emoji` ")
-#        await ctx.message.delete()
-        
 def setup(client):
     client.add_cog(Reaction(client))

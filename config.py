@@ -34,7 +34,7 @@ VOICE_LOG = 870173863726682112 #voicelog /cog/logguild
 MESSAGE_LOG = 873690030751748206 #message /cog/activies
 ROLES_LOG = 873688581682634762 #roles /cog/activies
 REQUEST_ME = 877885398263668746 #request /cog/data
-GIVEAWAY_LOG = 840396784299147315 #giveaway /cog/giveaway
+GIVEAWAY_LOG = 879996826156138528 #giveaway /cog/giveaway
 
 #other
 REPORTBUG = 865609918945820692 #reportbug /cog/data

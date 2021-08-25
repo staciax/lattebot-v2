@@ -20,9 +20,7 @@ class Moderation(commands.Cog):
 
     def __init__(self, client):
         self.client = client        
-#        self.url_regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
         self.only_images = (ONLYIMG,)
-#        self.images_allowed = (861874852050894868,)
         self.testing_only = (ONLYTESTING,)
 
     @commands.Cog.listener()
@@ -36,9 +34,7 @@ class Moderation(commands.Cog):
 
     @commands.command(description="ban member")
     @commands.guild_only()
-#    @commands.has_permissions(administrator = True)
-#    @commands.has_permissions(ban_members=True)
-    @commands.has_permissions(ban_members=True)
+    @utils.admin_or_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *, reason = None):
         embed = discord.Embed(title="Banned Member", description=f'{member.name}#{member.discriminator} has been banned from server\nReason: {reason}',timestamp=datetime.now(timezone.utc),color=0xffffff)
         embed.set_footer(text=f"Banned by {ctx.author}" , icon_url = ctx.author.avatar.url)
@@ -54,7 +50,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @commands.has_permissions(ban_members=True) 
+    @utils.admin_or_permissions(ban_members=True)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split('#')
@@ -69,7 +65,7 @@ class Moderation(commands.Cog):
                 await ctx.send(embed=embedub)
     
     @commands.command(name="kick", description="kick member", pass_context=True)
-    @commands.has_permissions(kick_members=True)
+    @utils.admin_or_permissions(kick_members=True)
     @commands.guild_only()
     async def kick(self, ctx, member: discord.Member, *, reason=None):
 
@@ -80,7 +76,7 @@ class Moderation(commands.Cog):
     
     @commands.command(description="clear message" , aliases=['purge'])
     @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @utils.admin_or_permissions(manage_messages=True)
     async def clear(self, ctx, amount: str):
         if amount == 'all':
             embed = discord.Embed(
@@ -129,24 +125,55 @@ class Moderation(commands.Cog):
     @commands.command(description="mute member")
     @commands.has_permissions(administrator = True)
     @commands.guild_only()
-    async def mute(self, ctx, member: discord.Member, *, reason=None):
+    async def mute(self, ctx, member: discord.Member, time:int =None , * ,reason=None):
         guild = ctx.guild
-        mutedRole = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
+        mutedRole = discord.utils.get(guild.roles, name=MUTEROLE)
+
+        check_member_role = discord.utils.get(member.roles, name=MUTEROLE)
+        if check_member_role:
+            embed = discord.Embed(description="member's already have a mute role.", color=WHITE)
+            return await ctx.send(embed=embed)
 
         if not mutedRole:
             embeddh = discord.Embed(title="MUTE ROLE",description=f"Your server don't have : **`Muted Role`**\n please use command : `lt muterole`",color=0xffffff)
             await ctx.send(embed=embeddh)
-        else:
-            embed = discord.Embed(description=f"**MUTED MEMBER**\n\n`You has been mute`: {member.name}#{member.discriminator}",color=0xffffff)
-            embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
+            return
+        
+        embed = discord.Embed(description=f"**MUTED MEMBER**",color=WHITE)
+        embed.add_field(name="Muted:", value=f"```{member.name}#{member.discriminator}```" , inline=False)
+        if time:
+            embed.add_field(name="Time:", value=f"```{time}s```" , inline=False)
+        if reason is not None:
+            embed.add_field(name="Reason:", value=f"```{reason}```" , inline=False)
+        embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
 
-            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n`Reason` : {reason} \n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
-            embedmute.set_footer(text=f"{self.client.user.name}",icon_url=self.client.user.avatar.url)
+#            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n`Reason` : {reason} \n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
+#            embedmute.set_footer(text=f"{self.client.user.name}",icon_url=self.client.user.avatar.url)
 
-            await ctx.send(embed = embed)
+        if time:
             await member.add_roles(mutedRole, reason=reason)
-            await member.send(embed=embedmute)
- 
+            await ctx.send(embed = embed)
+            await asyncio.sleep(time)
+            await member.remove_roles(mutedRole)                
+        else:
+            await member.add_roles(mutedRole, reason=reason)
+            await ctx.send(embed = embed)
+#                await member.send(embed=embedmute)           
+        
+        data = utils.json_loader.read_json("latte")
+        log = data["server-log"]
+
+        if log:
+            self.log_mute = self.client.get_channel(log)
+
+            embed_log = discord.Embed(title="MUTED LOG" , color=0xffffff)
+            embed_log.add_field(name=f"Target:" , value=f"```{member.name}```" , inline=False)
+            embed_log.add_field(name=f"Reason:" , value=f"```{reason}```" , inline=False)
+            embed_log.add_field(name=f"Time:" , value=f"```{time}s```" , inline=False)
+            embed_log.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
+
+            await self.log_mute.send(embed=embed_log)
+
     @commands.command(description="unmute member")
     @commands.has_permissions(administrator = True)
     @commands.guild_only()
@@ -184,13 +211,11 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     async def join(self, ctx):
         channel = ctx.author.voice.channel
-#        await ctx.message.delete()
         await channel.connect()
 
     @commands.command(description="leave voice channel")
     @commands.guild_only()
     async def leave_(self, ctx):
-#        await ctx.message.delete()
         await ctx.voice_client.disconnect()
 
     @commands.command(description="lockdown or unlock text channel" , aliases=['lock', 'lockdown'])
@@ -255,18 +280,7 @@ class Moderation(commands.Cog):
             if len(list(filter(lambda m: _check(m), self.client.cached_messages))) >= 3:
                 embedspam = discord.Embed(title="Spam Alert\n",description="Don't spam mentions!",color=0xffffff)
                 await message.channel.send(embed=embedspam, delete_after=10)
-            
-#            if (message.channel.id in self.only_images
-#			 	and any([hasattr(a, "width") for a in message.attachments])):             
-#                return
-#            else:
-#                if message.channel.id in self.only_images:
-#                    em = discord.Embed(description="You can't send message in this channel.",color=PTRED2)
-#                    await message.delete()
-#                    await message.channel.send(embed=em , delete_after=10)
-#                else:
-#                    return
-                                   
+                                               
         counter = 0
         with open("data/spam_detect.txt", "r+") as file:
             for lines in file:
@@ -310,10 +324,22 @@ class Moderation(commands.Cog):
 #			 	and any([hasattr(a, "width") for a in message.attachments])):
 #                await message.delete()
 #                await message.channel.send("You can't send images here.", delete_after=10)
+
+##########################
+#            if (message.channel.id in self.only_images
+#			 	and any([hasattr(a, "width") for a in message.attachments])):             
+#                return
+#            else:
+#                if message.channel.id in self.only_images:
+#                    em = discord.Embed(description="You can't send message in this channel.",color=PTRED2)
+#                    await message.delete()
+#                    await message.channel.send(embed=em , delete_after=10)
+#                else:
+#                    return
     
     @commands.command(aliases=["tban"])
     @commands.guild_only()
-    @commands.has_permissions(ban_members=True)
+    @utils.admin_or_permissions(ban_members=True)
     async def tempban(self, ctx, member: utils.BetterMemberConverter, duration: utils.DurationConverter):
         multiplier = {'s': 1, 'm': 60, 'd': 86400, 'w': 604800, 'm': 2629746, 'y': 31556952 }
         amount, unit = duration
@@ -393,92 +419,6 @@ class Moderation(commands.Cog):
             await emoji.delete()
         except:
             await ctx.send('error delete emoji!')
-
-    @commands.command() #testonlyme
-    @utils.is_me()
-    async def only_test(self, ctx):
-        await ctx.send('Only you!')
-        
-    @commands.command()
-    @commands.guild_only()
-    async def roles_test(self, ctx, *, member: utils.MemberRoles):
-        await ctx.send('I see the following roles: ' + ', '.join(member))
-
-## error commands
-
-#    @ban.error
-#    async def ban_error(self, ctx, error):
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **ban!**",color=0xffffff)
-#            await ctx.send(embed=embedar , delete_after=15)
-#        if isinstance(error, commands.MissingPermissions):
-#            embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} Only **administrators** can use this command!",color=0xffffff)
-#            await ctx.send(embed=embedpr , delete_after=15)
-
-#    @unban.error
-#    async def unban_error(self, ctx, error):
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **unban**",color=0xffffff)
-#            await ctx.send(embed=embedar , delete_after=15)
-#        if isinstance(error, commands.MissingPermissions):
-#            embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} Only **administrators** can use this command.",color=0xffffff)
-#            await ctx.send(embed=embedpr , delete_after=15)
-   
-#    @kick.error
-#    async def kick_error(self, ctx, error):
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **kick!**",color=0xffffff)
-#            await ctx.send(embed=embedar , delete_after=15)
-#        if isinstance(error, commands.MissingPermissions):
-#            embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} You doesn't have enough **permission!**",color=0xffffff)
-#            await ctx.send(embed=embedpr , delete_after=15)
-
-#    @mute.error
-#    async def mute_error(self, ctx, error):
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **mute!**",color=0xffffff)
-#            await ctx.send(embed=embedar , delete_after=15)
-#        if isinstance(error, commands.MissingPermissions):
-#            embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} You doesn't have enough **permission!**",color=0xffffff)
-#            await ctx.send(embed=embedpr , delete_after=15)
-    
-#    @unmute.error
-#    async def unmute_error(self, ctx, error):
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **member** to **unmute!**",color=0xffffff)
-#            await ctx.send(embed=embedar , delete_after=15)
-#        if isinstance(error, commands.MissingPermissions):
-#            embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} You doesn't have enough **permission!**",color=0xffffff)
-#            await ctx.send(embed=embedpr , delete_after=15)
-
-#    @clear.error
-#    async def clear_error(self, ctx, error):
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify **numbers** of messages to **delete..**",color=0xffffff)
-#            await ctx.message.delete()
-#            await ctx.send(embed=embedar , delete_after=15)
-#        if isinstance(error, commands.MissingPermissions):
-#            embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} You doesn't have enough **permission!**",color=0xffffff)
-#            await ctx.message.delete()
-#            await ctx.send(embed=embedpr , delete_after=15)
-    
-#    @tempban.error
-#    async def tempban_error(self, ctx, error):
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} **Ban Error** | `tempban` `member` `duration`",color=0xffffff)
-#            await ctx.send(embed=embedar , delete_after=15)
-#        if isinstance(error, commands.MissingPermissions):
-#            embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} Only **administrators** can use this command!",color=0xffffff)
-#            await ctx.send(embed=embedpr , delete_after=15)
-    
-#    @tempmute.error
-#    async def tempmute_error(self, ctx, error):
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} **Mute Error** | `tempmute` `member` `duration`",color=0xffffff)
-#            await ctx.send(embed=embedar , delete_after=15)
-#        if isinstance(error, commands.MissingPermissions):
-#            embedpr = discord.Embed(description=f"{utils.emoji_converter('xmark')} You doesn't have enough **permission!**",color=0xffffff)
-#            await ctx.send(embed=embedpr , delete_after=15)
 
 def setup(client):
     client.add_cog(Moderation(client))
