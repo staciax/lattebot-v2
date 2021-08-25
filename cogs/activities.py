@@ -142,6 +142,8 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
+        channel = self.client.get_channel(844462710526836756)
+        await channel.send("welcome")
         if member.guild.id == MYGUILD:
             """welcome log"""
             user_update = utils.json_loader.read_json("latte")
@@ -176,8 +178,9 @@ class Activities(commands.Cog):
 
             """welcome embed"""
 
-            welcome = utils.json_loader.read_json("latte")
-            self.welcome_log = self.bot.get_channel(welcome["welcome"])
+#            welcome = utils.json_loader.read_json("latte")
+#            self.welcome_log = self.bot.get_channel(welcome["welcome"])
+            channel = self.client.get_channel(840379926792110120)
 
             embed = discord.Embed(
                         description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
@@ -187,7 +190,8 @@ class Activities(commands.Cog):
             embed.set_thumbnail(url=member.avatar.url)
             embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
 
-            await self.welcome_log.send(embed=embed)
+            await channel.send(embed=embed)
+#            await self.welcome_log.send(embed=embed)
     
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
@@ -224,9 +228,10 @@ class Activities(commands.Cog):
             await self.server_log.send(embed=embed_log)
             self.invites[member.guild.id] = await member.guild.invites()
 
-            """leave embed"""
-            leave = utils.json_loader.read_json("latte")
-            self.leave_log = self.bot.get_channel(leave["leave"])
+#            """leave embed"""
+#            leave = utils.json_loader.read_json("latte")
+#            self.leave_log = self.bot.get_channel(leave["leave"])
+            channel = self.client.get_channel(864227597696499713)
             
             embed = discord.Embed(
                             description=f"**Leave Server\n`{member}`**",
@@ -235,7 +240,9 @@ class Activities(commands.Cog):
             embed.set_footer(text="—・see ya good bye")
             embed.timestamp = datetime.now(timezone.utc)
 
-            await self.leave_log.send(embed = embed) 
+            await channel.send(embed=embed)
+
+#            await self.leave_log.send(embed = embed) 
     
     @commands.Cog.listener()
     async def on_invite_create(self, invite: discord.Invite):
