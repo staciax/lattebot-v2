@@ -182,20 +182,20 @@ class Activities(commands.Cog):
             #check
             if data is None:
                 return
-            
-            guild = self.client.get_guild(member.guild.id)
-            channel = guild.get_channel(data)
-            embed=discord.Embed(
-                        description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
-                        timestamp=datetime.now(timezone.utc),
-                        color=0xc4cfcf
+            else:
+                guild = self.client.get_guild(member.guild.id)
+                channel = guild.get_channel(data)
+                embed=discord.Embed(
+                            description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
+                            timestamp=datetime.now(timezone.utc),
+                            color=0xc4cfcf
     
-            )
-            embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
-            embed.set_thumbnail(url=member.avatar.url)
-            embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
+                )
+                embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
+                embed.set_thumbnail(url=member.avatar.url)
+                embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
 
-            await channel.send(embed=embed)
+                await channel.send(embed=embed)
     
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
@@ -230,8 +230,7 @@ class Activities(commands.Cog):
             embed3 = discord.Embed(
                         title="Member leave",
                         color=PTRED2,
-                        timestamp=datetime.now(timezone.utc)
-                    )
+                        timestamp=datetime.now(timezone.utc))
             embed3.add_field(name="Name:", value=f"{member.name}#{member.discriminator}", inline=False)
             embed3.set_thumbnail(url=member.avatar.url)
             await self.server_log.send(embed=embed3)
@@ -244,17 +243,17 @@ class Activities(commands.Cog):
             #check
             if data is None:
                 return
+            else:
+                guild = self.client.get_guild(member.guild.id)
+                channel = guild.get_channel(data)
+                embed = discord.Embed(
+                            description=f"**Leave Server\n`{member}`**",
+                            color=0xdbd7d2)
+                embed.set_thumbnail(url=member.avatar.url)
+                embed.set_footer(text="—・see ya good bye")
+                embed.timestamp = datetime.now(timezone.utc)
 
-            guild = self.client.get_guild(member.guild.id)
-            channel = guild.get_channel(data)
-            embed = discord.Embed(
-                        description=f"**Leave Server\n`{member}`**",
-                        color=0xdbd7d2)
-            embed.set_thumbnail(url=member.avatar.url)
-            embed.set_footer(text="—・see ya good bye")
-            embed.timestamp = datetime.now(timezone.utc)
-
-            await channel.send(embed = embed) 
+                await channel.send(embed = embed) 
     
     @commands.Cog.listener()
     async def on_invite_create(self, invite: discord.Invite):
