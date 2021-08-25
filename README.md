@@ -21,8 +21,8 @@ My first discord bot write with python and use cogs
 # Windows
 pip install -r requirements.txt
 
-# Config.py
-change : token , prefix 
+# bot_config/secrets.js
+token
 
 ## Help 
 My discord : ꜱᴛᴀᴄɪᴀ.#7475

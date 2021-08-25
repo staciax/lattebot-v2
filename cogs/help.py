@@ -27,7 +27,7 @@ class Help(commands.Cog):
     @commands.guild_only()
     async def help2(self, ctx):
 
-        embedhelp = discord.Embed(title="✧ LATTE Help", description="Prefix of this bot `lt ` or `l `\nUse `selection` below for more info on an command. \n",color=0xffffff)
+        embedhelp = discord.Embed(title="✧ LATTE Help", description="Prefix of this bot `lt ` or `l ` and `.` \nUse `selection` below for more info on an command. \n",color=0xffffff)
         embedhelp.add_field(name='** **', value=f"•{emojis('shidapout')} **Utility**\n•{emojis('winkai')} **Giveaway**\n•{emojis('chocolawow')} **Reaction Roles**")
         embedhelp.add_field(name='** **', value=f"•{emojis('ShinoSmirk')} **Infomation**\n•{emojis('wowanime')} **Fun**\n•{emojis('ClevelandDeal')} **Leveling**")
         embedhelp.add_field(name='** **', value=f"•{emojis('lutoaraka')} **Moderation**\n•{emojis('Ani1')} **Meta**\n•{emojis('tohka')} **NSFW**")
