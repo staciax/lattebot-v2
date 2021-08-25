@@ -177,17 +177,17 @@ class Activities(commands.Cog):
 #
 #            welcome = utils.json_loader.read_json("latte")
 #            self.welcome_log = self.bot.get_channel(welcome["welcome"])
-            channel = self.client.get_channel(840379926792110120)
+            channel = discord.utils.get(member.guild.text_channels, id=840379926792110120)
+            if channel:
+                embed = discord.Embed(
+                            description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
+                            timestamp=datetime.now(timezone.utc),
+                            color=0xc4cfcf)
+                embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
+                embed.set_thumbnail(url=member.avatar.url)
+                embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
 
-            embed = discord.Embed(
-                        description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
-                        timestamp=datetime.now(timezone.utc),
-                        color=0xc4cfcf)
-            embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
-            embed.set_thumbnail(url=member.avatar.url)
-            embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
-
-            await channel.send(embed=embed)
+                await channel.send(embed=embed)
 #            await self.welcome_log.send(embed=embed)
     
     @commands.Cog.listener()
@@ -212,32 +212,32 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        if member.guild.id == MYGUILD: #only my guild
-            user_update = utils.json_loader.read_json("latte")
-            self.server_log = self.bot.get_channel(user_update["server-log"])
+#        if member.guild.id == MYGUILD: #only my guild
+#            user_update = utils.json_loader.read_json("latte")
+#            self.server_log = self.bot.get_channel(user_update["server-log"])
 
-            embed_log = discord.Embed(
-                        title="Member leave",
-                        color=PTRED2,
-                        timestamp=datetime.now(timezone.utc))
-            embed_log.add_field(name="Name:", value=f"{member.name}#{member.discriminator}", inline=False)
-            embed_log.set_thumbnail(url=member.avatar.url)
-            await self.server_log.send(embed=embed_log)
-            self.invites[member.guild.id] = await member.guild.invites()
+#            embed_log = discord.Embed(
+#                        title="Member leave",
+#                        color=PTRED2,
+#                        timestamp=datetime.now(timezone.utc))
+#            embed_log.add_field(name="Name:", value=f"{member.name}#{member.discriminator}", inline=False)
+#            embed_log.set_thumbnail(url=member.avatar.url)
+#            await self.server_log.send(embed=embed_log)
+#            self.invites[member.guild.id] = await member.guild.invites()
 
 #            """leave embed"""
 #            leave = utils.json_loader.read_json("latte")
 #            self.leave_log = self.bot.get_channel(leave["leave"])
-            channel = self.client.get_channel(864227597696499713)
-            
-            embed = discord.Embed(
+            channel = discord.utils.get(member.guild.text_channels, id=864227597696499713)
+            if channel:
+                embed = discord.Embed(
                             description=f"**Leave Server\n`{member}`**",
                             color=0xdbd7d2)
-            embed.set_thumbnail(url=member.avatar.url)
-            embed.set_footer(text="—・see ya good bye")
-            embed.timestamp = datetime.now(timezone.utc)
+                embed.set_thumbnail(url=member.avatar.url)
+                embed.set_footer(text="—・see ya good bye")
+                embed.timestamp = datetime.now(timezone.utc)
 
-            await channel.send(embed=embed)
+                await channel.send(embed=embed)
 
 #            await self.leave_log.send(embed = embed) 
     
