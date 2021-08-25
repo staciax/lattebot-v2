@@ -142,42 +142,39 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        channel = self.client.get_channel(844462710526836756)
-        await channel.send("welcome")
-        if member.guild.id == MYGUILD:
-            """welcome log"""
-            user_update = utils.json_loader.read_json("latte")
-            self.server_log = self.bot.get_channel(user_update["server-log"])
-
-            #invte_log
-            invites_before_join = self.invites[member.guild.id]
-            invites_after_join = await member.guild.invites()
-            for invite in invites_before_join:
-                if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:
-                    embed2 = discord.Embed(
-                        title="Member join",
-                        color=PTGREEN,
-                        timestamp=datetime.now(timezone.utc)
-                    )
-                    embed2.add_field(name="Name:", value=f"{member.name}", inline=False)
-                    embed2.add_field(name="Invite Code:", value=f"||{invite.code}||", inline=False)
-                    embed2.set_thumbnail(url=member.avatar.url)
-                    embed2.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
-                    await self.server_log.send(embed=embed2)
-                    self.invites[member.guild.id] = invites_after_join
-                    
-                    #temp_invite
-                    print(invite.code)
-                    print(self.invite_code)
-                    if invite.code == self.invite_code:
-                        
-                        role = discord.utils.get(member.guild.roles, id = 879258879987449867)
-                        await member.add_roles(role)
-                        print(f"{member.name} temp invite")
-                        return
-
-            """welcome embed"""
-
+        if member.guild.id == 840379510704046151:
+#            """welcome log"""
+#            await channel.send("pass guild id")
+#            user_update = utils.json_loader.read_json("latte")
+#            self.server_log = self.bot.get_channel(user_update["server-log"])
+#
+#            #invte_log
+#            invites_before_join = self.invites[member.guild.id]
+#            invites_after_join = await member.guild.invites()
+#            for invite in invites_before_join:
+#                if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:
+#                    embed2 = discord.Embed(
+#                        title="Member join",
+#                        color=PTGREEN,
+#                        timestamp=datetime.now(timezone.utc)
+#                    )
+#                    embed2.add_field(name="Name:", value=f"{member.name}", inline=False)
+#                    embed2.add_field(name="Invite Code:", value=f"||{invite.code}||", inline=False)
+#                    embed2.set_thumbnail(url=member.avatar.url)
+#                    embed2.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
+#                    await self.server_log.send(embed=embed2)
+#                    self.invites[member.guild.id] = invites_after_join
+#                    
+#                    #temp_invite
+#                    print(invite.code)
+#                    print(self.invite_code)
+#                    if invite.code == self.invite_code:
+#                        
+#                        role = discord.utils.get(member.guild.roles, id = 879258879987449867)
+#                        await member.add_roles(role)
+#                        print(f"{member.name} temp invite")
+#                        return
+#
 #            welcome = utils.json_loader.read_json("latte")
 #            self.welcome_log = self.bot.get_channel(welcome["welcome"])
             channel = self.client.get_channel(840379926792110120)
@@ -195,7 +192,7 @@ class Activities(commands.Cog):
     
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
-        if member.guild.id == MYGUILD:
+        if member.guild.id == 840379510704046151:
             user_update = utils.json_loader.read_json("latte")
             self.server_log = self.bot.get_channel(user_update["server-log"])
 
