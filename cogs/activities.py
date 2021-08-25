@@ -142,53 +142,65 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-#        if member.guild.id == 840379510704046151:
-#            """welcome log"""
-#            await channel.send("pass guild id")
-#            user_update = utils.json_loader.read_json("latte")
-#            self.server_log = self.bot.get_channel(user_update["server-log"])
-#
-#            #invte_log
-#            invites_before_join = self.invites[member.guild.id]
-#            invites_after_join = await member.guild.invites()
-#            for invite in invites_before_join:
-#                if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:
-#                    embed2 = discord.Embed(
-#                        title="Member join",
-#                        color=PTGREEN,
-#                        timestamp=datetime.now(timezone.utc)
-#                    )
-#                    embed2.add_field(name="Name:", value=f"{member.name}", inline=False)
-#                    embed2.add_field(name="Invite Code:", value=f"||{invite.code}||", inline=False)
-#                    embed2.set_thumbnail(url=member.avatar.url)
-#                    embed2.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
-#                    await self.server_log.send(embed=embed2)
-#                    self.invites[member.guild.id] = invites_after_join
-#                    
-#                    #temp_invite
-#                    print(invite.code)
-#                    print(self.invite_code)
-#                    if invite.code == self.invite_code:
-#                        
-#                        role = discord.utils.get(member.guild.roles, id = 879258879987449867)
-#                        await member.add_roles(role)
-#                        print(f"{member.name} temp invite")
-#                        return
-#
-#            welcome = utils.json_loader.read_json("latte")
-#            self.welcome_log = self.bot.get_channel(welcome["welcome"])
-            channel = discord.utils.get(member.guild.text_channels, id=840379926792110120)
-            if channel:
-                embed = discord.Embed(
-                            description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
-                            timestamp=datetime.now(timezone.utc),
-                            color=0xc4cfcf)
-                embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
-                embed.set_thumbnail(url=member.avatar.url)
-                embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
+        if member.guild.id == MYGUILD:
+            """welcome log"""
 
-                await channel.send(embed=embed)
-#            await self.welcome_log.send(embed=embed)
+            user_update = utils.json_loader.read_json("latte")
+            self.server_log = self.bot.get_channel(user_update["server-log"])
+
+            if self.server_log is None:
+                print("on_member_ban channel is None")
+                return
+
+            #invte_log
+            invites_before_join = self.invites[member.guild.id]
+            invites_after_join = await member.guild.invites()
+            for invite in invites_before_join:
+                if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:
+                    embed_log = discord.Embed(
+                        title="Member join",
+                        color=PTGREEN,
+                        timestamp=datetime.now(timezone.utc)
+                    )
+                    embed_log.add_field(name="Name:", value=f"{member.name}", inline=False)
+                    embed_log.add_field(name="Invite Code:", value=f"||{invite.code}||", inline=False)
+                    embed_log.set_thumbnail(url=member.avatar.url)
+                    embed_log.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
+                    await self.server_log.send(embed=embed_log)
+                    self.invites[member.guild.id] = invites_after_join
+                    
+                    #temp_invite
+                    print(invite.code)
+                    print(self.invite_code)
+                    if invite.code == self.invite_code:
+                        
+                        role = discord.utils.get(member.guild.roles, id = 879258879987449867)
+                        await member.add_roles(role)
+                        print(f"{member.name} temp invite")
+                        return
+
+            """welcome embed"""
+
+            welcome_ch = utils.json_loader.read_json("welcome")
+            data = welcome_ch[str(member.guild.id)]
+
+            #check
+            if data is None:
+                return
+            
+            guild = self.client.get_guild(member.guild.id)
+            channel = guild.get_channel(data)
+            embed=discord.Embed(
+                        description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
+                        timestamp=datetime.now(timezone.utc),
+                        color=0xc4cfcf
+    
+            )
+            embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
+            embed.set_thumbnail(url=member.avatar.url)
+            embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
+
+            await channel.send(embed=embed)
     
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
@@ -212,34 +224,41 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-#        if member.guild.id == MYGUILD: #only my guild
-#            user_update = utils.json_loader.read_json("latte")
-#            self.server_log = self.bot.get_channel(user_update["server-log"])
+        if member.guild.id == MYGUILD: #only my guild
+            user_update = utils.json_loader.read_json("latte")
+            self.server_log = self.bot.get_channel(user_update["server-log"])
 
-#            embed_log = discord.Embed(
-#                        title="Member leave",
-#                        color=PTRED2,
-#                        timestamp=datetime.now(timezone.utc))
-#            embed_log.add_field(name="Name:", value=f"{member.name}#{member.discriminator}", inline=False)
-#            embed_log.set_thumbnail(url=member.avatar.url)
-#            await self.server_log.send(embed=embed_log)
-#            self.invites[member.guild.id] = await member.guild.invites()
+            if self.server_log is None:
+                print("on_member_remove channel is None")
+                return
 
-#            """leave embed"""
-#            leave = utils.json_loader.read_json("latte")
-#            self.leave_log = self.bot.get_channel(leave["leave"])
-            channel = discord.utils.get(member.guild.text_channels, id=864227597696499713)
-            if channel:
-                embed = discord.Embed(
-                            description=f"**Leave Server\n`{member}`**",
-                            color=0xdbd7d2)
-                embed.set_thumbnail(url=member.avatar.url)
-                embed.set_footer(text="—・see ya good bye")
-                embed.timestamp = datetime.now(timezone.utc)
+            embed_log = discord.Embed(
+                        title="Member leave",
+                        color=PTRED2,
+                        timestamp=datetime.now(timezone.utc))
+            embed_log.add_field(name="Name:", value=f"{member.name}#{member.discriminator}", inline=False)
+            embed_log.set_thumbnail(url=member.avatar.url)
+            await self.server_log.send(embed=embed_log)
+            self.invites[member.guild.id] = await member.guild.invites()
 
-                await channel.send(embed=embed)
+            """leave embed"""
+            leave_ch = utils.json_loader.read_json("leave")
+            data = leave_ch[str(member.guild.id)]
+            
+            #check
+            if data is None:
+                return
+            
+            guild = self.client.get_guild(member.guild.id)
+            channel = guild.get_channel(data)
+            embed = discord.Embed(
+                        description=f"**Leave Server\n`{member}`**",
+                        color=0xdbd7d2)
+            embed.set_thumbnail(url=member.avatar.url)
+            embed.set_footer(text="—・see ya good bye")
+            embed.timestamp = datetime.now(timezone.utc)
 
-#            await self.leave_log.send(embed = embed) 
+            await channel.send(embed = embed) 
     
     @commands.Cog.listener()
     async def on_invite_create(self, invite: discord.Invite):
