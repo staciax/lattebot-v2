@@ -34,7 +34,7 @@ class Moderation(commands.Cog):
 
     @commands.command(description="ban member")
     @commands.guild_only()
-    @utils.admin_or_permissions(ban_members=True)
+    @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *, reason = None):
         embed = discord.Embed(title="Banned Member", description=f'{member.name}#{member.discriminator} has been banned from server\nReason: {reason}',timestamp=datetime.now(timezone.utc),color=0xffffff)
         embed.set_footer(text=f"Banned by {ctx.author}" , icon_url = ctx.author.avatar.url)
@@ -50,7 +50,7 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @utils.admin_or_permissions(ban_members=True)
+    @commands.has_permissions(ban_members=True)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split('#')
@@ -65,7 +65,7 @@ class Moderation(commands.Cog):
                 await ctx.send(embed=embedub)
     
     @commands.command(name="kick", description="kick member", pass_context=True)
-    @utils.admin_or_permissions(kick_members=True)
+    @commands.has_permissions(kick_members=True)
     @commands.guild_only()
     async def kick(self, ctx, member: discord.Member, *, reason=None):
 
@@ -76,7 +76,7 @@ class Moderation(commands.Cog):
     
     @commands.command(description="clear message" , aliases=['purge'])
     @commands.guild_only()
-    @utils.admin_or_permissions(manage_messages=True)
+    @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, amount: str):
         if amount == 'all':
             embed = discord.Embed(
@@ -126,18 +126,24 @@ class Moderation(commands.Cog):
     @commands.has_permissions(administrator = True)
     @commands.guild_only()
     async def mute(self, ctx, member: discord.Member, time:int =None , * ,reason=None):
-        guild = ctx.guild
-        mutedRole = discord.utils.get(guild.roles, name=MUTEROLE)
 
-        check_member_role = discord.utils.get(member.roles, name=MUTEROLE)
-        if check_member_role:
-            embed = discord.Embed(description="member's already have a mute role.", color=WHITE)
-            return await ctx.send(embed=embed)
+        
+        guild = ctx.guild
+        mutedRole = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
 
         if not mutedRole:
             embeddh = discord.Embed(title="MUTE ROLE",description=f"Your server don't have : **`Muted Role`**\n please use command : `lt muterole`",color=0xffffff)
             await ctx.send(embed=embeddh)
             return
+            
+        if member == ctx.author:
+            embed = discord.Embed(description="You cannot mute yourself." , color=WHITE)
+            await ctx.send(embed=embed)
+
+        heck_member_role = discord.utils.get(member.roles, name=MUTEROLE)
+        if check_member_role:
+            embed = discord.Embed(description="member's already have a mute role.", color=WHITE)
+            return await ctx.send(embed=embed)
         
         embed = discord.Embed(description=f"**MUTED MEMBER**",color=WHITE)
         embed.add_field(name="Muted:", value=f"```{member.name}#{member.discriminator}```" , inline=False)
@@ -168,8 +174,10 @@ class Moderation(commands.Cog):
 
             embed_log = discord.Embed(title="MUTED LOG" , color=0xffffff)
             embed_log.add_field(name=f"Target:" , value=f"```{member.name}```" , inline=False)
-            embed_log.add_field(name=f"Reason:" , value=f"```{reason}```" , inline=False)
-            embed_log.add_field(name=f"Time:" , value=f"```{time}s```" , inline=False)
+            if reason:
+                embed_log.add_field(name=f"Reason:" , value=f"```{reason}```" , inline=False)
+            if time:
+                embed_log.add_field(name=f"Time:" , value=f"```{time}s```" , inline=False)
             embed_log.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
 
             await self.log_mute.send(embed=embed_log)
@@ -220,7 +228,7 @@ class Moderation(commands.Cog):
 
     @commands.command(description="lockdown or unlock text channel" , aliases=['lock', 'lockdown'])
     @commands.guild_only()
-    @utils.admin_or_permissions(manage_channels=True)
+    @commands.has_permissions(manage_channels=True)
 #    @commands.bot_has_guild_permissions(manage_channels=True)
     async def lock_down(self, ctx, channel: discord.TextChannel=None):
         channel = channel or ctx.channel
@@ -245,7 +253,7 @@ class Moderation(commands.Cog):
             await ctx.send(embed=embed3)
 
     @commands.command(aliases=["nick"])
-    @utils.admin_or_permissions(manage_nicknames=True)
+    @commands.has_permissions(manage_nicknames=True)
     @commands.guild_only()
     async def changenick(self, ctx , member: discord.Member, nick):
         embed = discord.Embed(description=f"Nickname was changed for {member.display_name}",color=0xffffff)
@@ -253,7 +261,7 @@ class Moderation(commands.Cog):
         await ctx.channel.send(embed=embed)
     
     @commands.command(aliases=["slow"])
-    @utils.admin_or_permissions(manage_channels=True)
+    @commands.has_permissions(manage_channels=True)
     @commands.guild_only()
     async def slowmode(self, ctx ,*, seconds: int= None):
             if seconds == None:
@@ -339,7 +347,7 @@ class Moderation(commands.Cog):
     
     @commands.command(aliases=["tban"])
     @commands.guild_only()
-    @utils.admin_or_permissions(ban_members=True)
+    @commands.has_permissions(ban_members=True)
     async def tempban(self, ctx, member: utils.BetterMemberConverter, duration: utils.DurationConverter):
         multiplier = {'s': 1, 'm': 60, 'd': 86400, 'w': 604800, 'm': 2629746, 'y': 31556952 }
         amount, unit = duration

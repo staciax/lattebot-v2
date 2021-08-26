@@ -49,7 +49,7 @@ class Reaction(commands.Cog):
 
             role_lvl = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
 
-            await member.add_roles(role)
+            await member.add_roles(role , role_lvl)
         
         #latte_verify
         if VerifyID == payload.message_id:
