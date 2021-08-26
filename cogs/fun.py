@@ -1,26 +1,78 @@
 # Standard 
-import discord , datetime , time , asyncio
-from discord.ext import commands
-from datetime import datetime, timezone
+import discord , datetime , time , asyncio , re 
+from discord.ext import commands , tasks
+import time
+import datetime
+from datetime import datetime, timezone , timedelta
 
 # Third party
 import json
+from json import JSONEncoder
 import io
 import aiohttp , random , anime_images_api , requests
 anime = anime_images_api.Anime_Images()
-
 import typing , unicodedata
 from typing import Union
+import humanize
 
 # Local
 from config import *
+import utils
 from utils import text_to_owo , notify_user
+
+intents = discord.Intents.all()
 
 class Fun(commands.Cog):
 
     def __init__(self, client):
+        self.bot = client
         self.client = client
+        self.sleeping = {}
+        self.sleeped.start()
+#        self.sleeped_delete.start()
     
+    def cog_unload(self):
+        self.sleeped.cancel()
+#        self.sleeped_delete.cancel()
+
+#    @tasks.loop(minutes=2)
+#    async def sleeped_delete(self):
+#        for key in self.sleeping.keys():
+#            if self.sleeping[key]["time"] is None:
+#                self.sleeping = {}
+#                print(f"deleted {self.sleeping}")
+    
+#    @sleeped_delete.before_loop
+#    async def before_sleeped_delete(self):
+#        await self.bot.wait_until_ready()
+        
+    @tasks.loop(minutes=1)
+    async def sleeped(self):
+        print(f" sleeped {self.sleeping}")
+        guild = self.client.get_guild(MYGUILD)
+        for key in self.sleeping.keys():
+            dt = datetime.now(timezone.utc).strftime("%d-%B-%Y-%H-%M")
+            if self.sleeping[key]["time"] is None:
+                return print("time != dt")
+            if self.sleeping[key]["time"] == dt:
+                member_sleep = guild.get_member(key)
+                if member_sleep is None:
+                    return
+                self.sleeping[key]["time"] = None
+                await member_sleep.move_to(channel=None)
+        
+        delete_dt = datetime.now(timezone.utc).strftime("%M")
+        if delete_dt == "00":
+            if self.sleeping[key]["time"] is None:
+                self.sleeping = {}
+                print(f"deleted {self.sleeping}")
+            else:
+                print("sleep is have data")
+                      
+    @sleeped.before_loop
+    async def before_sleeped(self):
+        await self.bot.wait_until_ready()
+
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
@@ -167,6 +219,112 @@ class Fun(commands.Cog):
         await msg.add_reaction(f'{utils.emoji_converter("check")}')
         await msg.add_reaction(f'{utils.emoji_converter("xmark")}')
         await ctx.message.delete()
+    
+    @commands.command()
+    async def sleepss(self, ctx, time,*, member : discord.Member=None):
+        if not time:
+            return
 
+        if member is None:
+            member = ctx.author
+
+        timewait = utils.FutureTime_converter(time)
+        
+        data = utils.json_loader.read_json("sleeping")
+        data[ctx.guild.id] = member.id
+
+        if data is None:
+            utils.json_loader.write_json(data, "sleeping")
+        else:
+            embed = discord.Embed(color=WHITE)
+            futuredate = datetime.utcnow() + timedelta(seconds=timewait)
+            now = datetime.utcnow() - datetime.utcnow()
+            embed.add_field(name="Sleep Time:", value=f"{utils.format_relative(futuredate)}" , inline=False)
+            await ctx.send(embed = embed) 
+            await asyncio.sleep(timewait)
+            await member.move_to(channel=None)
+            data[ctx.guild.id] = member.id
+            utils.json_loader.write_json(data, "sleeping")
+            print(self.sleeping)
+            
+    @commands.command()
+    async def sleep(self, ctx, time,*, member : discord.Member=None):
+        if not time:
+            return
+        if member is None:
+            member = ctx.author
+
+        timewait = utils.FutureTime_converter(time)
+        futuredate = datetime.now(timezone.utc) + timedelta(seconds=timewait)
+        futuredate2 = futuredate + timedelta(seconds=25200)
+        futuredate_ = futuredate.strftime("%d-%B-%Y-%H-%M")
+
+        self.sleeping[member.id] = {"time": futuredate_}
+
+        embed = discord.Embed(color=YELLOW)
+        embed.description = f"```Member: {member.name}\nDate : {futuredate2.strftime('%d %B %Y')}\nTime : {futuredate2.strftime('%H:%M')}```"
+
+        m = await ctx.send(embed=embed)
+
+        await m.add_reaction("✅")
+        await m.add_reaction("🇽")
+
+        try:
+            reaction , member = await self.bot.wait_for(
+                "reaction_add",
+                timeout=30,
+                check=lambda reaction, user: user == ctx.author
+                and reaction.message.channel == ctx.channel
+            )
+
+        except asyncio.TimeoutError:
+            await ctx.send("Confirmation Failure. Please try again.")
+            return
+
+        if str(reaction.emoji) not in ["✅", "🇽"] or str(reaction.emoji) == "🇽":
+            await ctx.send("cancelling sleep time!")
+            return
+
+        await m.clear_reactions()
+        
+        embed_edit = discord.Embed(color=PTGREEN , timestamp=futuredate)
+        embed_edit.description = f"time to sleep <a:b_hitopotatosleep:864921119538937968>"
+        embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
+        
+        await m.edit(embed=embed_edit)
+
+        self.sleeping[member.id] = {"time": futuredate_}
+    
+    @commands.command()
+    async def sleepings(self, ctx, time,*, member : discord.Member=None):
+        if not time:
+            return
+
+        if member is None:
+            member = ctx.author
+
+        timewait = utils.FutureTime_converter(time)
+        futuredate = datetime.utcnow() + timedelta(seconds=timewait)
+        f_short = futuredate.strftime("%d-%B-%Y-%H-%M")
+
+        with open('bot_config/sleeping.json' ,'r' , encoding='utf8') as f:
+            data = json.load(f)
+        
+        with open('bot_config/sleeping.json'  ,'w' , encoding='utf8') as f:
+            data[str(member.id)] = {
+                "member_id": member.id,
+                "sleeping": f_short
+            }
+            json.dump(data, f , sort_keys=True ,indent=4 , ensure_ascii=False)
+        
+    
+
+
+
+            
+
+
+
+    
 def setup(client):
     client.add_cog(Fun(client))

@@ -125,13 +125,10 @@ class Moderation(commands.Cog):
     @commands.command(description="mute member")
     @commands.has_permissions(administrator = True)
     @commands.guild_only()
-    async def mute(self, ctx, member: discord.Member, time:int =None , * ,reason=None):
+    async def mute(self, ctx, member: discord.Member,*, time: utils.TimeConverter=None , reason=None):
+        role = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
 
-        
-        guild = ctx.guild
-        mutedRole = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
-
-        if not mutedRole:
+        if not role:
             embeddh = discord.Embed(title="MUTE ROLE",description=f"Your server don't have : **`Muted Role`**\n please use command : `lt muterole`",color=0xffffff)
             await ctx.send(embed=embeddh)
             return
@@ -140,15 +137,13 @@ class Moderation(commands.Cog):
             embed = discord.Embed(description="You cannot mute yourself." , color=WHITE)
             await ctx.send(embed=embed)
 
-        heck_member_role = discord.utils.get(member.roles, name=MUTEROLE)
+        check_member_role = discord.utils.get(member.roles, name=MUTEROLE)
         if check_member_role:
             embed = discord.Embed(description="member's already have a mute role.", color=WHITE)
             return await ctx.send(embed=embed)
         
         embed = discord.Embed(description=f"**MUTED MEMBER**",color=WHITE)
         embed.add_field(name="Muted:", value=f"```{member.name}#{member.discriminator}```" , inline=False)
-        if time:
-            embed.add_field(name="Time:", value=f"```{time}s```" , inline=False)
         if reason is not None:
             embed.add_field(name="Reason:", value=f"```{reason}```" , inline=False)
         embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
@@ -156,31 +151,51 @@ class Moderation(commands.Cog):
 #            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n`Reason` : {reason} \n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
 #            embedmute.set_footer(text=f"{self.client.user.name}",icon_url=self.client.user.avatar.url)
 
-        if time:
-            await member.add_roles(mutedRole, reason=reason)
-            await ctx.send(embed = embed)
-            await asyncio.sleep(time)
-            await member.remove_roles(mutedRole)                
+        await member.add_roles(role, reason=reason)
+
+        if not time:
+            await ctx.send(embed = embed)                
         else:
-            await member.add_roles(mutedRole, reason=reason)
-            await ctx.send(embed = embed)
-#                await member.send(embed=embedmute)           
-        
+            await member.add_roles(role, reason=reason)
+            minutes, seconds = divmod(time, 60)
+            hours, minutes = divmod(minutes, 60)
+            if int(hours):
+                embed.add_field(name="Time:", value=f"```{int(hours)} hours, {int(minutes)} minutes```" , inline=False)
+            elif int(minutes):
+                embed.add_field(name="Time:", value=f"```{int(minutes)} minutes and {int(seconds)} seconds```" , inline=False)
+            elif int(seconds):
+                embed.add_field(name="Time:", value=f"```{int(seconds)} seconds```" , inline=False)
+            await ctx.send(embed = embed) 
+
         data = utils.json_loader.read_json("latte")
         log = data["server-log"]
+        self.log_mute = self.client.get_channel(log)
 
-        if log:
-            self.log_mute = self.client.get_channel(log)
+        if self.log_mute:
+            minutes, seconds = divmod(time, 60)
+            hours, minutes = divmod(minutes, 60)
 
-            embed_log = discord.Embed(title="MUTED LOG" , color=0xffffff)
+            embed_log = discord.Embed(title="MUTED MEMBER" , color=0xffffff)
             embed_log.add_field(name=f"Target:" , value=f"```{member.name}```" , inline=False)
+            embed_log.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
             if reason:
                 embed_log.add_field(name=f"Reason:" , value=f"```{reason}```" , inline=False)
-            if time:
-                embed_log.add_field(name=f"Time:" , value=f"```{time}s```" , inline=False)
+            if int(hours):
+                embed_log.add_field(name="Time:", value=f"```{int(hours)} hours, {int(minutes)} minutes and {int(seconds)} seconds```" , inline=False)
+            elif int(minutes):
+                embed_log.add_field(name="Time:", value=f"```{int(minutes)} minutes and {int(seconds)} seconds```" , inline=False)
+            elif int(seconds):
+                embed_log.add_field(name="Time:", value=f"```{int(seconds)} seconds```" , inline=False)
             embed_log.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
 
             await self.log_mute.send(embed=embed_log)
+        
+        if time and time < 300:
+            await asyncio.sleep(time)
+
+            if role in member.roles:
+                await member.remove_roles(role)
+                await ctx.send(f"Unmuted `{member.display_name}`")
 
     @commands.command(description="unmute member")
     @commands.has_permissions(administrator = True)
@@ -357,46 +372,6 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
         await asyncio.sleep(amount * multiplier[unit])
         await ctx.guild.unban(member)
-
-    @commands.command(aliases=["tmute"])
-    @commands.guild_only()
-    @commands.has_permissions(administrator = True)
-#    @commands.has_permissions(manage_channels=True, manage_roles=True) 
-    async def tempmute(self, ctx, member: utils.MemberConverter, duration: utils.DurationConverter):
-        roles1 = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
-        multiplier = {'s': 1, 'm': 60, 'd': 86400, 'w': 604800, 'm': 2629746, 'y': 31556952  }
-        amount, unit = duration
-        guild = ctx.guild
-        
-        if not roles1:
-            embeddh = discord.Embed(title="MUTE ROLE",description=f"Your server don't have : **`Muted Role`**\n please use command : `lt muterole`",color=RED)
-            await ctx.send(embed=embeddh)
-        else:
-            embed = discord.Embed(description=f"**MUTED MEMBER**\n\n`You has been mute`: {member.name}#{member.discriminator}\n\n`Duration` : {amount}{unit}",color=0xffffff)
-            embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
-            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n\n`Duration` : {amount}{unit} \n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
-            embedmute.set_footer(text=f"{self.client.user.name}",icon_url=self.client.user.avatar.url)
-            
-            await member.add_roles(roles1)
-            await ctx.send(embed = embed)
-            await member.send(embed=embedmute)
-            await asyncio.sleep(amount * multiplier[unit])
-            await member.remove_roles(roles1)
-
-#        else:
-#            await ctx.guild.create_role(name=MUTEROLE)
-#            role = get(ctx.guild.roles, name=MUTEROLE)
-#            role1721 = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
-#            permissions = discord.Permissions()
-#            permissions.update(add_reactions=False, send_messages=False, send_tts_messages=False, attach_files=False, connect=False)
-#            await role.edit(reason = "abcd", colour = discord.Colour.red(), permissions=permissions)
-#            await member.add_roles(role)
-#            for channel in ctx.guild.text_channels:
-#                await channel.set_permissions(role1721, add_reactions=False, send_messages=False, send_tts_messages=False, attach_files=False, connect=False)    
-#        await ctx.guild.ban(member)
-#        await ctx.send(f'{member} has been banned for {amount}{unit}.')
-#        await asyncio.sleep(amount * multiplier[unit])
-#        await ctx.guild.unban(member)
     
     @commands.command(aliases=["createei","create_emoji", "add_emoji"], description="create emoji from link")
     @commands.guild_only()

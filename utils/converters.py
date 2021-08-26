@@ -76,7 +76,7 @@ class DurationConverter(commands.Converter):
     
     raise commands.BadArgument(message='Not a valid duration')
 
-class TimeConverter(commands.Converter):
+class TimeConverter2(commands.Converter):
     
     async def convert(self, ctx, *, time: str):
         arser = _parse_time(time) # returns datetime.timedelta object
@@ -166,3 +166,50 @@ with Timer() as timer:
   print("hello")
 print(f"That took {timer} seconds to do") 
 """
+
+time_regex = re.compile(r"(\d{1,5}(?:[.,]?\d{1,5})?)([smhd])")
+time_dict = {"h":3600, "s":1, "m":60, "d":86400}
+
+class TimeConverter(commands.Converter):
+    async def convert(self, ctx, argument):
+        matches = time_regex.findall(argument.lower())
+        time = 0
+        for v, k in matches:
+            try:
+                time += time_dict[k]*float(v)
+            except KeyError:
+                raise commands.BadArgument("{} is an invalid time-key! h/m/s/d are valid!".format(k))
+            except ValueError:
+                raise commands.BadArgument("{} is not a number!".format(v))
+        return time
+
+def FutureTime_converter(time):
+    since = time
+    seconds = ("s", "sec", "secs", 'second', "seconds" ,"วิ" , "วินาที")
+    minutes = ("m", "min", "mins", "minute", "minutes" , "น","นาที")
+    hours = ("h", "hour", "hours" , "ชม" , "ชั่วโมง")
+    days = ("d", "day", "days" , "ว" "วัน")
+    weeks = ("w", "week", "weeks")
+    rawsince = since
+
+    try:
+        temp = re.compile("([0-9]+)([a-zA-Z]+)")
+        res = temp.match(since).groups()
+        time = int(res[0])
+        since = res[1]
+
+    except ValueError:
+        return
+        
+    if since.lower() in seconds:
+        timewait = time
+    elif since.lower() in minutes:
+        timewait = time * 60
+    elif since.lower() in hours:
+        timewait = time * 3600
+    elif since.lower() in days:
+        timewait = time * 86400
+    elif since.lower() in weeks:
+        timewait = time * 604800
+
+    return timewait

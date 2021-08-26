@@ -193,7 +193,7 @@ class XP(commands.Cog):
   
     @commands.command()
     @commands.guild_only()
-    @utils.admin_or_permissions(manage_roles=True)
+    @commands.has_permissions(administrator = True)
     async def xprole(self, ctx):
         embed = discord.Embed(description="", color=0xffffff)
         embed.title = "✧ LATTE XP ROLE!"

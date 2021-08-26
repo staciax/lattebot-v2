@@ -30,6 +30,7 @@ class Data(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+        self.bot = client
         self.client.launch_time = datetime.utcnow()
     
     async def process_commands(self, message):
@@ -216,7 +217,7 @@ class Data(commands.Cog):
         await ctx.send(embed=embed_lg, delete_after=10)
         await self.client.logout()
     
-    @commands.command()
+    @commands.command(usage="[message]")
     @commands.guild_only()
     async def echo(self, ctx, *, message=None):
         embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify what message bot send the message | `prefix` `bm [message]`",color=0xffffff)
@@ -318,6 +319,24 @@ class Data(commands.Cog):
             await ctx.send(f'set bot leave : {data["leave"]}')
         except:
             await ctx.send("error")
+    
+    @commands.command(name='uptime')
+    async def uptime(self, ctx: commands.Context):
+        """Gets the uptime of the bot"""
+        
+        delta_uptime = utils.relativedelta(datetime.utcnow(), self.bot.launch_time)
+        days, hours, minutes, seconds = delta_uptime.days, delta_uptime.hours, delta_uptime.minutes, delta_uptime.seconds
+
+        uptimes = {x[0]: x[1] for x in [('days', days), ('hours', hours),
+                                        ('minutes', minutes), ('seconds', seconds)] if x[1]}
+
+        last = "".join(value for index, value in enumerate(uptimes.keys()) if index == len(uptimes)-1)
+        uptime_string = "".join(
+            f"{v} {k}" if k != last else f" and {v} {k}" if len(uptimes) != 1 else f"{v} {k}"
+            for k, v in uptimes.items()
+        )
+        
+        await ctx.channel.send(f'I started {uptime_string} ago.')
 
 # dm message to my text channel   
 #    @commands.Cog.listener()

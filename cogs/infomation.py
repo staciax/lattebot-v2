@@ -38,7 +38,7 @@ class Infomation(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
 
-    @commands.command(aliases=["sv", "serverinformation", "serverinformations" , "guildinfo"])
+    @commands.command(aliases=["si", "serverinformation", "serverinformations" , "guildinfo" , "gi"])
     @commands.guild_only()
     async def serverinfo(self, ctx):
 
@@ -81,7 +81,7 @@ class Infomation(commands.Cog):
     
         await ctx.send(embed=embed , mention_author=False)
     
-    @commands.command(aliases=["servericon","si","guildicon"])
+    @commands.command(aliases=["servericon","guildicon"])
     @commands.guild_only()
     async def server_icon(self, ctx , *, guild_id: int = None):
         if guild_id is None:
@@ -127,7 +127,7 @@ class Infomation(commands.Cog):
             await ctx.send(embed=embed)
         
 
-    @commands.command(aliases=["ui", "userinformation", "userinformations"])
+    @commands.command(aliases=["ui", "userinformation", "userinformations" , "memberinfo" ,"mi"])
     @commands.guild_only()
     async def userinfo(self, ctx, member: discord.Member = None):
         if not member:
