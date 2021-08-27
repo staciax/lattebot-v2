@@ -7,10 +7,10 @@ DEV_OWNER_ID = 240059262297047041 #385049730222129152
 #latte ODYxMTc5OTUyNTc2ODU2MDY1.YOGCVA.ybEvJEqnfuDjVwCyLPEYN8cJA3g
 
 #last update time #\u200b 
-BOTVERSION = "v2.0.1 beta "
+BOTVERSION = "v2.0.2 beta"
 UYEAR = 2021
 UMONTH = 8
-UDATE = 25
+UDATE = 27
 
 #helpcommands
 INVITE_LATTE = "https://discord.gg/bvwpZ2B4rj"
@@ -32,10 +32,6 @@ MUTEROLE = "୭ muted ୭"
 COLORMUTE = 0xff9f9f #when don't have mute role
 
 #moderation
-SERVER_LOG = 859789105507598346 #guildlog /cog/logguild
-VOICE_LOG = 870173863726682112 #voicelog /cog/logguild
-MESSAGE_LOG = 873690030751748206 #message /cog/activies
-ROLES_LOG = 873688581682634762 #roles /cog/activies
 REQUEST_ME = 877885398263668746 #request /cog/data
 GIVEAWAY_LOG = 879996826156138528 #giveaway /cog/giveaway
 

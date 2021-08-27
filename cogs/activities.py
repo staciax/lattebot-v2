@@ -43,10 +43,6 @@ class Activities(commands.Cog):
     
     @commands.Cog.listener()
     async def on_ready(self):
-        self.log_channel = self.bot.get_channel(SERVER_LOG)
-        self.log_voice = self.bot.get_channel(VOICE_LOG)
-        self.log_message = self.bot.get_channel(MESSAGE_LOG)
-        self.log_roles = self.bot.get_channel(ROLES_LOG)
         print(f"-{self.__class__.__name__}")
 #        guild = self.bot.get_guild(MYGUILD)
 #        self.invites[guild.id] = await guild.invites()
@@ -134,7 +130,7 @@ class Activities(commands.Cog):
 #		        if channel.name.startswith('♢・latte'):
 #			        await channel.edit(name=f'♢・latte・{member.guild.member_count}')
 #			        break
-#auto riole event
+#auto role event
 #@commands.Cog.listener()
 #async def on_member_join(self, member):
 ##  role = get(member.guild.roles, id=role_id)
@@ -327,7 +323,7 @@ class Activities(commands.Cog):
                 embed.set_image(url=after.avatar.url)
                 embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
 
-                await self.log_channel.send(embed=embed)
+                await self.server_log.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):

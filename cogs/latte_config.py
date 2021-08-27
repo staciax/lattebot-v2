@@ -24,7 +24,7 @@ class Latte_config(commands.Cog):
         self.welcome = {}
         self.leave = {}
         self.log_config = self.bot.get_channel(844462710526836756)
-
+    
     #set_welcome_channel
     @commands.group(invoke_without_command=True)
     async def set(self, ctx):
@@ -319,9 +319,13 @@ class Latte_config(commands.Cog):
             await ctx.send('error')
 
     #view_config
-    @commands.command(aliases=["lconfig"])
+    @commands.group(invoke_without_command=True , aliases=["lconfig", "config"])
     @utils.owner_bot()
-    async def latte_config(self, ctx, *, json_config = None):
+    async def latte_config(self, ctx):
+        await ctx.send("description")
+    
+    @latte_config.command(aliases=["file", "json"])
+    async def latte_config_file(self, ctx, *, json_config = None):
         guild = self.bot.get_guild(840379510704046151)
         if json_config == "secrets":
             return

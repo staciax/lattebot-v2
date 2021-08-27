@@ -3,19 +3,19 @@ from discord.ext import commands
 from discord import Embed
 
 def Utility(ctx):
-  embed = Embed(description=f"**Utility Commands**\n\n`poll [message]:` poll in your server",color=0xffffff)
+  embed = Embed(description=f"**Utility Commands**\n\n`sleep [time] [member]:` set my or member timer disconnect voice channel\n\n`poll [message]:` poll in your server",color=0xffffff)
   embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
   return embed
 
 def Infomation(ctx):
-  embed = Embed(description="**Infomation Commands**\n\n`userinfo , ui [targer]` : show userinfo infomation\n\n`serverinfo , sv` : show server infomation\n\n`avatar , av [targer]` : show my avatar profile or target",color=0xffffff)
+  embed = Embed(description="**Infomation Commands**\n\n`userinfo , ui [targer]` : show userinfo infomation\n\n`serverinfo , si` : show server infomation\n\n`avatar , av [targer]` : show my avatar profile or target\n\n`servericon` : show server icon\n\n`serverbanner` , `sb` : show server server banner\n\n`invitebanner` , `ss` : show server splash(invite banner)",color=0xffffff)
   embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
   return embed
 
 def Moderation(ctx):
-  embed = Embed(description="**Moderation Commands**\n\n`clear [number]` : clear message\n\n`muterole` : create muterole\n\n`mute [target]` : mute member\n\n`unmute [target]` : unmute member\n\n`kick [target]` : kick member\n\n`ban [target]` : ban member\n\n`unban [target]` : unban member\n\n`lockdown` : lock or unlock text channel\n\n`changenick [member] ` : change nickname member\n\n`slowmode [seconds]` : set slowmode in channel",color=0xffffff)
+  embed = Embed(description="**Moderation Commands**\n\n`clear [number] or all` : clear message\n\n`muterole` : create muterole\n\n`mute [target] [time]` : mute member\n\n`unmute [target]` : unmute member\n\n`kick [target]` : kick member\n\n`ban [target]` : ban member\n\n`unban [target]` : unban member\n\n`lockdown` : lock or unlock text channel\n\n`nick [member] ` : change nickname member\n\n`slowmode [seconds]` : set slowmode in channel",color=0xffffff)
   embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-  return embed
+  return embedf
 
 def Giveaway(ctx):
   embed = Embed(description="**Giveaway Commands**\n\n`giveaway , g `: The group command for managing giveaways\n\n`reroll :` reroll giveaway",color=0xffffff)
@@ -23,7 +23,7 @@ def Giveaway(ctx):
   return embed
   
 def Fun(ctx):
-  embed = Embed(description="**Fun Commands**\n\n`ani` , `ani list`: random anime images or specify list\n\n`cat` : random cat images\n\n`fox` : random fox images\n\n`gif[search]` : random gif or search\n\n`bm [message]` : Let the bot send the message",color=0xffffff)
+  embed = Embed(description="**Fun Commands**\n\n`ani` , `ani list`: random anime images or specify list\n\n`cat` : random cat images\n\n`fox` : random fox images\n\n`gif[search]` : random gif or search\n\n`bm [message]` : Let the bot send the message\n\n`owo [message]` : Any message to owo",color=0xffffff)
   embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
   return embed
 
