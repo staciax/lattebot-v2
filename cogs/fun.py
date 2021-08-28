@@ -1,4 +1,4 @@
-# Standard 
+# Standard
 import discord , datetime , time , asyncio , re 
 from discord.ext import commands , tasks
 import time
@@ -364,11 +364,59 @@ class Fun(commands.Cog):
             embed = discord.Embed(description="Error timer deleted" , color=BRIGHTRINK)
             await ctx.send(embed=embed)
             return
+    
+    @commands.command(name="sldb")
+    async def sleep_db(self, ctx, time,*, member : discord.Member=None):
+        if not time:
+            return         
+        if member is None:
+            member = ctx.author
+        
+        #time
+        timewait = utils.FutureTime_converter(time)
+        futuredate = datetime.now(timezone.utc) + timedelta(seconds=timewait)
+        futuredate_utc7 = futuredate + timedelta(seconds=25200)
+        futuredate_ = futuredate.strftime("%d%m%Y%H%M")
+        
+        data = await self.client.sleepdb.find_by_custom({"member_id": member.id})
+        if data is None:
+            data = {
+                "member_id": member.id,
+                "timer": futuredate_
+            }
+        data["timer"] = futuredate_
+        await self.client.sleepdb.update_by_custom(
+            {"member_id": member.id}, data
+        )
 
-            
-
-
-
+        embed_edit = discord.Embed(color=PTGREEN , timestamp=futuredate)
+        embed_edit.description = f"**time to sleep** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_relative(futuredate)}"
+        embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
+        if ctx.author != member:
+            embed_edit.description += f"\n||Req by : {ctx.author.mention}||"
+        await ctx.send("sleep db")
+        
+    @commands.command(aliases=["fake"])
+    @commands.guild_only()
+    @commands.has_role(842304286737956876)
+    async def saybot(self , ctx , msg):
+        await ctx.message.delete()
+        webhook = await ctx.channel.create_webhook(name=ctx.author.name)
+        await webhook.send(msg, username=ctx.author.name, avatar_url=ctx.author.avatar.url)
+        webhooks = await ctx.channel.webhooks()
+        for webhook in webhooks:
+            await webhook.delete()
+    
+    @commands.command(aliases=["fakem"])
+    @commands.guild_only()
+    @commands.has_role(842304286737956876)
+    async def saybot_member(self , ctx , member:discord.Member=None,*, msg):
+        await ctx.message.delete()
+        webhook = await ctx.channel.create_webhook(name=member.display_name)
+        await webhook.send(msg, username=member.display_name, avatar_url=member.avatar.url)
+        webhooks = await ctx.channel.webhooks()
+        for webhook in webhooks:
+            await webhook.delete()
     
 def setup(client):
     client.add_cog(Fun(client))

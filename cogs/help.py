@@ -124,7 +124,7 @@ class Help(commands.Cog):
         embed2 = discord.Embed(title="Infomation Commands",description="Infomation Commands\n\n`userinfo , ui [targer] :` show userinfo infomation\n\n`serverinfo , sv :` show server infomation\n\n`avatar , av [targer] :` show user avatar profile",color=0xffffff)
         embed2.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 
-        embed3 = discord.Embed(title="Moderation Commands",description="Moderation Commands\n\n`clear [number] or all :` clear message\n\n`muterole :` create muterole\n\n`mute [target] :` mute member\n\n`unmute [target] :` unmute member\n\n`kick [target]:` kick member\n\n`ban [target]:` ban member\n\n`unban [target]:`unban member\n\n`lockdown :`disable text channel\n\n`changenick [member]:` change nickname member\n\n`slowmode [seconds]:` set slowmode in channel",color=0xffffff)
+        embed3 = discord.Embed(title="Moderation Commands",description="Moderation Commands\n\n`clear <amount> or all :` clear message\n\n`muterole :` create muterole\n\n`mute [target] :` mute member\n\n`unmute [target] :` unmute member\n\n`kick [target]:` kick member\n\n`ban [target]:` ban member\n\n`unban [target]:`unban member\n\n`lockdown :`disable text channel\n\n`changenick [member]:` change nickname member\n\n`slowmode [seconds]:` set slowmode in channel",color=0xffffff)
         embed2.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 
         embed4 = discord.Embed(title="Giveaway Commands",description="Giveaway Commands\n\n`giveaway , g :` The group command for managing giveaways\n\n`reroll :` reroll giveaway",color=0xffffff)

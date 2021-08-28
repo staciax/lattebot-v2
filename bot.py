@@ -4,23 +4,33 @@ from discord.ext import commands, tasks
 from datetime import datetime, timedelta, timezone
 
 # Third party 
+import aiohttp
 import textwrap
+import motor.motor_asyncio
 from traceback import format_exception
+from pathlib import Path
 
 # Local
 from config import *
 import utils.json_loader
 from utils import clean_code , Pag
+from utils.mongo import Document
+
+cwd = Path(__file__).parents[0]
+cwd = str(cwd)
+print(f"{cwd}\n-----")
 
 #owner
 secrets = utils.json_loader.read_json("secrets")
 owner = secrets["owner"]
 
 intents = discord.Intents.all()
-client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=intents, owner_id=owner)
+client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=intents, owner_id=owner , help_command=None)
+
+client.connection_url = secrets["mongo"]
 
 #remove_default_help
-@client.remove_command("help")
+#@client.remove_command("help")
 
 @client.event
 async def on_ready():
@@ -74,11 +84,6 @@ async def reload(ctx, extension):
         return
     await ctx.send(f"Cog reloaded : {extension}")
 
-#cogs
-for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
-        client.load_extension(f'cogs.{filename[:-3]}')
-
 #eval
 @client.command(name="eval", aliases=["exec"])
 @commands.is_owner()
@@ -120,6 +125,12 @@ async def _eval(ctx, *, code):
 
     await pager.start(ctx)
 
+@client.command()
+async def send_webhook(ctx , output):
+    async with aiohttp.ClientSession() as session:
+        webhook = Webhook.from_url('https://discord.com/api/webhooks/881095764519043073/b0x0UDuhLs79DJ64IQMD7AW7z1k7dDGL6uZ9LviaXkzvF5wgbRQpMo7Q8D2AYkQJXGoW', adapter=AsyncWebhookAdapter(session))
+        await webhook.send(output, username=ctx.message.author.name)
+
 #jishaku
 client.load_extension('jishaku')
 
@@ -132,5 +143,13 @@ async def bot_config_(ctx):
         embed = discord.Embed(description=f"```nim\n{lines}```",color=0xffffff)
         await ctx.send(embed=embed)
 
-#token
-client.run(client.config_token)
+if __name__ == "__main__":
+    client.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(client.connection_url))
+    client.db = client.mongo["latteonly"]
+    client.sleepdb = Document(client.db, "sleeping")
+
+    for file in os.listdir(cwd + "/cogs"):
+        if file.endswith(".py") and not file.startswith("_"):
+            client.load_extension(f"cogs.{file[:-3]}")
+
+    client.run(client.config_token)

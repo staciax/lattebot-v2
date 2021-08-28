@@ -325,6 +325,7 @@ class Latte_config(commands.Cog):
         await ctx.send("description")
     
     @latte_config.command(aliases=["file", "json"])
+    @utils.owner_bot()
     async def latte_config_file(self, ctx, *, json_config = None):
         guild = self.bot.get_guild(840379510704046151)
         if json_config == "secrets":
