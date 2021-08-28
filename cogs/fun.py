@@ -80,10 +80,10 @@ class Fun(commands.Cog):
                     except:
                         return print("error sleep")
             
-        delete_dt = datetime.now(timezone.utc).strftime("%M")
-        if delete_dt == "28":
-            self.sleeping_db = {}
-            print("deleted")
+#        delete_dt = datetime.now(timezone.utc).strftime("%M")
+#        if delete_dt == "00":
+#            self.sleeping_db = {}
+#            print("deleted")
 
 #        delete_dt = datetime.now(timezone.utc).strftime("%M")
 #        if delete_dt == "00":
@@ -417,6 +417,12 @@ class Fun(commands.Cog):
         webhooks = await ctx.channel.webhooks()
         for webhook in webhooks:
             await webhook.delete()
+    
+    @commands.command()
+    async def test_webwook(self, ctx ,*, msg):
+        async with aiohttp.ClientSession() as session:
+            webhook = discord.Webhook.partial(881116610453180437,"Ljuzp58fs8zH9MSThtwOko5XGSAqPWg9Qt9OzYjAEMYJ0mp_5SbpgoQdOXaqw2sCZk1Y",session=session)
+            await webhook.send(msg, username=ctx.message.author.name , avatar_url=ctx.message.author.avatar.url)
     
 def setup(client):
     client.add_cog(Fun(client))
