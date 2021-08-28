@@ -47,7 +47,7 @@ class Fun(commands.Cog):
 #    async def before_sleeped_delete(self):
 #        await self.bot.wait_until_ready()
         
-    @tasks.loop(seconds=10)
+    @tasks.loop(minutes=1)
     async def sleeped(self):
         guild = self.client.get_guild(MYGUILD)
 #        for key in self.sleeping.keys():
@@ -64,21 +64,24 @@ class Fun(commands.Cog):
 
         data = utils.json_loader.read_json("sleeping")
         if not data:
-            return print("data = None")
+            return #print("data = None")
         for key in data.keys():
             dt = datetime.now(timezone.utc).strftime("%d%m%Y%H%M")
             if data[key]["time"] is None:
-                return print(f"time = None {data}")
+                return #print(f"time = None {data}")
             elif int(data[key]["time"]) == int(dt):
                 print(data[key]['time'])
                 member_sleep = guild.get_member(int(key))
-                print(member_sleep.name)
-                await member_sleep.move_to(channel=None)
-                data[key]["time"] = None
-                utils.json_loader.write_json(data, "sleeping")
-
+                if member_sleep:
+                    try:
+                        await member_sleep.move_to(channel=None)
+                        data[key]["time"] = None
+                        utils.json_loader.write_json(data, "sleeping")
+                    except:
+                        return print("error sleep")
+            
         delete_dt = datetime.now(timezone.utc).strftime("%M")
-        if delete_dt == "00":
+        if delete_dt == "28":
             self.sleeping_db = {}
             print("deleted")
 
@@ -289,7 +292,7 @@ class Fun(commands.Cog):
 
         self.sleeping[member.id] = {"time": str(futuredate_)}
     
-    @commands.command(aliases=["sl"])
+    @commands.group(invoke_without_command=True , aliases=["sl"])
     async def sleep(self, ctx, time,*, member : discord.Member=None):
         if not time:
             return         
@@ -333,7 +336,7 @@ class Fun(commands.Cog):
         await m.clear_reactions()
         
         embed_edit = discord.Embed(color=PTGREEN , timestamp=futuredate)
-        embed_edit.description = f"**time to sleep** <a:b_hitopotatosleep:864921119538937968>"
+        embed_edit.description = f"**time to sleep** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_relative(futuredate)}"
         embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
         if ctx.author != member:
             embed_edit.description += f"\n||Req by : {ctx.author.mention}||"
@@ -345,7 +348,22 @@ class Fun(commands.Cog):
             json.dump(self.sleeping_db, fp , indent=4)
     
 
+    @sleep.command(invoke_without_command=True , aliases=["del", "delete" , "off" , "stop"])
+    async def sleep_delete(self, ctx, *, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
 
+        data = utils.read_json("sleeping")
+        data[str(member.id)]["time"] = None
+
+        try:
+            utils.json_loader.write_json(data, "sleeping")
+            embed = discord.Embed(description="timer deleted" , color=WHITE)
+            await ctx.send(embed=embed)
+        except:
+            embed = discord.Embed(description="Error timer deleted" , color=BRIGHTRINK)
+            await ctx.send(embed=embed)
+            return
 
             
 

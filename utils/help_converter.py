@@ -8,7 +8,7 @@ def Utility(ctx):
   return embed
 
 def Infomation(ctx):
-  embed = Embed(description="**Infomation Commands**\n\n`userinfo , ui [targer]` : show userinfo infomation\n\n`serverinfo , si` : show server infomation\n\n`avatar , av [targer]` : show my avatar profile or target\n\n`servericon` : show server icon\n\n`serverbanner` , `sb` : show server server banner\n\n`invitebanner` , `ss` : show server splash(invite banner)",color=0xffffff)
+  embed = Embed(description="**Infomation Commands**\n\n`userinfo , ui [targer]` : show userinfo infomation\n\n`serverinfo , si` : show server infomation\n\n`avatar , av [targer]` : show my avatar profile or target\n\n`servericon` `sic` : show server icon\n\n`serverbanner` , `sb` : show server server banner\n\n`invitebanner` , `ss` : show server splash(invite banner)",color=0xffffff)
   embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
   return embed
 

@@ -81,7 +81,7 @@ class Infomation(commands.Cog):
     
         await ctx.send(embed=embed , mention_author=False)
     
-    @commands.command(aliases=["servericon","guildicon"])
+    @commands.command(aliases=["servericon","guildicon" ,"sic"])
     @commands.guild_only()
     async def server_icon(self, ctx , *, guild_id: int = None):
         if guild_id is None:

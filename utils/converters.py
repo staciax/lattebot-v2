@@ -185,10 +185,10 @@ class TimeConverter(commands.Converter):
 
 def FutureTime_converter(time):
     since = time
-    seconds = ("s", "sec", "secs", 'second', "seconds" ,"วิ" , "วินาที")
-    minutes = ("m", "min", "mins", "minute", "minutes" , "น","นาที")
-    hours = ("h", "hour", "hours" , "ชม" , "ชั่วโมง")
-    days = ("d", "day", "days" , "ว" "วัน")
+    seconds = ("s", "sec", "secs", 'second', "seconds")
+    minutes = ("m", "min", "mins", "minute", "minutes")
+    hours = ("h", "hour", "hours")
+    days = ("d", "day", "days")
     weeks = ("w", "week", "weeks")
     rawsince = since
 
