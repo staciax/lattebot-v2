@@ -263,8 +263,8 @@ class Fun(commands.Cog):
 
         m = await ctx.send(embed=embed)
 
-        await m.add_reaction("✅")
-        await m.add_reaction("🇽")
+        await m.add_reaction("<:greentick:881500884725547021>")
+        await m.add_reaction("<:redtick:881500898273144852>")
 
         try:
             reaction , member = await self.bot.wait_for(
@@ -278,7 +278,7 @@ class Fun(commands.Cog):
             await ctx.send("Confirmation Failure. Please try again.")
             return
 
-        if str(reaction.emoji) not in ["✅", "🇽"] or str(reaction.emoji) == "🇽":
+        if str(reaction.emoji) not in ["<:greentick:881500884725547021>", "<:redtick:881500898273144852>"] or str(reaction.emoji) == "<:redtick:881500898273144852>":
             await ctx.send("cancelling sleep time!")
             return
 
@@ -292,7 +292,7 @@ class Fun(commands.Cog):
 
         self.sleeping[member.id] = {"time": str(futuredate_)}
     
-    @commands.group(invoke_without_command=True , aliases=["sl"])
+    @commands.group(invoke_without_command=True , aliases=["sl" , "slp"])
     async def sleep(self, ctx, time,*, member : discord.Member=None):
         if not time:
             return         
@@ -305,13 +305,13 @@ class Fun(commands.Cog):
         futuredate_ = futuredate.strftime("%d%m%Y%H%M")
 
         embed = discord.Embed(color=YELLOW)
-        embed.add_field(name="Datetime sleep:", value=f"```{futuredate2.strftime('%d %B %Y')}\nTime : {futuredate2.strftime('%H:%M')}```" , inline=False)
+        embed.add_field(name="Datetime sleep:", value=f"{utils.format_dt(futuredate)}" , inline=False)
         embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
 
         m = await ctx.send(embed=embed)
 
-        await m.add_reaction("✅")
-        await m.add_reaction("🇽")
+        await m.add_reaction("<:greentick:881500884725547021>")
+        await m.add_reaction("<:redtick:881500898273144852>")
 
         try:
             reaction , user = await self.bot.wait_for(
@@ -326,7 +326,7 @@ class Fun(commands.Cog):
             await ctx.send(embed=embed_t, delete_after=10)
             return
 
-        if str(reaction.emoji) not in ["✅", "🇽"] or str(reaction.emoji) == "🇽":
+        if str(reaction.emoji) not in ["<:greentick:881500884725547021>", "<:redtick:881500898273144852>"] or str(reaction.emoji) == "<:redtick:881500898273144852>":
             embed_c = discord.Embed(description="Cancelling sleep time!" , color=0xffffff)
             await ctx.send(embed=embed_c , delete_after=10)
             await m.delete()
@@ -358,7 +358,7 @@ class Fun(commands.Cog):
 
         try:
             utils.json_loader.write_json(data, "sleeping")
-            embed = discord.Embed(description="timer deleted" , color=WHITE)
+            embed = discord.Embed(description=f"{member.mention} : sleep timer deleted" , color=WHITE)
             await ctx.send(embed=embed)
         except:
             embed = discord.Embed(description="Error timer deleted" , color=BRIGHTRINK)
@@ -390,7 +390,7 @@ class Fun(commands.Cog):
         )
 
         embed_edit = discord.Embed(color=PTGREEN , timestamp=futuredate)
-        embed_edit.description = f"**time to sleep** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_relative(futuredate)}"
+        embed_edit.description = f"**time to sleep** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_dt(futuredate_utc7)}"
         embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
         if ctx.author != member:
             embed_edit.description += f"\n||Req by : {ctx.author.mention}||"
@@ -423,6 +423,22 @@ class Fun(commands.Cog):
         async with aiohttp.ClientSession() as session:
             webhook = discord.Webhook.partial(881116610453180437,"Ljuzp58fs8zH9MSThtwOko5XGSAqPWg9Qt9OzYjAEMYJ0mp_5SbpgoQdOXaqw2sCZk1Y",session=session)
             await webhook.send(msg, username=ctx.message.author.name , avatar_url=ctx.message.author.avatar.url)
+    
+    @commands.command(aliases=["temprole","tr"])
+    async def t(self , ctx ,*, member: discord.Member=None):
+        if ctx.guild.id == MYGUILD:
+            if not member:
+                member = ctx.author
+            role = discord.utils.get(ctx.guild.roles, id = 879258879987449867)
+            member_role = discord.utils.get(member.roles, id = 879258879987449867)
+            if member_role:
+                embed_role = discord.Embed(description=f"{member.name} is already a temp role!", color=WHITE)
+                return await ctx.send(embed=embed_role , delete_after=10)
+            await member.add_roles(role)
+            embed = discord.Embed(description="temp is ready" , color=WHITE)
+            await ctx.send(embed=embed , delete_after=10)
+            await asyncio.sleep(43200)
+            await member.remove_roles(role)
     
 def setup(client):
     client.add_cog(Fun(client))

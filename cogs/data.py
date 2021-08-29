@@ -66,7 +66,7 @@ class Data(commands.Cog):
             ("Platform", f"`{platform.system()} {platform.release()}`", True),
             ("Developer" , f"`{str(self.client.get_user(self.client.owner_id))}`" , True),
             ("Open Source", "`Yes. but not now.`", True),
-            ("Bot created", f"{utils.format_relative(self.client.user.created_at)}", True)
+            ("Bot created", f"{utils.format_dt(self.client.user.created_at)}", True)
 
         ]
 

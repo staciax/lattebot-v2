@@ -456,14 +456,14 @@ class Activities(commands.Cog):
                     await self.message_log.send(embed=em)
                 else:
                     pass
-            else:
-                delem = discord.Embed(color=0xDC143C , timestamp=datetime.now(timezone.utc))
-                delem.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
-                delem.description = f"**Message deleted in:** {message.channel}"
-                delem.add_field(name=f"**Content:**", value=f"```{message.clean_content}```", inline=False)
-                delem.set_footer(text="Message delete")
+#            else:
+#                delem = discord.Embed(color=0xDC143C , timestamp=datetime.now(timezone.utc))
+#                delem.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
+#                delem.description = f"**Message deleted in:** {message.channel}"
+#                delem.add_field(name=f"**Content:**", value=f"```{message.clean_content}```", inline=False)
+#                delem.set_footer(text="Message delete")
 
-                await self.message_log.send(embed=delem)
+#                await self.message_log.send(embed=delem)
     
     @commands.Cog.listener()
     async def on_voice_state_update(self , member, before, after):

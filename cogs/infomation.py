@@ -145,6 +145,8 @@ class Infomation(commands.Cog):
         if member.premium_since: badges = f"{badges} {utils.profile_converter('guildboost')}"
 
         #member_info
+        member_joined = utils.format_dt(member.joined_at)
+        member_created = utils.format_dt(member.created_at)
         members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
         member_activity = f"{str(member.activity.type).title().split('.')[1]} {member.activity.name}" if member.activity is not None else "** **"
         roles = [role for role in member.roles]
@@ -157,8 +159,8 @@ class Infomation(commands.Cog):
                 ("Is bot?","Yes" if member.bot else "No", True),
                 ("Activity",member_activity, True),
                 ("Join position",f"{str(members.index(member)+1)}/{ctx.guild.member_count}", True),
-                ("Joined",f"`{member.joined_at.strftime('%d-%m-%Y, %H:%M')}`", True),
-                ("Registered",f"`{member.created_at.strftime('%d-%m-%Y, %H:%M')}`", True),
+                ("Joined",f"{member_joined}", True),
+                ("Registered",f"{member_created}", True),
                 ("Status",f"{desktop}\n{mobiles}\n{Web}", True),
                 ("Badge :",f"{badges}** **", True),
                 ("Top Role",member.top_role.mention, False),
