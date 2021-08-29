@@ -75,6 +75,35 @@ class XP_user(commands.Cog):
                 embedlv.set_image(url="attachment://latte-level.png")
 
                 await inter.channel.send(file=utils.level_images(member, final_xp, lvl, rank, xp) , embed=embedlv)
+    
+    @slash_command(name='xp' , description='show my exp' , guild_ids=[840379510704046151])
+    async def xp_(self, inter):
+        member = inter.author
+        member_id = member.id 
+        stats = levelling.find_one({"id": member_id})
+        if stats is None:
+            embed = discord.Embed(description="You haven't sent any messages, **no xp**!!",color=0xffffff)
+            await inter.respond(embed=embed)
+        else:
+                xp = stats["xp"]
+                lvl = 0
+                rank = 0
+                while True:
+                    if xp < ((50*(lvl**2))+(50*lvl)):
+                        break
+                    lvl += 1
+                xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
+                rankings = levelling.find().sort("xp",-1)
+                for x in rankings:
+                    rank += 1
+                    if stats["id"] == x["id"]:
+                        break
+                final_xp = (200*((1/2)*lvl))
+                
+                embedlv = discord.Embed(title=f"{member.name}'s level stats | {inter.guild.name}",color=0x77dd77)
+                embedlv.set_image(url="attachment://latte-level.png")
+
+                await inter.channel.send(file=utils.level_images(member, final_xp, lvl, rank, xp) , embed=embedlv)
 
 
     

@@ -16,7 +16,7 @@ class Dislash(commands.Cog):
         print(f"-{self.__class__.__name__}")
 
     @user_command(name='Avatar' , guild_ids=[840379510704046151])
-    async def avatar_msg(inter):
+    async def avatar_msg(self, inter):
         embed = discord.Embed(color=WHITE)
         embed.set_image(url=inter.user.avatar.url)
         await inter.respond(embed=embed)
