@@ -29,6 +29,7 @@ MUTEROLE = "Mute ♡"
 COLORMUTE = 0xff9f9f #when don't have mute role
 
 #temp
+TEMP_INVITE = "f6adY5B8k2"
 TEMP_CH = 879260123665682482
 
 #moderation

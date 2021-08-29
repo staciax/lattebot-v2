@@ -327,6 +327,8 @@ class Moderation(commands.Cog):
                     await member.remove_roles(muter)
                 else:
                     pass
+
+                
                 
 #            elif counter > 5:
 #                await message.guild.ban(message.author, reason="spam")

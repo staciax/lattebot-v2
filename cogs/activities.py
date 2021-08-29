@@ -27,7 +27,7 @@ class Activities(commands.Cog):
         self.bot = client
         self.client = client
         self.invites = {}
-        self.invite_code = 'f6adY5B8k2'
+        self.invite_code = TEMP_INVITE
         self.total_ = 0
         self.member_ = 0
         self.bot_ = 0
