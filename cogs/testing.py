@@ -23,10 +23,12 @@ class Testing(commands.Cog):
         #DiscordComponents(self.client)
         print(f"-{self.__class__.__name__}")
      
-    @commands.command()
-    async def embed(self, ctx):
-        member = ctx.author
-        utils.level_gif(member)
+    @commands.command(name="testembed")
+    async def test_embed(self, ctx):
+        embed = discord.Embed()
+        embed.set_image(url="https://i.imgur.com/JOsg4RL.gif")
+
+        await ctx.send(embed=embed)
     
     @commands.command()
     async def test_time2(self, ctx):

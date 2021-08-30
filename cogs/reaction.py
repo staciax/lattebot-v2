@@ -54,7 +54,7 @@ class Reaction(commands.Cog):
         #latte_verify
         if VerifyID == payload.message_id:
             if emoji == '861800747293212672':    
-                role = discord.utils.get(guild.roles, id = 842309176104976387) #name="Vanilla・・ ✦")
+                role = discord.utils.get(guild.roles, id = 842309176104976387) #name="Latte・・ ♡")
                 role2 = discord.utils.get(guild.roles, id = 854503426977038338) #name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
                 role3 = discord.utils.get(guild.roles, id = 854503041775566879) #name="・ ──────꒰ ・ levels ・ ꒱────── ・")
 
@@ -130,17 +130,17 @@ class Reaction(commands.Cog):
             if emoji == '861128979313328128':
                 role = discord.utils.get(guild.roles, name="⠀ mint ੭") 
 
-            role_lvl = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
+#            role_lvl = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
 
             if member is not None:
-                await member.remove_roles(role , role_lvl)
+                await member.remove_roles(role)# , role_lvl)
             else:
                 print("Member Not Fount")
 
         #latte_verify
         if VerifyID == payload.message_id:
             if emoji == '861800747293212672':    
-                role = discord.utils.get(guild.roles, id = 842309176104976387)#name="Vanilla・・ ✦")
+                role = discord.utils.get(guild.roles, id = 842309176104976387)#name="Latte・・ ♡")
                 role2 = discord.utils.get(guild.roles, id = 854503426977038338) #name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
                 role3 = discord.utils.get(guild.roles, id = 854503041775566879) #name="・ ──────꒰ ・ levels ・ ꒱────── ・")
                 

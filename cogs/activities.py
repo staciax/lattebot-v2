@@ -194,6 +194,7 @@ class Activities(commands.Cog):
             )
             embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
             embed.set_thumbnail(url=member.avatar.url)
+            embed.set_image(url="https://i.imgur.com/JOsg4RL.gif")
             embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
 
             await channel.send(embed=embed)

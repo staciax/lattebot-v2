@@ -166,7 +166,6 @@ class Giveaway(commands.Cog):
 #            embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} **Reroll Error** pls check your giveaway again!",color=0xffffff)
 #            await ctx.message.delete()
 #            await ctx.send(embed=embed , delete_after=15)
-
             
 def setup(client):
     client.add_cog(Giveaway(client))

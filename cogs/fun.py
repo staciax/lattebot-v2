@@ -295,7 +295,8 @@ class Fun(commands.Cog):
     @commands.group(invoke_without_command=True , aliases=["sl" , "slp"])
     async def sleep(self, ctx, time,*, member : discord.Member=None):
         if not time:
-            return         
+            embed_time = discord.Embed(description="Please specify duration",color=WHITE)
+            return await ctx.send(embed=embed_time)      
         if member is None:
             member = ctx.author
 
@@ -407,7 +408,7 @@ class Fun(commands.Cog):
         for webhook in webhooks:
             await webhook.delete()
     
-    @commands.command(aliases=["fakem"])
+    @commands.command(aliases=["fakem","saybotm"])
     @commands.guild_only()
     @commands.has_role(842304286737956876)
     async def saybot_member(self , ctx , member:discord.Member=None,*, msg):
