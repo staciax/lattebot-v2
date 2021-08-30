@@ -119,6 +119,11 @@ class Message(commands.Cog):
         #when_mention_bot
         if self.client.user.mentioned_in(message):
             await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=15)
+
+        #temp_channel
+        if message.channel.id == TEMP_CH:
+            await asyncio.sleep(60)
+            await message.delete()
     
     @commands.Cog.listener()
     async def on_message_delete(self, message):
