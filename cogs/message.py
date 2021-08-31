@@ -96,7 +96,7 @@ class Message(commands.Cog):
             await message.channel.send('https://discord.gg/f6adY5B8k2' , delete_after=15)
 
         if message.content.startswith('it'):
-            await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=10)
+            await message.channel.send(f"This is my prefix `.` or `lt ` or `l `\nexample : `lt help` or `l help` or `.help`", delete_after=10)
         
         #temp_channel
         if message.content.startswith('uw'):
@@ -118,7 +118,7 @@ class Message(commands.Cog):
 
         #when_mention_bot
         if self.client.user.mentioned_in(message):
-            await message.channel.send(f"This is my prefix `lt ` or `l `\nexample : `lt help` or `l help`", delete_after=15)
+            await message.channel.send(f"This is my prefix `.` \nExample: .help", delete_after=15)
 
         #temp_channel
         if message.channel.id == TEMP_CH:

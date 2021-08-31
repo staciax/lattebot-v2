@@ -163,7 +163,7 @@ class Fun(commands.Cog):
                     embed.set_image(url=img_link)
                     await ctx.send(embed=embed)
                 elif category == "list":
-                    embed.description = "**Caterogy** : hug, kiss, cuddle, pat, kill, slap, wink , hentai\n**Example** : `lt ani hug` , `lt ani kiss`"
+                    embed.description = "**Caterogy** : hug, kiss, cuddle, pat, kill, slap, wink , hentai\n**Example** : **`.ani hug`** , **`.ani kiss`**"
                     await ctx.send(embed=embed)
                 elif category == "hentai":
                     if ctx.channel.is_nsfw():

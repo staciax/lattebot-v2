@@ -278,6 +278,8 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
+        if before.channel.id == MYGUILD: #only_myguild
+
             #load_json
             user_update = utils.json_loader.read_json("latte")
             self.server_log = self.bot.get_channel(user_update["server-log"])
@@ -328,20 +330,20 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        #load_json
-        member_update = utils.json_loader.read_json("latte")
-        self.server_log = self.bot.get_channel(member_update["server-log"])
-        self.roles_log = self.bot.get_channel(member_update["role-log"])
-
-        if self.server_log is None:
-            print("server_log is None")
-            return
-            
-        if self.roles_log is None:
-            print("roles_log is None")
-            return
-
         if before.guild.id == MYGUILD:
+            #load_json
+            member_update = utils.json_loader.read_json("latte")
+            self.server_log = self.bot.get_channel(member_update["server-log"])
+            self.roles_log = self.bot.get_channel(member_update["role-log"])
+
+            if self.server_log is None:
+                print("server_log is None")
+                return
+                
+            if self.roles_log is None:
+                print("roles_log is None")
+                return
+
             #nickname_log
             if before.display_name != after.display_name:
                 embed = discord.Embed(title="Nickname change",
@@ -396,14 +398,14 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
-        message_channel = utils.json_loader.read_json("latte")
-        self.message_log = self.bot.get_channel(message_channel["message-log"])
+        if before.channel.id in private_channel:
+            message_channel = utils.json_loader.read_json("latte")
+            self.message_log = self.bot.get_channel(message_channel["message-log"])
 
-        if self.message_log is None:
-            print("message_log is None")
-            return
+            if self.message_log is None:
+                print("message_log is None")
+                return
 
-        if not before.channel.id in private_channel:
             if not after.author.bot:
                 if before.content != after.content:
                     embed = discord.Embed(description=f"**Edited in**: {after.channel.mention}\n**Message link:** ||[click]({after.jump_url})||",
@@ -424,14 +426,14 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        message_channel = utils.json_loader.read_json("latte")
-        self.message_log = self.bot.get_channel(message_channel["message-log"])
+        if message.channel.id in private_channel:
+            message_channel = utils.json_loader.read_json("latte")
+            self.message_log = self.bot.get_channel(message_channel["message-log"])
 
-        if self.message_log is None:
-            print("message_log is None")
-            return
+            if self.message_log is None:
+                print("message_log is None")
+                return
 
-        if not message.channel.id in private_channel:
             if message.guild: #if message.guild.id:
                 if not message.author.bot:
 

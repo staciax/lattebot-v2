@@ -59,7 +59,7 @@ class Data(commands.Cog):
         )
         
         fields = [
-            ("Prefix" , "``lt ``" , True),
+            ("Prefix" , "``.` or `lt ``" , True),
             ("Language" , "`Python`" , True),
             ("Library" , f"`Discord.py {discord.__version__}`" , True),
             ("DataBase" , "`MongoDB`" , True),
@@ -220,7 +220,7 @@ class Data(commands.Cog):
     @commands.command(usage="[message]")
     @commands.guild_only()
     async def echo(self, ctx, *, message=None):
-        embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify what message bot send the message | `prefix` `bm [message]`",color=0xffffff)
+        embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify what message bot send the message | `.echo [message]`",color=0xffffff)
         if message == None:
             message = await ctx.send(embed=embed)
         else:
