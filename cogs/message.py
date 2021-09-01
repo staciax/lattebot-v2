@@ -36,9 +36,11 @@ class Message(commands.Cog):
             reason = "personal problems"
         self.afk[ctx.author.id] = reason #storing at self.afk as {657846039914479617: "reason"}
         embed = discord.Embed(description=f"I have set your afk: {reason}" , color=WHITE)
-        await ctx.send(embed=embed, delete_after=10) 
-        await asyncio.sleep(10)
-        await ctx.message.delete()
+        m = await ctx.send(embed=embed)#, delete_after=10)
+        if ctx.channel.id == 861883647070437386:
+            await asyncio.sleep(10)
+            await m.delete()
+            await ctx.message.delete()
 
     @commands.Cog.listener()
     async def on_message(self, message):

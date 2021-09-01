@@ -296,7 +296,7 @@ class Fun(commands.Cog):
     async def sleep(self, ctx, time=None,*, member : discord.Member=None):
         if time is None:
             embed_time = discord.Embed(description="**Please specify duration** : `(s|m|h|d)`\n```yaml\nExample : .sleep 5m , .sleep 2h```",color=WHITE)
-            return await ctx.send(embed=embed_time)      
+            return await ctx.send(embed=embed_time , delete_after=15)      
         if member is None:
             member = ctx.author
 
