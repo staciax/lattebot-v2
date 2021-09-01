@@ -31,25 +31,25 @@ class Reaction(commands.Cog):
         if ColourID == payload.message_id:
 
             if emoji == '861130565804621835':
-                role = discord.utils.get(guild.roles, name="⠀ latte ੭")
+                role = discord.utils.get(guild.roles, id = 860075723501994004)
             if emoji == '861128977828806686':
-                role = discord.utils.get(guild.roles, name="⠀ coco ੭")
+                role = discord.utils.get(guild.roles, id = 860069154291843082)
             if emoji == '861128979418447942':
-                role = discord.utils.get(guild.roles, name="⠀ lemon ੭")
+                role = discord.utils.get(guild.roles, id = 860069184084115476)
             if emoji == '861128977410293761':
-                role = discord.utils.get(guild.roles, name="⠀ peach ੭")
+                role = discord.utils.get(guild.roles, id = 860069205772337172)
             if emoji == '861128978902024192':
-                role = discord.utils.get(guild.roles, name="⠀ bubblegum ੭")
+                role = discord.utils.get(guild.roles, id = 860069252526506004)
             if emoji == '861128979309133844':
-                role = discord.utils.get(guild.roles, name="⠀ lavender ੭")
+                role = discord.utils.get(guild.roles, id = 860069771679891457)
             if emoji == '861128977603231765':
-                role = discord.utils.get(guild.roles, name="⠀ blue sky ੭")
+                role = discord.utils.get(guild.roles, id = 860069691271020564)
             if emoji == '861128979313328128':
-                role = discord.utils.get(guild.roles, name="⠀ mint ੭")
+                role = discord.utils.get(guild.roles, id = 860069256904572928)
 
-            role_lvl = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
+            color_main = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
 
-            await member.add_roles(role , role_lvl)
+            await member.add_roles(role , color_main)
         
         #latte_verify
         if VerifyID == payload.message_id:
@@ -114,21 +114,21 @@ class Reaction(commands.Cog):
         if ColourID == payload.message_id:
 
             if emoji == '861130565804621835':
-                role = discord.utils.get(guild.roles, name="⠀ latte ੭")
+                role = discord.utils.get(guild.roles, id = 860075723501994004)
             if emoji == '861128977828806686':
-                role = discord.utils.get(guild.roles, name="⠀ coco ੭")
+                role = discord.utils.get(guild.roles, id = 860069154291843082)
             if emoji == '861128979418447942':
-                role = discord.utils.get(guild.roles, name="⠀ lemon ੭")
+                role = discord.utils.get(guild.roles, id = 860069184084115476)
             if emoji == '861128977410293761':
-                role = discord.utils.get(guild.roles, name="⠀ peach ੭")
+                role = discord.utils.get(guild.roles, id = 860069205772337172)
             if emoji == '861128978902024192':
-                role = discord.utils.get(guild.roles, name="⠀ bubblegum ੭")
+                role = discord.utils.get(guild.roles, id = 860069252526506004)
             if emoji == '861128979309133844':
-                role = discord.utils.get(guild.roles, name="⠀ lavender ੭")
+                role = discord.utils.get(guild.roles, id = 860069771679891457)
             if emoji == '861128977603231765':
-                role = discord.utils.get(guild.roles, name="⠀ blue sky ੭")
+                role = discord.utils.get(guild.roles, id = 860069691271020564)
             if emoji == '861128979313328128':
-                role = discord.utils.get(guild.roles, name="⠀ mint ੭") 
+                role = discord.utils.get(guild.roles, id = 860069256904572928)
 
 #            role_lvl = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
 
