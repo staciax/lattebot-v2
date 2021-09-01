@@ -49,14 +49,10 @@ class Error(commands.Cog):
             cm_error = "You didn't pass a required argument!"
         elif isinstance(error, commands.CheckFailure):
             print(f"check fail {ctx.author.name}")
-            return
         else:
-            print(error)
-            return
-
-#            cm_error = f"{error}"
-#        embed.add_field(name="Error!", value=f"{cm_error}")
-#        await ctx.send(embed=embed, delete_after=15)
+            cm_error = f"{error}"
+        embed.add_field(name="Commands Error!", value=f"{cm_error}")
+        await ctx.send(embed=embed, delete_after=15)
     
 def setup(client):
     client.add_cog(Error(client))

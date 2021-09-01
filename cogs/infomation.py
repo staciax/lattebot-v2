@@ -207,14 +207,13 @@ class Infomation(commands.Cog):
         )
 
         description = f"""
-        **General:**
-        **- Name:** {emoji.name}
-        **- Id:** {emoji.id}
-        **- URL:** [Link To Emoji]({emoji.url})
-        **- Author:** {emoji.user.mention}
-        **- Time Created:** {creation_time}
-        **- Guild Name:** {emoji.guild.name}
-        **- Guild Id:** {emoji.guild.id}
+        **Name:** {emoji.name}
+        **Id:** {emoji.id}
+        **URL:** [Link To Emoji]({emoji.url})
+        **Author:** {emoji.user.mention}
+        **Time Created:** {creation_time}
+        **Guild Name:** {emoji.guild.name}
+        **Guild Id:** {emoji.guild.id}
         """
 #        **Other:**
 #           **- Usable by:** {can_use_emoji}

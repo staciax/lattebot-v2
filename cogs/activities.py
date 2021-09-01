@@ -201,7 +201,7 @@ class Activities(commands.Cog):
     
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
-        if member.guild.id == 840379510704046151:
+        if member.guild.id == MYGUILD:
             user_update = utils.json_loader.read_json("latte")
             self.server_log = self.bot.get_channel(user_update["server-log"])
 
@@ -278,8 +278,6 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
-        if before.guild.id == MYGUILD: #only_myguild
-
             #load_json
             user_update = utils.json_loader.read_json("latte")
             self.server_log = self.bot.get_channel(user_update["server-log"])
@@ -298,7 +296,7 @@ class Activities(commands.Cog):
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
                     embed.set_thumbnail(url=after.avatar.url)
-                    embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
+                    embed.set_footer(text=f"{after.display_name}#{after.discriminator}", icon_url=after.avatar.url)
             
                 await self.server_log.send(embed=embed)
 
@@ -313,7 +311,7 @@ class Activities(commands.Cog):
             
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
-                    embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
+                    embed.set_footer(text=f"{after.display_name}#{after.discriminator}", icon_url=after.avatar.url)
             
                 await self.server_log.send(embed=embed)
 
@@ -324,7 +322,7 @@ class Activities(commands.Cog):
 						    timestamp=datetime.now(timezone.utc))
                 embed.set_thumbnail(url=before.avatar.url)
                 embed.set_image(url=after.avatar.url)
-                embed.set_footer(text=f"{after.display_name}", icon_url=after.avatar.url)
+                embed.set_footer(text=f"{after.display_name}#{after.discriminator}", icon_url=after.avatar.url)
 
                 await self.server_log.send(embed=embed)
 
@@ -392,9 +390,6 @@ class Activities(commands.Cog):
                     embed.add_field(name=name, value=value, inline=inline)
 
                 await self.roles_log.send(embed=embed)
-
-            else:
-                return
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):

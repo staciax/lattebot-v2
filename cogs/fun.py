@@ -28,6 +28,7 @@ class Fun(commands.Cog):
         self.bot = client
         self.client = client
         self.sleeping = {}
+        self.sleep_sec = {}
         self.sleeping_db = {}
         self.sleeped.start()
 #        self.sleeped_delete.start()
@@ -242,55 +243,29 @@ class Fun(commands.Cog):
         await msg.add_reaction(f'{utils.emoji_converter("check")}')
         await msg.add_reaction(f'{utils.emoji_converter("xmark")}')
         await ctx.message.delete()
+
+    #custom_cooldown
+    def custom_cooldown(message):
+        if discord.utils.get(message.author.roles, name="Mystic・・ ♡"):
+            return commands.Cooldown(2, 60)  # 2 per minute
+        return commands.Cooldown(1, 60)  # 1 
             
-    @commands.command()
-    async def sleep_temp(self, ctx, time,*, member : discord.Member=None):
+    @commands.command(name="sleeps" , aliases=["slps" , "sls"])
+    @commands.dynamic_cooldown(custom_cooldown, commands.BucketType.user)
+    async def sleep_sec(self, ctx, time,*, member : discord.Member=None):
+        time = int(time[:-1])
         if not time:
             return
         if member is None:
-            member = ctx.author
+            member = ctx.author        
 
-        timewait = utils.FutureTime_converter(time)
-        futuredate = datetime.now(timezone.utc) + timedelta(seconds=timewait)
-        futuredate2 = futuredate + timedelta(seconds=25200)
-        futuredate_ = futuredate.strftime("%d, %m ,%Y, %H, %M")
-        futuredate_2 = futuredate.strftime("%d-%B-%Y-%H-%M")
+        if time >= 600:
+            return await ctx.send("คุณตั่งเกิน 600 วินาที แนะให้ใช้ .sleep แทนนะคะ" , delete_after=10)
 
-        self.sleeping[member.id] = {"time": futuredate_}
-
-        embed = discord.Embed(color=YELLOW)
-        embed.description = f"```Member: {member.name}\nDate : {futuredate2.strftime('%d %B %Y')}\nTime : {futuredate2.strftime('%H:%M')}```"
-
-        m = await ctx.send(embed=embed)
-
-        await m.add_reaction("<:greentick:881500884725547021>")
-        await m.add_reaction("<:redtick:881500898273144852>")
-
-        try:
-            reaction , member = await self.bot.wait_for(
-                "reaction_add",
-                timeout=30,
-                check=lambda reaction, user: user == ctx.author
-                and reaction.message.channel == ctx.channel
-            )
-
-        except asyncio.TimeoutError:
-            await ctx.send("Confirmation Failure. Please try again.")
-            return
-
-        if str(reaction.emoji) not in ["<:greentick:881500884725547021>", "<:redtick:881500898273144852>"] or str(reaction.emoji) == "<:redtick:881500898273144852>":
-            await ctx.send("cancelling sleep time!")
-            return
-
-        await m.clear_reactions()
-        
-        embed_edit = discord.Embed(color=PTGREEN , timestamp=futuredate)
-        embed_edit.description = f"time to sleep <a:b_hitopotatosleep:864921119538937968>"
-        embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
-        
-        await m.edit(embed=embed_edit)
-
-        self.sleeping[member.id] = {"time": str(futuredate_)}
+        embed = discord.Embed(description=f"{member.name} set timer {time}s ", color=0xffffff)
+        await ctx.send(embed=embed , delete_after=10)
+        await asyncio.sleep(time)
+        await member.move_to(channel=None)
     
     @commands.group(invoke_without_command=True , aliases=["sl" , "slp"])
     async def sleep(self, ctx, time=None,*, member : discord.Member=None):
@@ -429,7 +404,7 @@ class Fun(commands.Cog):
             await webhook.send(msg, username=ctx.message.author.name , avatar_url=ctx.message.author.avatar.url)
     
     @commands.command(aliases=["temprole","tr"])
-    async def t(self , ctx ,*, member: discord.Member=None):
+    async def t_role(self , ctx ,*, member: discord.Member=None):
         if ctx.guild.id == MYGUILD:
             if not member:
                 member = ctx.author

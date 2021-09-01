@@ -1,5 +1,5 @@
 #standard
-PREFIX = ["lt ","l " , "."]
+PREFIX = ["lt ","l " , ".."]
 MYGUILD = 840379510704046151 #latte
 DEV_OWNER_ID = 240059262297047041 #385049730222129152
 

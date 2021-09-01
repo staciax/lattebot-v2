@@ -21,6 +21,8 @@ import utils
 from config import * 
 from utils import Pag
 
+intents = discord.Intents.all()
+
 #xpchannel
 bot_channel = BOT_CH
 chat_channel = CHAT_CH
@@ -105,8 +107,81 @@ class XP_user(commands.Cog):
 
                 await inter.channel.send(file=utils.level_images(member, final_xp, lvl, rank, xp) , embed=embedlv)
 
+    @slash_command(
+        name="avatar",
+        description="show my avatar",
+        guild_ids=[840379510704046151],
+        options=[
+            Option("user", "recieving user", Type.USER, required=False),
+        ],
+    )
+    async def avatar_slash(self, inter , user=None):
+        if user is None:
+            user = inter.author
+        embed = discord.Embed(color=0xffffff)
+        embed.title = f"{user.name}'s Avatar"
+        embed.set_image(url=user.avatar.url)
 
+        await inter.channel.send(embed=embed)
     
+    @slash_command(
+        name="embed",
+        description="create embed",
+        guild_ids=[840379510704046151],
+        options=[
+            Option("title", "recieving title", Type.STRING, required=False),
+            Option("description", "recieving description", Type.STRING, required=False),
+            Option("color", "recieving color (HEX)", Type.STRING, required=False),
+            Option("image", "recieving image link", Type.STRING, required=False),
+            Option("thumnail", "recieving thumnail link", Type.STRING, required=False),
+            Option("footer", "recieving footer", Type.STRING, required=False),
+            Option("footer_url", "recieving footer icon url ", Type.STRING, required=False),
+        ],
+    )
+    async def embed_slash(self, inter , title=None, description=None , color=None , image=None , thumnail=None , footer=None , footer_url=None):
+        embed = discord.Embed()
+
+        #title
+        if title:
+            embed.title = f"{title}"
+        elif title is None:
+            pass
+        
+        #description
+        if description:
+            embed.description = f"{description}"
+        elif description is None:
+            pass
+        
+        #color
+        if color:
+            color_hex = int(f"{color}", 16)
+            embed.color = color_hex
+        elif color is None:
+            pass
+
+        #thumnail
+        if thumnail:
+            embed.set_thumbnail(url=f"{thumnail}")
+        elif thumnail is None:
+            pass
+
+        #image
+        if image:
+            embed.set_image(url=f"{image}")
+        elif image is None:
+           pass
+
+        #footer
+        if footer and footer_url:
+            embed.set_footer(text=f"{footer}" , icon_url=f"{footer_url}")
+        elif footer:
+            embed.set_footer(text=f"{footer}")
+        else:
+            pass
+
+        await inter.channel.send(embed=embed)
+
 def setup(client):
 
     client.add_cog(XP_user(client))
