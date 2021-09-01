@@ -250,7 +250,7 @@ class Fun(commands.Cog):
             return commands.Cooldown(2, 60)  # 2 per minute
         return commands.Cooldown(1, 60)  # 1 
             
-    @commands.command(name="sleeps" , aliases=["slps" , "sls"])
+    @commands.command(name="sleeps" , aliases=["slps" , "sls","tick",])
     @commands.dynamic_cooldown(custom_cooldown, commands.BucketType.user)
     async def sleep_sec(self, ctx, time,*, member : discord.Member=None):
         time = int(time[:-1])
