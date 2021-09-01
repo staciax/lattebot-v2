@@ -76,7 +76,7 @@ class Message(commands.Cog):
         for id in self.afk.keys():
             if message.author.id == id:
                 del self.afk[id]
-                return await message.channel.send(f"{message.author.mention}, welcome back onii-chan!" , delete_after=10)
+                return await message.channel.send(f"{message.author.mention}, welcome back!" , delete_after=5)
             
             member = message.guild.get_member(id)
             if member.mentioned_in(message):

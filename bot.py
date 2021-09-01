@@ -34,7 +34,7 @@ client.connection_url = secrets["mongo"]
 
 @client.event
 async def on_ready():
-    bot_activity = "lt help"
+    bot_activity = ".help"
     await client.change_presence(activity=discord.Activity(
         type=discord.ActivityType.listening, name=bot_activity)
     )
