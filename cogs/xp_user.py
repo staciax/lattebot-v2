@@ -122,7 +122,7 @@ class XP_user(commands.Cog):
         embed.title = f"{user.name}'s Avatar"
         embed.set_image(url=user.avatar.url)
 
-        await inter.channel.send(embed=embed)
+        await inter.respond(embed=embed)
     
     @slash_command(
         name="embed",
