@@ -74,12 +74,12 @@ class Message(commands.Cog):
         for id in self.afk.keys():
             if message.author.id == id:
                 del self.afk[id]
-                return await message.channel.send(f"{message.author.mention}, ยินดีต้อนรับกลับมาค่ะนายท่าน!" , delete_after=15)
+                return await message.channel.send(f"{message.author.mention}, welcome back onii-chan!" , delete_after=10)
             
             member = message.guild.get_member(id)
             if member.mentioned_in(message):
                 embed = discord.Embed(description=f'**{member.display_name}** is afk for: {self.afk[id]}' , color=WHITE)
-                embed.set_image(url="https://media.giphy.com/media/LPETDRbj82wbrYm7q6/source.gif")
+#                embed.set_image(url="https://media.giphy.com/media/LPETDRbj82wbrYm7q6/source.gif")
                 await message.channel.send(embed=embed , delete_after=10)
 
         #message

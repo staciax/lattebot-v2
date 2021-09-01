@@ -4,19 +4,16 @@ MYGUILD = 840379510704046151 #latte
 DEV_OWNER_ID = 240059262297047041 #385049730222129152
 
 #last update time #\u200b 
-BOTVERSION = "v2.0.3 beta"
+BOTVERSION = "v2.0.4 beta"
 UYEAR = 2021
-UMONTH = 8
-UDATE = 31
+UMONTH = 9
+UDATE = 1
 
 #helpcommands
 INVITE_LATTE = "https://discord.gg/bvwpZ2B4rj"
 INVITELINK = "[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=bot%20applications.commands)"
 SUPPORT_SERVER = "[Support Server](https://discord.gg/bmRhc6DyqB)"
 GITHUB_DEV = "[Github](https://github.com/staciax)"
-
-#invite_log
-SERVER_LOG_INVITE = "server-log"
 
 #reactionrole
 VERIFY = 861849112386469908

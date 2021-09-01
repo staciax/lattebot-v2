@@ -12,6 +12,7 @@ def Utility(ctx):
 
   fields = [
     ("Sleep","```yaml\n.sleep <duration> [member]```",True),
+    ("Delete sleep","```yaml\n.sleep delete [member]```",True),
     ("Poll","```yaml\n.poll [message]```",True)
   ]
                           
@@ -31,6 +32,7 @@ def Infomation(ctx):
     ("Server Icon","```yaml\n.servericon | .sic```",True),
     ("Server Banner","```yaml\n.serverbanner | .sb```",True),
     ("Server Splash","```yaml\n.splash | .ss```",True),
+    ("Emoji Info","```yaml\n.emojinfo [emoji] | .ei [emoji]```",True),
 
   ]
 

@@ -184,7 +184,12 @@ class Infomation(commands.Cog):
     @commands.guild_only()
     async def emoji_info(self, ctx, emoji: discord.Emoji = None):
         if not emoji:
-            return await ctx.invoke(self.client.get_command("custom_help"))
+            embed_help = discord.Embed(color = 0xffffff)
+            embed_help.set_author(name=f"{ctx.author.name}" , icon_url = ctx.author.avatar.url)
+            embed_help.add_field(name="Emoji Infomation" , value="```yaml\n.emojiinfo [emoji] | .ei [emoji]```", inline = True)
+            return await ctx.send(embed=embed_help , delete_after=15)
+#            return await ctx.invoke(self.client.get_command("help") , category="info")
+                    
 
         try:
             emoji = await emoji.guild.fetch_emoji(emoji.id)
@@ -194,7 +199,7 @@ class Infomation(commands.Cog):
         is_managed = "Yes" if emoji.managed else "No"
         is_animated = "Yes" if emoji.animated else "No"
         requires_colons = "Yes" if emoji.require_colons else "No"
-        creation_time = emoji.created_at.strftime("%I:%M %p %B %d, %Y")
+        creation_time = utils.format_dt(emoji.created_at)
         can_use_emoji = (
             "Everyone"
             if not emoji.roles
@@ -208,15 +213,17 @@ class Infomation(commands.Cog):
         **- URL:** [Link To Emoji]({emoji.url})
         **- Author:** {emoji.user.mention}
         **- Time Created:** {creation_time}
-        **- Usable by:** {can_use_emoji}
-        
-        **Other:**
-        **- Animated:** {is_animated}
-        **- Managed:** {is_managed}
-        **- Requires Colons:** {requires_colons}
         **- Guild Name:** {emoji.guild.name}
         **- Guild Id:** {emoji.guild.id}
         """
+#        **Other:**
+#           **- Usable by:** {can_use_emoji}
+#        **- Animated:** {is_animated}
+#        **- Managed:** {is_managed}
+#        **- Requires Colons:** {requires_colons}
+#        **- Guild Name:** {emoji.guild.name}
+#        **- Guild Id:** {emoji.guild.id}
+#        """
 
         embed = discord.Embed(
             title=f"**Emoji Information for:** `{emoji.name}`",

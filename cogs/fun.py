@@ -293,9 +293,9 @@ class Fun(commands.Cog):
         self.sleeping[member.id] = {"time": str(futuredate_)}
     
     @commands.group(invoke_without_command=True , aliases=["sl" , "slp"])
-    async def sleep(self, ctx, time,*, member : discord.Member=None):
-        if not time:
-            embed_time = discord.Embed(description="Please specify duration",color=WHITE)
+    async def sleep(self, ctx, time=None,*, member : discord.Member=None):
+        if time is None:
+            embed_time = discord.Embed(description="**Please specify duration** : `(s|m|h|d)`\n```yaml\nExample : .sleep 5m , .sleep 2h```",color=WHITE)
             return await ctx.send(embed=embed_time)      
         if member is None:
             member = ctx.author
@@ -324,7 +324,8 @@ class Fun(commands.Cog):
 
         except asyncio.TimeoutError:
             embed_t = discord.Embed(description="Confirmation Failure. Please try again." , color=0xffffff)
-            await ctx.send(embed=embed_t, delete_after=10)
+            await ctx.send(embed=embed_t, delete_after=15)
+            await m.delete()
             return
 
         if str(reaction.emoji) not in ["<:greentick:881500884725547021>", "<:redtick:881500898273144852>"] or str(reaction.emoji) == "<:redtick:881500898273144852>":
@@ -337,10 +338,12 @@ class Fun(commands.Cog):
         await m.clear_reactions()
         
         embed_edit = discord.Embed(color=PTGREEN , timestamp=futuredate)
-        embed_edit.description = f"**time to sleep** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_relative(futuredate)}"
+        embed_edit.description = f"**TIME TO SLEEP** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_relative(futuredate)}"
         embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
+        if member == ctx.author:
+            embed_edit.description += f"\n||**Delete timer** : .sleep delete||"
         if ctx.author != member:
-            embed_edit.description += f"\n||Req by : {ctx.author.mention}||"
+            embed_edit.description += f"\n||**Delete timer** : .sleep delete @{member.display_name}||"#\n||Req by : {ctx.author.mention}||"
         
         await m.edit(embed=embed_edit)
 
@@ -402,7 +405,7 @@ class Fun(commands.Cog):
     @commands.has_role(842304286737956876)
     async def saybot(self , ctx , msg):
         await ctx.message.delete()
-        webhook = await ctx.channel.create_webhook(name=ctx.author.name)
+        webhook = await ctx.channel.create_webhook(name=ctx.author.display_name)
         await webhook.send(msg, username=ctx.author.name, avatar_url=ctx.author.avatar.url)
         webhooks = await ctx.channel.webhooks()
         for webhook in webhooks:
