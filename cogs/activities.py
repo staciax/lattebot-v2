@@ -278,7 +278,7 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_user_update(self, before, after):
-        if before.channel.id == MYGUILD: #only_myguild
+        if before.guild.id == MYGUILD: #only_myguild
 
             #load_json
             user_update = utils.json_loader.read_json("latte")

@@ -85,6 +85,7 @@ def Fun(ctx):
   fields = [
     ("Anime gif","```yaml\n.ani | .ani list```",True),
     ("Cat","```yaml\n.cat```",True),
+    ("Fox","```yaml\n.fox```",True),
     ("Gif","```yaml\n.gif <keyword> or random```",True),
     ("OwO","```yaml\n.owo [message]```",True),
     ("Echo","```yaml\n.echo [message]```",True),
