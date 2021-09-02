@@ -12,6 +12,7 @@ def Utility(ctx):
 
   fields = [
     ("sleep","```yaml\n.sleep <duration> [member]```",True),
+    ("sleep delete","```yaml\n.sleep delete [member]```",True),
     ("poll","```yaml\n.poll [message]```",True),
     ("binary","```yaml\n.binary [message]```",True),
     ("reverse","```yaml\n.reverse [message]```",True),
