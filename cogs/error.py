@@ -50,6 +50,7 @@ class Error(commands.Cog):
         elif isinstance(error, commands.CheckFailure):
             print(f"check fail {ctx.author.name}")
         else:
+#            print(error)
             cm_error = f"{error}"
         embed.add_field(name="Commands Error!", value=f"{cm_error}")
         await ctx.send(embed=embed, delete_after=15)

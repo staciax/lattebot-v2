@@ -160,15 +160,15 @@ class Message(commands.Cog):
             if message.author == self.client.user:
                 return
             if message.content:
-                self.sniped_text[message.guild.id] = (message.content, message.author, message.channel.mention, message.created_at)
+                self.sniped_text[message.channel.id] = (message.content, message.author, message.channel.mention, message.created_at)
 
             if message.attachments:
                 image = message.attachments[0].proxy_url
-                self.sniped_img[message.guild.id] = (image , message.author, message.channel.mention, message.created_at)
+                self.sniped_img[message.channel.id] = (image , message.author, message.channel.mention, message.created_at)
             else:
                 image = "none"
 
-            self.sniped_message[message.guild.id] = (image , message.content, message.author, message.channel.mention, message.created_at)
+            self.sniped_message[message.channel.id] = (image , message.content, message.author, message.channel.mention, message.created_at)
 
             #message.channel.id or message.guild.id
 
@@ -197,7 +197,7 @@ class Message(commands.Cog):
         if choice == None:
             if self.sniped_message:
                 try:
-                    image , content , author , channel_name, time = self.sniped_message[ctx.guild.id]
+                    image , content , author , channel_name, time = self.sniped_message[ctx.channel.id]
                 except:
                     await ctx.channel.send("Couldn't find a message to snipe!")
                     return
@@ -234,7 +234,7 @@ class Message(commands.Cog):
 
         elif choice in images_aliases: #snipe image
             try:
-                image , author , channel_name, time = self.sniped_img[ctx.guild.id]
+                image , author , channel_name, time = self.sniped_img[ctx.channel.id]
             except:
                 await ctx.channel.send("Couldn't find a message to snipe!", delete_after=15)
                 return
@@ -253,7 +253,7 @@ class Message(commands.Cog):
   
         elif choice in text_aliases: #snipe text
             try:
-                content , author , channel_name, time = self.sniped_text[ctx.guild.id]
+                content , author , channel_name, time = self.sniped_text[ctx.channel.id]
             except:
                 await ctx.channel.send("Couldn't find a message to snipe!", delete_after=15)
                 return
