@@ -45,25 +45,35 @@ class Utility_(commands.Cog):
 
 
         translator = Translator()
-        result =  translator.translate(f'{args}' , dest=f'{to_lang}')
-        a = translator.detect(str(args))
-        b = translator.detect(str(result.text))
+        try:
+            a = translator.detect(str(args))
+        except:
+            return await ctx.send("ภาษานี้ไม่ได้อยู่ในระบบ" , delete_after=10)
+
+        try:
+            result =  translator.translate(f'{args}' , dest=f'{to_lang}')
+            b = translator.detect(str(result.text))
+        except:
+            return await ctx.send("เกิดข้อผิดพลาดในการแปลภาษา" , delete_after=10)
 
         embed = discord.Embed(color=0xffffff)
-        embed.set_author(name="Translator" , icon_url="https://upload.wikimedia.org/wikipedia/commons/d/db/Google_Translate_Icon.png")
+        embed.set_author(name="Translate" , icon_url="https://upload.wikimedia.org/wikipedia/commons/d/db/Google_Translate_Icon.png")
         embed.add_field(name=f"Original ({str(a.lang)})", value=f"```{args}```", inline=False)
         embed.add_field(name=f"Translated ({str(b.lang)})", value=f"```{result.text}```", inline=False)
         await ctx.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.channel.id == TRANSLATE_CHANNEL:
 
+        #google_translator
+        if message.channel.id == TRANSLATE_CHANNEL:
             if message.author == self.client.user:
                 return
-
             translator = Translator()
-            result =  translator.translate(f'{message.clean_content}' , dest='th')
+            try:
+                result =  translator.translate(f'{message.clean_content}' , dest='th')
+            except:
+                return await ctx.send("เกิดข้อผิดพลาดในการแปลภาษา" , delete_after=10)
 
             await message.channel.send(result.text)
 
