@@ -31,7 +31,6 @@ class Help(commands.Cog):
         embedhelp.add_field(name='** **', value=f"•{emojis('shidapout')} **Utility**\n•{emojis('winkai')} **Giveaway**\n•{emojis('chocolawow')} **Reaction Roles**")
         embedhelp.add_field(name='** **', value=f"•{emojis('ShinoSmirk')} **Infomation**\n•{emojis('wowanime')} **Fun**\n•{emojis('ClevelandDeal')} **Leveling**")
         embedhelp.add_field(name='** **', value=f"•{emojis('lutoaraka')} **Moderation**\n•{emojis('Ani1')} **Meta**\n•{emojis('tohka')} **NSFW**")
-
 #        fields = [(f"•{emojis('shidapout')} **Utility**", "`-some useful commands`" , True),
 #                (f"•{emojis('ShinoSmirk')} **Infomation**", "`-infomation commands`", True),
 #                (f"•{emojis('lutoaraka')} **Moderation**", "`-keep your server safe`", True),

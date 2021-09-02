@@ -10,10 +10,6 @@ My first discord bot write with python and use cogs
 | ------------------------------------| --------- | 
 | **Python**                          | 3.9.5     | 
 | **discord.py**                      | 2.0.0a    | 
-| **discord-py-slash-command**        | 2.3.2     | 
-| **discord-components**              | 3.0.1     | 
-
-
 
 ### Installing and setup
 
@@ -22,7 +18,8 @@ My first discord bot write with python and use cogs
 pip install -r requirements.txt
 
 # bot_config/secrets.js
-token
+token , mongolink
 
 ## Help 
 My discord : ꜱᴛᴀᴄɪᴀ.#7475
+```

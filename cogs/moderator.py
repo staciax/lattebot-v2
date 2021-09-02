@@ -248,24 +248,24 @@ class Moderation(commands.Cog):
     async def lock_down(self, ctx, channel: discord.TextChannel=None):
         channel = channel or ctx.channel
         if ctx.guild.default_role not in channel.overwrites:
-            embed1 = discord.Embed(description=f"{channel.name} is **lockdown.**\n\n`Note : use this cmd again for remove lockdown!`",color=0xffffff)
+            embed1 = discord.Embed(description=f"{channel.name} is **lockdown.**",color=0xffffff)
             overwrites = {
             ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False)
             }
             await channel.edit(overwrites=overwrites)
-            await ctx.send(embed=embed1)
+            await ctx.send(embed=embed1 , delete_after=15)
         elif channel.overwrites[ctx.guild.default_role].send_messages == True or channel.overwrites[ctx.guild.default_role].send_messages == None:
-            embed2 = discord.Embed(description=f"{utils.emoji_converter('check')}{channel.name} is **lockdown.**\n\n`Note : use this cmd again for remove lockdown!`",color=0xffffff)
+            embed2 = discord.Embed(description=f"{utils.emoji_converter('check')}{channel.name} is **lockdown.**",color=0xffffff)
             overwrites = channel.overwrites[ctx.guild.default_role]
             overwrites.send_messages = False
             await channel.set_permissions(ctx.guild.default_role, overwrite=overwrites)
-            await ctx.send(embed=embed2)
+            await ctx.send(embed=embed2, delete_after=15)
         else:
             embed3 = discord.Embed(description=f"{utils.emoji_converter('check')}{channel.name} : **Removed lockdown!**",color=0xffffff)
             overwrites = channel.overwrites[ctx.guild.default_role]
             overwrites.send_messages = True
             await channel.set_permissions(ctx.guild.default_role, overwrite=overwrites)
-            await ctx.send(embed=embed3)
+            await ctx.send(embed=embed3, delete_after=15)
 
     @commands.command(aliases=["nick"])
     @commands.has_permissions(manage_nicknames=True)

@@ -378,7 +378,7 @@ class Fun(commands.Cog):
     @commands.command(aliases=["fake"])
     @commands.guild_only()
     @commands.has_role(842304286737956876)
-    async def saybot(self , ctx , msg):
+    async def saybot(self , ctx , *, msg):
         await ctx.message.delete()
         webhook = await ctx.channel.create_webhook(name=ctx.author.display_name)
         await webhook.send(msg, username=ctx.author.name, avatar_url=ctx.author.avatar.url)

@@ -11,9 +11,11 @@ def Utility(ctx):
   embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 
   fields = [
-    ("Sleep","```yaml\n.sleep <duration> [member]```",True),
-    ("Delete sleep","```yaml\n.sleep delete [member]```",True),
-    ("Poll","```yaml\n.poll [message]```",True)
+    ("sleep","```yaml\n.sleep <duration> [member]```",True),
+    ("poll","```yaml\n.poll [message]```",True),
+    ("binary","```yaml\n.binary [message]```",True),
+    ("reverse","```yaml\n.reverse [message]```",True),
+    ("translate","```yaml\n.trans <output language> [messsage]```",True)
   ]
                           
   for name, value, inline in fields:
