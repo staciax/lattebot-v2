@@ -251,21 +251,18 @@ class Data(commands.Cog):
     
     @commands.command(aliases=['req','Requests'])
     @utils.is_latte_guild()
-    async def request(self, ctx):
-        def check(m):
-            return m.author == ctx.author and m.channel == ctx.channel
+    async def request(self, ctx , *, req=None):
+        if req is None:
+            embed_req = discord.Embed(description="Please write what you want to requests?",color=WHITE)
+            return await ctx.send(embed=embed_req)
 
-        await ctx.send("write what you want to requests?")
-        try:
-            msg1 = await self.client.wait_for('message', check=check, timeout=30.0)
-        except asyncio.TimeoutError:
-            await ctx.send("You took to long, please try again.")
+        embedq = discord.Embed(
+            title="Request",
+            description=f"{str(req)}",
+            color=0xffffff
+        )
 
-        embedq = discord.Embed(title="Request",
-                                 description=f"{msg1.content}",
-                                 color=0xffffff)
-
-        embedf = discord.Embed(description="Thanks for your request!")
+        embedf = discord.Embed(description="Thanks for your request!" , color=WHITE)
 
         await self.request_message.send(embed=embedq)
         await ctx.send(embed=embedf)

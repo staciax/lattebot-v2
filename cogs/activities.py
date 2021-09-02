@@ -530,7 +530,7 @@ class Activities(commands.Cog):
         else:
             return
 
-        #temp_channel
+        #privete_temp_channel
         if after.channel is not None:
             if after.channel.name == "・ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ・":
                 chname = "ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ"
@@ -562,6 +562,20 @@ class Activities(commands.Cog):
             
             if after.channel.name == "・ᴬᴺᴳᴱᴸ・":
                 chname = "ᴬᴺᴳᴱᴸ"
+                checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
+                if checkvoice is None:
+                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
+                    
+                    if channel is not None:
+                        await member.move_to(channel)
+                    
+                elif checkvoice:
+                    await member.move_to(checkvoice)
+                else:
+                    return
+            
+            if after.channel.name == "・ᴘᴀᴠɪʟɪᴏɴ・":
+                chname = "ᴘᴀᴠɪʟɪᴏɴ"
                 checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
                 if checkvoice is None:
                     channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
