@@ -54,6 +54,8 @@ class Message(commands.Cog):
             if message.content:
                 if message.content and message.attachments:
                     return
+                elif search(self.url_regex, message.content):
+                    return
                 elif message.content:
                     await message.delete()
         
@@ -129,8 +131,6 @@ class Message(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        if message.embeds:
-            return
         #snipe_message
         if message.guild.id == MYGUILD:
             #.

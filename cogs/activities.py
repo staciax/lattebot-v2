@@ -536,7 +536,7 @@ class Activities(commands.Cog):
                 chname = "ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ"
                 checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
                 if checkvoice is None:
-                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Private 」♡")
+                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
                     
                     if channel is not None:
                         await member.move_to(channel)
@@ -550,7 +550,21 @@ class Activities(commands.Cog):
                 chname = "ᴹᴼᴼᴺᴸᴵᴳᴴᵀ"
                 checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
                 if checkvoice is None:
-                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Private 」♡")
+                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
+                    
+                    if channel is not None:
+                        await member.move_to(channel)
+                    
+                elif checkvoice:
+                    await member.move_to(checkvoice)
+                else:
+                    return
+            
+            if after.channel.name == "・ᴬᴺᴳᴱᴸ・":
+                chname = "ᴬᴺᴳᴱᴸ"
+                checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
+                if checkvoice is None:
+                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
                     
                     if channel is not None:
                         await member.move_to(channel)
