@@ -130,6 +130,8 @@ class XP_user(commands.Cog):
         guild_ids=[840379510704046151],
         options=[
             Option("title", "recieving title", Type.STRING, required=False),
+            Option("author", "recieving Author", Type.STRING, required=False),
+            Option("author_url", "recieving Author url", Type.STRING, required=False),
             Option("description", "recieving description", Type.STRING, required=False),
             Option("color", "recieving color (HEX)", Type.STRING, required=False),
             Option("image", "recieving image link", Type.STRING, required=False),
@@ -138,13 +140,21 @@ class XP_user(commands.Cog):
             Option("footer_url", "recieving footer icon url ", Type.STRING, required=False),
         ],
     )
-    async def embed_slash(self, inter , title=None, description=None , color=None , image=None , thumnail=None , footer=None , footer_url=None):
+    async def embed_slash(self, inter , title=None, author=None, author_url=None, description=None, color=None, image=None, thumnail=None, footer=None, footer_url=None):
         embed = discord.Embed()
 
         #title
         if title:
             embed.title = f"{title}"
         elif title is None:
+            pass
+
+        #author
+        if author and author_url:
+            embed.set_author(name=f"{author}" , icon_url=f"{author_url}")
+        elif author:
+            embed.set_author(name=f"{author}")
+        else:
             pass
         
         #description

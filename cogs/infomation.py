@@ -1,5 +1,5 @@
 # Standard 
-import discord , random , time , re , os , typing , unicodedata
+import discord , random , time , re , os , typing , unicodedata , asyncio
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 
@@ -10,12 +10,13 @@ import typing
 from typing import Union
 from giphy_client.rest import ApiException
 
+from utils import Pag
+
 # Local
 import utils
 from config import *
 
-intents = discord.Intents.default()
-intents.members = True
+intents = discord.Intents.all()
 
 emoji_s = utils.emoji_converter
 
@@ -232,6 +233,57 @@ class Infomation(commands.Cog):
         embed.set_thumbnail(url=emoji.url)
         await ctx.send(embed=embed)
     
+    @commands.command(aliases=["ri"])
+    async def roleinfo(self, ctx, role: discord.Role=None):
+        if role is None:
+            print("role is None")
+        embed = discord.Embed(color=role.color)
+        role_perm_string = ', '.join([str(p[0]).replace("_", " ").title() for p in role.permissions if p[1]])
+        info = f"""
+        **Mention**: {role.mention}
+        **ID**: {role.id}
+        **Name**: {role.name}
+        **Color**: {role.color}
+        **Create**: {utils.format_dt(role.created_at)}
+        **Positon**: {role.position}
+        **Members**: {len(role.members)}
+        **Permission**: {role_perm_string}
+        """
+        embed.description = f"{info}"
+
+        msg = await ctx.send(embed=embed)
+
+        await msg.add_reaction("<:greentick:881500884725547021>")
+
+        try:
+            reaction , user = await self.client.wait_for(
+                "reaction_add",
+                timeout=30,
+                check=lambda reaction, user: user == ctx.author
+                and reaction.message.channel == ctx.channel
+            )
+
+        except asyncio.TimeoutError:
+            await msg.delete()
+            return
+
+        await msg.delete()
+
+        pages = []
+        member_per_page = 10
+        a = 0
+        for i in range(0, len(role.members), member_per_page):
+            message = ""
+            next_commands = role.members[i: i + member_per_page]
+            
+            for x in next_commands:
+                a += 1
+                message += f"**{a}**. {x} | `{x.id}`\n"
+
+            pages.append(message)
+
+        await Pag(title=f"List member in role {role.name}",color=role.color, entries=pages, length=1).start(ctx)
+
     @commands.command(brief = "gives info on emoji_id and emoji image.")
     @commands.guild_only()
     async def emoji_id(self, ctx, *, emoji : typing.Optional [typing.Union[discord.PartialEmoji, discord.Message, utils.EmojiBasic]] = None):
