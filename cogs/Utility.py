@@ -5,8 +5,8 @@ from discord.ext import commands
 from datetime import datetime, timezone , timedelta
 
 # Third party
+import humanize
 from googletrans import Translator
-
 
 # Local
 import utils
@@ -76,6 +76,31 @@ class Utility_(commands.Cog):
                 return await ctx.send("เกิดข้อผิดพลาดในการแปลภาษา" , delete_after=10)
 
             await message.channel.send(result.text)
+
+    @commands.command()
+    async def remind(self, ctx , time=None, *, msg=None):
+        if time is None:
+            embed_time = discord.Embed(description="**Please specify duration** : `(s|m|h|d)`\n```yaml\nExample : .sleep 5m , .sleep 2h```",color=WHITE)
+            return await ctx.send(embed=embed_time , delete_after=15)
+        if msg is None:
+            msg = "..."
+
+        #try_converter
+        try:
+            #time_converter_to_seconds
+            future = utils.FutureTime_converter(time)
+
+            #time_converted
+            remind_time = datetime.now(timezone.utc) + timedelta(seconds=future)
+            future_data = humanize.naturaldelta(future, minimum_unit='milliseconds')
+        except:
+            embed_error = discord.Embed(description="Time is invalid", color=WHITE)
+            return await ctx.send(embed=embed_error)
+
+        await ctx.send(f'Alright {ctx.author.mention}, {future_data}: {msg}')
+        await discord.utils.sleep_until(remind_time)
+        await ctx.send(f"{ctx.author.mention}, {utils.format_relative(remind_time)}: {msg}\n\n{ctx.message.jump_url}")
+        
 
         
 def setup(client):

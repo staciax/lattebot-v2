@@ -35,12 +35,33 @@ class Message(commands.Cog):
         if reason is None:
             reason = "personal problems"
         self.afk[ctx.author.id] = reason #storing at self.afk as {657846039914479617: "reason"}
-        embed = discord.Embed(description=f"I have set your afk: {reason}" , color=WHITE)
-        m = await ctx.send(embed=embed)#, delete_after=10)
+        embed = discord.Embed(description=f"**I have set your afk**: {reason}" , color=WHITE)
+        embed.set_footer(text="Click the reaction to delete message")
+        msg = await ctx.send(embed=embed)#, delete_after=10)
+
         if ctx.channel.id == 861883647070437386:
             await asyncio.sleep(10)
-            await m.delete()
+            await msg.delete()
             await ctx.message.delete()
+        else:
+            await msg.add_reaction("<:greentick:881500884725547021>")
+
+            try:
+                reaction , user = await self.client.wait_for(
+                    "reaction_add",
+                    timeout=30,
+                    check=lambda reaction, user: user == ctx.author
+                    and reaction.message.channel == ctx.channel
+                )
+
+            except asyncio.TimeoutError:
+                await msg.clear_reactions()
+                return
+
+            await ctx.message.delete()
+            await msg.delete()
+
+
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -78,7 +99,7 @@ class Message(commands.Cog):
         for id in self.afk.keys():
             if message.author.id == id:
                 del self.afk[id]
-                return await message.channel.send(f"{message.author.mention}, welcome back!" , delete_after=5)
+                return await message.channel.send(f"Welcome back {message.author.mention} , i've removed your **AFK** status." , delete_after=5)
             
             member = message.guild.get_member(id)
             if member.mentioned_in(message):
