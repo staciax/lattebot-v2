@@ -59,7 +59,11 @@ def emoji_converter(name):
     "online" : "<:Online:864171414466592788>",
     "member" : "<:member:864219999954796615>",
     "invisible" : "<:invisible:873598381073768469>",
-    "what":"<a:question_:867701480797765642>"
+    "what":"<a:question_:867701480797765642>",
+    "redtick":"<:redtick:881500898273144852>",
+    "greentick":"<:greentick:881500884725547021>",
+    "trash":"<:trashcan:883641203051073557>",
+
  
   }
   

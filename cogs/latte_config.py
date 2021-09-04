@@ -321,19 +321,15 @@ class Latte_config(commands.Cog):
     #view_config
     @commands.group(invoke_without_command=True , aliases=["lconfig", "config"])
     @utils.owner_bot()
-    async def latte_config(self, ctx):
-        await ctx.send("description")
-    
-    @latte_config.command(aliases=["file", "json"])
-    @utils.owner_bot()
-    async def latte_config_file(self, ctx, *, json_config = None):
-        guild = self.bot.get_guild(840379510704046151)
+    async def latte_config(self, ctx, *, json_config = None):
+        guild = self.bot.get_guild(MYGUILD)
         if json_config == "secrets":
             return
         elif json_config is None:
             i = 0
             embed = discord.Embed(description="" , color=0xffffff)
             embed.set_author(name=f"{guild.name}'s config file" , icon_url=guild.icon.url)
+            embed.set_footer(text="Edit : .config set <target> <config>")
             for filename in os.listdir('./bot_config'):
                 if filename.endswith('.json'):
                     if not filename == "secrets.json":
@@ -349,6 +345,21 @@ class Latte_config(commands.Cog):
             except:
                 embed = discord.Embed(description= "file not found!" , color=0xffffff)
                 await ctx.send(embed=embed)
+    
+    #edit_config
+    @latte_config.command(invoke_without_command=True , aliases=["set"])
+    @utils.owner_bot()
+    async def latte_config_set(self, ctx, target_config, *,config=None):
+        if config is None:
+            await ctx.send(f"config is set {str(target_config)} : **None**")
+        data = utils.json_loader.read_json("latte")
+        data[f"{str(target_config)}"] = str(config)
+        try:
+            utils.json_loader.write_json(data, "latte")
+            embed = discord.Embed(description=f"Config set **{target_config}** to **{config}**" , color=WHITE)
+            await ctx.send(embed=embed)
+        except:
+            await ctx.send("write json error")
 
 #    @commands.command(name="del-w-off")
 #    async def del_welcome_(self, ctx):

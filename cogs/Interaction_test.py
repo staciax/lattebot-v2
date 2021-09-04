@@ -132,6 +132,7 @@ class XP_user(commands.Cog):
             Option("title", "recieving title", Type.STRING, required=False),
             Option("author", "recieving Author", Type.STRING, required=False),
             Option("author_url", "recieving Author url", Type.STRING, required=False),
+            Option("author_icon_url", "recieving Author icon url", Type.STRING, required=False),
             Option("description", "recieving description", Type.STRING, required=False),
             Option("color", "recieving color (HEX)", Type.STRING, required=False),
             Option("image", "recieving image link", Type.STRING, required=False),
@@ -140,7 +141,7 @@ class XP_user(commands.Cog):
             Option("footer_url", "recieving footer icon url ", Type.STRING, required=False),
         ],
     )
-    async def embed_slash(self, inter , title=None, author=None, author_url=None, description=None, color=None, image=None, thumnail=None, footer=None, footer_url=None):
+    async def embed_slash(self, inter , title=None, author=None, author_url=None, author_icon_url=None, description=None, color=None, image=None, thumnail=None, footer=None, footer_url=None):
         embed = discord.Embed()
 
         #title
@@ -150,8 +151,12 @@ class XP_user(commands.Cog):
             pass
 
         #author
-        if author and author_url:
-            embed.set_author(name=f"{author}" , icon_url=f"{author_url}")
+        if author and author_url and author_icon_url:
+            embed.set_author(name=f"{author}" , url={author_url},icon_url=f"{author_icon_url}")
+        elif author and author_icon_url:
+            embed.set_author(name=f"{author}" , icon_url=f"{author_icon_url}")
+        elif author and author_url:
+            embed.set_author(name=f"{author}" , url={author_url})
         elif author:
             embed.set_author(name=f"{author}")
         else:

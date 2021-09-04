@@ -222,28 +222,6 @@ class Fun(commands.Cog):
 
         await ctx.send(embed=embed)
     
-    @commands.command(name="rn", brief="takes smallest and largest numbers then does a random number between.")
-    @commands.guild_only()
-    async def random_number(self , ctx , *numbers: typing.Union[int,str]):
-        numbers=sorted(list(filter(lambda x: isinstance(x, int), numbers)))
-        if len(numbers) < 2:
-            await ctx.send("Not enough numbers")
-
-        else:
-            embed = discord.Embed(title=f"Random Number: {random.randint(numbers[0],numbers[-1])} ",color=random.randint(0, 16777215))
-            embed.add_field(name="Lowest Number:",value=f"{numbers[0]}")
-            embed.add_field(name="Highest Number:",value=f"{numbers[-1]}")
-            await ctx.send(embed=embed)
-    
-    @commands.command()
-    @commands.guild_only()
-    async def poll(self, ctx,*,message):
-        embed = discord.Embed(title="POLL", description=f"{message}",color=0xffffff)
-        msg = await ctx.channel.send(embed=embed)
-        await msg.add_reaction(f'{utils.emoji_converter("check")}')
-        await msg.add_reaction(f'{utils.emoji_converter("xmark")}')
-        await ctx.message.delete()
-
     #custom_cooldown
     def custom_cooldown(message):
         if discord.utils.get(message.author.roles, name="Mystic・・ ♡"):
@@ -276,7 +254,7 @@ class Fun(commands.Cog):
             member = ctx.author
 
         timewait = utils.FutureTime_converter(time)
-        futuredate = datetime.now(timezone.utc) + timedelta(seconds=timewait)
+        futuredate = datetime.now(timezone.utc) + timedelta(seconds=timewait) 
         futuredate2 = futuredate + timedelta(seconds=25200)
         futuredate_ = futuredate.strftime("%d%m%Y%H%M")
 

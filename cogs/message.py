@@ -35,17 +35,13 @@ class Message(commands.Cog):
         if reason is None:
             reason = "personal problems"
         self.afk[ctx.author.id] = reason #storing at self.afk as {657846039914479617: "reason"}
-        embed = discord.Embed(description=f"**I have set your afk**: {reason}" , color=WHITE)
-        embed.set_footer(text="Click the reaction to delete message")
-        msg = await ctx.send(embed=embed)#, delete_after=10)
+        embed = discord.Embed(description=f"**{ctx.author}** I have set your afk: `{reason}`" , color=WHITE)
 
-        if ctx.channel.id == 861883647070437386:
-            await asyncio.sleep(10)
-            await msg.delete()
-            await ctx.message.delete()
-        else:
+        if ctx.channel.id != 861883647070437386:
+            embed.set_footer(text="Click the reaction to delete message")
+            msg = await ctx.send(embed=embed)
             await msg.add_reaction("<:greentick:881500884725547021>")
-
+            
             try:
                 reaction , user = await self.client.wait_for(
                     "reaction_add",
@@ -57,11 +53,14 @@ class Message(commands.Cog):
             except asyncio.TimeoutError:
                 await msg.clear_reactions()
                 return
-
+            
             await ctx.message.delete()
             await msg.delete()
-
-
+        elif ctx.channel.id == 861883647070437386:
+            msg = await ctx.send(embed=embed)
+            await asyncio.sleep(10)
+            await msg.delete()
+            await ctx.message.delete()
 
     @commands.Cog.listener()
     async def on_message(self, message):

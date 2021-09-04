@@ -53,25 +53,25 @@ class Help_support(commands.Cog):
 
             await ctx.send(embed=embedhelp)
         elif category == "util":
-            await ctx.send(embed=utils.Utility(ctx) , delete_after=300)
+            await ctx.send(embed=utils.Utility(ctx))
         elif category == "info":
-            await ctx.send(embed=utils.Infomation(ctx), delete_after=300)
+            await ctx.send(embed=utils.Infomation(ctx))
         elif category == "mod":
             if ctx.author.guild_permissions.administrator:
-                await ctx.send(embed=utils.Moderation(ctx), delete_after=300)
+                await ctx.send(embed=utils.Moderation(ctx))
         elif category == "gw":
             if ctx.author.guild_permissions.administrator:
-                await ctx.send(embed=utils.Giveaway(ctx), delete_after=300)
+                await ctx.send(embed=utils.Giveaway(ctx))
         elif category == "fun":
-            await ctx.send(embed=utils.Fun(ctx), delete_after=300)
+            await ctx.send(embed=utils.Fun(ctx))
         elif category == "meta":
-            await ctx.send(embed=utils.Meta(ctx), delete_after=300)
+            await ctx.send(embed=utils.Meta(ctx))
         elif category == "rr":
-            await ctx.send(embed=utils.Reaction(ctx), delete_after=300)
+            await ctx.send(embed=utils.Reaction(ctx))
         elif category == "level":
-            await ctx.send(embed=utils.Leveling(ctx), delete_after=300)
+            await ctx.send(embed=utils.Leveling(ctx))
         elif category == "nsfw":
-            await ctx.send(embed=utils.NSFW(ctx), delete_after=300)
+            await ctx.send(embed=utils.NSFW(ctx))#, delete_after=300)
 
 
 def setup(client):

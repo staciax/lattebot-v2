@@ -16,7 +16,8 @@ def Utility(ctx):
     ("poll","```yaml\n.poll [message]```",True),
     ("binary","```yaml\n.binary [message]```",True),
     ("reverse","```yaml\n.reverse [message]```",True),
-    ("translate","```yaml\n.trans <output language> [messsage]```",True)
+    ("translate","```yaml\n.trans <output language> [messsage]```",True),
+    ("random number","```yaml\n.rn <Lowest> <Highest>```",True)
   ]
                           
   for name, value, inline in fields:
@@ -36,6 +37,7 @@ def Infomation(ctx):
     ("Server Banner","```yaml\n.serverbanner | .sb```",True),
     ("Server Splash","```yaml\n.splash | .ss```",True),
     ("Emoji Info","```yaml\n.emojinfo [emoji] | .ei [emoji]```",True),
+    ("Role Info","```yaml\n.roleinfo [role] | .ri [role]```",True),
 
   ]
 

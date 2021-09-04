@@ -300,8 +300,8 @@ class Moderation(commands.Cog):
 					and (datetime.now(timezone.utc)-m.created_at).seconds < 60)
         
         if not message.author.bot:
-            if len(list(filter(lambda m: _check(m), self.client.cached_messages))) >= 3:
-                embedspam = discord.Embed(title="Spam Alert\n",description="Don't spam mentions!",color=0xffffff)
+            if len(list(filter(lambda m: _check(m), self.client.cached_messages))) >= 4:
+                embedspam = discord.Embed(description="Don't spam mentions!",color=0xffffff)
                 await message.channel.send(embed=embedspam, delete_after=10)
                                                
         counter = 0
