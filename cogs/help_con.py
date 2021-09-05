@@ -24,7 +24,7 @@ class Help_support(commands.Cog):
     @commands.command(name="help" , aliases=["latte"])
     @commands.guild_only()
     async def custom_help(self, ctx, command=None):
-        embedhelp = discord.Embed(title="✧ LATTE Help", description="Prefix of this bot `.` or `lt ` or `l `\nUse `commands` below for more info on an command. \n",color=0xffffff)
+        embedhelp = discord.Embed(title="✧ LATTE Help", description="Use .help <category> for more informations about a category.\n",color=0xffffff)
         fields = [(f"•{emojis('shidapout')} **Utility**", "`.help util`" , True),
                 (f"•{emojis('ShinoSmirk')} **Infomation**", "`.help info`", True),
 #                   (f"•{emojis('lutoaraka')} **Moderation**", "`lt help mod`", True),
@@ -80,7 +80,6 @@ class Help_support(commands.Cog):
         
             command = self.bot.get_command(name = command)
             print(f'Command: {command.name}\nBrief: {command.brief}')
-            print('Adding field')
             
             helpEmbed.title = command.name
             helpEmbed.description = command.description
@@ -100,44 +99,5 @@ class Help_support(commands.Cog):
 
             await ctx.send(embed = helpEmbed)
             
-    """
-    @commands.command(brief = 'test', description = 'test2')
-    async def helphelp(self, ctx, command = None):
-        await ctx.message.delete()
-        #await ctx.send(self.bot.Cogs)
-        
-        if command is None:
-            helpEmbed = discord.Embed (
-                title = 'Help',
-                color = 0xffffff,
-            )
-
-            for command_ in self.bot.commands:
-                helpEmbed.add_field (
-                name = command_,
-                value = command_.brief,
-                )
-            
-            await ctx.send(embed = helpEmbed)
-        
-        else:
-            helpEmbed = discord.Embed (
-                title = command,
-                color = 0xffffff
-            )
-        
-            command = self.bot.get_command(name = command)
-            print(f'Command: {command.name}\nBrief: {command.brief}')
-            print('Adding field')
-            
-            helpEmbed.add_field (
-                name = command.name,
-                value = command.description
-            )
-            
-            await ctx.send(embed = helpEmbed)
-        """
-
-
 def setup(client):
     client.add_cog(Help_support(client))

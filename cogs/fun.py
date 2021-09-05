@@ -102,20 +102,20 @@ class Fun(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
     
-    @commands.command(name="pastel" , description="pastel color")
+    @commands.command(name="pastel" , description="pastel color" , usage=f"{PREFIX}pastel" , brief=f"{PREFIX}pastel")
     async def pastel(self, ctx):
         await ctx.send("https://colorhunt.co/palettes/pastel")
     
-    @commands.command(name="color", description="color hex")
+    @commands.command(name="color", description="color hex", usage=f"{PREFIX}color", brief=f"{PREFIX}color")
     async def color(self, ctx):
         await ctx.send("https://www.color-hex.com/")
 
-    @commands.command(brief="Any message to owo")
+    @commands.command(description="Any message to owo",brief=f"{PREFIX}owo drink latte" , usage=f"{PREFIX}owo <message>")
     @commands.guild_only()
     async def owo(self, ctx):
         await ctx.send(text_to_owo(ctx.message.content))
     
-    @commands.command()
+    @commands.command(description="Poke",brief=f"{PREFIX}poke @latte" , usage=f"{PREFIX}poke <member>")
     @commands.guild_only()
     @commands.is_owner()
     async def poke(self, ctx, member: discord.Member = None):
@@ -126,7 +126,7 @@ class Fun(commands.Cog):
         else:
             await ctx.send("Please use @mention to poke someone.")
     
-    @commands.command(brief="Random picture of a meow")
+    @commands.command(description="Random picture of a meow",brief=f"{PREFIX}cat", usage=f"{PREFIX}cat")
     @commands.guild_only()
     async def cat(self, ctx):
         async with ctx.channel.typing():
@@ -139,7 +139,7 @@ class Fun(commands.Cog):
 
                     await ctx.send(embed=embed)
     
-    @commands.command(brief="Random picture of a floofy")
+    @commands.command(description="Random picture of a floofy" , brief=f"{PREFIX}fox", usage=f"{PREFIX}fox")
     @commands.guild_only()
     async def fox(self, ctx):
         async with ctx.channel.typing():
@@ -152,38 +152,97 @@ class Fun(commands.Cog):
 
                     await ctx.send(embed=embed)
 
-    @commands.command(aliases=['ani', 'anigif'])
+    @commands.command(aliases=['anime'] , description="Random gif of anime")
     @commands.guild_only()
-    async def anime_img(self, ctx , category=None):
-            embed = discord.Embed(color=0xffffff)
-            try:
-                if category == None:
-                    img_list = ['hug', 'kiss', 'cuddle', 'pat', 'kill', 'slap', 'wink']
-                    img_random = random.choice(img_list)
-                    img_link = anime.get_sfw(f"{img_random}")
-                    embed.set_image(url=img_link)
-                    await ctx.send(embed=embed)
-                elif category == "list":
-                    embed.description = "**Caterogy** : hug, kiss, cuddle, pat, kill, slap, wink , hentai\n**Example** : **`.ani hug`** , **`.ani kiss`**"
-                    await ctx.send(embed=embed)
-                elif category == "hentai":
-                    if ctx.channel.is_nsfw():
-                        img_list = ['hentai', 'boobs']
-                        nsfw_random = random.choice(img_list)
-                        nsfw_url = anime.get_nsfw(f"{nsfw_random}")
-                        embed.set_image(url=nsfw_url)
-                        await ctx.send(embed=embed)
-                    else:
-                        embed.description = "This is not a NSFW channel, **NSFW** is alollowed in <#850507964938715196>"
-                        await ctx.send(embed=embed, delete_after=15)        
-                else:
-                    img_link = anime.get_sfw(f"{category}")
-                    embed.set_image(url=img_link)
-                    await ctx.send(embed=embed)
-            except:
-                return
+    async def anime_img(self, ctx):
+        embed = discord.Embed(color=0xffffff)
+        img_list = ['hug', 'kiss', 'cuddle', 'pat', 'kill', 'slap', 'wink']
+        img_random = random.choice(img_list)
+        try:
+            img_link = anime.get_sfw(f"{img_random}")
+            embed.set_image(url=img_link)
+            await ctx.send(embed=embed)
+        except:
+            return
 
-    @commands.command(aliases=['hentai', 'nsfw'])
+    @commands.command(name="hug" , brief=f"{PREFIX}hug", usage=f"{PREFIX}hug")
+    @commands.guild_only()
+    async def anime_hug(self, ctx):
+        embed = discord.Embed(color=0xffffff)
+        try:     
+            img_link = anime.get_sfw("hug")
+            embed.set_image(url=img_link)
+            await ctx.send(embed=embed)
+        except:
+            return
+    
+    @commands.command(name="kiss", brief=f"{PREFIX}kiss", usage=f"{PREFIX}kiss")
+    @commands.guild_only()
+    async def anime_kiss(self, ctx):
+        embed = discord.Embed(color=0xffffff)
+        try:     
+            img_link = anime.get_sfw("kiss")
+            embed.set_image(url=img_link)
+            await ctx.send(embed=embed)
+        except:
+            return
+    
+    @commands.command(name="cuddle", brief=f"{PREFIX}cuddle", usage=f"{PREFIX}cuddle")
+    @commands.guild_only()
+    async def anime_cuddle(self, ctx):
+        embed = discord.Embed(color=0xffffff)
+        try:     
+            img_link = anime.get_sfw("cuddle")
+            embed.set_image(url=img_link)
+            await ctx.send(embed=embed)
+        except:
+            return
+    
+    @commands.command(name="pat", brief=f"{PREFIX}pat", usage=f"{PREFIX}pat")
+    @commands.guild_only()
+    async def anime_pat(self, ctx):
+        embed = discord.Embed(color=0xffffff)
+        try:     
+            img_link = anime.get_sfw("pat")
+            embed.set_image(url=img_link)
+            await ctx.send(embed=embed)
+        except:
+            return
+    
+    @commands.command(name="kill", brief=f"{PREFIX}kill", usage=f"{PREFIX}kill")
+    @commands.guild_only()
+    async def anime_kill(self, ctx):
+        embed = discord.Embed(color=0xffffff)
+        try:     
+            img_link = anime.get_sfw("kill")
+            embed.set_image(url=img_link)
+            await ctx.send(embed=embed)
+        except:
+            return
+    
+    @commands.command(name="slap", brief=f"{PREFIX}slap", usage=f"{PREFIX}slap")
+    @commands.guild_only()
+    async def anime_slap(self, ctx):
+        embed = discord.Embed(color=0xffffff)
+        try:     
+            img_link = anime.get_sfw("slap")
+            embed.set_image(url=img_link)
+            await ctx.send(embed=embed)
+        except:
+            return
+    
+    @commands.command(name="wink", brief=f"{PREFIX}.wink", usage=f"{PREFIX}wink")
+    @commands.guild_only()
+    async def anime_wink(self, ctx):
+        embed = discord.Embed(color=0xffffff)
+        try:     
+            img_link = anime.get_sfw("wink")
+            embed.set_image(url=img_link)
+            await ctx.send(embed=embed)
+        except:
+            return
+    
+    @commands.command(aliases=['hentai'], brief=f"{PREFIX}hentai", usage=f"{PREFIX}hentai")
     @commands.guild_only()
     async def anime_img_nsfw(self, ctx):
             try:
@@ -201,7 +260,7 @@ class Fun(commands.Cog):
             except:
                 return
     
-    @commands.command(aliases=['gif'])
+    @commands.command(aliases=['gif'], brief=f"{PREFIX}hentai aqua", usage=f"{PREFIX}hentai [search]")
     @commands.guild_only()
     async def giphy(self, ctx, *, search=None):
         gipht_apis = self.client.giphy_api_
@@ -245,10 +304,10 @@ class Fun(commands.Cog):
         await asyncio.sleep(time)
         await member.move_to(channel=None)
     
-    @commands.group(invoke_without_command=True , aliases=["sl" , "slp"])
+    @commands.group(invoke_without_command=True , aliases=["sl" , "slp"], brief=f"{PREFIX}sleep 25min\n{PREFIX}sleep 1h @latte", usage=f"{PREFIX}sleep <duration> [member]\n{PREFIX}sleep stop [member]")
     async def sleep(self, ctx, time=None,*, member : discord.Member=None):
         if time is None:
-            embed_time = discord.Embed(description="**Please specify duration** : `(s|m|h|d)`\n```yaml\nExample : .sleep 5m , .sleep 2h```",color=WHITE)
+            embed_time = discord.Embed(description=f"**Please specify duration** : `(s|m|h|d)`\n```yaml\nExample : {PREFIX}sleep 5m , {PREFIX}sleep 2h\nDelete : {PREFIX}sleep stop [member]```",color=WHITE)
             return await ctx.send(embed=embed_time , delete_after=15)      
         if member is None:
             member = ctx.author
@@ -294,9 +353,9 @@ class Fun(commands.Cog):
         embed_edit.description = f"**TIME TO SLEEP** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_relative(futuredate)}"
         embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
         if member == ctx.author:
-            embed_edit.description += f"\n||**Delete timer** : .sleep delete||"
+            embed_edit.description += f"\n||**Stoped timer** : {PREFIX}sleep stop||"
         if ctx.author != member:
-            embed_edit.description += f"\n||**Delete timer** : .sleep delete @{member.display_name}||"#\n||Req by : {ctx.author.mention}||"
+            embed_edit.description += f"\n||**Stoped timer** : {PREFIX}sleep stop @{member.display_name}||"#\n||Req by : {ctx.author.mention}||"
         
         await m.edit(embed=embed_edit)
 
@@ -305,22 +364,27 @@ class Fun(commands.Cog):
             json.dump(self.sleeping_db, fp , indent=4)
     
 
-    @sleep.command(invoke_without_command=True , aliases=["del", "delete" , "off" , "stop"])
-    async def sleep_delete(self, ctx, *, member: discord.Member=None):
+    @sleep.command(invoke_without_command=True , aliases=["del", "delete" , "off" , "stop"], brief=f"{PREFIX}sleep stop\n{PREFIX}sleep stop @latte", usage=f"{PREFIX}sleep stop [member]")
+    async def sleep_stop(self, ctx, *, member: discord.Member=None):
         if member is None:
             member = ctx.author
 
         data = utils.read_json("sleeping")
-        data[str(member.id)]["time"] = None
+        check_data = data[str(member.id)]["time"]
 
-        try:
-            utils.json_loader.write_json(data, "sleeping")
-            embed = discord.Embed(description=f"{member.mention} : sleep timer deleted" , color=WHITE)
-            await ctx.send(embed=embed)
-        except:
-            embed = discord.Embed(description="Error timer deleted" , color=BRIGHTRINK)
-            await ctx.send(embed=embed)
-            return
+        if check_data is not None:
+            try:
+                data[str(member.id)]["time"] = None
+                utils.json_loader.write_json(data, "sleeping")
+                embed = discord.Embed(description=f"{member.mention} : sleep timer stoped" , color=WHITE)
+                await ctx.send(embed=embed)
+            except:
+                embed = discord.Embed(description="Error stop timer" , color=BRIGHTRINK)
+                await ctx.send(embed=embed)
+                return
+        else:
+            em_error = discord.Embed(description=f"**{member}** : sleep timer not found", color=WHITE)
+            await ctx.send(embed=em_error)
     
     @commands.command(name="sldb")
     async def sleep_db(self, ctx, time,*, member : discord.Member=None):
@@ -353,7 +417,7 @@ class Fun(commands.Cog):
             embed_edit.description += f"\n||Req by : {ctx.author.mention}||"
         await ctx.send("sleep db")
         
-    @commands.command(aliases=["fake"])
+    @commands.command(aliases=["fake"] , brief=f"{PREFIX}saybot holamyfrient", usage=f"{PREFIX}saybot <message>")
     @commands.guild_only()
     @commands.has_role(842304286737956876)
     async def saybot(self , ctx , *, msg):
@@ -364,7 +428,7 @@ class Fun(commands.Cog):
         for webhook in webhooks:
             await webhook.delete()
     
-    @commands.command(aliases=["fakem","saybotm"])
+    @commands.command(aliases=["fakem","saybotm"] , brief=f"{PREFIX}saybotm <member> iloveyou", usage=f"{PREFIX}saybotm <member> [member]")
     @commands.guild_only()
     @commands.has_role(842304286737956876)
     async def saybot_member(self , ctx , member:discord.Member=None,*, msg):
