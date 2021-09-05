@@ -24,6 +24,21 @@ class Utility_(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+
+        #google_translator
+        if message.channel.id == TRANSLATE_CHANNEL:
+            if message.author == self.client.user:
+                return
+            translator = Translator()
+            try:
+                result =  translator.translate(f'{message.clean_content}' , dest='th')
+            except:
+                return await ctx.send("เกิดข้อผิดพลาดในการแปลภาษา" , delete_after=10)
+
+            await message.channel.send(result.text)
+
     @commands.command()
     @commands.guild_only()
     async def binary(self, ctx, *, args=None):
@@ -79,21 +94,6 @@ class Utility_(commands.Cog):
         embed.add_field(name=f"Original ({str(a.lang)})", value=f"```{args}```", inline=False)
         embed.add_field(name=f"Translated ({str(b.lang)})", value=f"```{result.text}```", inline=False)
         await ctx.send(embed=embed)
-
-    @commands.Cog.listener()
-    async def on_message(self, message):
-
-        #google_translator
-        if message.channel.id == TRANSLATE_CHANNEL:
-            if message.author == self.client.user:
-                return
-            translator = Translator()
-            try:
-                result =  translator.translate(f'{message.clean_content}' , dest='th')
-            except:
-                return await ctx.send("เกิดข้อผิดพลาดในการแปลภาษา" , delete_after=10)
-
-            await message.channel.send(result.text)
 
     @commands.command()
     @commands.guild_only()

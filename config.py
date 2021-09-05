@@ -4,10 +4,10 @@ MYGUILD = 840379510704046151 #latte
 DEV_OWNER_ID = 240059262297047041 #385049730222129152
 
 #last update time #\u200b 
-BOTVERSION = "v2.0.5 beta"
+BOTVERSION = "v2.0.6 beta"
 UYEAR = 2021
 UMONTH = 9
-UDATE = 2
+UDATE = 5
 
 #helpcommands
 INVITE_LATTE = "https://discord.gg/bvwpZ2B4rj"
