@@ -39,7 +39,7 @@ class Infomation(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
 
-    @commands.command(aliases=["si", "serverinformation", "serverinformations" , "guildinfo" , "gi"])
+    @commands.command(aliases=["si", "serverinformation", "serverinformations" , "guildinfo" , "gi"], brief=f"{PREFIX}serverinfo", usage=f"{PREFIX}serverinfo")
     @commands.guild_only()
     async def serverinfo(self, ctx):
 
@@ -82,7 +82,7 @@ class Infomation(commands.Cog):
     
         await ctx.send(embed=embed , mention_author=False)
     
-    @commands.command(aliases=["servericon","guildicon" ,"sic"])
+    @commands.command(aliases=["servericon","guildicon" ,"sic"], brief=f"{PREFIX}servericon", usage=f"{PREFIX}servericon")
     @commands.guild_only()
     async def server_icon(self, ctx , *, guild_id: int = None):
         if guild_id is None:
@@ -97,7 +97,7 @@ class Infomation(commands.Cog):
             embed = discord.Embed(description="guild not found" , color=WHITE)
             await ctx.send(embed=embed)
     
-    @commands.command(aliases=["serverbanner","sb","guildbanner"])
+    @commands.command(aliases=["serverbanner","sb","guildbanner"], brief=f"{PREFIX}serverbanner", usage=f"{PREFIX}serverbanner")
     @commands.guild_only()
     async def server_banner(self, ctx , *, guild_id: int = None):
         if guild_id is None:
@@ -112,9 +112,9 @@ class Infomation(commands.Cog):
             embed = discord.Embed(description="guild not found" , color=WHITE)
             await ctx.send(embed=embed)
     
-    @commands.command(aliases=["serversplash","ss","guildsplash","splash","invitebanner"])
+    @commands.command(aliases=["serversplash","ss","invitebanner"], brief=f"{PREFIX}serversplash", usage=f"{PREFIX}serversplash")
     @commands.guild_only()
-    async def server_invite_splash(self, ctx , *, guild_id: int = None):
+    async def server_splash(self, ctx , *, guild_id: int = None):
         if guild_id is None:
             guild = ctx.guild
         else:
@@ -128,7 +128,7 @@ class Infomation(commands.Cog):
             await ctx.send(embed=embed)
         
 
-    @commands.command(aliases=["ui", "userinformation", "userinformations" , "memberinfo" ,"mi"])
+    @commands.command(brief=f"{PREFIX}userinfo", usage=f"{PREFIX}userinfo [member]" , aliases=["ui", "userinformation","memberinfo"])
     @commands.guild_only()
     async def userinfo(self, ctx, member: discord.Member = None):
         if not member:
@@ -181,7 +181,7 @@ class Infomation(commands.Cog):
         embed = discord.Embed(title = f"{member.name}'s Avatar:", color=0xffffff).set_image(url = member.avatar.url)
         await ctx.send(embed = embed)
 
-    @commands.command(name="emojiinfo", aliases=["ei"])
+    @commands.command(name="emojiinfo", aliases=["ei"], brief=f"{PREFIX}emojiinfo 🤫", usage=f"{PREFIX}emojiinfo <emoji>")
     @commands.guild_only()
     async def emoji_info(self, ctx, emoji: discord.Emoji = None):
         if not emoji:
@@ -233,7 +233,7 @@ class Infomation(commands.Cog):
         embed.set_thumbnail(url=emoji.url)
         await ctx.send(embed=embed)
     
-    @commands.command(aliases=["ri"])
+    @commands.command(aliases=["ri"], brief=f"{PREFIX}roleinfo @role1\n{PREFIX}roleinfo 876444109320093696", usage=f"{PREFIX}roleinfo <role>")
     async def roleinfo(self, ctx, role: discord.Role=None):
         if role is None:
             print("role is None")
@@ -302,21 +302,6 @@ class Infomation(commands.Cog):
 
         else:
             await ctx.send("Not a valid emoji id.")
-
-#error
-
-#    @emoji_info.error
-#    async def emoji_info_error(self , ctx , error):
-#        embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Emoji not found",color=0xffffff)
-#        await ctx.send(embed=embedar , delete_after=15)
-
-#    @poll.error
-#    async def poll_error(self, ctx, error):
-#        if isinstance(error, commands.MissingRequiredArgument):
-#            embedar = discord.Embed(description=f"{utils.emoji_converter('xmark')} Please specify message to poll | `poll` `[message]`",color=0xffffff)
-#            await ctx.message.delete()
-#            await ctx.send(embed=embedar , delete_after=15)
-
 
 def setup(client):
     client.add_cog(Infomation(client))

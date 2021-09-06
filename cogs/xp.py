@@ -106,9 +106,9 @@ class XP(commands.Cog):
                 embed.add_field(name="Progress bar [lvl]", value="<:start_full:876998828048416849>" + boxes * "<:mid_full:876998976774234183>" + (17-boxes) * "<:mid_empty:876998865734221865>" + "<:end_blank:876998841818292224>", inline=False)
                 await ctx.channel.send(embed=embed)
 
-    @commands.command(aliases=['rank', 'ranking'])
+    @commands.command(description="Show ranking xp", aliases=['rank'], brief=f"{PREFIX}rank", usage=f"{PREFIX}rank")
     @commands.guild_only()
-    async def leaderboard(self, ctx): #only one ch use '==' , more use 'in'
+    async def ranking(self, ctx): #only one ch use '==' , more use 'in'
 #        if (ctx.channel.id in bot_channel):
             rankings = levelling.find().sort("xp",-1)
             i = 1
@@ -154,9 +154,9 @@ class XP(commands.Cog):
 #            await ctx.message.delete()
 #            await ctx.channel.send(embed=embedbot , delete_after=10)
 
-    @commands.command(aliases=['lv', 'lvl' , 'xp' , 'exp'])
+    @commands.command(description="Show my xp or member", aliases=['lvl' , 'exp'], brief=f"{PREFIX}xp", usage=f"{PREFIX}xp [member]")
     @commands.guild_only()
-    async def level(self, ctx, member: discord.Member = None):
+    async def xp(self, ctx, member: discord.Member = None):
         if ctx.channel.id == 861883647070437386:
             embed = discord.Embed(description="please use bot command in <#861874852050894868>" , color=WHITE)
             await ctx.message.delete()
@@ -191,7 +191,7 @@ class XP(commands.Cog):
                     
                     await ctx.channel.send(file=utils.level_images(member, final_xp, lvl, rank, xp), embed=embedlv)
   
-    @commands.command()
+    @commands.command(description="Crete xp role", brief=f"{PREFIX}xprole", usage=f"{PREFIX}xprole")
     @commands.guild_only()
     @commands.has_permissions(administrator = True)
     async def xprole(self, ctx):

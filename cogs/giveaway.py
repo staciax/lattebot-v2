@@ -18,7 +18,7 @@ class Giveaway(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
         
-    @commands.command(aliases=['start', 'g'])
+    @commands.command(aliases=['start', 'g'], brief=f"{PREFIX}giveaway", usage=f"{PREFIX}giveaway")
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True) #@commands.has_permissions(administrator = True)
     async def giveaway(self, ctx):
@@ -136,7 +136,7 @@ class Giveaway(commands.Cog):
         Embed_embed = discord.Embed(description=f"**Congrats {winnerstosend}!**\nPlease contact {ctx.author.mention} about your prize.\n [giveaway]({ctx.jump_url})" , color=WHITE)
         await ctx.send(embed=Embed_embed)
 
-    @commands.command()
+    @commands.command(description="reroll giveaway", brief=f"{PREFIX}reroll", usage=f"{PREFIX}reroll")
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def reroll(self, ctx):
@@ -155,17 +155,6 @@ class Giveaway(commands.Cog):
                 break
         else:
             await ctx.send("No giveaways going on in this channel.")
-
-#    @reroll.error
-#    async def reroll_error(self, ctx, error):
-#        if isinstance(error, commands.MissingPermissions):
-#            embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} Only administrators can use this command!",color=0xffffff)
-#            await ctx.message.delete()
-#            await ctx.send(embed=embed , delete_after=15)
-#        else:
-#            embed = discord.Embed(description=f"{utils.emoji_converter('xmark')} **Reroll Error** pls check your giveaway again!",color=0xffffff)
-#            await ctx.message.delete()
-#            await ctx.send(embed=embed , delete_after=15)
             
 def setup(client):
     client.add_cog(Giveaway(client))

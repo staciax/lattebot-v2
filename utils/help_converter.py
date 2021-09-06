@@ -104,6 +104,27 @@ def Fun(ctx):
   
   return embed
 
+def Anime(ctx):
+  embed = Embed(title="Image Commands",color=0xffffff)
+  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+
+  description="""
+  Use `.help <command>` for more informations about a command.
+  
+  `ani` • Display an image with the anime tag.
+  `hug` • Display an image with the hug tag.
+  `kiss` • Display an image with the kiss tag.
+  `cuddle` • Display an image with the cuddle tag.
+  `pat` • Display an image with the pat tag.
+  `kill` • Display an image with the kill tag.
+  `slap` • Display an image with the slap tag.
+  `wink` • Display an image with the wink wink.
+  
+  """
+  embed.description = description
+  
+  return embed
+
 def Meta(ctx):
   embed = Embed(description="**Meta Commands**",color=0xffffff)#\n\n`ping`: check latency bot\n\n`invite` : invite the bot!!\n\n`feedback` : send message to bot developer\n\n`support` : Get the invite link for the support server!\n\n`vote :`  Get the voting link for the bot",color=0xffffff)
   embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)

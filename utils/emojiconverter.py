@@ -63,8 +63,7 @@ def emoji_converter(name):
     "redtick":"<:redtick:881500898273144852>",
     "greentick":"<:greentick:881500884725547021>",
     "trash":"<:trashcan:883641203051073557>",
-
- 
+    "miraishocked":"<:miraishocked:867683570750980096>"
   }
   
   return names_to_emojis.get(name)

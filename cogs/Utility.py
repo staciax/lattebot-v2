@@ -39,7 +39,7 @@ class Utility_(commands.Cog):
 
             await message.channel.send(result.text)
 
-    @commands.command()
+    @commands.command(description="Converter text to binary", brief=f"{PREFIX}binary i like you", usage=f"{PREFIX}binary <message>")
     @commands.guild_only()
     async def binary(self, ctx, *, args=None):
         if args is None:
@@ -56,7 +56,7 @@ class Utility_(commands.Cog):
 
         await ctx.send(str(res))
     
-    @commands.command(name="rn", brief="takes smallest and largest numbers then does a random number between.")
+    @commands.command(name="rn", description="takes smallest and largest numbers then does a random number between.", brief=f"{PREFIX}rn 20 300", usage=f"{PREFIX}rn <Lowest number> <Highest number>")
     @commands.guild_only()
     async def random_number(self , ctx , *numbers: typing.Union[int,str]):
         numbers=sorted(list(filter(lambda x: isinstance(x, int), numbers)))
@@ -69,7 +69,7 @@ class Utility_(commands.Cog):
             embed.add_field(name="Highest Number:",value=f"{numbers[-1]}")
             await ctx.send(embed=embed)
 
-    @commands.command(aliases=["trans"])
+    @commands.command(aliases=["trans"] , description="Translate your message" , brief=f"{PREFIX}trans th こんにちは\n{PREFIX}trans en สวัสดีค่ะ", usage=f"{PREFIX}trans <output_language> <message>")
     @commands.guild_only()
     async def translate(self, ctx, to_lang=None, *, args=None):
         if to_lang is None:
@@ -95,7 +95,7 @@ class Utility_(commands.Cog):
         embed.add_field(name=f"Translated ({str(b.lang)})", value=f"```{result.text}```", inline=False)
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(description="Reminder" , brief=f"{PREFIX}remind 10h working time\n{PREFIX}remind 10m i will go sleep ", usage=f"{PREFIX}remind <when> [message]")
     @commands.guild_only()
     async def remind(self, ctx , time=None, *, msg=None):
         if time is None:
@@ -120,7 +120,7 @@ class Utility_(commands.Cog):
         await discord.utils.sleep_until(remind_time)
         await ctx.send(f"{ctx.author.mention}, {utils.format_relative(remind_time)}: {msg}\n\n{ctx.message.jump_url}")
         
-    @commands.command()
+    @commands.command(description="Crete poll" , brief=f"{PREFIX}poll i pretty?", usage=f"{PREFIX}poll <message>")
     @commands.guild_only()
     async def poll(self, ctx,*,message):
         embed = discord.Embed(title="POLL", description=f"{message}",color=0xffffff)

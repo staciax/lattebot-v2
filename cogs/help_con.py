@@ -21,27 +21,27 @@ class Help_support(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
     
-    @commands.command(name="help" , aliases=["latte"])
+    @commands.command(name="help" , aliases=["latte"] , brief=f"{PREFIX}help", usage=f"{PREFIX}help")
     @commands.guild_only()
     async def custom_help(self, ctx, command=None):
-        embedhelp = discord.Embed(title="✧ LATTE Help", description="Use .help <category> for more informations about a category.\n",color=0xffffff)
-        fields = [(f"•{emojis('shidapout')} **Utility**", "`.help util`" , True),
-                (f"•{emojis('ShinoSmirk')} **Infomation**", "`.help info`", True),
+        embedhelp = discord.Embed(title="✧ LATTE Help", description=f"Use {PREFIX}help <category> for more informations about a category.\n",color=0xffffff)
+        fields = [(f"•{emojis('miraishocked')} **Anime**", f"`{PREFIX}help anime`" , True),
+                (f"•{emojis('shidapout')} **Utility**", f"`{PREFIX}help util`" , True),
+                (f"•{emojis('ShinoSmirk')} **Infomation**", f"`{PREFIX}help info`", True),
 #                   (f"•{emojis('lutoaraka')} **Moderation**", "`lt help mod`", True),
 #                   (f"•{emojis('winkai')} **Giveaway**", "`lt help gw`", True),
-                (f"•{emojis('wowanime')} **Fun**", "`.help fun`", True),
-                (f"•{emojis('Ani1')} **Meta**", "`.help meta`", True),
-                (f"•{emojis('chocolawow')} **Reaction Roles**", "`.help rr`", True),
-                (f"•{emojis('ClevelandDeal')} **Leveling**", "`.help level`", True),
-                (f"•{emojis('tohka')} **NSFW**", "`.help nsfw`", True)]
-        
-            
+                (f"•{emojis('wowanime')} **Fun**", f"`{PREFIX}help fun`", True),
+                (f"•{emojis('Ani1')} **Meta**", f"`{PREFIX}help meta`", True),
+                (f"•{emojis('chocolawow')} **Reaction Roles**", f"`{PREFIX}help rr`", True),
+                (f"•{emojis('ClevelandDeal')} **Leveling**", f"`{PREFIX}help level`", True),
+                (f"•{emojis('tohka')} **NSFW**", f"`{PREFIX}help nsfw`", True)]
+           
         for name, value, inline in fields:
             embedhelp.add_field(name=name, value=value, inline=inline)
 
         if ctx.author.guild_permissions.administrator: #if ctx.channel.id == 844462710526836756:
-            embedhelp.add_field(name=f"•{emojis('winkai')} **Giveaway**", value="`.help gw`", inline=True)
-            embedhelp.add_field(name=f"•{emojis('lutoaraka')} **Moderation**", value="`.help mod`", inline=True)
+            embedhelp.add_field(name=f"•{emojis('winkai')} **Giveaway**", value=f"`{PREFIX}help gw`", inline=True)
+            embedhelp.add_field(name=f"•{emojis('lutoaraka')} **Moderation**", value=f"`{PREFIX}help mod`", inline=True)
         else:
             embedhelp.add_field(name="⠀", value="⠀", inline=True)
             embedhelp.add_field(name="⠀", value="⠀", inline=True)
@@ -53,6 +53,8 @@ class Help_support(commands.Cog):
 
         if command is None:
             await ctx.send(embed=embedhelp)
+        elif command == "anime":
+            await ctx.send(embed=utils.Anime(ctx))
         elif command == "util":
             await ctx.send(embed=utils.Utility(ctx))
         elif command == "info":
@@ -84,8 +86,11 @@ class Help_support(commands.Cog):
             helpEmbed.title = command.name
             helpEmbed.description = command.description
             helpEmbed.description = f"{command.description}"
-            helpEmbed.add_field (name = "Usage",
-                value = f"```{command.usage}```"
+            helpEmbed.add_field (
+                name = "Usage",
+                value = f"```{command.usage}```",
+                inline=False
+                
             )
             helpEmbed.add_field (
                 name = "Example",

@@ -152,9 +152,9 @@ class Fun(commands.Cog):
 
                     await ctx.send(embed=embed)
 
-    @commands.command(aliases=['anime'] , description="Random gif of anime")
+    @commands.command(description="Random gif of anime", brief=f"{PREFIX}anime", usage=f"{PREFIX}anime")
     @commands.guild_only()
-    async def anime_img(self, ctx):
+    async def ani(self, ctx):
         embed = discord.Embed(color=0xffffff)
         img_list = ['hug', 'kiss', 'cuddle', 'pat', 'kill', 'slap', 'wink']
         img_random = random.choice(img_list)

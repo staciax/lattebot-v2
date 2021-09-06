@@ -29,7 +29,7 @@ class Message(commands.Cog):
         self.sniped_img = {}
         print(f"-{self.__class__.__name__}")
 
-    @commands.command() 
+    @commands.command(description="Set your afk" , brief=f"{PREFIX}afk eating", usage=f"{PREFIX}afk [reason]")
     @commands.guild_only()
     async def afk(self, ctx, *, reason=None):
         if reason is None:
@@ -204,7 +204,7 @@ class Message(commands.Cog):
         else:
             return
             
-    @commands.command(name="snipe", aliases=["sni", "blackmail"] ,description="snipe message and image")
+    @commands.command(name="snipe", aliases=["sni", "blackmail"] , description="Snipe message after deleted", brief=f"{PREFIX}snipe\n{PREFIX}image", usage=f"{PREFIX}snipe [image , text]")
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def snipe(self , ctx , choice=None):
@@ -286,7 +286,7 @@ class Message(commands.Cog):
             else:
                 await ctx.channel.send(embed=embed)
 
-    @commands.command(name='dm' , description="direct message user")
+    @commands.command(name='dm' , description="direct message user", brief=f"{PREFIX}dm @latte mymessage", usage=f"{PREFIX}dm [user] <message>")
     @commands.guild_only()
     @commands.has_permissions(administrator = True)
     async def botdm(self, ctx, user: discord.Member=None,* , args=None):       
