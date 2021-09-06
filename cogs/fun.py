@@ -602,7 +602,7 @@ class Fun(commands.Cog):
         elif category == "duelist":
             random_agent = random.choice(Duelist)
         elif category == "controller":
-            random_gun = random.choice(Controller)
+            random_agent = random.choice(Controller)
         elif category == "initiator":
             random_agent = random.choice(Initiator)
         elif category == "sentinel":
