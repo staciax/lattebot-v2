@@ -446,6 +446,7 @@ class Fun(commands.Cog):
             await webhook.send(msg, username=ctx.message.author.name , avatar_url=ctx.message.author.avatar.url)
     
     @commands.command(aliases=["temprole","tr"])
+    @commands.guild_only()
     async def t_role(self , ctx ,*, member: discord.Member=None):
         if ctx.guild.id == MYGUILD:
             if not member:
@@ -462,6 +463,7 @@ class Fun(commands.Cog):
             await member.remove_roles(role)
 
     @commands.command(name="apex")
+    @commands.guild_only()
     async def apex_weapon(self, ctx, category=None):
         Assault_rifles = ["HAVOC Rifle", "VK-47 Flatline", "Hemlok Burst AR" , "R-301 Carbine"]
         Submachine_guns = ["Alternator SMG","Prowler Burst PDW","R-99 SMG","Volt SMG"]
@@ -562,8 +564,89 @@ class Fun(commands.Cog):
         embed.description = f"**{random_gun}**"
         await ctx.send(embed=embed)
     
-    @commands.command(name="valorant" , aliases=["vlr"])
-    async def valorant_weapon(self, ctx, category=None):
+    @commands.group(invoke_without_command=True, name="valorant" , aliases=["vlr"])
+    @commands.guild_only()
+    async def valorant(self, ctx):
+        embed = discord.Embed(
+            title="Valorant random",
+            color=0xffffff
+        )
+        embed.add_field(name="Agent", value=f"```yaml\nUsage: {PREFIX}vlr agent [category_or_random]\nCategory: Duelist, Controller, Initiator, Sentinel```",inline=False)
+        embed.add_field(name="Weapon", value=f"```yaml\nUsage: {PREFIX}vlr weapon [type_or_random]\nType: sidearm, smg, shotgun, rifle, sniper, machine gun ```",inline=False)
+
+        await ctx.send(embed=embed)
+
+    @valorant.command(invoke_without_command=True, name="agent")
+    @commands.guild_only()
+    async def agent(self, ctx, category=None):
+        Duelist = ["Phoenix", "Jett", "Reyna", "Raze", "Yoru"]
+        Controller = ["Brimston","Viper","Omen","Astra"]
+        Initiator = ["Sova", "Breach", "KAY/O" "Skye"]
+        Sentinel = ["Killjoy", "Cypher", "Sage"]
+        all_agent = ["Phoenix", "Jett", "Reyna", "Raze", "Yoru", "Brimston","Viper","Omen","Astra", "Sova", "Breach", "KAY/O", "Killjoy", "Cypher", "Sage"]
+        #embed
+        embed = discord.Embed(color=0xfa4454)
+        
+        #category
+        if category == None:
+            random_agent = random.choice(all_agent)
+        elif category == "help":
+            embed.title = "Valorant Agent type"
+            embed.set_footer(text=f"{PREFIX}vlr agent <type>")
+            random_agent = """
+            `duelist` • Type duelist
+            `controller` • Type controller
+            `initiator` • Type initiator
+            `sentinel` • Type sentinel
+            """
+        elif category == "duelist":
+            random_agent = random.choice(Duelist)
+        elif category == "controller":
+            random_gun = random.choice(Controller)
+        elif category == "initiator":
+            random_agent = random.choice(Initiator)
+        elif category == "sentinel":
+            random_agent = random.choice(Sentinel)
+        
+        #picture_of_agent
+        if random_agent == "Phoenix":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/1/14/Phoenix_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234131")
+        elif random_agent == "Jett":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/3/35/Jett_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234156")
+        elif random_agent == "Reyna":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/b/b0/Reyna_icon.png/revision/latest/scale-to-width-down/256?cb=20200607180311")
+        elif random_agent == "Raze":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/9/9c/Raze_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234400")
+        elif random_agent == "Yoru":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/d/d4/Yoru_icon.png/revision/latest/scale-to-width-down/256?cb=20210112211830")
+        elif random_agent == "Brimston":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/4/4d/Brimstone_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234311")
+        elif random_agent == "Viper":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/5/5f/Viper_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234408")
+        elif random_agent == "Omen":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/b/b0/Omen_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234318")
+        elif random_agent == "Astra":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/8/8a/Astra_artwork.png/revision/latest/scale-to-width-down/587?cb=20210302170140")
+        elif random_agent == "Sova":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/4/49/Sova_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234221")
+        elif random_agent == "Breach":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/5/53/Breach_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234328")
+        elif random_agent == "KAY/O":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/a/a9/KAYO_artwork.png/revision/latest/scale-to-width-down/587?cb=20210622163116")
+        elif random_agent == "Skye":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/3/33/Skye_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234628")
+        elif random_agent == "Killjoy":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/1/15/Killjoy_icon.png/revision/latest/scale-to-width-down/256?cb=20200805002141")
+        elif random_agent == "Cypher":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/8/88/Cypher_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234211")
+        elif random_agent == "Sage":
+            embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/7/74/Sage_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234057")
+        embed.description = f"**{random_agent}**"
+        await ctx.send(embed=embed)
+
+    @valorant.command(name="weapon" , aliases=["gun"])
+    @commands.guild_only()
+    async def weapon(self, ctx, *,category=None):
         all_gun = ["Classic","Shorty","Frenzy","Ghost","Sheriff","Stinger", "Spectre","Bucky", "Judge" , "Bulldog", "Guardian", "Phantom" , "Vandal" ,"Ares", "Odin" , "Knife"]
         Sidearms = ["Classic","Shorty","Frenzy","Ghost","Sheriff"]
         SMGs = ["Stinger", "Spectre"]
@@ -590,19 +673,19 @@ class Fun(commands.Cog):
             `sniper` • Sniper Rifles
             `mg` • Machine Guns
             """
-        elif category == "side":
+        elif category in ["sidearms", "sidearm","side","sa"]:
             random_gun = random.choice(Sidearms)
-        elif category == "smg":
+        elif category in ["smg", "smgs"]:
             random_gun = random.choice(SMGs)
-        elif category == "sg":
+        elif category in ["shotgun","shotguns","sg"]:
             random_gun = random.choice(Shotguns)
-        elif category == "ar":
+        elif category in ["rifles","rifle","ar"]:
             random_gun = random.choice(Rifles)
-        elif category == "sniper":
+        elif category in ["sniper","Sniper Rifles"]:
             random_gun = random.choice(Sniper_Rifles)
-        elif category == "mg":
+        elif category in ["machine","machine gun","mg"]:
             random_gun = random.choice(Machine_Guns)
-        
+                
         #picture_of_gun
         if random_gun == "Classic":
             embed.set_image(url="https://static.wikia.nocookie.net/valorant/images/5/57/Classic.png/revision/latest/scale-to-width-down/1000?cb=20200404154125")
