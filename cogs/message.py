@@ -38,9 +38,9 @@ class Message(commands.Cog):
         embed = discord.Embed(description=f"**{ctx.author}** I have set your afk: `{reason}`" , color=WHITE)
 
         if ctx.channel.id != 861883647070437386:
-            embed.set_footer(text="Click the reaction to delete message")
+#            embed.set_footer(text="Click the reaction to delete message")
             msg = await ctx.send(embed=embed)
-            await msg.add_reaction("<:greentick:881500884725547021>")
+#            await msg.add_reaction("<:greentick:881500884725547021>")
             
             try:
                 reaction , user = await self.client.wait_for(
@@ -51,7 +51,9 @@ class Message(commands.Cog):
                 )
 
             except asyncio.TimeoutError:
-                await msg.clear_reactions()
+#                embed_edit = discord.Embed(description=f"**{ctx.author}** I have set your afk: `{reason}`" , color=WHITE)
+#                await msg.edit(embed=embed_edit)
+#                await msg.clear_reactions()
                 return
             
             await ctx.message.delete()
@@ -128,7 +130,7 @@ class Message(commands.Cog):
                 chname = "ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ"
                 checkvoice = get_channel_by_name(message.channel.guild, channel_name=chname)
                 if checkvoice is None:
-                    channel = await create_voice_channel(message.channel.guild, f'{chname}'.lower() , category_name="୨ ♡ ─ 「 Private 」♡")
+                    channel = await create_voice_channel(message.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
                     
                     if channel is not None:
                         await message.author.move_to(channel)
@@ -140,9 +142,22 @@ class Message(commands.Cog):
             else:
                 await message.delete()
 
+        if message.channel.id == 861874852050894868:
+            if message.content.startswith('temp'):
+                if message.author.voice:
+                    channel_id = 879260241286549525  
+                    for c in message.guild.channels:
+                        if c.id == channel_id:
+                            checkvoice = c
+
+                    await message.author.move_to(checkvoice)
+                    await message.delete()
+                else:
+                    await message.delete()
+
         #when_mention_bot
         if self.client.user.mentioned_in(message):
-            await message.channel.send(f"This is my prefix `.` \nExample: .help", delete_after=15)
+            await message.channel.send(f"This is my prefix `.`", delete_after=10)
 
         #temp_channel
         if message.channel.id == TEMP_CH:
@@ -286,7 +301,7 @@ class Message(commands.Cog):
             else:
                 await ctx.channel.send(embed=embed)
 
-    @commands.command(name='dm' , description="direct message user", brief=f"{PREFIX}dm @latte mymessage", usage=f"{PREFIX}dm [user] <message>")
+    @commands.command(name='dm' , description="direct message user", brief=f"{PREFIX}dm @latte mymessage", usage=f"{PREFIX}dm <user> <message>")
     @commands.guild_only()
     @commands.has_permissions(administrator = True)
     async def botdm(self, ctx, user: discord.Member=None,* , args=None):       

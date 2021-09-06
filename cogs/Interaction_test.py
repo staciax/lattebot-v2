@@ -196,7 +196,7 @@ class XP_user(commands.Cog):
             pass
 
         await inter.channel.send(embed=embed)
-
+    
 def setup(client):
 
     client.add_cog(XP_user(client))
