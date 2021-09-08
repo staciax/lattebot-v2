@@ -207,3 +207,47 @@ def custom_cooldown(message):
 async def ping(ctx):
     await ctx.send("pong")
 ```
+
+
+def check(reaction, user):
+                return reaction == ':hammer:' and discord.utils.get(user.roles, name='Moderator') is not None
+            try:
+                reaction, user = await self.client.wait_for('reaction_add', check=check, timeout=300)
+
+    """
+    @commands.command(brief = 'test', description = 'test2')
+    async def helphelp(self, ctx, command = None):
+        await ctx.message.delete()
+        #await ctx.send(self.bot.Cogs)
+        
+        if command is None:
+            helpEmbed = discord.Embed (
+                title = 'Help',
+                color = 0xffffff,
+            )
+
+            for command_ in self.bot.commands:
+                helpEmbed.add_field (
+                name = command_,
+                value = command_.brief,
+                )
+            
+            await ctx.send(embed = helpEmbed)
+        
+        else:
+            helpEmbed = discord.Embed (
+                title = command,
+                color = 0xffffff
+            )
+        
+            command = self.bot.get_command(name = command)
+            print(f'Command: {command.name}\nBrief: {command.brief}')
+            print('Adding field')
+            
+            helpEmbed.add_field (
+                name = command.name,
+                value = command.description
+            )
+            
+            await ctx.send(embed = helpEmbed)
+        """

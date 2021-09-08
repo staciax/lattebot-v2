@@ -22,28 +22,39 @@ def Utility(ctx):
                           
   for name, value, inline in fields:
     embed.add_field(name=name, value=value, inline=inline)
+  
+  description="""
+  Use `.help <command>` for more informations about a command.
+
+  `sleep` • Set timer disconnect voice channel.
+  `sleep stop` • Stop sleep timer.
+  `poll` • Create poll.
+  `binary` • Text to binary.
+  `reverse , sb` • Reverse text.
+  `translate , trans` • Translate message.
+  `random_number , rn` • Random number Lowest - Highest.
+  """
+  embed.description = description
 
   return embed
 
 def Infomation(ctx):
-  embed = Embed(description="**Infomation Commands**",color=0xffffff)#\n\n`userinfo , ui [targer]` : show userinfo infomation\n\n`serverinfo , si` : show server infomation\n\n`avatar , av [targer]` : show my avatar profile or target\n\n`servericon` `sic` : show server icon\n\n`serverbanner` , `sb` : show server server banner\n\n`invitebanner` , `ss` : show server splash(invite banner)",color=0xffffff)
-  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+  embed = Embed(title="**Infomation Commands**",color=0xffffff)
 
-  fields = [
-    ("Userinfo","```yaml\n.ui [member]```",True),
-    ("Serverinfo","```yaml\n.serverinfo | .si```",True),
-    ("Avatar","```yaml\n.avatar [member]```",True),
-    ("Server Icon","```yaml\n.servericon | .sic```",True),
-    ("Server Banner","```yaml\n.serverbanner | .sb```",True),
-    ("Server Splash","```yaml\n.splash | .ss```",True),
-    ("Emoji Info","```yaml\n.emojinfo [emoji] | .ei [emoji]```",True),
-    ("Role Info","```yaml\n.roleinfo [role] | .ri [role]```",True),
+  description="""
+  Use `.help <command>` for more informations about a command.
 
-  ]
-
-  for name, value, inline in fields:
-    embed.add_field(name=name, value=value, inline=inline)
-
+  `userinfo , ui` • Show user infomation.
+  `serverinfo , si` • Show serverinfo infomation.
+  `avatar , av` • Display avatar.
+  `servericon , sic` • Display Server icon.
+  `serverbanner , sb` • Display server banner.
+  `splash , ss` • Display server splash.
+  `emojinfo , ei` • Show emojinfo.
+  `roleinfo , ri` • Show roleinfo.
+  """
+  embed.description = description
+  
   return embed
 
 def Moderation(ctx):
@@ -70,37 +81,28 @@ def Moderation(ctx):
   return embed
 
 def Giveaway(ctx):
-  embed = Embed(description="**Giveaway Commands**",color=0xffffff)#\n\n`giveaway , g `: The group command for managing giveaways\n\n`reroll :` reroll giveaway",color=0xffffff)
-  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+  embed = Embed(title="Giveaway Commands",color=0xffffff)
 
-  fields = [
-    ("Giveaway","```yaml\n.g```",True),
-    ("Reroll","```yaml\n.reroll```",True),
-  ]
+  description="""
+  Use `.help <command>` for more informations about a command.
 
-  for name, value, inline in fields:
-    embed.add_field(name=name, value=value, inline=inline)
+  `g` • Start create giveaway.
+  `reroll` • Reroll giveaway.
+  """
+  embed.description = description
   
   return embed
   
 def Fun(ctx):
-  embed = Embed(description="**Fun Commands**",color=0xffffff)#\n\n`ani` , `ani list`: random anime images or specify list\n\n`cat` : random cat images\n\n`fox` : random fox images\n\n`gif[search]` : random gif or search\n\n`bm [message]` : Let the bot send the message\n\n`owo [message]` : Any message to owo",color=0xffffff)
-  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-
-  fields = [
-    ("Anime gif","```yaml\n.ani | .ani list```",True),
-    ("Cat","```yaml\n.cat```",True),
-    ("Fox","```yaml\n.fox```",True),
-    ("Gif","```yaml\n.gif <keyword> or random```",True),
-    ("OwO","```yaml\n.owo [message]```",True),
-    ("Echo","```yaml\n.echo [message]```",True),
-    ("Saybot","```yaml\n.saybot [message]```",True),
-    ("Member Saybot","```yaml\n.saybotm [member] [message]```",True),
-
-  ]
-
-  for name, value, inline in fields:
-    embed.add_field(name=name, value=value, inline=inline)
+  embed = Embed(title="Fun Commands",color=0xffffff)
+  
+  description = """
+  Use `.help <command>` for more informations about a command.
+  
+ 
+  • `cat`, `fox`, `gif`, `owo`, `echo` ,`saybot`, `saybotm`
+  """
+  embed.description = description
   
   return embed
 
@@ -111,6 +113,7 @@ def Anime(ctx):
   description="""
   Use `.help <command>` for more informations about a command.
   
+  `waifu` • Display an image with the waifu tag.
   `ani` • Display an image with the anime tag.
   `hug` • Display an image with the hug tag.
   `kiss` • Display an image with the kiss tag.
@@ -126,19 +129,17 @@ def Anime(ctx):
   return embed
 
 def Meta(ctx):
-  embed = Embed(description="**Meta Commands**",color=0xffffff)#\n\n`ping`: check latency bot\n\n`invite` : invite the bot!!\n\n`feedback` : send message to bot developer\n\n`support` : Get the invite link for the support server!\n\n`vote :`  Get the voting link for the bot",color=0xffffff)
-  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+  embed = Embed(title="Meta Commands",color=0xffffff)
+  
+  description="""
+  Use `.help <command>` for more informations about a command.
 
-  fields = [
-    ("Bot Latency","```yaml\n.ping```",True),
-    ("Invite Bot","```yaml\n.invite```",True),
-    ("Feedback","```yaml\n.feedback```",True),
-    ("Request","```yaml\n.req```",True),
-
-  ]
-
-  for name, value, inline in fields:
-    embed.add_field(name=name, value=value, inline=inline)
+  `ping` • Show latency bot.
+  `invite` • Invite bot.
+  `feedback` • Your feedback for bot .
+  `req` • Your request.
+  """
+  embed.description = description
   
   return embed
 
@@ -148,28 +149,32 @@ def Reaction(ctx):
   return embed
 
 def Leveling(ctx):
-  embed = Embed(description="**Leveling**\n\nAutomationl add experience\nyou can get experience in :\n  <#861883647070437386> <#840398821544296480> <#859960606761549835>",color=0xffffff)#\n\n`xp [member]` : check my level or member\n\n`rank` : show ranking level all member",color=0xffffff)
-  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+  embed = Embed(title="Leveling",color=0xffffff)
 
-  fields = [
-    ("XP","```yaml\n.xp [member]```",True),
-    ("Ranking","```yaml\n.rank```",True),
-  ]
+  description="""
+  Use `.help <command>` for more informations about a command.
 
-  for name, value, inline in fields:
-    embed.add_field(name=name, value=value, inline=inline)
+  Automationl add experience
+  you can get experience in :
+  <#861883647070437386> <#840398821544296480> <#859960606761549835> <#863438518981361686>
+
+  `xp` • Show my xp.
+  `rank` • Show ranking board.
+  """
+  embed.description = description
   
   return embed
 
 def NSFW(ctx):
-  embed = Embed(description="**NSFW Commands**\n\n*NSFW* is alollowed in <#850507964938715196>",color=0xffffff)#\n\n`hentai` : hentai picture or gif\n\n",color=0xffffff)
-  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+  embed = Embed(title="NSFW Commands",color=0xffffff)
 
-  fields = [
-    ("Hentai GIF","```yaml\n.hentai```",True),
-  ]
-
-  for name, value, inline in fields:
-    embed.add_field(name=name, value=value, inline=inline)
+  description = """
+  Use `.help <command>` for more informations about a command.
+  
+  *NSFW* is alollowed in <#850507964938715196>
+  
+  • `nsfw`, `ass`, `ecchi`, `ero`, `hentai` ,`maid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform`  
+  """
+  embed.description = description
   
   return embed

@@ -242,9 +242,9 @@ class Fun(commands.Cog):
         except:
             return
     
-    @commands.command(aliases=['hentai'], brief=f"{PREFIX}hentai", usage=f"{PREFIX}hentai")
+    @commands.command(aliases=['nsfw'], brief=f"{PREFIX}nsfw", usage=f"{PREFIX}nsfw")
     @commands.guild_only()
-    async def anime_img_nsfw(self, ctx):
+    async def anime_nsfw(self, ctx):
             try:
                 if ctx.channel.is_nsfw():
                     embed = discord.Embed(color=0xffffff)
@@ -480,8 +480,8 @@ class Fun(commands.Cog):
         if category == None:
             random_gun = random.choice(all_weapon)
         elif category == "help":
-            embed.title = "APEX category guns"
-            embed.set_footer(text=f"{PREFIX}apex <category>")
+            embed.title = "APEX type guns"
+            embed.set_footer(text=f"{PREFIX}apex <type>")
             random_gun = """
             `ar` • Assault rifles
             `sub` • Sub-machine guns
@@ -571,8 +571,8 @@ class Fun(commands.Cog):
             title="Valorant random",
             color=0xffffff
         )
-        embed.add_field(name="Agent", value=f"```yaml\nUsage: {PREFIX}vlr agent [category_or_random]\nCategory: Duelist, Controller, Initiator, Sentinel```",inline=False)
-        embed.add_field(name="Weapon", value=f"```yaml\nUsage: {PREFIX}vlr weapon [type_or_random]\nType: sidearm, smg, shotgun, rifle, sniper, machine gun ```",inline=False)
+        embed.add_field(name="Agent", value=f"```yaml\nUsage: {PREFIX}vlr agent [type]\nType: Duelist, Controller, Initiator, Sentinel```",inline=False)
+        embed.add_field(name="Weapon", value=f"```yaml\nUsage: {PREFIX}vlr weapon [type]\nType: sidearm, smg, shotgun, rifle, sniper, machine gun ```",inline=False)
 
         await ctx.send(embed=embed)
 
@@ -663,8 +663,8 @@ class Fun(commands.Cog):
         if category == None:
             random_gun = random.choice(all_gun)
         elif category == "help":
-            embed.title = "Valorant category guns"
-            embed.set_footer(text=f"{PREFIX}vlr <category>")
+            embed.title = "Valorant type guns"
+            embed.set_footer(text=f"{PREFIX}vlr <type>")
             random_gun = """
             `side` • Sidearms
             `smg` • Sub-machine guns

@@ -29,8 +29,10 @@ client = commands.Bot(command_prefix=PREFIX, case_insensitive=True, intents=inte
 
 client.connection_url = secrets["mongo"]
 
-#remove_default_help
-#@client.remove_command("help")
+#discord_py_interactions
+#from discord_slash import SlashCommand, SlashContext
+#slash = SlashCommand(client , sync_commands=True)
+
 
 @client.event
 async def on_ready():
