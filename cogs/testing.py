@@ -134,5 +134,12 @@ class Testing(commands.Cog):
                 content=f"{','.join(map(lambda x: x.label, interaction.component))} selected!"
             )
 
+    @commands.command()
+    async def numtest(self,ctx , num:int):
+        if num > 300:
+            print("300+")
+        else:
+            print("no")
+
 def setup(client):
     client.add_cog(Testing(client))

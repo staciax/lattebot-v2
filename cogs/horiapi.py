@@ -44,7 +44,24 @@ class hori_api(commands.Cog):
             
                 else:
                     error=api["error"]
-    
+                    
+    @commands.command()
+    @commands.guild_only()
+    @commands.is_nsfw()
+    async def ass(self, ctx):
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(f"https://api.hori.ovh/nsfw/ass/",headers=headers) as rep:
+                api = await rep.json()
+                if rep.status == 200:
+                    image_url=api["url"]
+                    embed = discord.Embed(title="Ass", color=0xffffff)
+                    embed.set_image(url=image_url)
+
+                    await ctx.send(embed=embed)
+            
+                else:
+                    error=api["error"]
+
     @commands.command()
     @commands.guild_only()
     @commands.is_nsfw()

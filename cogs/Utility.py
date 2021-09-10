@@ -1,5 +1,5 @@
 # Standard 
-import discord , asyncio
+import discord , asyncio , random
 import datetime
 from discord.ext import commands
 from datetime import datetime, timezone , timedelta
@@ -68,14 +68,57 @@ class Utility_(commands.Cog):
             embed.add_field(name="Lowest Number:",value=f"{numbers[0]}")
             embed.add_field(name="Highest Number:",value=f"{numbers[-1]}")
             await ctx.send(embed=embed)
+    
+    @commands.command(name="random", aliases=["r"], description="random", brief=f"{PREFIX}random", usage=f"{PREFIX}random")
+    @commands.guild_only()
+    async def random_(self, ctx ,*,msg) :
+#        await ctx.send("Please Enter a Range:")
 
+        #split message
+#        message_response = await self.client.wait_for('message', check=lambda m: m.author == ctx.author)
+        input_value = msg#message_response.content
+        list_input = list(input_value.split())
+
+        #try_random
+        try:
+            await ctx.send(random.choice(list_input))
+        except ValueError:
+            await ctx.send("Invalid Range")
+
+    @commands.command(name="random_invoice", aliases=["rnv"] ,description="random member in voice channel", brief=f"{PREFIX}rnv @latte 840381453779206166", usage=f"{PREFIX} <member> <voice>")
+    @commands.guild_only()
+    async def random_voice_member(self, ctx, member:discord.Member=None, channel:discord.VoiceChannel=None):
+        
+        #check
+        if member is None and channel is None:
+            channel = ctx.author.voice.channel
+            in_channel = ctx.author.voice.channel.members
+        else:
+            in_channel = member.voice.channel.members
+
+        #get_member_in_voice
+        member_list = []
+        for members in in_channel:
+            member_voice = members.id
+            member_list.append(int(member_voice))
+
+        #random
+        random_member = random.choice(member_list)
+        rn_member = ctx.guild.get_member(random_member)
+
+        #send_member
+        embed = discord.Embed(title=f"{rn_member.display_name}",color=rn_member.colour)
+        embed.set_thumbnail(url=rn_member.avatar.url)
+        embed.set_footer(text=f"Random in: {channel}")
+        await ctx.send(embed=embed)
+        
+            
     @commands.command(aliases=["trans"] , description="Translate your message" , brief=f"{PREFIX}trans th こんにちは\n{PREFIX}trans en สวัสดีค่ะ", usage=f"{PREFIX}trans <output_language> <message>")
     @commands.guild_only()
     async def translate(self, ctx, to_lang=None, *, args=None):
         if to_lang is None:
             embed_tl = discord.Embed(description="**Translater help**\n```yaml\nEx : .trans en こんにちは\n>> 'Hello'\nEx2 : .trans th こんにちは\n>> 'สวัสดี'```")
             return await ctx.send(embed=embed_tl)
-
 
         translator = Translator()
         try:

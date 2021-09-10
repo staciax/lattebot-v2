@@ -284,27 +284,11 @@ class Fun(commands.Cog):
     #custom_cooldown
     def custom_cooldown(message):
         if discord.utils.get(message.author.roles, name="Mystic・・ ♡"):
-            return commands.Cooldown(2, 60)  # 2 per minute
-        return commands.Cooldown(1, 60)  # 1 
-            
-    @commands.command(name="sleeps" , aliases=["slps" , "sls","tick",])
-    @commands.dynamic_cooldown(custom_cooldown, commands.BucketType.user)
-    async def sleep_sec(self, ctx, time,*, member : discord.Member=None):
-        time = int(time[:-1])
-        if not time:
-            return
-        if member is None:
-            member = ctx.author        
-
-        if time >= 600:
-            return await ctx.send("คุณตั่งเกิน 600 วินาที แนะให้ใช้ .sleep แทนนะคะ" , delete_after=10)
-
-        embed = discord.Embed(description=f"{member.name} set timer {time}s ", color=0xffffff)
-        await ctx.send(embed=embed , delete_after=10)
-        await asyncio.sleep(time)
-        await member.move_to(channel=None)
-    
+            return commands.Cooldown(5, 60)  # 5 per minute
+        return commands.Cooldown(2, 60)  # 2
+                
     @commands.group(invoke_without_command=True , aliases=["sl" , "slp"], brief=f"{PREFIX}sleep 25min\n{PREFIX}sleep 1h @latte", usage=f"{PREFIX}sleep <duration> [member]\n{PREFIX}sleep stop [member]")
+    @commands.dynamic_cooldown(custom_cooldown, commands.BucketType.user)
     async def sleep(self, ctx, time=None,*, member : discord.Member=None):
         if time is None:
             embed_time = discord.Embed(description=f"**Please specify duration** : `(s|m|h|d)`\n```yaml\nExample : {PREFIX}sleep 5m , {PREFIX}sleep 2h\nDelete : {PREFIX}sleep stop [member]```",color=WHITE)
@@ -349,19 +333,24 @@ class Fun(commands.Cog):
 
         await m.clear_reactions()
         
-        embed_edit = discord.Embed(color=PTGREEN , timestamp=futuredate)
+        embed_edit = discord.Embed(color=member.colour , timestamp=futuredate)
         embed_edit.description = f"**TIME TO SLEEP** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_relative(futuredate)}"
         embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
-        if member == ctx.author:
-            embed_edit.description += f"\n||**Stoped timer** : {PREFIX}sleep stop||"
-        if ctx.author != member:
-            embed_edit.description += f"\n||**Stoped timer** : {PREFIX}sleep stop @{member.display_name}||"#\n||Req by : {ctx.author.mention}||"
         
-        await m.edit(embed=embed_edit)
-
-        self.sleeping_db[str(member.id)] = {"time": futuredate_}
-        with open("bot_config/sleeping.json", "w") as fp:
-            json.dump(self.sleeping_db, fp , indent=4)
+        if timewait >= 600:
+            if member == ctx.author:
+                embed_edit.description += f"\n||**Stoped timer** : {PREFIX}sleep stop||"
+            if ctx.author != member:
+                embed_edit.description += f"\n||**Stoped timer** : {PREFIX}sleep stop @{member.display_name}||"
+            await m.edit(embed=embed_edit)
+            self.sleeping_db[str(member.id)] = {"time": futuredate_}
+            with open("bot_config/sleeping.json", "w") as fp:
+                json.dump(self.sleeping_db, fp , indent=4)
+        else:
+            embed_edit.description += f"\n__||Timer can't be stopped.||__"
+            await m.edit(embed=embed_edit)
+            await asyncio.sleep(timewait)
+            await member.move_to(channel=None)
     
 
     @sleep.command(invoke_without_command=True , aliases=["del", "delete" , "off" , "stop"], brief=f"{PREFIX}sleep stop\n{PREFIX}sleep stop @latte", usage=f"{PREFIX}sleep stop [member]")

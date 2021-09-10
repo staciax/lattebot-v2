@@ -92,3 +92,8 @@ async def check_chat():
             return False
         return True
     return commands.check(pred)
+
+def in_voice_channel():  
+    def predicate(ctx):
+        return ctx.author.voice and ctx.author.voice.channel
+    return commands.check(predicate)
