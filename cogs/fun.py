@@ -565,7 +565,7 @@ class Fun(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @valorant.command(invoke_without_command=True, name="agent")
+    @valorant.command(invoke_without_command=True, name="agent", aliases=["a"])
     @commands.guild_only()
     async def agent(self, ctx, category=None):
         Duelist = ["Phoenix", "Jett", "Reyna", "Raze", "Yoru"]
@@ -633,7 +633,7 @@ class Fun(commands.Cog):
         embed.description = f"**{random_agent}**"
         await ctx.send(embed=embed)
 
-    @valorant.command(name="weapon" , aliases=["gun"])
+    @valorant.command(name="weapon" , aliases=["gun","w"])
     @commands.guild_only()
     async def weapon(self, ctx, *,category=None):
         all_gun = ["Classic","Shorty","Frenzy","Ghost","Sheriff","Stinger", "Spectre","Bucky", "Judge" , "Bulldog", "Guardian", "Phantom" , "Vandal" ,"Ares", "Odin" , "Knife"]

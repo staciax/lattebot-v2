@@ -216,3 +216,16 @@ def custom_cooldown(message):
     elif utils.get(message.author.roles, name="Nitro Booster"):
         return commands.Cooldown(2, 60)  # 2 per minute
     return commands.Cooldown(1, 60)  # 1 per minute
+
+def status_icon(current_status):
+    status = str(current_status)
+    if status == "online":
+        output = "https://cdn.discordapp.com/emojis/864171414466592788.png"
+    elif status == "idle":
+        output = "https://cdn.discordapp.com/emojis/864185381833277501.png"
+    elif status == "dnd":
+        output = "https://cdn.discordapp.com/emojis/864173608321810452.png"
+    elif status == "offline":
+        output = "https://cdn.discordapp.com/emojis/864171414750625812.png"
+
+    return output

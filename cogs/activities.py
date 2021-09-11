@@ -354,7 +354,7 @@ class Activities(commands.Cog):
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
                     embed.set_thumbnail(url=after.avatar.url)
-                    embed.set_footer(text="", icon_url=after.avatar.url)
+#                    embed.set_footer(text="", icon_url=after.avatar.url)
 
                 await self.server_log.send(embed=embed)
 
@@ -373,7 +373,7 @@ class Activities(commands.Cog):
                     nr_valur = " ".join(reversed([r.mention for r in after.roles])) #' '.join(reversed([r.mention for r in member.roles][1:]))
                     
                     color = 0xFF6961
-                offline = ['<@&873693874198052876>']
+                offline = ['<@&886193080997384222>']
                 if new_roles == offline:
                     return
                 if old_roles == offline:
@@ -574,8 +574,8 @@ class Activities(commands.Cog):
                 else:
                     return
             
-            if after.channel.name == "・ᴘᴀᴠɪʟɪᴏɴ・":
-                chname = "ᴘᴀᴠɪʟɪᴏɴ"
+            if after.channel.name == "・ᴰᴱᴬᵀᴴ・":
+                chname = "ᴰᴱᴬᵀᴴ"
                 checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
                 if checkvoice is None:
                     channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
@@ -588,6 +588,31 @@ class Activities(commands.Cog):
                 else:
                     return
                 
+    @commands.Cog.listener()
+    async def on_presence_update(self, before, after):
+        guild = self.bot.get_guild(MYGUILD)
+        role = discord.utils.find(lambda r: r.name == 'ᴴ ᴱ ᴸ ᴬ・・ ♡', guild.roles)
+
+        #add_offline_role
+        if before.guild.id == MYGUILD:
+            if str(after.status) == "online" or "dnd" and "idle":
+                await before.remove_roles(role)
+            if str(after.status) == "offline":
+                await after.add_roles(role)
+
+            #server_log
+            user_update = utils.json_loader.read_json("latte")
+            self.status_log = self.bot.get_channel(user_update["status-log"])
+
+            #status
+            if before.status != after.status:
+                embed = discord.Embed(
+                                    colour=after.colour,
+						            timestamp=datetime.now(timezone.utc))
+                embed.set_author(name=f"{after}", icon_url=after.avatar.url)
+                embed.set_footer(text=f"{str(after.status)}", icon_url=utils.status_icon(after.status))
+                await self.status_log.send(embed=embed)
+
 #    @commands.Cog.listener() #activity = role
 #    async def on_presence_update(self, before, after):
 #        games = ["game1", "game2", "game3"]
@@ -599,17 +624,5 @@ class Activities(commands.Cog):
 #            if role in after.roles: 
 #                await after.remove_roles(role)
 
-    @commands.Cog.listener() #online offlie = role
-    async def on_presence_update(self, before, after):
-        guild = self.bot.get_guild(840379510704046151)
-        role = discord.utils.find(lambda r: r.name == '୨ offline ୧', guild.roles)
-        if before.guild.id == MYGUILD:
-            if str(after.status) == "online" or "dnd" and "idle":
-                await before.remove_roles(role)
-            if str(after.status) == "offline":
-                await after.add_roles(role)
-            else:
-                return
-        
 def setup(client):
     client.add_cog(Activities(client))
