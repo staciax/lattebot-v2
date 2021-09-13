@@ -10,3 +10,4 @@ from .time import *
 from .formats import *
 from .checks import *
 from .mongo import *
+from .game_converter import *

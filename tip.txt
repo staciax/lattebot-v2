@@ -81,6 +81,16 @@ with Image.open(BytesIO(avatar_bytes)) as my_image:
 # back in your async function
 await ctx.send(file=discord.File(fp=output_buffer, filename="my_file.png"))
 
+byte = BytesIO()
+
+  img.save(byte,format="png")
+
+  file = discord.File(byte,filename="pic.png")
+
+  e = discord.Embed(title="Picture",description="Test",color=color.green())
+  e.set_image(url="attachment://pic.png")
+  await ctx.reply(file=file,embed=e)
+
 
 ---------------------- permissions
 @commands.guild_only()
@@ -251,3 +261,69 @@ def check(reaction, user):
             
             await ctx.send(embed = helpEmbed)
         """
+
+```py
+class Banner(Asset): # This is our banner class. The only reason for this to add a `.color` and a `.url`.
+    def __init__(self, state, url, banner_color):
+        super().__init__(state, url)
+        self.color = banner_color
+
+    @property
+    def url(self):
+        if self._url is None:
+            return None
+            
+        return self.BASE + self._url
+
+async def fetch_banner(user: typing.Union[Member, User], *, format: str = None, size: int = 512):
+    user_id: int = user.id
+    usr: dict = await self.http.get_user(user_id) # Call the API to get banner hash.
+    state = user._state # The sole reason for this is only for the Asset.
+    
+    banner_hash: typing.Union[str, None] = usr.get('banner') # Tries to get banner hash
+    banner_color: typing.Union[int, None] = usr.get('accent_color') # Tries to get banner colour
+
+    url = None
+    if banner_hash:
+        def get_format(): # Tries to get the banner format
+            if banner_hash.startswith('a_'): # Check if the banner is animated
+                return 'gif' # Returns the format as gif.
+                
+            return (format or 'png') # Returns format arg or png.
+
+        fmt = get_format() # Get the format
+
+        url = f'/banners/{user_id}/{banner_hash}.{fmt}?size={size}' # Generate the URL.
+
+    return Banner(state, url, banner_color) # Return our custom Banner class.
+```You can use it like: ```py
+>>> banner = await fetch_banner(Member/User)
+>>> banner.color
+<Banner Color>/None
+>>> banner.url
+<Banner URL>/None
+```
+async def banner(ctx, member : discord.Member=None):
+        errorMessage = f"{member} doesn't have a banner. imagine not having nitro :kekBlem: "
+        if member == None or member == ctx.author:
+            member = ctx.author
+            errorMessage = "You don't have a banner lmao"
+
+        fetchedMember = await bot.fetch_user(member.id)
+
+        if fetchedMember.banner:
+            if fetchedMember.banner.is_animated() == True:
+                text1 = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
+                text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+            else:
+                text1 = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
+                text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+            embed=discord.Embed(title=f"{member}'s Banner", description=f"{text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            url1 = fetchedMember.banner.url
+            url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
+            embed.set_image(url=url)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
+            await ctx.reply(embed=embed,mention_author=False)
+        else:
+            await ctx.reply(f"{errorMessage}")

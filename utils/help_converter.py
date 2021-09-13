@@ -47,6 +47,7 @@ def Infomation(ctx):
   `userinfo , ui` • Show user infomation.
   `serverinfo , si` • Show serverinfo infomation.
   `avatar , av` • Display avatar.
+  `banner , bn` • Display banner.
   `servericon , sic` • Display Server icon.
   `serverbanner , sb` • Display server banner.
   `splash , ss` • Display server splash.

@@ -142,19 +142,25 @@ class Message(commands.Cog):
             else:
                 await message.delete()
 
-        if message.channel.id == 861874852050894868:
-            if message.content.startswith('temp'):
-                if message.author.voice:
-                    channel_id = 879260241286549525  
-                    for c in message.guild.channels:
-                        if c.id == channel_id:
-                            checkvoice = c
-
-                    await message.author.move_to(checkvoice)
+        #move_to_channel
+        if message.channel.id == LATTE_BOT:
+            if message.author.voice:
+                if message.content.startswith('temp'):
+                    temp_channel = message.guild.get_channel(temp_voice_channel)
+                    await message.author.move_to(temp_channel)
                     await message.delete()
-                else:
+                if message.content.startswith('moonlight'):
+                    moonlight = message.guild.get_channel(moonlight_channel)
+                    await message.author.move_to(moonlight) 
                     await message.delete()
-
+                if message.content.startswith('angel'):
+                    angel = message.guild.get_channel(angel_channel)
+                    await message.author.move_to(angel) 
+                    await message.delete()
+#                    for c in message.guild.channels:
+#                        if c.id == channel_id:
+#                            checkvoice = c
+                    
         #when_mention_bot
         if self.client.user.mentioned_in(message):
             await message.channel.send(f"This is my prefix `.`", delete_after=10)

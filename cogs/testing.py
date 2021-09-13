@@ -1,11 +1,17 @@
 # Standard 
 import discord , asyncio
+from discord import Asset , Member , User
 from discord.ext import commands
 from datetime import datetime, timezone
 import utils
 
+import requests
+import typing
+from typing import Union
+
 # Third party
 #from discord_components import *
+
 #import humanize
 from utils import Pag
 from discord.ext import menus
@@ -140,6 +146,6 @@ class Testing(commands.Cog):
             print("300+")
         else:
             print("no")
-
+            
 def setup(client):
     client.add_cog(Testing(client))

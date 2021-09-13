@@ -1,4 +1,5 @@
 import discord, re, random
+from discord import Member , User
 from discord.ext import commands
 #from discord.http import Route
 from datetime import datetime, timedelta, timezone
@@ -6,6 +7,9 @@ import time
 from time import perf_counter
 
 from discord.ext.buttons import Paginator
+
+import typing
+from typing import Union
 
 class Pag(Paginator):
     async def teardown(self):
@@ -213,3 +217,47 @@ def FutureTime_converter(time):
         timewait = time * 604800
 
     return timewait
+
+class Banner(discord.Asset): # This is our banner class. The only reason for this to add a `.color` and a `.url`.
+    def __init__(self, state, url, banner_color):
+        super().__init__(state, url)
+        self.color = banner_color
+
+    @property
+    def url(self):
+        if self._url is None:
+            return None
+            
+        return self.BASE + self._url
+
+async def fetch_banner(self, user: typing.Union[Member, User], *, format: str = None, size: int = 512):
+    user_id: int = user.id
+    usr: dict = await self.http.get_user(user_id) # Call the API to get banner hash.
+    state = user._state # The sole reason for this is only for the Asset.
+    
+    banner_hash: typing.Union[str, None] = usr.get('banner') # Tries to get banner hash
+    banner_color: typing.Union[int, None] = usr.get('accent_color') # Tries to get banner colour
+
+    url = None
+    if banner_hash:
+        def get_format(): # Tries to get the banner format
+            if banner_hash.startswith('a_'): # Check if the banner is animated
+                return 'gif' # Returns the format as gif.
+                
+            return (format or 'png') # Returns format arg or png.
+
+        fmt = get_format() # Get the format
+
+        url = f'/banners/{user_id}/{banner_hash}.{fmt}?size={size}' # Generate the URL.
+
+    return Banner(state, url, banner_color) # Return our custom Banner class.
+
+"""
+```You can use it like: ```py
+>>> banner = await fetch_banner(Member/User)
+>>> banner.color
+<Banner Color>/None
+>>> banner.url
+<Banner URL>/None
+```
+"""

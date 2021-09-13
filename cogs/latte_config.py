@@ -198,6 +198,36 @@ class Latte_config(commands.Cog):
         except:
             print("error")
             await ctx.send('error')
+    
+    #status_log
+    @log.group(invoke_without_command=True)
+    async def status(self, ctx , channel: discord.TextChannel=None): 
+        if channel is None:
+            channel = ctx.channel
+        
+        data = utils.json_loader.read_json("latte")
+
+        data["status-log"] = channel.id
+        try:
+            utils.json_loader.write_json(data, "latte")
+            em = discord.Embed(description=f'set status-log channel : {data["status-log"]}' , color=WHITE)
+            await ctx.send(embed=em)
+        except:
+            print("error")
+            await ctx.send('error')
+
+    @status.command(name="delete")
+    async def delete_status(self ,ctx):
+        data = utils.json_loader.read_json("latte")
+        data["status-log"] = None
+        
+        try:
+            utils.json_loader.write_json(data, "latte")
+            em = discord.Embed(description=f'status-log channel is disable : {data["status-log"]}' , color=WHITE)
+            await ctx.send(embed=em)
+        except:
+            print("error")
+            await ctx.send('error')
 
     #start_only
     @commands.group(invoke_without_command=True)
@@ -329,7 +359,7 @@ class Latte_config(commands.Cog):
             i = 0
             embed = discord.Embed(description="" , color=0xffffff)
             embed.set_author(name=f"{guild.name}'s config file" , icon_url=guild.icon.url)
-            embed.set_footer(text="Edit : .config set <target> <config>")
+            embed.set_footer(text="Edit : .config set <file> <key> <value>")
             for filename in os.listdir('./bot_config'):
                 if filename.endswith('.json'):
                     if not filename == "secrets.json":
@@ -349,14 +379,16 @@ class Latte_config(commands.Cog):
     #edit_config
     @latte_config.command(invoke_without_command=True , aliases=["set"])
     @utils.owner_bot()
-    async def latte_config_set(self, ctx, target_config, *,config=None):
+    async def latte_config_set(self, ctx, file_targat , target_config, *,config=None):
         if config is None:
-            await ctx.send(f"config is set {str(target_config)} : **None**")
-        data = utils.json_loader.read_json("latte")
+            await ctx.send(f"file : {file_targat}\nkey: {str(target_config)}\nvalue : None")
+        data = utils.json_loader.read_json(f"{str(file_targat)}")
         data[f"{str(target_config)}"] = str(config)
         try:
             utils.json_loader.write_json(data, "latte")
-            embed = discord.Embed(description=f"Config set **{target_config}** to **{config}**" , color=WHITE)
+            embed = discord.Embed(color=WHITE)
+            embed.add_field(name="file",value=f"```fix\n{file_targat}.json```",inline=False)
+            embed.add_field(name="config",value=f'```css\n"{target_config}":"{config}"```',inline=False)
             await ctx.send(embed=embed)
         except:
             await ctx.send("write json error")

@@ -8,8 +8,8 @@ My first discord bot write with python and use cogs
 
 | Required                            | version   |
 | ------------------------------------| --------- | 
-| **Python**                          | 3.9.5     | 
-| **discord.py**                      | 2.0.0a    | 
+| **Python**                          | 3.9.6     | 
+| **discord.py**                      | 2.0.0a bata   | 
 
 ### Installing and setup
 

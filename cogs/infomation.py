@@ -9,12 +9,13 @@ import giphy_client
 import typing
 from typing import Union
 from giphy_client.rest import ApiException
-
-from utils import Pag
+from PIL import Image , ImageColor
+from io import BytesIO
 
 # Local
 import utils
 from config import *
+from utils import Pag
 
 intents = discord.Intents.all()
 
@@ -155,7 +156,11 @@ class Infomation(commands.Cog):
         if len(member.roles) > 1:
             role_string = ' '.join(reversed([r.mention for r in member.roles][1:]))
 
-        embed = discord.Embed(colour=0xffffff)  #timestamp=ctx.message.created_at, #title=f"User Info - {member}")        embed.set_author(name=f"User info - {member}", icon_url=member.avatar.url)
+        #fetch_banner
+        fetch_member = await self.client.fetch_user(member.id)
+#            if fetchedMember.banner.is_animated() == True:
+
+        embed = discord.Embed(colour=0xffffff)  #timestamp=ctx.message.created_at
         fields = [("Nickname",f"{member.display_name}", True),
                 ("Is bot?","Yes" if member.bot else "No", True),
                 ("Activity",member_activity, True),
@@ -170,16 +175,53 @@ class Infomation(commands.Cog):
         for name , value , inline in fields:
             embed.add_field(name=name , value=value , inline=inline)
         embed.set_thumbnail(url=member.avatar.url)
+        if fetch_member.banner:
+            embed.set_image(url=fetch_member.banner.url)
+        elif fetch_member.accent_color:
+            embed.add_field(name=f"Banner color:" , value=f"{fetch_member.accent_color} (HEX)", inline=False)
         embed.set_footer(text=f"ID: {member.id}")
 
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['av'])
+    @commands.command(brief=f"{PREFIX}avatar", usage=f"{PREFIX}avatar [member]" , aliases=["av"])
     @commands.guild_only()
     async def avatar(self, ctx, *, member: discord.Member = None):
         member = member or ctx.author
-        embed = discord.Embed(title = f"{member.name}'s Avatar:", color=0xffffff).set_image(url = member.avatar.url)
+        embed = discord.Embed(title = f"{member.name}'s Avatar:", color=0xffffff)
+        if member.avatar:
+            embed.set_image(url = member.avatar.url)
+            embed.description = f"Avatar URL : [**LINK**]({member.avatar.url})"
+        else:
+            embed.description = f"this user must have a avatar."
         await ctx.send(embed = embed)
+    
+    @commands.command(brief=f"{PREFIX}banner", usage=f"{PREFIX}banner [member]" , aliases=["bn"])
+    @commands.guild_only()
+    async def banner(self, ctx, *,member: discord.Member=None):
+        member = member or ctx.author
+        fetch_member = await self.client.fetch_user(member.id)
+
+        embed = discord.Embed(title=f"{member.name}'s Banner:",color=0xffffff)
+
+        if fetch_member.banner:
+            embed.set_image(url=fetch_member.banner.url)
+            embed.description = f"Banner URL : [**LINK**]({fetch_member.banner.url})"
+            await ctx.send(embed=embed)
+        elif fetch_member.accent_color:
+            print(fetch_member.accent_color)
+            #pillow_generate
+            img = Image.new("RGB", (256, 144), ImageColor.getrgb(f"{fetch_member.accent_color}"))
+            buffer = BytesIO()
+            img.save(buffer, 'png')
+            buffer.seek(0)
+            f = discord.File(buffer, filename='banner.png')
+
+            embed.set_image(url="attachment://banner.png")
+            embed.add_field(name=f"this user don't have banner\n\nAccent color:" , value=f"{fetch_member.accent_color} (HEX)", inline=False)
+            await ctx.send(file=f, embed=embed)
+        else:
+            embed.description = f"this user must have a banner."
+            await ctx.send(embed=embed, delete_after=10)
 
     @commands.command(name="emojiinfo", aliases=["ei"], brief=f"{PREFIX}emojiinfo 🤫", usage=f"{PREFIX}emojiinfo <emoji>")
     @commands.guild_only()

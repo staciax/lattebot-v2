@@ -33,7 +33,6 @@ client.connection_url = secrets["mongo"]
 #from discord_slash import SlashCommand, SlashContext
 #slash = SlashCommand(client , sync_commands=True)
 
-
 @client.event
 async def on_ready():
     bot_activity = ".help"
@@ -96,6 +95,7 @@ async def _eval(ctx, *, code):
     local_variables = {
         "discord": discord,
         "commands": commands,
+        "client": client,
         "bot": client,
         "ctx": ctx,
         "channel": ctx.channel,
