@@ -1,7 +1,6 @@
 wheel
 aiofiles==0.7.0
 aiohttp==3.7.4.post0
-anime-images-api==0.0.6
 astunparse==1.6.3
 async-timeout==3.0.1
 attrs==21.2.0

@@ -107,6 +107,9 @@ class Message(commands.Cog):
                 embed = discord.Embed(description=f'**{member.display_name}** is afk for: {self.afk[id]}' , color=WHITE)
 #                embed.set_image(url="https://media.giphy.com/media/LPETDRbj82wbrYm7q6/source.gif")
                 await message.channel.send(embed=embed , delete_after=15)
+            
+        if message.content.startswith('berlin'):
+            await message.channel.send('https://www.vlr.gg/event/466/valorant-champions-tour-stage-3-masters-berlin' , delete_after=15)
 
         #message
         if message.content.startswith('latte'):

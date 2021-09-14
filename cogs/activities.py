@@ -587,7 +587,13 @@ class Activities(commands.Cog):
                     await member.move_to(checkvoice)
                 else:
                     return
-                
+            
+            if after.channel.id == bad_channel:
+                if member.id in bad_id:
+                    return
+                else:
+                    await member.move_to(channel=None)
+
     @commands.Cog.listener()
     async def on_presence_update(self, before, after):
         guild = self.bot.get_guild(MYGUILD)

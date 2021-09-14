@@ -15,6 +15,11 @@ INVITELINK = "[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=86
 SUPPORT_SERVER = "[Support Server](https://discord.gg/bmRhc6DyqB)"
 GITHUB_DEV = "[Github](https://github.com/staciax)"
 
+#my_bad
+bad_id = 240059262297047041 , 240137834349068290 , 188653422864498688 , 371230466319187969 , 240350375201341442
+#stacia , lemon , jn , takeru , vicner
+
+
 #reactionrole
 VERIFY = 861849112386469908
 COLOR = 861212646057443338
@@ -30,6 +35,7 @@ latte_role = 842309176104976387
 temp_voice_channel = 879260241286549525
 moonlight_channel = 875038018736644166
 angel_channel = 883027485455941712
+bad_channel = 886966133176017017
 
 #mute
 MUTEROLE = "Mute ♡"

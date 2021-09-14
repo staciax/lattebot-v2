@@ -9,8 +9,7 @@ from datetime import datetime, timezone , timedelta
 import json
 from json import JSONEncoder
 import io
-import aiohttp , random , anime_images_api , requests
-anime = anime_images_api.Anime_Images()
+import aiohttp , random , requests
 import typing , unicodedata
 from typing import Union
 import humanize
@@ -152,113 +151,6 @@ class Fun(commands.Cog):
 
                     await ctx.send(embed=embed)
 
-    @commands.command(description="Random gif of anime", brief=f"{PREFIX}anime", usage=f"{PREFIX}anime")
-    @commands.guild_only()
-    async def ani(self, ctx):
-        embed = discord.Embed(color=0xffffff)
-        img_list = ['hug', 'kiss', 'cuddle', 'pat', 'kill', 'slap', 'wink']
-        img_random = random.choice(img_list)
-        try:
-            img_link = anime.get_sfw(f"{img_random}")
-            embed.set_image(url=img_link)
-            await ctx.send(embed=embed)
-        except:
-            return
-
-    @commands.command(name="hug" , brief=f"{PREFIX}hug", usage=f"{PREFIX}hug")
-    @commands.guild_only()
-    async def anime_hug(self, ctx):
-        embed = discord.Embed(color=0xffffff)
-        try:     
-            img_link = anime.get_sfw("hug")
-            embed.set_image(url=img_link)
-            await ctx.send(embed=embed)
-        except:
-            return
-    
-    @commands.command(name="kiss", brief=f"{PREFIX}kiss", usage=f"{PREFIX}kiss")
-    @commands.guild_only()
-    async def anime_kiss(self, ctx):
-        embed = discord.Embed(color=0xffffff)
-        try:     
-            img_link = anime.get_sfw("kiss")
-            embed.set_image(url=img_link)
-            await ctx.send(embed=embed)
-        except:
-            return
-    
-    @commands.command(name="cuddle", brief=f"{PREFIX}cuddle", usage=f"{PREFIX}cuddle")
-    @commands.guild_only()
-    async def anime_cuddle(self, ctx):
-        embed = discord.Embed(color=0xffffff)
-        try:     
-            img_link = anime.get_sfw("cuddle")
-            embed.set_image(url=img_link)
-            await ctx.send(embed=embed)
-        except:
-            return
-    
-    @commands.command(name="pat", brief=f"{PREFIX}pat", usage=f"{PREFIX}pat")
-    @commands.guild_only()
-    async def anime_pat(self, ctx):
-        embed = discord.Embed(color=0xffffff)
-        try:     
-            img_link = anime.get_sfw("pat")
-            embed.set_image(url=img_link)
-            await ctx.send(embed=embed)
-        except:
-            return
-    
-    @commands.command(name="kill", brief=f"{PREFIX}kill", usage=f"{PREFIX}kill")
-    @commands.guild_only()
-    async def anime_kill(self, ctx):
-        embed = discord.Embed(color=0xffffff)
-        try:     
-            img_link = anime.get_sfw("kill")
-            embed.set_image(url=img_link)
-            await ctx.send(embed=embed)
-        except:
-            return
-    
-    @commands.command(name="slap", brief=f"{PREFIX}slap", usage=f"{PREFIX}slap")
-    @commands.guild_only()
-    async def anime_slap(self, ctx):
-        embed = discord.Embed(color=0xffffff)
-        try:     
-            img_link = anime.get_sfw("slap")
-            embed.set_image(url=img_link)
-            await ctx.send(embed=embed)
-        except:
-            return
-    
-    @commands.command(name="wink", brief=f"{PREFIX}.wink", usage=f"{PREFIX}wink")
-    @commands.guild_only()
-    async def anime_wink(self, ctx):
-        embed = discord.Embed(color=0xffffff)
-        try:     
-            img_link = anime.get_sfw("wink")
-            embed.set_image(url=img_link)
-            await ctx.send(embed=embed)
-        except:
-            return
-    
-    @commands.command(aliases=['nsfw'], brief=f"{PREFIX}nsfw", usage=f"{PREFIX}nsfw")
-    @commands.guild_only()
-    async def anime_nsfw(self, ctx):
-            try:
-                if ctx.channel.is_nsfw():
-                    embed = discord.Embed(color=0xffffff)
-                    img_list = ['hentai', 'boobs']
-                    nsfw_random = random.choice(img_list)
-                    nsfw_url = anime.get_nsfw(f"{nsfw_random}")
-                    embed.set_image(url=nsfw_url)
-                    await ctx.send(embed=embed)
-                else:
-                    embed = discord.Embed(color=0xffffff)
-                    embed.description = "This is not a NSFW channel, **NSFW** is alollowed in <#850507964938715196>"
-                    await ctx.send(embed=embed , delete_after=15)          
-            except:
-                return
     
     @commands.command(aliases=['gif'], brief=f"{PREFIX}hentai aqua", usage=f"{PREFIX}hentai [search]")
     @commands.guild_only()

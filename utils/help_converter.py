@@ -108,22 +108,13 @@ def Fun(ctx):
   return embed
 
 def Anime(ctx):
-  embed = Embed(title="Image Commands",color=0xffffff)
+  embed = Embed(title="Anime Commands",color=0xffffff)
   embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
 
   description="""
   Use `.help <command>` for more informations about a command.
-  
-  `waifu` • Display an image with the waifu tag.
-  `ani` • Display an image with the anime tag.
-  `hug` • Display an image with the hug tag.
-  `kiss` • Display an image with the kiss tag.
-  `cuddle` • Display an image with the cuddle tag.
-  `pat` • Display an image with the pat tag.
-  `kill` • Display an image with the kill tag.
-  `slap` • Display an image with the slap tag.
-  `wink` • Display an image with the wink wink.
-  
+    
+  • `waifu`, `bonk`, `bully`, `blush` ,`bite`, `cry`, `happy`, `kiss`, `kicks`, `lick`, `neko` , `nom` , `pat` , `smug` , `slap` , `smile` , `wink` , `waifu2`
   """
   embed.description = description
   
@@ -174,7 +165,7 @@ def NSFW(ctx):
   
   *NSFW* is alollowed in <#850507964938715196>
   
-  • `nsfw`, `ass`, `ecchi`, `ero`, `hentai` ,`maid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform`  
+  • `ass`, `ecchi`, `ero`, `hentai` ,`maid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform` , `waifu2` , `neko` , `trap` , `blowjob`
   """
   embed.description = description
   
