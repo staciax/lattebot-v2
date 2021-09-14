@@ -15,12 +15,12 @@ emojis = utils.emoji_converter
 
 class Help(commands.Cog): 
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
-        #DiscordComponents(self.client)
+        #DiscordComponents(self.bot)
         print(f"-{self.__class__.__name__}")
     
     @commands.command()
@@ -47,7 +47,7 @@ class Help(commands.Cog):
         lastup = datetime(UYEAR, UMONTH, UDATE)
         dt = lastup.strftime("%d %B %Y") #%A,
         embedhelp.set_footer(text=f"Recently Updated • {dt}")
-#        embedhelp.set_thumbnail(url=self.client.user.avatar.url)
+#        embedhelp.set_thumbnail(url=self.bot.user.avatar.url)
         embedhelp.set_image(url="https://i.imgur.com/3jz8m3V.png")
       
         msg = await ctx.send(embed=embedhelp,
@@ -58,61 +58,61 @@ class Help(commands.Cog):
                                     label="Utility",
                                     value="test1.2",
                                     description="Utility Commands",
-                                    emoji=self.client.get_emoji(867683219733348363)
+                                    emoji=self.bot.get_emoji(867683219733348363)
                                 ),
                                 SelectOption(
                                     label="Infomation",
                                     value="test2.2",
                                     description="Infomation commands",
-                                    emoji=self.client.get_emoji(867686091501994004)
+                                    emoji=self.bot.get_emoji(867686091501994004)
                                 ),
                                 SelectOption(
                                     label="Moderation",
                                     value="test3.2",
                                     description="Moderation commands",
-                                    emoji=self.client.get_emoji(867683214298054696)
+                                    emoji=self.bot.get_emoji(867683214298054696)
                                 ),
                                 SelectOption(
                                     label="Giveaway",
                                     value="test4.2",
                                     description="Giveaway commands",
-                                    emoji=self.client.get_emoji(867701465983615006)
+                                    emoji=self.bot.get_emoji(867701465983615006)
                                 ),
                                 SelectOption(
                                     label="Fun",
                                     value="test5.2",
                                     description="Fun commands",
-                                    emoji=self.client.get_emoji(867701428998635522) #""
+                                    emoji=self.bot.get_emoji(867701428998635522) #""
                                 ),
                                 SelectOption(
                                     label="Meta",
                                     value="test6.2",
                                     description="Game commands",
-                                    emoji=self.client.get_emoji(867705949933666324)
+                                    emoji=self.bot.get_emoji(867705949933666324)
                                 ),
                                 SelectOption(
                                     label="Reaction",
                                     value="test7.2",
                                     description="Reaction roles",
-                                    emoji=self.client.get_emoji(867704973865254922)
+                                    emoji=self.bot.get_emoji(867704973865254922)
                                 ),
                                 SelectOption(
                                     label="Leveling",
                                     value="test8.2",
                                     description="Leveling",
-                                    emoji=self.client.get_emoji(867693328560947200)
+                                    emoji=self.bot.get_emoji(867693328560947200)
                                 ),
                                 SelectOption(
                                     label="NSFW",
                                     value="test9.2",
                                     description="NSFW",
-                                    emoji=self.client.get_emoji(867707490379628564)
+                                    emoji=self.bot.get_emoji(867707490379628564)
                                 ),
                                 SelectOption(
                                     label="Help",
                                     value="test10.2",
                                     description="back to main page",
-                                    emoji=self.client.get_emoji(864921120226279504)
+                                    emoji=self.bot.get_emoji(864921120226279504)
                                 ),
                             ])]
                             )
@@ -146,7 +146,7 @@ class Help(commands.Cog):
 
         while True:
             try:
-                event = await self.client.wait_for("select_option")
+                event = await self.bot.wait_for("select_option")
                 label = event.component[0].label
 
                 if label == "Utility":
@@ -211,5 +211,5 @@ class Help(commands.Cog):
             except discord.NotFound:
                 print("error.")  
 
-def setup(client):
-    client.add_cog(Help(client))
+def setup(bot):
+    bot.add_cog(Help(bot))

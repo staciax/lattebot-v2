@@ -10,7 +10,7 @@ from discord.ext import commands
 #@checks.admin_or_permissions(manage_roles=True)
 
 async def check_permissions(ctx, perms, *, check=all):
-    is_owner = await ctx.client.is_owner(ctx.author)
+    is_owner = await ctx.bot.is_owner(ctx.author)
     if is_owner:
         return True
 
@@ -23,7 +23,7 @@ def has_permissions(*, check=all, **perms):
     return commands.check(pred)
 
 async def check_guild_permissions(ctx, perms, *, check=all):
-    is_owner = await ctx.client.is_owner(ctx.author)
+    is_owner = await ctx.bot.is_owner(ctx.author)
     if is_owner:
         return True
 
@@ -82,7 +82,7 @@ def owner_bot():
     return commands.check(pred)
 
 async def dev_bot(self , ctx):
-    user = self.client.get_user(385049730222129152) or await self.client.fetch_user(385049730222129152)
+    user = self.bot.get_user(385049730222129152) or await self.bot.fetch_user(385049730222129152)
 
     return user
 

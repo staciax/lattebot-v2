@@ -12,9 +12,8 @@ import utils
 
 class api_waifu(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
-        self.bot = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -247,7 +246,7 @@ class api_waifu(commands.Cog):
     
     @commands.command()
     @commands.guild_only()
-    async def waifu2(self, ctx):
+    async def waifu(self, ctx):
         if ctx.channel.is_nsfw():
             async with aiohttp.ClientSession() as cs:
                 async with cs.get(f"https://api.waifu.pics/nsfw/waifu") as rep:
@@ -332,5 +331,5 @@ class api_waifu(commands.Cog):
                 else:
                     return
 
-def setup(client):
-    client.add_cog(api_waifu(client))
+def setup(bot):
+    bot.add_cog(api_waifu(bot))

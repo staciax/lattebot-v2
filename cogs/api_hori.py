@@ -20,15 +20,14 @@ headers = {'Stacia':f'aiohttp/{aiohttp.__version__}; Lattebot','Authorization':f
 
 class hori_api(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
-        self.bot = client
+    def __init__(self, bot):
+        self.bot = bot
         slash = InteractionClient(self.bot)
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
-    
+"""    
     @commands.command()
     @commands.guild_only()
     async def waifu(self, ctx):
@@ -281,7 +280,7 @@ class hori_api(commands.Cog):
 #        @on_click.timeout
 #        async def on_timeout():
 #            await msg.edit(components=[])
-    
+"""  
 
-def setup(client):
-    client.add_cog(hori_api(client))
+def setup(bot):
+    bot.add_cog(hori_api(bot))

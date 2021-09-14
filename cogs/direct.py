@@ -12,23 +12,23 @@ intents = discord.Intents.all()
 
 class DM_Message(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.direct = self.client.get_channel(874942964462391357)
+        self.direct = self.bot.get_channel(874942964462391357)
         print(f"-{self.__class__.__name__}")
     
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author == self.client.user:
+        if message.author == self.bot.user:
             return
         
         #DM_to_DM
-        stacia = self.client.get_user(240059262297047041)
-        pond = self.client.get_user(371230466319187969)
-        latte = self.client.get_user(834834946832203776)
+        stacia = self.bot.get_user(240059262297047041)
+        pond = self.bot.get_user(371230466319187969)
+        latte = self.bot.get_user(834834946832203776)
 
         if isinstance(message.channel, discord.DMChannel):
             if message.content:
@@ -64,5 +64,5 @@ class DM_Message(commands.Cog):
                 await member.send(embed=embed)
                 await message.delete()
 
-def setup(client):
-    client.add_cog(DM_Message(client))
+def setup(bot):
+    bot.add_cog(DM_Message(bot))

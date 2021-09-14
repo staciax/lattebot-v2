@@ -14,9 +14,8 @@ from config import *
 
 class Latte_config(commands.Cog): 
 
-    def __init__(self, client):
-        self.bot = client
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
     
     @commands.Cog.listener()
     async def on_ready(self):
@@ -301,7 +300,7 @@ class Latte_config(commands.Cog):
         embedfail = discord.Embed(description=f"You took to long, please try again.",color=0xffffff)
         await ctx.send(embed=embedwait)
         try:
-            msg = await self.client.wait_for('message', check=check, timeout=60.0)
+            msg = await self.bot.wait_for('message', check=check, timeout=60.0)
         except asyncio.TimeoutError:
             await ctx.send(embed=embedfail)
 
@@ -405,5 +404,5 @@ class Latte_config(commands.Cog):
 #        
 #       await ctx.send("test")
         
-def setup(client):
-    client.add_cog(Latte_config(client))
+def setup(bot):
+    bot.add_cog(Latte_config(bot))

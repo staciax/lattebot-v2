@@ -13,9 +13,8 @@ emojis = utils.emoji_converter
 
 class Help_support(commands.Cog): 
 
-    def __init__(self, client):
-        self.client = client
-        self.bot = client
+    def __init__(self, bot):
+        self.bot = bot
     
     @commands.Cog.listener()
     async def on_ready(self):
@@ -104,5 +103,5 @@ class Help_support(commands.Cog):
 
             await ctx.send(embed = helpEmbed)
             
-def setup(client):
-    client.add_cog(Help_support(client))
+def setup(bot):
+    bot.add_cog(Help_support(bot))

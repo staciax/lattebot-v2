@@ -34,6 +34,8 @@ class Groups(commands.Cog):
     async def third(self, ctx, channelId=None):
         await ctx.message.author.send("Hey! Did this come through clearly?")
 
+    """reference sub command"""
+
 
 def setup(bot):
     bot.add_cog(Groups(bot))

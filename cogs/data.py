@@ -28,10 +28,9 @@ intents = discord.Intents.all()
 
 class Data(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
-        self.bot = client
-        self.client.launch_time = datetime.utcnow()
+    def __init__(self, bot):
+        self.bot = bot
+        self.bot.launch_time = datetime.utcnow()
     
     async def process_commands(self, message):
         ctx = await self.get_context(message, cls=Context)
@@ -45,16 +44,16 @@ class Data(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.log_channel = self.client.get_channel(REPORTBUG)
-        self.request_message = self.client.get_channel(REQUEST_ME)
-        self.bug_channel = self.client.get_channel(865609918945820692)
+        self.log_channel = self.bot.get_channel(REPORTBUG)
+        self.request_message = self.bot.get_channel(REQUEST_ME)
+        self.bug_channel = self.bot.get_channel(865609918945820692)
         print(f"-{self.__class__.__name__}")
     
     @commands.command(aliases=["botinfo", "about"])
     async def latte_info_(self, ctx):
-        stacia = self.client.get_user(385049730222129152) or await self.client.fetch_user(385049730222129152)
+        stacia = self.bot.get_user(385049730222129152) or await self.bot.fetch_user(385049730222129152)
         embed = discord.Embed(
-            title=f"{self.client.user.name} Info about ",
+            title=f"{self.bot.user.name} Info about ",
             color=0xffffff
         )
         
@@ -64,16 +63,16 @@ class Data(commands.Cog):
             ("Library" , f"`Discord.py {discord.__version__}`" , True),
             ("DataBase" , "`MongoDB`" , True),
             ("Platform", f"`{platform.system()} {platform.release()}`", True),
-            ("Developer" , f"`{str(self.client.get_user(self.client.owner_id))}`" , True),
+            ("Developer" , f"`{str(self.bot.get_user(self.bot.owner_id))}`" , True),
             ("Open Source", "`Yes. but not now.`", True),
-            ("Bot created", f"{utils.format_dt(self.client.user.created_at)}", True)
+            ("Bot created", f"{utils.format_dt(self.bot.user.created_at)}", True)
 
         ]
 
         for name , value , inline in fields:
             embed.add_field(name=name , value=value , inline=inline)
 
-        embed.set_thumbnail(url=self.client.user.avatar.url)
+        embed.set_thumbnail(url=self.bot.user.avatar.url)
         
         await ctx.send(embed=embed, mention_author=False)
 
@@ -82,27 +81,27 @@ class Data(commands.Cog):
     async def status(self, ctx, statusType: str, *, statusText):
 
         if statusType.lower() == "playing":  # Setting `Playing ` status
-            await self.client.change_presence(activity=discord.Game(name=statusText))
+            await self.bot.change_presence(activity=discord.Game(name=statusText))
         if statusType.lower() == "streaming": # Setting `Streaming ` status
-            await self.client.change_presence(activity=discord.Streaming(name=statusText, url=""))
+            await self.bot.change_presence(activity=discord.Streaming(name=statusText, url=""))
         if statusType.lower() == "listening": # Setting `Listening ` statu
-            await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=statusText))
+            await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=statusText))
         if statusType.lower() == "watching": # Setting `Watching ` status
-            await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=statusText))
+            await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=statusText))
 
         embed = discord.Embed(description=f"{utils.emoji_converter('check')} **Status Changed!**\n\n`{statusText}`",color=0xffffff)
         await ctx.send(embed=embed)
 
     @commands.command(description="invite bot")
     async def invite(self, ctx):
-        embed = discord.Embed(title=f"**invite bot**",description=f"**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.client.guilds)}** servers︰𓂃 ꒱\n\n⸝⸝﹒{INVITELINK} ꒱",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
-        embed.set_thumbnail(url=self.client.user.avatar.url)    
+        embed = discord.Embed(title=f"**invite bot**",description=f"**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.bot.guilds)}** servers︰𓂃 ꒱\n\n⸝⸝﹒{INVITELINK} ꒱",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
+        embed.set_thumbnail(url=self.bot.user.avatar.url)    
         await ctx.send(embed=embed)
     
     @commands.command(description="check latency bot")
     @commands.guild_only()
     async def ping(self, ctx):
-        bot_latency = round(self.client.latency * 1000)
+        bot_latency = round(self.bot.latency * 1000)
 
         typings = time.monotonic()
         await ctx.trigger_typing()
@@ -127,13 +126,13 @@ class Data(commands.Cog):
         BotVersion = BOTVERSION
         pythonVersion = platform.python_version()
         dpyVersion = discord.__version__
-        serverCount = len(self.client.guilds)
-        memberCount = len(set(self.client.get_all_members()))
-        totalcogs = len(self.client.cogs)
-        totalcommands = len(self.client.commands)
+        serverCount = len(self.bot.guilds)
+        memberCount = len(set(self.bot.get_all_members()))
+        totalcogs = len(self.bot.cogs)
+        totalcommands = len(self.bot.commands)
 
         # time
-        delta_uptime = datetime.utcnow() - self.client.launch_time
+        delta_uptime = datetime.utcnow() - self.bot.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
         minutes, seconds = divmod(remainder, 60)
         days, hours = divmod(hours, 24)
@@ -154,7 +153,7 @@ class Data(commands.Cog):
         bot_ramUsage = f"{process.memory_info().rss / 1048576:.01f}"
         bot_ramUsagePC = f"{process.memory_percent():.01f}"
 
-        embed = discord.Embed(description='\uFEFF', colour=0xffffff) #title=f'{self.client.user.name} Stats',
+        embed = discord.Embed(description='\uFEFF', colour=0xffffff) #title=f'{self.bot.user.name} Stats',
         
         fields = [("Bot version:",f"```{BotVersion}```", True),
                     ("Python version:",f"```{pythonVersion}```", True),
@@ -178,14 +177,14 @@ class Data(commands.Cog):
         lastup = datetime(UYEAR, UMONTH, UDATE)
         dt = lastup.strftime("%d %B %Y") #%A,
         embed.set_footer(text=f"Recently Updated • {dt}")
-        embed.set_author(name=f"{self.client.user.name} Stats", icon_url=self.client.user.avatar.url)
+        embed.set_author(name=f"{self.bot.user.name} Stats", icon_url=self.bot.user.avatar.url)
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['botdis'])
     @commands.is_owner()
     async def logout(self, ctx): #ทำเหมือน giveaway version x
         embed = discord.Embed(color=0xffffff)
-        embed.set_author(name=f"{self.client.user.name} Logout",icon_url=self.client.user.avatar.url)
+        embed.set_author(name=f"{self.bot.user.name} Logout",icon_url=self.bot.user.avatar.url)
         embed.description = f"are you sure? {utils.emoji_converter('what')}"
 
         m = await ctx.send("Are these all valid?", embed=embed , delete_after=60)
@@ -193,7 +192,7 @@ class Data(commands.Cog):
         await m.add_reaction("🇽")
 
         try:
-            reaction, member = await self.client.wait_for(
+            reaction, member = await self.bot.wait_for(
                 "reaction_add",
                 timeout=60,
                 check=lambda reaction, user: user == ctx.author
@@ -211,11 +210,11 @@ class Data(commands.Cog):
         
         await m.delete()
         embed_lg = discord.Embed(color=0xffffff)
-        embed_lg.set_footer(text=f"{self.client.user.name} is disconnect" , icon_url=self.client.user.avatar.url)
+        embed_lg.set_footer(text=f"{self.bot.user.name} is disconnect" , icon_url=self.bot.user.avatar.url)
 
         await ctx.message.delete()
         await ctx.send(embed=embed_lg, delete_after=10)
-        await self.client.logout()
+        await self.bot.logout()
     
     @commands.command(usage="[message]")
     @commands.guild_only()
@@ -235,7 +234,7 @@ class Data(commands.Cog):
         embedfail = discord.Embed(title="FEED BACK",description=f"{utils.emoji_converter('xmark')} You took to long, please try again.",color=0xffffff)
         await ctx.send(embed=embedwait)
         try:
-            msg1 = await self.client.wait_for('message', check=check, timeout=60.0)
+            msg1 = await self.bot.wait_for('message', check=check, timeout=60.0)
         except asyncio.TimeoutError:
             await ctx.send(embed=embedfail)
 
@@ -362,5 +361,5 @@ class Data(commands.Cog):
 #            else:
 #                await self.process_commands(message)
 
-def setup(client):
-    client.add_cog(Data(client))
+def setup(bot):
+    bot.add_cog(Data(bot))

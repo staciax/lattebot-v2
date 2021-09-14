@@ -41,9 +41,9 @@ levelling = cluster[MGDATABASE][MGDOCUMENT]
 
 class XP_user(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
-        InterClient = InteractionClient(self.client)
+    def __init__(self, bot):
+        self.bot = bot
+        InterClient = InteractionClient(self.bot)
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -197,6 +197,5 @@ class XP_user(commands.Cog):
 
         await inter.channel.send(embed=embed)
     
-def setup(client):
-
-    client.add_cog(XP_user(client))
+def setup(bot):
+    bot.add_cog(XP_user(bot))

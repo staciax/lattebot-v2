@@ -12,8 +12,8 @@ intents.members = True
 
 class Bot_activities(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -34,7 +34,7 @@ class Bot_activities(commands.Cog):
         embed.add_field(name='Member Count:',value=f'{guild.member_count}')
         embed.add_field(name='Amount of Channels:',value=f"{len(channels)}")
         embed.add_field(name='Amount of Roles:',value=f"{len(roles)}")
-        await self.client.get_channel(863806084414439454).send(embed=embed)
+        await self.bot.get_channel(863806084414439454).send(embed=embed)
 
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
@@ -54,7 +54,7 @@ class Bot_activities(commands.Cog):
             pass
         embed.add_field(name='Amount of Channels:',value=f"{len(channels)}")
         embed.add_field(name='Amount of Roles:',value=f"{len(roles)}")
-        await self.client.get_channel(863811115238948864).send(embed=embed)
+        await self.bot.get_channel(863811115238948864).send(embed=embed)
 
-def setup(client):
-    client.add_cog(Bot_activities(client))
+def setup(bot):
+    bot.add_cog(Bot_activities(bot))

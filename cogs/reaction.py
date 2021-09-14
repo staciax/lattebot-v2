@@ -9,8 +9,8 @@ import utils
 
 class Reaction(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -106,7 +106,7 @@ class Reaction(commands.Cog):
         MatchaID = VERIFYMATCHA
         MatchaColor = MATCHA_COLOR
 
-        guild = await(self.client.fetch_guild(payload.guild_id))
+        guild = await(self.bot.fetch_guild(payload.guild_id))
         emoji = str(payload.emoji.id)
         member = await(guild.fetch_member(payload.user_id))
 
@@ -198,12 +198,12 @@ class Reaction(commands.Cog):
     @commands.guild_only()
     async def ar(self, ctx, msg_id: int = None, channel: discord.TextChannel = None, emote=None):
         if not msg_id:
-            channel = self.client.get_channel(f'{channel}') 
+            channel = self.bot.get_channel(f'{channel}') 
         elif not channel:
             channel = ctx.channel
         msg = await channel.fetch_message(msg_id)
         await ctx.message.delete()
         await msg.add_reaction(emote)
 
-def setup(client):
-    client.add_cog(Reaction(client))
+def setup(bot):
+    bot.add_cog(Reaction(bot))

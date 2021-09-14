@@ -23,9 +23,8 @@ class Activities(commands.Cog):
 
     current_streamers = list()
 
-    def __init__(self, client):
-        self.bot = client
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
         self.invites = {}
         self.invite_code = utils.json_loader.read_json("latte")["tempinvite"]
         self.total_ = 0
@@ -46,7 +45,7 @@ class Activities(commands.Cog):
         print(f"-{self.__class__.__name__}")
 #        guild = self.bot.get_guild(MYGUILD)
 #        self.invites[guild.id] = await guild.invites()
-        for guild in self.client.guilds:
+        for guild in self.bot.guilds:
             self.invites[guild.id] = await guild.invites()
 
     #channel_stats
@@ -184,7 +183,7 @@ class Activities(commands.Cog):
             if data is None:
                 return
             
-            guild = self.client.get_guild(member.guild.id)
+            guild = self.bot.get_guild(member.guild.id)
             channel = guild.get_channel(data)
             embed=discord.Embed(
                         description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
@@ -246,7 +245,7 @@ class Activities(commands.Cog):
             if data is None:
                 return
             
-            guild = self.client.get_guild(member.guild.id)
+            guild = self.bot.get_guild(member.guild.id)
             channel = guild.get_channel(data)
             embed = discord.Embed(
                         description=f"**Leave Server\n`{member}`**",
@@ -630,5 +629,5 @@ class Activities(commands.Cog):
 #            if role in after.roles: 
 #                await after.remove_roles(role)
 
-def setup(client):
-    client.add_cog(Activities(client))
+def setup(bot):
+    bot.add_cog(Activities(bot))

@@ -18,8 +18,8 @@ intents.all()
 
 class Moderation(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client        
+    def __init__(self, bot):
+        self.bot = bot        
         self.only_images = (ONLYIMG,)
         self.testing_only = (ONLYTESTING,)
 
@@ -114,7 +114,7 @@ class Moderation(commands.Cog):
         embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
 
         embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server : {ctx.guild.name}\nReason : {reason} `\n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
-        embedmute.set_footer(text=f"{self.client.user.name}",icon_url=self.client.user.avatar.url)
+        embedmute.set_footer(text=f"{self.bot.user.name}",icon_url=self.bot.user.avatar.url)
 
         embedfinish = discord.Embed(title="BOT SETTING SUCCESS",description=f"{mutedRole.mention}\n**Permissions**\n`speak : false`\n`send message : false`\n\n**Role permission sync**\n`text channel : sync`\n`voice channel : sync`\n`category : sync`\n\n `please move` **`Muted Role`** `above other role.`",color=0xffffff)
         await ctx.send(embed = embed)
@@ -149,7 +149,7 @@ class Moderation(commands.Cog):
         embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
 
 #            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n`Reason` : {reason} \n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
-#            embedmute.set_footer(text=f"{self.client.user.name}",icon_url=self.client.user.avatar.url)
+#            embedmute.set_footer(text=f"{self.bot.user.name}",icon_url=self.bot.user.avatar.url)
 
         await member.add_roles(role, reason=reason)
 
@@ -169,7 +169,7 @@ class Moderation(commands.Cog):
 
         data = utils.json_loader.read_json("latte")
         log = data["server-log"]
-        self.log_mute = self.client.get_channel(log)
+        self.log_mute = self.bot.get_channel(log)
 
         if self.log_mute:
             minutes, seconds = divmod(time, 60)
@@ -291,7 +291,7 @@ class Moderation(commands.Cog):
     #spam_alert
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author == self.client.user:
+        if message.author == self.bot.user:
             return
 
         def _check(m):
@@ -300,7 +300,7 @@ class Moderation(commands.Cog):
 					and (datetime.now(timezone.utc)-m.created_at).seconds < 60)
         
         if not message.author.bot:
-            if len(list(filter(lambda m: _check(m), self.client.cached_messages))) >= 4:
+            if len(list(filter(lambda m: _check(m), self.bot.cached_messages))) >= 4:
                 embedspam = discord.Embed(description="Don't spam mentions!",color=0xffffff)
                 await message.channel.send(embed=embedspam, delete_after=10)
                                                
@@ -405,5 +405,5 @@ class Moderation(commands.Cog):
         except:
             await ctx.send('error delete emoji!')
 
-def setup(client):
-    client.add_cog(Moderation(client))
+def setup(bot):
+    bot.add_cog(Moderation(bot))

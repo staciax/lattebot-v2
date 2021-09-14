@@ -20,13 +20,12 @@ from discord.ext import menus
 
 class Testing(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
-        self.bot = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
-        #DiscordComponents(self.client)
+        #DiscordComponents(self.bot)
         print(f"-{self.__class__.__name__}")
      
     @commands.command(name="testembed")
@@ -135,7 +134,7 @@ class Testing(commands.Cog):
             ],
         )
         while True:
-            interaction = await self.client.wait_for("select_option")
+            interaction = await self.bot.wait_for("select_option")
             await interaction.respond(
                 content=f"{','.join(map(lambda x: x.label, interaction.component))} selected!"
             )
@@ -147,5 +146,5 @@ class Testing(commands.Cog):
         else:
             print("no")
             
-def setup(client):
-    client.add_cog(Testing(client))
+def setup(bot):
+    bot.add_cog(Testing(bot))

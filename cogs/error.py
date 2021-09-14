@@ -11,12 +11,12 @@ import utils
 
 class Error(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.direct = self.client.get_channel(874942964462391357)
+        self.direct = self.bot.get_channel(874942964462391357)
         print(f"-{self.__class__.__name__}")
     
     @commands.Cog.listener()
@@ -56,5 +56,5 @@ class Error(commands.Cog):
         embed.add_field(name="Commands Error!", value=f"{cm_error}")
         await ctx.send(embed=embed, delete_after=15)
     
-def setup(client):
-    client.add_cog(Error(client))
+def setup(bot):
+    bot.add_cog(Error(bot))

@@ -45,7 +45,7 @@ class BetterUserconverter(commands.Converter):
       if role:
         if role.is_bot_managed():
           user=role.tags.bot_id
-          user = ctx.client.get_user(user) or await ctx.bot.fetch_user(user)
+          user = ctx.bot.get_user(user) or await ctx.bot.fetch_user(user)
 
     if user == None:
       tag = re.match(r"#?(\d{4})",argument)

@@ -11,8 +11,8 @@ import utils
 
 class Giveaway(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -28,7 +28,7 @@ class Giveaway(commands.Cog):
             return m.author == ctx.author and m.channel == ctx.channel
         
         try:
-            msg1 = await self.client.wait_for('message', check=check, timeout=30.0)
+            msg1 = await self.bot.wait_for('message', check=check, timeout=30.0)
 
             channel_converter = discord.ext.commands.TextChannelConverter()
             try:
@@ -46,7 +46,7 @@ class Giveaway(commands.Cog):
 
         await ctx.send("How many winners?")
         try:
-            msg2 = await self.client.wait_for('message', check=check, timeout=30.0)
+            msg2 = await self.bot.wait_for('message', check=check, timeout=30.0)
             try:
                 winerscount = int(msg2.content)
             except ValueError:
@@ -57,7 +57,7 @@ class Giveaway(commands.Cog):
 
         await ctx.send("Select an amount of time for the giveaway. `(s|m|h|d|w)`")
         try:
-            since = await self.client.wait_for('message', check=check, timeout=30.0)
+            since = await self.bot.wait_for('message', check=check, timeout=30.0)
 
         except asyncio.TimeoutError:
             await ctx.send("You took to long, please try again!")
@@ -95,7 +95,7 @@ class Giveaway(commands.Cog):
 
         await ctx.send("What would you like the prize to be?")
         try:
-            msg4 = await self.client.wait_for('message', check=check, timeout=30.0)
+            msg4 = await self.bot.wait_for('message', check=check, timeout=30.0)
 
         except asyncio.TimeoutError:
             await ctx.send("You took to long, please try again.")
@@ -141,10 +141,10 @@ class Giveaway(commands.Cog):
     @commands.has_permissions(manage_guild=True)
     async def reroll(self, ctx):
         async for message in ctx.channel.history(limit=30, oldest_first=False):
-            if message.author.id == self.client.user.id and message.embeds:
+            if message.author.id == self.bot.user.id and message.embeds:
                 reroll = await ctx.fetch_message(message.id)
                 users = await reroll.reactions[0].users().flatten()
-                users.pop(users.index(self.client.user))
+                users.pop(users.index(self.bot.user))
                 winner = random.choice(users)
     
                 reEmbed = discord.Embed(title=f'🎉GIVEAWAY ENDED🎉',description=f'Winner(s) : {winner.mention}\nHosted By : {ctx.author.mention}\n', color=0x000001,timestamp=datetime.now(timezone.utc))
@@ -156,5 +156,5 @@ class Giveaway(commands.Cog):
         else:
             await ctx.send("No giveaways going on in this channel.")
             
-def setup(client):
-    client.add_cog(Giveaway(client))
+def setup(bot):
+    bot.add_cog(Giveaway(bot))

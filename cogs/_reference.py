@@ -11,13 +11,12 @@ import utils
 
 class name_cog(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
-        self.bot = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
     
-def setup(client):
-    client.add_cog(name_cog(client))
+def setup(bot):
+    bot.add_cog(name_cog(bot))

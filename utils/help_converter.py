@@ -114,7 +114,7 @@ def Anime(ctx):
   description="""
   Use `.help <command>` for more informations about a command.
     
-  • `waifu`, `bonk`, `bully`, `blush` ,`bite`, `cry`, `happy`, `kiss`, `kicks`, `lick`, `neko` , `nom` , `pat` , `smug` , `slap` , `smile` , `wink` , `waifu2`
+  • `waifu`, `bonk`, `bully`, `blush` ,`bite`, `cry`, `happy`, `kiss`, `kicks`, `lick`, `neko` , `nom` , `pat` , `smug` , `slap` , `smile` , `wink`
   """
   embed.description = description
   
@@ -165,8 +165,9 @@ def NSFW(ctx):
   
   *NSFW* is alollowed in <#850507964938715196>
   
-  • `ass`, `ecchi`, `ero`, `hentai` ,`maid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform` , `waifu2` , `neko` , `trap` , `blowjob`
+  • `waifu` , `neko` , `trap` , `blowjob`
   """
+  # `ass`, `ecchi`, `ero`, `hentai` ,`maid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform` , 
   embed.description = description
   
   return embed

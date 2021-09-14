@@ -16,8 +16,8 @@ from config import *
 
 class Message(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
         self.url_regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
         self.links_allowed = ()
 
@@ -43,7 +43,7 @@ class Message(commands.Cog):
 #            await msg.add_reaction("<:greentick:881500884725547021>")
             
             try:
-                reaction , user = await self.client.wait_for(
+                reaction , user = await self.bot.wait_for(
                     "reaction_add",
                     timeout=30,
                     check=lambda reaction, user: user == ctx.author
@@ -66,7 +66,7 @@ class Message(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author == self.client.user:
+        if message.author == self.bot.user:
             return
 
         #only_image_channel
@@ -107,11 +107,14 @@ class Message(commands.Cog):
                 embed = discord.Embed(description=f'**{member.display_name}** is afk for: {self.afk[id]}' , color=WHITE)
 #                embed.set_image(url="https://media.giphy.com/media/LPETDRbj82wbrYm7q6/source.gif")
                 await message.channel.send(embed=embed , delete_after=15)
-            
+        
+        #message 
         if message.content.startswith('berlin'):
-            await message.channel.send('https://www.vlr.gg/event/466/valorant-champions-tour-stage-3-masters-berlin' , delete_after=15)
+            await message.channel.send('https://www.vlr.gg/event/466/valorant-champions-tour-stage-3-masters-berlin')
+        
+        if message.content.startswith('esl'):
+            await message.channel.send('https://www.twitch.tv/esl_thailand')
 
-        #message
         if message.content.startswith('latte'):
             await message.delete()
             await message.channel.send('เอะ! เรียกเราหรอ?  <:S_CuteGWave3:859660565160001537>')
@@ -163,10 +166,10 @@ class Message(commands.Cog):
 #                    for c in message.guild.channels:
 #                        if c.id == channel_id:
 #                            checkvoice = c
-                    
+     
         #when_mention_bot
-        if self.client.user.mentioned_in(message):
-            await message.channel.send(f"This is my prefix `.`", delete_after=10)
+#        if self.bot.user.mentioned_in(message):
+#            await message.channel.send(f"This is my prefix `.`", delete_after=10)
 
         #temp_channel
         if message.channel.id == TEMP_CH:
@@ -201,7 +204,7 @@ class Message(commands.Cog):
             if message.content.startswith('lt blackmail'):
                 return
             
-            if message.author == self.client.user:
+            if message.author == self.bot.user:
                 return
             if message.content:
                 self.sniped_text[message.channel.id] = (message.content, message.author, message.channel.mention, message.created_at)
@@ -317,10 +320,10 @@ class Message(commands.Cog):
         if user != None and args != None:
             try:
                 embed = discord.Embed(title="",description=f"** **\nMessage : `{args}`\n\n** **",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
-                embed.set_footer(text=f"{self.client.user.name}" , icon_url = self.client.user.avatar.url)
+                embed.set_footer(text=f"{self.bot.user.name}" , icon_url = self.bot.user.avatar.url)
                 embed.set_author(name=f"{ctx.guild.name} | Direct Message", icon_url= ctx.guild.icon.url)
 
-                embedsc = discord.Embed(title=f"{self.client.user.name} | Direct Message",description=f"Bot has been sent message to `{user.name}#{user.discriminator}`\n\nMessage : `{args}`\n\n",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
+                embedsc = discord.Embed(title=f"{self.bot.user.name} | Direct Message",description=f"Bot has been sent message to `{user.name}#{user.discriminator}`\n\nMessage : `{args}`\n\n",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
                 embedsc.set_footer(text=f"Req by {ctx.guild.name} " , icon_url = ctx.guild.icon.url)
                 await user.send(embed=embed)
                 await ctx.channel.send(embed=embedsc)
@@ -333,5 +336,5 @@ class Message(commands.Cog):
             embed = discord.Embed(description="You didn't provide a user's id and/or a message.", color=0xffffff)
             await ctx.channel.send(embed=embed)
         
-def setup(client):
-    client.add_cog(Message(client))
+def setup(bot):
+    bot.add_cog(Message(bot))

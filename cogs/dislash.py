@@ -7,9 +7,9 @@ import utils
 
 class Dislash(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
-        InteractionClient(self.client)
+    def __init__(self, bot):
+        self.bot = bot
+        InteractionClient(self.bot)
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -26,5 +26,5 @@ class Dislash(commands.Cog):
 #message_commands
 
 
-def setup(client):
-    client.add_cog(Dislash(client))
+def setup(bot):
+    bot.add_cog(Dislash(bot))

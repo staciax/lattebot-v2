@@ -16,8 +16,8 @@ SUPPORT_SERVER = "[Support Server](https://discord.gg/bmRhc6DyqB)"
 GITHUB_DEV = "[Github](https://github.com/staciax)"
 
 #my_bad
-bad_id = 240059262297047041 , 240137834349068290 , 188653422864498688 , 371230466319187969 , 240350375201341442
-#stacia , lemon , jn , takeru , vicner
+bad_id = 240059262297047041 , 240137834349068290 , 188653422864498688 , 371230466319187969 , 240350375201341442 , 687174446263304324
+#stacia , lemon , jn , takeru , vicner , run
 
 
 #reactionrole

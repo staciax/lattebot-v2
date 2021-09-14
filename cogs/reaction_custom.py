@@ -11,9 +11,8 @@ import utils
 
 class Reaction_custom(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
-        self.bot = client
+    def __init__(self, bot):
+        self.bot = bot
         self.reaction_roles = []
 
     @commands.Cog.listener()
@@ -58,5 +57,5 @@ class Reaction_custom(commands.Cog):
                 await guild.get_member(payload.user_id).remove_roles(guild.get_role(role_id))
                 return
     
-def setup(client):
-    client.add_cog(Reaction_custom(client))
+def setup(bot):
+    bot.add_cog(Reaction_custom(bot))

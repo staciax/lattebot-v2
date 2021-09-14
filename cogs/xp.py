@@ -38,8 +38,8 @@ levelling = cluster[MGDATABASE][MGDOCUMENT]
 
 class XP(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -113,9 +113,9 @@ class XP(commands.Cog):
             rankings = levelling.find().sort("xp",-1)
             i = 1
             embed = discord.Embed(color=0x77dd77 , timestamp=datetime.now(timezone.utc))
-#           embed.set_author(name=f"{self.client.user.name} Rankings", url=self.client.user.avatar.url) #, icon_url=ctx.guild.icon.url            
+#           embed.set_author(name=f"{self.bot.user.name} Rankings", url=self.bot.user.avatar.url) #, icon_url=ctx.guild.icon.url            
             embed.set_author(name=f"{ctx.guild.name} Rankings", url=ctx.guild.icon.url , icon_url=ctx.guild.icon.url)
-            embed.set_footer(text = f'{self.client.user.name}') # icon_url=self.client.user.avatar.url
+            embed.set_footer(text = f'{self.bot.user.name}') # icon_url=self.bot.user.avatar.url
 #            for x in rankings:
 #                try:
 #                    temp = ctx.guild.get_member(x["id"])
@@ -219,6 +219,6 @@ class XP(commands.Cog):
             await ctx.channel.send(embed=embed)
 
     
-def setup(client):
+def setup(bot):
 
-    client.add_cog(XP(client))
+    bot.add_cog(XP(bot))

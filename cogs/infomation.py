@@ -23,8 +23,8 @@ emoji_s = utils.emoji_converter
 
 class Infomation(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     def our_custom_check():
         async def predicate(ctx):
@@ -89,7 +89,7 @@ class Infomation(commands.Cog):
         if guild_id is None:
             guild = ctx.guild
         else:
-            guild = self.client.get_guild(guild_id)
+            guild = self.bot.get_guild(guild_id)
         
         try:
             embed = discord.Embed(title = f"{guild.name}'s Icon:", color=0xffffff).set_image(url = guild.icon.url)
@@ -104,7 +104,7 @@ class Infomation(commands.Cog):
         if guild_id is None:
             guild = ctx.guild
         else:
-            guild = self.client.get_guild(guild_id)
+            guild = self.bot.get_guild(guild_id)
         
         try:
             embed = discord.Embed(title = f"{guild.name}'s Banner:", color=0xffffff).set_image(url = guild.banner.url)
@@ -119,7 +119,7 @@ class Infomation(commands.Cog):
         if guild_id is None:
             guild = ctx.guild
         else:
-            guild = self.client.get_guild(guild_id)
+            guild = self.bot.get_guild(guild_id)
         
         try:
             embed = discord.Embed(title = f"{guild.name}'s Invite banner:", color=0xffffff).set_image(url = guild.splash.url)
@@ -157,7 +157,7 @@ class Infomation(commands.Cog):
             role_string = ' '.join(reversed([r.mention for r in member.roles][1:]))
 
         #fetch_banner
-        fetch_member = await self.client.fetch_user(member.id)
+        fetch_member = await self.bot.fetch_user(member.id)
 #            if fetchedMember.banner.is_animated() == True:
 
         embed = discord.Embed(colour=0xffffff)  #timestamp=ctx.message.created_at
@@ -199,7 +199,7 @@ class Infomation(commands.Cog):
     @commands.guild_only()
     async def banner(self, ctx, *,member: discord.Member=None):
         member = member or ctx.author
-        fetch_member = await self.client.fetch_user(member.id)
+        fetch_member = await self.bot.fetch_user(member.id)
 
         embed = discord.Embed(title=f"{member.name}'s Banner:",color=0xffffff)
 
@@ -208,7 +208,7 @@ class Infomation(commands.Cog):
             embed.description = f"Banner URL : [**LINK**]({fetch_member.banner.url})"
             await ctx.send(embed=embed)
         elif fetch_member.accent_color:
-            print(fetch_member.accent_color)
+#            print(fetch_member.accent_color)
             #pillow_generate
             img = Image.new("RGB", (256, 144), ImageColor.getrgb(f"{fetch_member.accent_color}"))
             buffer = BytesIO()
@@ -231,7 +231,7 @@ class Infomation(commands.Cog):
             embed_help.set_author(name=f"{ctx.author.name}" , icon_url = ctx.author.avatar.url)
             embed_help.add_field(name="Emoji Infomation" , value="```yaml\n.emojiinfo [emoji] | .ei [emoji]```", inline = True)
             return await ctx.send(embed=embed_help , delete_after=15)
-#            return await ctx.invoke(self.client.get_command("help") , category="info")
+#            return await ctx.invoke(self.bot.get_command("help") , category="info")
                     
 
         try:
@@ -298,7 +298,7 @@ class Infomation(commands.Cog):
         await msg.add_reaction("<:greentick:881500884725547021>")
 
         try:
-            reaction , user = await self.client.wait_for(
+            reaction , user = await self.bot.wait_for(
                 "reaction_add",
                 timeout=30,
                 check=lambda reaction, user: user == ctx.author
@@ -345,5 +345,5 @@ class Infomation(commands.Cog):
         else:
             await ctx.send("Not a valid emoji id.")
 
-def setup(client):
-    client.add_cog(Infomation(client))
+def setup(bot):
+    bot.add_cog(Infomation(bot))

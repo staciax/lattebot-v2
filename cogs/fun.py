@@ -23,9 +23,8 @@ intents = discord.Intents.all()
 
 class Fun(commands.Cog):
 
-    def __init__(self, client):
-        self.bot = client
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
         self.sleeping = {}
         self.sleep_sec = {}
         self.sleeping_db = {}
@@ -49,7 +48,7 @@ class Fun(commands.Cog):
         
     @tasks.loop(minutes=1)
     async def sleeped(self):
-        guild = self.client.get_guild(MYGUILD)
+        guild = self.bot.get_guild(MYGUILD)
 #        for key in self.sleeping.keys():
 #            dt = datetime.now(timezone.utc).strftime("%d, %m ,%Y, %H, %M")
 #            print(self.sleeping[key]["time"] , dt)
@@ -152,10 +151,10 @@ class Fun(commands.Cog):
                     await ctx.send(embed=embed)
 
     
-    @commands.command(aliases=['gif'], brief=f"{PREFIX}hentai aqua", usage=f"{PREFIX}hentai [search]")
+    @commands.command(aliases=['gif'], brief=f"{PREFIX}giphy aqua", usage=f"{PREFIX}giphy [search]")
     @commands.guild_only()
     async def giphy(self, ctx, *, search=None):
-        gipht_apis = self.client.giphy_api_
+        gipht_apis = self.bot.giphy_api_
         embed = discord.Embed(colour=0xffffff)
         session = aiohttp.ClientSession()
         if search == None:
@@ -280,14 +279,14 @@ class Fun(commands.Cog):
         futuredate_utc7 = futuredate + timedelta(seconds=25200)
         futuredate_ = futuredate.strftime("%d%m%Y%H%M")
         
-        data = await self.client.sleepdb.find_by_custom({"member_id": member.id})
+        data = await self.bot.sleepdb.find_by_custom({"member_id": member.id})
         if data is None:
             data = {
                 "member_id": member.id,
                 "timer": futuredate_
             }
         data["timer"] = futuredate_
-        await self.client.sleepdb.update_by_custom(
+        await self.bot.sleepdb.update_by_custom(
             {"member_id": member.id}, data
         )
 
@@ -376,5 +375,5 @@ class Fun(commands.Cog):
         #converter_from_utils.game_converter
         await ctx.send(embed=utils.valorant_random_weapon(category))
     
-def setup(client):
-    client.add_cog(Fun(client))
+def setup(bot):
+    bot.add_cog(Fun(bot))

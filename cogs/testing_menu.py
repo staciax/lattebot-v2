@@ -42,9 +42,8 @@ class Confirm(menus.Menu):
 
 class Testing_memus(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
-        self.bot = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -62,5 +61,5 @@ class Testing_memus(commands.Cog):
             await ctx.send('deleted...')
 
 
-def setup(client):
-    client.add_cog(Testing_memus(client))
+def setup(bot):
+    bot.add_cog(Testing_memus(bot))

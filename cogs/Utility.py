@@ -16,10 +16,9 @@ from config import *
 
 class Utility_(commands.Cog):
 
-    def __init__(self, client):
-        self.client = client
-        self.bot = client
-
+    def __init__(self, bot):
+        self.bot = bot
+        
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
@@ -29,7 +28,7 @@ class Utility_(commands.Cog):
 
         #google_translator
         if message.channel.id == TRANSLATE_CHANNEL:
-            if message.author == self.client.user:
+            if message.author == self.bot.user:
                 return
             translator = Translator()
             try:
@@ -75,7 +74,7 @@ class Utility_(commands.Cog):
 #        await ctx.send("Please Enter a Range:")
 
         #split message
-#        message_response = await self.client.wait_for('message', check=lambda m: m.author == ctx.author)
+#        message_response = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
         input_value = msg#message_response.content
         list_input = list(input_value.split())
 
@@ -176,7 +175,7 @@ class Utility_(commands.Cog):
         else:
             await ctx.message.add_reaction(f"{utils.emoji_converter('trash')}")
             try:
-                reaction , user = await self.client.wait_for(
+                reaction , user = await self.bot.wait_for(
                     "reaction_add",
                     timeout=30,
                     check=lambda reaction, user: user == ctx.author
@@ -190,5 +189,5 @@ class Utility_(commands.Cog):
             if str(reaction.emoji) == "<:trashcan:883641203051073557>":
                 await ctx.message.delete()
         
-def setup(client):
-    client.add_cog(Utility_(client))
+def setup(bot):
+    bot.add_cog(Utility_(bot))
