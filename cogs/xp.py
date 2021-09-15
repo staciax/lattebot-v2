@@ -47,7 +47,7 @@ class XP(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.channel.id in chat_channel: #only one ch use '==' , more use 'in'
+        if message.channel.id in CHAT_CH: #only one ch use '==' , more use 'in'
             stats = levelling.find_one({"id" : message.author.id})
             if not message.author.bot:
                 if stats is None:
@@ -77,7 +77,7 @@ class XP(commands.Cog):
                  
     @commands.command(name="xp2")
     async def level_2(self, ctx):
-        if ctx.channel.id in bot_channel: 
+        if ctx.channel.id in BOT_CH: 
             stats = levelling.find_one({"id": ctx.author.id})
             if stats is None:
                 embed = discord.Embed(description="You haven't sent any messages, **no xp**!!")
@@ -109,7 +109,7 @@ class XP(commands.Cog):
     @commands.command(description="Show ranking xp", aliases=['rank'], brief=f"{PREFIX}rank", usage=f"{PREFIX}rank")
     @commands.guild_only()
     async def ranking(self, ctx): #only one ch use '==' , more use 'in'
-#        if (ctx.channel.id in bot_channel):
+#        if (ctx.channel.id in BOT_CH):
             rankings = levelling.find().sort("xp",-1)
             i = 1
             embed = discord.Embed(color=0x77dd77 , timestamp=datetime.now(timezone.utc))
@@ -218,7 +218,6 @@ class XP(commands.Cog):
 
             await ctx.channel.send(embed=embed)
 
-    
 def setup(bot):
 
     bot.add_cog(XP(bot))

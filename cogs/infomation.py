@@ -155,7 +155,8 @@ class Infomation(commands.Cog):
         role_str = []
         if len(member.roles) > 1:
             role_string = ' '.join(reversed([r.mention for r in member.roles][1:]))
-
+        else:
+            role_string = "this user don't have a role"
         #fetch_banner
         fetch_member = await self.bot.fetch_user(member.id)
 #            if fetchedMember.banner.is_animated() == True:
@@ -174,7 +175,8 @@ class Infomation(commands.Cog):
 
         for name , value , inline in fields:
             embed.add_field(name=name , value=value , inline=inline)
-        embed.set_thumbnail(url=member.avatar.url)
+        if member.avatar:
+            embed.set_thumbnail(url=member.avatar.url)
         if fetch_member.banner:
             embed.set_image(url=fetch_member.banner.url)
         elif fetch_member.accent_color:
