@@ -158,13 +158,13 @@ def valorant_random_agent(category):
     elif random_agent == "Omen":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/b/b0/Omen_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234318")
     elif random_agent == "Astra":
-        embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/8/8a/Astra_artwork.png/revision/latest/scale-to-width-down/587?cb=20210302170140")
+        embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/0/08/Astra_icon.png/revision/latest/scale-to-width-down/256?cb=20210302164234")
     elif random_agent == "Sova":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/4/49/Sova_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234221")
     elif random_agent == "Breach":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/5/53/Breach_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234328")
     elif random_agent == "KAY/O":
-        embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/a/a9/KAYO_artwork.png/revision/latest/scale-to-width-down/587?cb=20210622163116")
+        embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/f/f0/KAYO_icon.png/revision/latest/scale-to-width-down/256?cb=20210622225019")
     elif random_agent == "Skye":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/3/33/Skye_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234628")
     elif random_agent == "Killjoy":
