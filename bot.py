@@ -35,7 +35,7 @@ bot.connection_url = secrets["mongo"]
 
 @bot.event
 async def on_ready():
-    bot_activity = ".help"
+    bot_activity = "with my friends ♡ ₊˚"
     await bot.change_presence(activity=discord.Activity(
         type=discord.ActivityType.listening, name=bot_activity)
     )

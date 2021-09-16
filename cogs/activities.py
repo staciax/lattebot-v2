@@ -523,7 +523,7 @@ class Activities(commands.Cog):
                         for streamer in self.current_streamers:
                             if member.id == streamer:
                                 if not member.voice.self_stream:
-                                    print("user stopped streaming")
+#                                    print("user stopped streaming")
                                     self.current_streamers.remove(member.id)
                                 break        
         else:

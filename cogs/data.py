@@ -94,8 +94,9 @@ class Data(commands.Cog):
 
     @commands.command(description="invite bot")
     async def invite(self, ctx):
-        embed = discord.Embed(title=f"**invite bot**",description=f"**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.bot.guilds)}** servers︰𓂃 ꒱\n\n⸝⸝﹒{INVITELINK} ꒱",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
-        embed.set_thumbnail(url=self.bot.user.avatar.url)    
+        invite_url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=8&scope=applications.commands%20bot"
+        embed = discord.Embed(title=f"{self.bot.user.name} invite",description=f"⸝⸝﹒[Invite Bot]({invite_url}) ꒱",color=0xFFFFFF,timestamp=datetime.now(timezone.utc)) #**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.bot.guilds)}** servers︰𓂃 ꒱\n\n
+        embed.set_thumbnail(url=self.bot.user.avatar.url)
         await ctx.send(embed=embed)
     
     @commands.command(description="check latency bot")
