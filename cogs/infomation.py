@@ -161,7 +161,7 @@ class Infomation(commands.Cog):
         fetch_member = await self.bot.fetch_user(member.id)
 #            if fetchedMember.banner.is_animated() == True:
 
-        embed = discord.Embed(colour=0xffffff)  #timestamp=ctx.message.created_at
+        embed = discord.Embed(title=f"{member}'s Infomation",colour=0xffffff)  #timestamp=ctx.message.created_at
         fields = [("Nickname",f"{member.display_name}", True),
                 ("Is bot?","Yes" if member.bot else "No", True),
                 ("Activity",member_activity, True),

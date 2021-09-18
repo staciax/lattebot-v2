@@ -27,10 +27,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Bully", color=0xffffff)
+                    embed = discord.Embed(title="Bully",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
 
@@ -42,10 +42,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Cry", color=0xffffff)
+                    embed = discord.Embed(title="Cry",url=api["url"] , color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)           
+                    await ctx.reply(embed=embed)           
                 else:
                     error=api["error"]
 
@@ -57,10 +57,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Bonk", color=0xffffff)
+                    embed = discord.Embed(title="Bonk" , url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)          
+                    await ctx.reply(embed=embed)          
                 else:
                     return
     
@@ -72,10 +72,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Kiss", color=0xffffff)
+                    embed = discord.Embed(title="Kiss",url=api["url"] , color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -87,10 +87,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Lick", color=0xffffff)
+                    embed = discord.Embed(title="Lick",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -102,10 +102,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Pat", color=0xffffff)
+                    embed = discord.Embed(title="Pat",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -117,10 +117,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Smug", color=0xffffff)
+                    embed = discord.Embed(title="Smug",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -132,10 +132,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Blush", color=0xffffff)
+                    embed = discord.Embed(title="Blush",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -147,10 +147,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Smile", color=0xffffff)
+                    embed = discord.Embed(title="Smile",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -162,10 +162,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Nom", color=0xffffff)
+                    embed = discord.Embed(title="Nom",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -177,10 +177,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Bite", color=0xffffff)
+                    embed = discord.Embed(title="Bite",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -192,10 +192,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Slap", color=0xffffff)
+                    embed = discord.Embed(title="Slap",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -207,10 +207,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Kick", color=0xffffff)
+                    embed = discord.Embed(title="Kick",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -222,10 +222,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Happy", color=0xffffff)
+                    embed = discord.Embed(title="Happy",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -237,10 +237,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Wink", color=0xffffff)
+                    embed = discord.Embed(title="Wink",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -253,10 +253,10 @@ class api_waifu(commands.Cog):
                     api = await rep.json()
                     if rep.status == 200:
                         image_url=api["url"]
-                        embed = discord.Embed(title="Waifu", color=0xffffff)
+                        embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
                         embed.set_image(url=image_url)
 
-                        await ctx.send(embed=embed)
+                        await ctx.reply(embed=embed)
                     else:
                         return
         else:
@@ -265,10 +265,10 @@ class api_waifu(commands.Cog):
                     api = await rep.json()
                     if rep.status == 200:
                         image_url=api["url"]
-                        embed = discord.Embed(title="Waifu", color=0xffffff)
+                        embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
                         embed.set_image(url=image_url)
 
-                        await ctx.send(embed=embed)
+                        await ctx.reply(embed=embed)
                     else:
                         return
     
@@ -281,10 +281,10 @@ class api_waifu(commands.Cog):
                     api = await rep.json()
                     if rep.status == 200:
                         image_url=api["url"]
-                        embed = discord.Embed(title="Neko", color=0xffffff)
+                        embed = discord.Embed(title="Neko",url=api["url"], color=0xffffff)
                         embed.set_image(url=image_url)
 
-                        await ctx.send(embed=embed)
+                        await ctx.reply(embed=embed)
                     else:
                         return
         else:
@@ -293,10 +293,10 @@ class api_waifu(commands.Cog):
                     api = await rep.json()
                     if rep.status == 200:
                         image_url=api["url"]
-                        embed = discord.Embed(title="Neko", color=0xffffff)
+                        embed = discord.Embed(title="Neko",url=api["url"], color=0xffffff)
                         embed.set_image(url=image_url)
 
-                        await ctx.send(embed=embed)
+                        await ctx.reply(embed=embed)
                     else:
                         return
 
@@ -309,10 +309,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Trap", color=0xffffff)
+                    embed = discord.Embed(title="Trap",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
     
@@ -324,10 +324,10 @@ class api_waifu(commands.Cog):
                 api = await rep.json()
                 if rep.status == 200:
                     image_url=api["url"]
-                    embed = discord.Embed(title="Blowjob", color=0xffffff)
+                    embed = discord.Embed(title="Blowjob",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.send(embed=embed)
+                    await ctx.reply(embed=embed)
                 else:
                     return
 

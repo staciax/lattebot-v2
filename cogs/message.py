@@ -37,28 +37,9 @@ class Message(commands.Cog):
         self.afk[ctx.author.id] = reason #storing at self.afk as {657846039914479617: "reason"}
         embed = discord.Embed(description=f"**{ctx.author}** I have set your afk: `{reason}`" , color=WHITE)
 
-        if ctx.channel.id != 861883647070437386:
-#            embed.set_footer(text="Click the reaction to delete message")
-            msg = await ctx.send(embed=embed)
-#            await msg.add_reaction("<:greentick:881500884725547021>")
-            
-            try:
-                reaction , user = await self.bot.wait_for(
-                    "reaction_add",
-                    timeout=30,
-                    check=lambda reaction, user: user == ctx.author
-                    and reaction.message.channel == ctx.channel
-                )
-
-            except asyncio.TimeoutError:
-#                embed_edit = discord.Embed(description=f"**{ctx.author}** I have set your afk: `{reason}`" , color=WHITE)
-#                await msg.edit(embed=embed_edit)
-#                await msg.clear_reactions()
-                return
-            
-            await ctx.message.delete()
-            await msg.delete()
-        elif ctx.channel.id == 861883647070437386:
+        if ctx.channel.id in BOT_CH:
+            await ctx.send(embed=embed)
+        else:
             msg = await ctx.send(embed=embed)
             await asyncio.sleep(10)
             await msg.delete()
@@ -91,21 +72,17 @@ class Message(commands.Cog):
                 await message.delete()
 
         #afk
-        if message.content.startswith("lt afk"):
-            return
-        if message.content.startswith("l afk"):
-            return
-        if message.content.startswith(".afk"):
+        if message.content.startswith(f"{PREFIX}afk"):
             return
         for id in self.afk.keys():
             if message.author.id == id:
                 del self.afk[id]
-                return await message.channel.send(f"Welcome back {message.author.mention} , i've removed your **AFK** status." , delete_after=5)
-            
+                return await message.channel.send(f"Welcome back {message.author.mention} , i've removed your **AFK** status." , delete_after=5)  
+        
+            #when_afk_mention
             member = message.guild.get_member(id)
             if member.mentioned_in(message):
                 embed = discord.Embed(description=f'**{member.display_name}** is afk for: {self.afk[id]}' , color=WHITE)
-#                embed.set_image(url="https://media.giphy.com/media/LPETDRbj82wbrYm7q6/source.gif")
                 await message.channel.send(embed=embed , delete_after=15)
         
         #message 
@@ -126,7 +103,7 @@ class Message(commands.Cog):
         if message.content.startswith('tempinvite'):
             await message.delete()
             await message.channel.send('https://discord.gg/f6adY5B8k2' , delete_after=15)
-
+        
         if message.content.startswith('it'):
             await message.channel.send(f"This is my prefix `.` or `lt ` or `l `\nexample : `lt help` or `l help` or `.help`", delete_after=10)
         

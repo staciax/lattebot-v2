@@ -144,14 +144,18 @@ class Activities(commands.Cog):
             self.server_log = self.bot.get_channel(user_update["server-log"])
 
             if self.server_log is None:
-                print("on_member_ban channel is None")
                 return
 
-            #invte_log
+            #invte_code
             invites_before_join = self.invites[member.guild.id]
             invites_after_join = await member.guild.invites()
             for invite in invites_before_join:
                 if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:
+                    if invite.code == "jhK46N6QWU":
+                        latte_role_bypass = discord.utils.get(member.guild.roles, id = 842309176104976387)
+                        await member.add_roles(latte_role_bypass)
+                        return
+
                     embed_log = discord.Embed(
                         title="Member join",
                         color=PTGREEN,
@@ -167,8 +171,7 @@ class Activities(commands.Cog):
                     #temp_invite
                     print(invite.code)
                     print(self.invite_code)
-                    if invite.code == self.invite_code:
-                        
+                    if invite.code == self.invite_code:  
                         role = discord.utils.get(member.guild.roles, id = 879258879987449867)
                         await member.add_roles(role)
                         print(f"{member.name} temp invite")

@@ -3,7 +3,7 @@ import discord , random , asyncio
 from discord.ext import commands 
 from datetime import datetime, timedelta, timezone
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.members = True
 
 # Third party

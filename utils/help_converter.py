@@ -165,7 +165,7 @@ def NSFW(ctx):
   
   *NSFW* is alollowed in <#850507964938715196>
   
-  • `waifu` , `neko` , `trap` , `blowjob`
+  • `waifu` , `neko` , `trap` , `blowjob` , `ass`, `ecchi`, `ero`, `hentai` ,`hmaid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform`
   """
   # `ass`, `ecchi`, `ero`, `hentai` ,`maid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform` , 
   embed.description = description
