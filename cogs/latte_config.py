@@ -391,6 +391,11 @@ class Latte_config(commands.Cog):
             await ctx.send(embed=embed)
         except:
             await ctx.send("write json error")
+    
+    @commands.command(name="template")
+    async def latte_template(self, ctx):
+        if ctx.guild.id == MYGUILD:
+            await ctx.send("https://discord.new/sFYKgkknRN5f" , delete_after=30)
 
 #    @commands.command(name="del-w-off")
 #    async def del_welcome_(self, ctx):

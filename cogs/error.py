@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import asyncio
 
 # Third party
+from difflib import get_close_matches
 
 # Local
 import utils
@@ -24,7 +25,12 @@ class Error(commands.Cog):
     async def on_command_error(self , ctx, error):
         embed = discord.Embed(color=0xffffff)
         if isinstance(error, commands.CommandNotFound):
-            return
+            cm_error = f"I couldn't find that command."
+            command_names = [str(x) for x in ctx.bot.commands]
+            matches = get_close_matches(ctx.invoked_with, command_names)
+            if matches:
+                matches = "\n".join(matches)
+                cm_error = f"I couldn't find that command. Did you mean...\n`{matches}`"
         elif isinstance(error, commands.CommandOnCooldown):
             cm_error = f"You are on cooldown, try again in {error.retry_after:.0f} seconds"
         elif isinstance(error, commands.MessageNotFound):
@@ -48,12 +54,10 @@ class Error(commands.Cog):
         elif isinstance(error, commands.MissingRequiredArgument):
             cm_error = "You didn't pass a required argument!"
         elif isinstance(error, commands.CheckFailure):
-            print(f"check fail {ctx.author.name}")             
+            cm_error = f"You can't use this command."  
         else:
-            print(error)
             cm_error = f"{error}"
-            return
-        embed.add_field(name="Commands Error!", value=f"{cm_error}")
+        embed.description = cm_error
         await ctx.send(embed=embed, delete_after=15)
     
 def setup(bot):

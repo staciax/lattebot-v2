@@ -114,7 +114,7 @@ def Anime(ctx):
   description="""
   Use `.help <command>` for more informations about a command.
     
-  • `waifu`, `bonk`, `bully`, `blush` ,`bite`, `cry`, `happy`, `kiss`, `kicks`, `lick`, `neko` , `nom` , `pat` , `smug` , `slap` , `smile` , `wink`
+  • `waifu`, `waifu2`, `bonk`, `bully`, `blush` ,`bite`, `cry`, `happy`, `kiss`, `kicks`, `lick`, `neko` , `nom` , `maid`, `pat` , `smug` , `slap` , `smile` , `wink`
   """
   embed.description = description
   
