@@ -1,5 +1,5 @@
 # Standard 
-import discord , json , os , datetime , random , asyncio , re , io , contextlib , logging
+import discord , json , os , datetime , random , asyncio , re , io , contextlib , logging , sys , logging , asyncpg
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta, timezone
 
@@ -47,6 +47,13 @@ secret_file = utils.json_loader.read_json("secrets")
 bot.config_token = secret_file["token"]
 bot.connection_url = secret_file["mongo"]
 bot.giphy_api_ = secret_file["giphy"]
+
+#message
+@bot.event
+async def on_message(message):
+    if message.author.bot:
+        return
+    await bot.process_commands(message)
 
 #prefix
 @bot.command()
@@ -143,6 +150,7 @@ async def bot_config_(ctx):
         lines = f.read()
         embed = discord.Embed(description=f"```nim\n{lines}```",color=0xffffff)
         await ctx.send(embed=embed)
+
 
 if __name__ == "__main__":
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))

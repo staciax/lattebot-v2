@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 
 # Local
 import utils
+from config import *
 
 intents = discord.Intents.all()
 
@@ -17,7 +18,7 @@ class DM_Message(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.direct = self.bot.get_channel(874942964462391357)
+        self.direct = self.bot.get_channel(DM_CHANNEL)
         print(f"-{self.__class__.__name__}")
     
     @commands.Cog.listener()

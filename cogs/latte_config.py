@@ -395,7 +395,7 @@ class Latte_config(commands.Cog):
     @commands.command(name="template")
     async def latte_template(self, ctx):
         if ctx.guild.id == MYGUILD:
-            await ctx.send("https://discord.new/sFYKgkknRN5f" , delete_after=30)
+            await ctx.send("https://discord.new/sFYKgkknRN5f")
 
 #    @commands.command(name="del-w-off")
 #    async def del_welcome_(self, ctx):

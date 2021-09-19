@@ -21,6 +21,7 @@ class Utility_(commands.Cog):
         
     @commands.Cog.listener()
     async def on_ready(self):
+        self.latte_chat = self.bot.get_channel(LATTE_CHAT)
         print(f"-{self.__class__.__name__}")
 
     @commands.Cog.listener()
@@ -161,6 +162,31 @@ class Utility_(commands.Cog):
         await ctx.send(f'Alright {ctx.author.mention}, {future_data}: {msg}')
         await discord.utils.sleep_until(remind_time)
         await ctx.send(f"{ctx.author.mention}, {utils.format_relative(remind_time)}: {msg}\n\n{ctx.message.jump_url}")
+    
+    @commands.command(description="Reminder in chat" , brief=f"{PREFIX}remind_chat 10h working time\n{PREFIX}remind_chat 10m i will go sleep ", usage=f"{PREFIX}remind_chat <when> [message]")
+    @commands.guild_only()
+    async def remind_chat(self, ctx , time=None, *, msg=None):
+        if time is None:
+            embed_time = discord.Embed(description="**Please specify duration** : `(s|m|h|d)`\n```yaml\nExample : .sleep 5m , .sleep 2h```",color=WHITE)
+            return await ctx.send(embed=embed_time , delete_after=15)
+        if msg is None:
+            msg = "..."
+
+        #try_converter
+        try:
+            #time_converter_to_seconds
+            future = utils.FutureTime_converter(time)
+
+            #time_converted
+            remind_time = datetime.now(timezone.utc) + timedelta(seconds=future)
+            future_data = humanize.naturaldelta(future, minimum_unit='milliseconds')
+        except:
+            embed_error = discord.Embed(description="Time is invalid", color=WHITE)
+            return await ctx.send(embed=embed_error)
+
+        await ctx.send(f'Alright {ctx.author.mention}, {future_data}: {msg}\nchannel : {self.latte_chat.mention}')
+        await discord.utils.sleep_until(remind_time)
+        await self.latte_chat.send(f"{ctx.author.mention}, {utils.format_relative(remind_time)}: {msg}")
         
     @commands.command(description="Crete poll" , brief=f"{PREFIX}poll i pretty?", usage=f"{PREFIX}poll <message>")
     @commands.guild_only()

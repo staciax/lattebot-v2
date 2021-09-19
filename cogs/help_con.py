@@ -25,6 +25,7 @@ class Help_support(commands.Cog):
     async def custom_help(self, ctx, command=None):
         embedhelp = discord.Embed(title="✧ LATTE Help", description=f"Use {PREFIX}help <category> for more informations about a category.\n",color=0xffffff)
         fields = [(f"•{emojis('miraishocked')} **Anime**", f"`{PREFIX}help anime`" , True),
+                (f"•📷 **Image**", f"`{PREFIX}help image`" , True),
                 (f"•{emojis('shidapout')} **Utility**", f"`{PREFIX}help util`" , True),
                 (f"•{emojis('ShinoSmirk')} **Infomation**", f"`{PREFIX}help info`", True),
 #                   (f"•{emojis('lutoaraka')} **Moderation**", "`lt help mod`", True),
@@ -54,6 +55,8 @@ class Help_support(commands.Cog):
             await ctx.send(embed=embedhelp)
         elif command == "anime":
             await ctx.send(embed=utils.Anime(ctx))
+        elif command == "image":
+            await ctx.send(embed=utils.Help_image(ctx))
         elif command == "util":
             await ctx.send(embed=utils.Utility(ctx))
         elif command == "info":
@@ -80,22 +83,34 @@ class Help_support(commands.Cog):
             )
         
             command = self.bot.get_command(name = command)
-            print(f'Command: {command.name}\nBrief: {command.brief}')
+#            print(f'Command: {command.name}\nBrief: {command.brief}')
             
             helpEmbed.title = command.name
             helpEmbed.description = command.description
             helpEmbed.description = f"{command.description}"
+            
             helpEmbed.add_field (
                 name = "Usage",
                 value = f"```{command.usage}```",
                 inline=False
                 
             )
-            helpEmbed.add_field (
-                name = "Example",
-                value = f"```{command.brief}```",
+
+            if command.brief:
+                helpEmbed.add_field (
+                    name = "Example",
+                    value = f"```{command.brief}```",
+                    inline=False
+                )
+
+            if command.aliases:
+                str_ali = ", ".join(command.aliases)
+                helpEmbed.add_field (
+                name = "Aliases",
+                value = f"```{str_ali}```",
                 inline=False
             )
+
             helpEmbed.set_footer(
                 text="<> Required argument | [] Optional argument", 
                 icon_url=self.bot.user.avatar.url

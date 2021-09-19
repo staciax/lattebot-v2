@@ -46,7 +46,7 @@ class Data(commands.Cog):
     async def on_ready(self):
         self.log_channel = self.bot.get_channel(REPORTBUG)
         self.request_message = self.bot.get_channel(REQUEST_ME)
-        self.bug_channel = self.bot.get_channel(865609918945820692)
+        self.bug_channel = self.bot.get_channel(MOD_MAIL)
         print(f"-{self.__class__.__name__}")
     
     @commands.command(aliases=["botinfo", "about"])

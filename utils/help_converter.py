@@ -9,19 +9,6 @@ fields = [
 def Utility(ctx):
   embed = Embed(description=f"**Utility Commands**",color=0xffffff)#\n\n`sleep:` set my or member timer disconnect voice channel\n\n`poll [message]:` poll in your server",color=0xffffff)
   embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
-
-  fields = [
-    ("sleep","```yaml\n.sleep <duration> [member]```",True),
-    ("sleep delete","```yaml\n.sleep delete [member]```",True),
-    ("poll","```yaml\n.poll [message]```",True),
-    ("binary","```yaml\n.binary [message]```",True),
-    ("reverse","```yaml\n.reverse [message]```",True),
-    ("translate","```yaml\n.trans <output language> [messsage]```",True),
-    ("random number","```yaml\n.rn <Lowest> <Highest>```",True)
-  ]
-                          
-  for name, value, inline in fields:
-    embed.add_field(name=name, value=value, inline=inline)
   
   description="""
   Use `.help <command>` for more informations about a command.
@@ -59,25 +46,23 @@ def Infomation(ctx):
   return embed
 
 def Moderation(ctx):
-  embed = Embed(description="**Moderation Commands**",color=0xffffff)#\n\n`clear [number] or all` : clear message\n\n`muterole` : create muterole\n\n`mute [target] [time]` : mute member\n\n`unmute [target]` : unmute member\n\n`kick [target]` : kick member\n\n`ban [target]` : ban member\n\n`unban [target]` : unban member\n\n`lockdown` : lock or unlock text channel\n\n`nick [member] ` : change nickname member\n\n`slowmode [seconds]` : set slowmode in channel",color=0xffffff)
-  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+  embed = Embed(title="Moderation Commands",color=0xffffff)
   
-  fields = [
-    ("Clear","```yaml\n.clear <amount>```",True),
-    ("Mute Role","```yaml\n.muterole```",True),
-    ("Mute","```yaml\n.mute [member] <duration>```",True),
-    ("Unmute","```yaml\n.unmute [member]```",True),
-    ("Kick","```yaml\n.kick [member]```",True),
-    ("Ban","```yaml\n.ban [member]```",True),
-    ("Unban","```yaml\n.unban [member]```",True),
-    ("Lockdown","```yaml\n.lock [channel]```",True),
-    ("Slowmode","```yaml\n.slow <duration>```",True),
-    ("Change Nickname","```yaml\n.nick [member] <name>```",True)
+  description="""
+  Use `.help <command>` for more informations about a command.
 
-  ]
+  `clear` • clear message
+  `muterole` • create mute role
+  `mute` • mute member 
+  `unmute` • unmute member 
+  `kick` • kick member
+  `ban` • ban member
+  `lock` • lockdown channel
+  `slow` • slowmode channel
+  `nick` • change nickname member
 
-  for name, value, inline in fields:
-    embed.add_field(name=name, value=value, inline=inline)
+  """
+  embed.description = description
   
   return embed
 
@@ -101,7 +86,7 @@ def Fun(ctx):
   Use `.help <command>` for more informations about a command.
   
  
-  • `cat`, `fox`, `gif`, `owo`, `echo` ,`saybot`, `saybotm`
+  • `owo`, `echo` ,`saybot`, `saybotm`
   """
   embed.description = description
   
@@ -168,6 +153,19 @@ def NSFW(ctx):
   • `waifu` , `neko` , `trap` , `blowjob` , `ass`, `ecchi`, `ero`, `hentai` ,`hmaid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform`
   """
   # `ass`, `ecchi`, `ero`, `hentai` ,`maid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform` , 
+  embed.description = description
+  
+  return embed
+
+def Help_image(ctx):
+  embed = Embed(title="Image Commands",color=0xffffff)
+
+  description = """
+  Use `.help <command>` for more informations about a command.
+  
+  • `cat` , `fox` , `gif` , 
+  """
+
   embed.description = description
   
   return embed

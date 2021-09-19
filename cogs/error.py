@@ -17,7 +17,6 @@ class Error(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.direct = self.bot.get_channel(874942964462391357)
         print(f"-{self.__class__.__name__}")
     
     @commands.Cog.listener()
@@ -53,10 +52,13 @@ class Error(commands.Cog):
             cm_error = f"You don't have **{error.missing_role}** role(s) to run this command!"
         elif isinstance(error, commands.MissingRequiredArgument):
             cm_error = "You didn't pass a required argument!"
+        elif isinstance(error, commands.NSFWChannelRequired):
+            cm_error = f"This channel isn't **NSFW* channel"
         elif isinstance(error, commands.CheckFailure):
             cm_error = f"You can't use this command."  
         else:
-            cm_error = f"{error}"
+            return
+#            cm_error = f"{error}"
         embed.description = cm_error
         await ctx.send(embed=embed, delete_after=15)
     
