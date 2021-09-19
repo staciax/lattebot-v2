@@ -53,7 +53,7 @@ class Error(commands.Cog):
         elif isinstance(error, commands.MissingRequiredArgument):
             cm_error = "You didn't pass a required argument!"
         elif isinstance(error, commands.NSFWChannelRequired):
-            cm_error = f"This channel isn't **NSFW* channel"
+            cm_error = f"This channel isn't **NSFW** channel"
         elif isinstance(error, commands.CheckFailure):
             cm_error = f"You can't use this command."  
         else:

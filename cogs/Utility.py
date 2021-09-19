@@ -214,6 +214,26 @@ class Utility_(commands.Cog):
 
             if str(reaction.emoji) == "<:trashcan:883641203051073557>":
                 await ctx.message.delete()
+    
+    @commands.command(name="platform", aliases=["pt"])
+    async def check_platform(self, ctx, member: discord.Member=None):
+        member = ctx.author or member
+        #member_status
+
+        #fetch_status
+        mobiles = utils.mobile_status(member)
+        desktop = utils.desktop_status(member)
+        Web = utils.web_status(member)
+
+        #embed
+        embed = discord.Embed(color=member.colour)
+        embed.set_author(name=member , icon_url=member.avatar.url)
+        embed.description = f"{desktop}\n{mobiles}\n{Web}"
+
+        await ctx.send(embed=embed , delete_after=15)
+        await ctx.message.delete()
+
+
         
 def setup(bot):
     bot.add_cog(Utility_(bot))

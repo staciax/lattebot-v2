@@ -47,34 +47,37 @@ def level_images(member ,final_xp , lvl , rank , xp):
     # draw.ellipse((160, 160, 208, 208), fill="#000")
 
     big_font = ImageFont.FreeTypeFont("data/fonts/Daisy.ttf", 90)
+    mid_font = ImageFont.FreeTypeFont("data/fonts/Daisy.ttf", 80)
+    big_2_font = ImageFont.FreeTypeFont("data/fonts/Daisy.ttf", 105)
     big2_font = ImageFont.FreeTypeFont("data/fonts/Daisy.ttf", 120)
     medium_font = ImageFont.FreeTypeFont("data/fonts/Daisy.ttf", 70)
     small_font = ImageFont.FreeTypeFont("data/fonts/Daisy.ttf", 50)
 
     textrank = ImageFont.FreeTypeFont("data/fonts/Daisy.ttf", 130)
     ranksize = ImageFont.FreeTypeFont("data/fonts/Daisy.ttf", 70)
-                   
+
+    #level_num               
     text_size = draw.textsize(str(lvl), font=big2_font)
-    offset_x = 510
-    offset_y = 220
+    offset_x = 530
+    offset_y = 225
     draw.text((offset_x, offset_y), str(lvl), font=big2_font, fill="#77dd77")
 
-    text_size = draw.textsize("LEVEL", font=big_font)
+    #level_text 
+    text_size = draw.textsize("LEVEL", font=big_2_font)
     offset_x -= text_size[0] + 5
     levelx = 355
     levely = 220
-    draw.text((levelx , levely + 27), "LEVEL", font=big_font, fill="#fff")
+    draw.text((levelx , levely + 15), "LEVEL", font=big_2_font, fill="#fff")
 
     #rank
-
     text_size = draw.textsize(f"#{rank}", font=textrank)
     rank_x = 1250 - 15 - text_size[0]
     rank_y = -10
     draw.text((rank_x, rank_y), f"#{rank}", font=textrank, fill="#77dd77")
 
-    text_size = draw.textsize("RANK", font=big_font)
+    text_size = draw.textsize("RANK", font=big_2_font)
     rank_x -= text_size[0] + 5
-    draw.text((rank_x, rank_y + 35), "RANK", font=big_font, fill="#fff")
+    draw.text((rank_x, rank_y + 20), "RANK", font=big_2_font, fill="#fff")
 
     bar_offset_x = 370
     bar_offset_y = 340
@@ -113,17 +116,17 @@ def level_images(member ,final_xp , lvl , rank , xp):
 
     #final_exp 
 
-    text_size = draw.textsize(f"/ {int(200*((1/2)*lvl))} XP", font=medium_font)
+    text_size = draw.textsize(f"/ {int(200*((1/2)*lvl))} XP", font=mid_font)
 
     offset_x = 1270 - text_size[0]
     offset_y = bar_offset_y - text_size[1] - 10
 
-    draw.text((offset_x, offset_y), f"/ {int(200*((1/2)*lvl))} XP", font=medium_font, fill="#ffffff")
+    draw.text((offset_x, offset_y), f"/ {int(200*((1/2)*lvl))} XP", font=mid_font, fill="#ffffff")
 
     #exp
-    text_size = draw.textsize(f"{xp}", font=medium_font)
+    text_size = draw.textsize(f"{xp}", font=mid_font)
     offset_x -= text_size[0] + 8
-    draw.text((offset_x, offset_y), f"{xp}", font=medium_font, fill="#fff")
+    draw.text((offset_x, offset_y), f"{xp}", font=mid_font, fill="#fff")
 
 
     # Blitting Name
@@ -141,6 +144,7 @@ def level_images(member ,final_xp , lvl , rank , xp):
 
     buffer = BytesIO()
     background.save(buffer, 'png')
+#    background.show()
     buffer.seek(0)
     file=discord.File(buffer, filename='latte-level.png')
     
