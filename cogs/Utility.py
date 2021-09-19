@@ -217,10 +217,11 @@ class Utility_(commands.Cog):
     
     @commands.command(name="platform", aliases=["pt"])
     async def check_platform(self, ctx, member: discord.Member=None):
-        member = ctx.author or member
-        #member_status
-
-        #fetch_status
+        #check_member
+        if not member:
+            member = ctx.message.author 
+        
+        #fetch_member_status
         mobiles = utils.mobile_status(member)
         desktop = utils.desktop_status(member)
         Web = utils.web_status(member)
