@@ -261,6 +261,7 @@ class Data(commands.Cog):
             description=f"{str(req)}",
             color=0xffffff
         )
+        embedq.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar.url)
 
         embedf = discord.Embed(description="Thanks for your request!" , color=WHITE)
 

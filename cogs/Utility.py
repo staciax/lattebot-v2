@@ -215,7 +215,7 @@ class Utility_(commands.Cog):
             if str(reaction.emoji) == "<:trashcan:883641203051073557>":
                 await ctx.message.delete()
     
-    @commands.command(name="platform", aliases=["pt"])
+    @commands.command(name="platform", aliases=["pt"] , usage=f"{PREFIX}usage <member>")
     async def check_platform(self, ctx, member: discord.Member=None):
         #check_member
         if not member:
