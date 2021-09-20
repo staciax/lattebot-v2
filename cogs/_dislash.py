@@ -5,6 +5,8 @@ from dislash import *
 from config import *
 import utils
 
+intents = discord.Intents.all()
+
 class Dislash(commands.Cog):
 
     def __init__(self, bot):
@@ -20,7 +22,7 @@ class Dislash(commands.Cog):
         embed = discord.Embed(color=WHITE)
         embed.set_image(url=inter.user.avatar.url)
         await inter.respond(embed=embed)
-           
+
 #slash_commands
 #user_commands
 #message_commands

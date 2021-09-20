@@ -36,7 +36,7 @@ class Message(commands.Cog):
             reason = "personal problems"
         self.afk[ctx.author.id] = reason #storing at self.afk as {657846039914479617: "reason"}
         embed = discord.Embed(description=f"**{ctx.author}** I have set your afk: `{reason}`" , color=WHITE)
-
+        
         if ctx.channel.id in BOT_CH:
             await ctx.send(embed=embed)
         else:

@@ -11,7 +11,22 @@ from config import *
 
 emojis = utils.emoji_converter
 
-class Help_support(commands.Cog): 
+class Dropdown(discord.ui.Select):
+    def __init__(self):
+        options = [
+            discord.SelectOption(label='Red', description='Your favourite colour is red', emoji='🟥'),
+            discord.SelectOption(label='Green', description='Your favourite colour is green', emoji='🟩'),
+            discord.SelectOption(label='Blue', description='Your favourite colour is blue', emoji='🟦')
+        ]
+
+        super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
+
+    async def callback(self, interaction: discord.Interaction):
+        if self.values[0] == "Red":
+            return await interaction.response.send_message("Red red red")
+        await interaction.response.send_message(f'Your favourite colour is {self.values[0]}')
+
+class Help_support(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -51,6 +66,10 @@ class Help_support(commands.Cog):
         embedhelp.set_footer(text=f"Recently Updated • {dt}")
         embedhelp.set_image(url="https://i.imgur.com/3jz8m3V.png")
 
+        view = discord.ui.View()
+
+        view.add_item(Dropdown())
+        
         if command is None:
             await ctx.send(embed=embedhelp)
         elif command == "anime":
@@ -83,7 +102,6 @@ class Help_support(commands.Cog):
             )
         
             command = self.bot.get_command(name = command)
-#            print(f'Command: {command.name}\nBrief: {command.brief}')
             
             helpEmbed.title = command.name
             helpEmbed.description = command.description

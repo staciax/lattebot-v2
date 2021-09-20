@@ -39,7 +39,7 @@ async def on_ready():
     await bot.change_presence(activity=discord.Activity(
         type=discord.ActivityType.listening, name=bot_activity)
     )
-    print(f"\nName : {bot.user}\nActivity : {bot_activity}\nServer : {len(bot.guilds)}\nMembers : {len(set(bot.get_all_members()))}")
+    print(f"\nName : {bot.user}\nActivity : {bot_activity}\nServer : {len(bot.guilds)}\nMembers : {len(set(bot.get_all_members()))}\nPrefix : {PREFIX}")
     print(f"\nCogs list\n-----")
 
 #json_secret_file

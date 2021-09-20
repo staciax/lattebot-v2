@@ -1,8 +1,8 @@
 # Standard 
-import discord , random , time , re , os , typing , unicodedata , asyncio
+import discord
+import random , time , re , os , typing , unicodedata , asyncio
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
-
 
 # Third party
 import giphy_client 
@@ -16,8 +16,6 @@ from io import BytesIO
 import utils
 from config import *
 from utils import Pag
-
-intents = discord.Intents.all()
 
 emoji_s = utils.emoji_converter
 
@@ -93,7 +91,12 @@ class Infomation(commands.Cog):
         
         try:
             embed = discord.Embed(title = f"{guild.name}'s Icon:", color=0xffffff).set_image(url = guild.icon.url)
-            await ctx.send(embed = embed)
+            #start_view_button
+            view = discord.ui.View()
+            style = discord.ButtonStyle.gray
+            item = discord.ui.Button(style=style, label="Server icon URL", url=guild.icon.url)
+            view.add_item(item=item)
+            await ctx.send(embed = embed , view=view)
         except:
             embed = discord.Embed(description="guild not found" , color=WHITE)
             await ctx.send(embed=embed)
@@ -108,12 +111,17 @@ class Infomation(commands.Cog):
         
         try:
             embed = discord.Embed(title = f"{guild.name}'s Banner:", color=0xffffff).set_image(url = guild.banner.url)
-            await ctx.send(embed = embed)
+            #start_view_button
+            view = discord.ui.View()
+            style = discord.ButtonStyle.gray
+            item = discord.ui.Button(style=style, label="Server banner URL", url=guild.banner.url)
+            view.add_item(item=item)
+            await ctx.send(embed = embed, view=view)
         except:
-            embed = discord.Embed(description="guild not found" , color=WHITE)
+            embed = discord.Embed(description="Not found" , color=WHITE)
             await ctx.send(embed=embed)
     
-    @commands.command(aliases=["serversplash","ss","invitebanner"], brief=f"{PREFIX}serversplash", usage=f"{PREFIX}serversplash")
+    @commands.command(aliases=["splash","serversplash","ss","invitebanner"], brief=f"{PREFIX}serversplash", usage=f"{PREFIX}serversplash")
     @commands.guild_only()
     async def server_splash(self, ctx , *, guild_id: int = None):
         if guild_id is None:
@@ -123,9 +131,14 @@ class Infomation(commands.Cog):
         
         try:
             embed = discord.Embed(title = f"{guild.name}'s Invite banner:", color=0xffffff).set_image(url = guild.splash.url)
-            await ctx.send(embed = embed)
+            #start_view_button
+            view = discord.ui.View()
+            style = discord.ButtonStyle.gray
+            item = discord.ui.Button(style=style, label="Splash URL", url=guild.splash.url)
+            view.add_item(item=item)
+            await ctx.send(embed=embed , view=view)
         except:
-            embed = discord.Embed(description="guild not found" , color=WHITE)
+            embed = discord.Embed(description="Not found" , color=WHITE)
             await ctx.send(embed=embed)
         
 
@@ -167,6 +180,10 @@ class Infomation(commands.Cog):
         else:
             M_color = 0xffffff
 
+        #start_view
+        view = discord.ui.View()
+        style = discord.ButtonStyle.gray 
+
         embed = discord.Embed(title=f"{member}'s Infomation",colour=M_color)  #timestamp=ctx.message.created_at
         fields = [("Nickname",f"{member.display_name}", True),
                 ("Is bot?","Yes" if member.bot else "No", True),
@@ -175,22 +192,28 @@ class Infomation(commands.Cog):
                 ("Joined",f"{member_joined}", True),
                 ("Registered",f"{member_created}", True),
                 ("Status",f"{desktop}\n{mobiles}\n{Web}", True),
-                ("Badge :",f"{badges}** **", True),
+                ("Badge",f"{badges}** **", True),
                 ("Top Role",member.top_role.mention, False),
                 ("Roles ({})\n".format(len(member.roles)-1), role_string , False)]
 
         for name , value , inline in fields:
             embed.add_field(name=name , value=value , inline=inline)
+        Member_URL = ""
         if member.avatar:
             embed.set_thumbnail(url=member.avatar.url)
+            item = discord.ui.Button(style=style, label="Avatar URL", url=member.avatar.url)
         if fetch_member.banner:
             embed.set_image(url=fetch_member.banner.url)
+            item2 = discord.ui.Button(style=style, label="Banner URL", url=fetch_member.banner.url) 
         elif fetch_member.accent_color:
-            embed.add_field(name=f"Banner color:" , value=f"{fetch_member.accent_color} (HEX)", inline=False)
-        embed.set_footer(text=f"ID: {member.id}")
+            embed.add_field(name=f"Banner color" , value=f"{fetch_member.accent_color} (HEX)", inline=False)
+            embed.set_footer(text=f"ID: {member.id}")
 
-        await ctx.send(embed=embed)
+        view.add_item(item=item)
+        view.add_item(item=item2)
 
+        await ctx.send(embed=embed , view=view)
+    
     @commands.command(brief=f"{PREFIX}avatar", usage=f"{PREFIX}avatar [member]" , aliases=["av"])
     @commands.guild_only()
     async def avatar(self, ctx, *, member: discord.Member = None):
@@ -198,10 +221,15 @@ class Infomation(commands.Cog):
         embed = discord.Embed(title = f"{member.name}'s Avatar:", color=0xffffff)
         if member.avatar:
             embed.set_image(url = member.avatar.url)
-            embed.description = f"Avatar URL : [**LINK**]({member.avatar.url})"
+            #start_view_button
+            view = discord.ui.View()
+            style = discord.ButtonStyle.gray
+            item = discord.ui.Button(style=style, label="Avatar URL", url=member.avatar.url)
+            view.add_item(item=item)
+            await ctx.send(embed = embed , view=view)
         else:
             embed.description = f"this user must have a avatar."
-        await ctx.send(embed = embed)
+            await ctx.send(embed = embed)
     
     @commands.command(brief=f"{PREFIX}banner", usage=f"{PREFIX}banner [member]" , aliases=["bn"])
     @commands.guild_only()
@@ -213,8 +241,12 @@ class Infomation(commands.Cog):
 
         if fetch_member.banner:
             embed.set_image(url=fetch_member.banner.url)
-            embed.description = f"Banner URL : [**LINK**]({fetch_member.banner.url})"
-            await ctx.send(embed=embed)
+            #start_view_button
+            view = discord.ui.View()
+            style = discord.ButtonStyle.gray
+            item = discord.ui.Button(style=style, label="Banner URL", url=fetch_member.banner.url)
+            view.add_item(item=item)
+            await ctx.send(embed=embed , view=view)
         elif fetch_member.accent_color:
 #            print(fetch_member.accent_color)
             #pillow_generate

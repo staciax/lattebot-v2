@@ -217,9 +217,10 @@ class Utility_(commands.Cog):
     
     @commands.command(name="platform", aliases=["pt"] , usage=f"{PREFIX}usage <member>")
     async def check_platform(self, ctx, member: discord.Member=None):
+
         #check_member
         if not member:
-            member = ctx.message.author 
+            member = ctx.author 
         
         #fetch_member_status
         mobiles = utils.mobile_status(member)
@@ -231,10 +232,15 @@ class Utility_(commands.Cog):
         embed.set_author(name=member , icon_url=member.avatar.url)
         embed.description = f"{desktop}\n{mobiles}\n{Web}"
 
-        await ctx.send(embed=embed , delete_after=15)
-        await ctx.message.delete()
-
-
+        await ctx.send(embed=embed)
+    
+    @commands.command(brief="Send a message with a button!") # Create a command inside a cog
+    async def some_button(self, ctx):
+        view = discord.ui.View() # Establish an instance of the discord.ui.View class
+        style = discord.ButtonStyle.gray  # The button will be gray in color
+        item = discord.ui.Button(style=style, label="Read the docs!", url="https://discordpy.readthedocs.io/en/master")  # Create an item to pass into the view class.
+        view.add_item(item=item)  # Add that item into the view class
+        await ctx.send("This message has buttons!", view=view)
         
 def setup(bot):
     bot.add_cog(Utility_(bot))

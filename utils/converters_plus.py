@@ -4,6 +4,7 @@ from discord.http import Route
 import humanize
 import datetime
 from datetime import datetime, timedelta, timezone
+from typing import Union
 
 from utils import emoji_converter
 
@@ -229,3 +230,14 @@ def status_icon(current_status):
         output = "https://cdn.discordapp.com/emojis/864171414750625812.png"
 
     return output
+    
+#def guess_user_nitro_status(user: Union[discord.User, discord.Member]):
+#    """Guess if an user or member has Discord Nitro"""
+
+#    if isinstance(user, discord.Member):
+#        # Check if they have a custom emote in their status
+#        has_emote_status = any([a.emoji.is_custom_emoji() for a in user.activities if hasattr(a, 'emoji') and a.emoji])
+#
+#        return any([user.avatar.is_animated(), has_emote_status, user.premium_since])
+#
+#    return any([user.avatar.is_animated(), user.banner])

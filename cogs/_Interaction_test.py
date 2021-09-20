@@ -115,7 +115,7 @@ class XP_user(commands.Cog):
             Option("user", "recieving user", Type.USER, required=False),
         ],
     )
-    async def avatar_slash(self, inter , user=None):
+    async def avatar_slash(self, inter , user:discord.Member=None):
         if user is None:
             user = inter.author
         embed = discord.Embed(color=0xffffff)
