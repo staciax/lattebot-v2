@@ -202,15 +202,14 @@ class Infomation(commands.Cog):
         if member.avatar:
             embed.set_thumbnail(url=member.avatar.url)
             item = discord.ui.Button(style=style, label="Avatar URL", url=member.avatar.url)
+            view.add_item(item=item)
         if fetch_member.banner:
             embed.set_image(url=fetch_member.banner.url)
             item2 = discord.ui.Button(style=style, label="Banner URL", url=fetch_member.banner.url) 
+            view.add_item(item=item2)
         elif fetch_member.accent_color:
             embed.add_field(name=f"Banner color" , value=f"{fetch_member.accent_color} (HEX)", inline=False)
             embed.set_footer(text=f"ID: {member.id}")
-
-        view.add_item(item=item)
-        view.add_item(item=item2)
 
         await ctx.send(embed=embed , view=view)
     
