@@ -80,7 +80,7 @@ class Help_support(commands.Cog):
         embedhelp.set_image(url="https://i.imgur.com/3jz8m3V.png")
 
         #start_selection_view
-        view = discord.ui.View(timeout=180)
+        view = discord.ui.View(timeout=300)
         view.add_item(Help_selection())
 
         #button_view

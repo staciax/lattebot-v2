@@ -281,7 +281,7 @@ class api_waifu(commands.Cog):
                         embed.set_image(url=image_url)
 
                         #with_button
-                        view = discord.ui.View(timeout=120)
+                        view = discord.ui.View(timeout=300)
                         view.add_item(button(label="💙"))
                         await ctx.send(embed=embed, view=view)
                     else:
@@ -296,7 +296,7 @@ class api_waifu(commands.Cog):
                         embed.set_image(url=image_url)
 
                         #with_button
-                        view = discord.ui.View(timeout=120)
+                        view = discord.ui.View(timeout=300)
                         view.add_item(button(label="❤️"))
                         await ctx.send(embed=embed, view=view)
                     else:
