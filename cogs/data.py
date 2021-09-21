@@ -279,10 +279,14 @@ class Data(commands.Cog):
     @commands.has_permissions(view_audit_log=True)
     async def audit(self,ctx, num: int=None):
         embed=discord.Embed(title='Audit Logs',description="", color=0xffffff)
-        embed.set_footer(text=f"Requested by {ctx.author}")
+        embed.set_footer(text=f"Requested by {ctx.author}" , icon_url=ctx.author.avatar.url)
+        if num is None: num=5
         async for entry in ctx.guild.audit_logs(limit=num):
-            embed.description += f'**User:** `{entry.user}` **Action:** `{entry.action}`  **Target:** `{entry.target}`  **Category:** `{entry.category}` **Time:** `{entry.created_at.strftime("%a, %#d %B %Y, %I:%M %p")}\n\n`'
-        await ctx.reply(embed=embed, mention_author=False)
+            action_str = str(entry.action)
+            category_str = str(entry.category)
+            embed.description += f'**User:** `{entry.user}` **Action:** `{action_str[15:]}`  **Target:** `{entry.target}` **Time:** `{entry.created_at.strftime("%a, %#d %B %Y, %I:%M %p")}\n\n`'
+            #**Category:** `{category_str[23:]}`
+        await ctx.reply(embed=embed, mention_author=False) 
     
     @commands.command(aliases=['temp','tempinvite'])
     @commands.guild_only()

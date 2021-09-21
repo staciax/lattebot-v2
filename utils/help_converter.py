@@ -1,14 +1,14 @@
 import discord
 from discord.ext import commands
 from discord import Embed
+from utils import emoji_converter
 
 fields = [
     ("","",True)
   ]
 
-def Utility(ctx):
-  embed = Embed(description=f"**Utility Commands**",color=0xffffff)#\n\n`sleep:` set my or member timer disconnect voice channel\n\n`poll [message]:` poll in your server",color=0xffffff)
-  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+def Utility():
+  embed = Embed(title=f"⚙️ Utility Commands",color=0xffffff)#\n\n`sleep:` set my or member timer disconnect voice channel\n\n`poll [message]:` poll in your server",color=0xffffff)
   
   description="""
   Use `.help <command>` for more informations about a command.
@@ -17,7 +17,7 @@ def Utility(ctx):
   `sleep stop` • Stop sleep timer.
   `poll` • Create poll.
   `binary` • Text to binary.
-  `reverse , sb` • Reverse text.
+  `reverse` • Reverse text.
   `translate , trans` • Translate message.
   `random_number , rn` • Random number Lowest - Highest.
   """
@@ -25,8 +25,8 @@ def Utility(ctx):
 
   return embed
 
-def Infomation(ctx):
-  embed = Embed(title="**Infomation Commands**",color=0xffffff)
+def Infomation():
+  embed = Embed(title=f"{emoji_converter('ShinoSmirk')} **Infomation Commands**",color=0xffffff)
 
   description="""
   Use `.help <command>` for more informations about a command.
@@ -45,8 +45,8 @@ def Infomation(ctx):
   
   return embed
 
-def Moderation(ctx):
-  embed = Embed(title="Moderation Commands",color=0xffffff)
+def Moderation():
+  embed = Embed(title=f"{emoji_converter('moderation')} Moderation Commands",color=0xffffff)
   
   description="""
   Use `.help <command>` for more informations about a command.
@@ -66,8 +66,8 @@ def Moderation(ctx):
   
   return embed
 
-def Giveaway(ctx):
-  embed = Embed(title="Giveaway Commands",color=0xffffff)
+def Giveaway():
+  embed = Embed(title="🎉 Giveaway Commands",color=0xffffff)
 
   description="""
   Use `.help <command>` for more informations about a command.
@@ -79,8 +79,8 @@ def Giveaway(ctx):
   
   return embed
   
-def Fun(ctx):
-  embed = Embed(title="Fun Commands",color=0xffffff)
+def Fun():
+  embed = Embed(title="🥳 Fun Commands",color=0xffffff)
   
   description = """
   Use `.help <command>` for more informations about a command.
@@ -92,9 +92,8 @@ def Fun(ctx):
   
   return embed
 
-def Anime(ctx):
-  embed = Embed(title="Anime Commands",color=0xffffff)
-  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)
+def Anime():
+  embed = Embed(title=f"{emoji_converter('miraishocked')} Anime Commands",color=0xffffff)
 
   description="""
   Use `.help <command>` for more informations about a command.
@@ -105,8 +104,8 @@ def Anime(ctx):
   
   return embed
 
-def Meta(ctx):
-  embed = Embed(title="Meta Commands",color=0xffffff)
+def Meta():
+  embed = Embed(title=f"{emoji_converter('Ani1')} Meta Commands",color=0xffffff)
   
   description="""
   Use `.help <command>` for more informations about a command.
@@ -120,13 +119,12 @@ def Meta(ctx):
   
   return embed
 
-def Reaction(ctx):
-  embed = Embed(description="**Reaction Roles**\n\n <a:a_dp_heart2:875170744722653245> **__c o l o r s__** <a:bw_white_Hearts_White:859399024558080020> : <#840380566862823425>",color=0xffffff)
-  embed.set_author(name=f"{ctx.author.name}", icon_url=ctx.author.avatar.url)  
+def Reaction():
+  embed = Embed(title=f"{emoji_converter('chocolawow')} Reaction Roles",description="<a:a_dp_heart2:875170744722653245> **__c o l o r s__** <a:bw_white_Hearts_White:859399024558080020> : <#840380566862823425>",color=0xffffff)
   return embed
 
-def Leveling(ctx):
-  embed = Embed(title="Leveling",color=0xffffff)
+def Leveling():
+  embed = Embed(title=f"{emoji_converter('ClevelandDeal')} Leveling",color=0xffffff)
 
   description="""
   Use `.help <command>` for more informations about a command.
@@ -142,23 +140,23 @@ def Leveling(ctx):
   
   return embed
 
-def NSFW(ctx):
-  embed = Embed(title="NSFW Commands",color=0xffffff)
+def NSFW():
+  embed = Embed(title=f"{emoji_converter('Aoba')} NSFW Commands",color=0xffffff)
 
   description = """
   Use `.help <command>` for more informations about a command.
   
   *NSFW* is alollowed in <#850507964938715196>
   
-  • `waifu` , `neko` , `trap` , `blowjob` , `ass`, `ecchi`, `ero`, `hentai` ,`hmaid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform`
+  • `waifu` , `neko` , `trap` , `blowjob` , `ass`, `ecchi`, `ero`, `hentai` ,`hmaid`, `milf`, `oppai`, `oral`, `paizuri`, `selfie`, `uniform`
   """
   # `ass`, `ecchi`, `ero`, `hentai` ,`maid`, `milf`, `oppai`, `oral`, `paizuri`, `selfies`, `uniform` , 
   embed.description = description
   
   return embed
 
-def Help_image(ctx):
-  embed = Embed(title="Image Commands",color=0xffffff)
+def Help_image():
+  embed = Embed(title=f"{emoji_converter('image')} Image Commands",color=0xffffff)
 
   description = """
   Use `.help <command>` for more informations about a command.

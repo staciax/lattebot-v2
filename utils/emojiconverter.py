@@ -36,7 +36,7 @@ def emoji_converter(name):
     "4th" : "<:check:864461829836505098>",
     "blackcrown" : "<a:blackcrown:867335151407333386>",
     "nekocrown" : "<:nekocatroyal:867362857614966784>",
-    "moderation" : "<:moderation:867680516987420722>",
+    "moderation" : "<:certified_moderator:864054307367682059>",
     "lutoaraka" : "<:lutoarakablush:867683214298054696>",
     "shidapout" : "<:shidapout:867683219733348363>",
     "ShinoSmirk" : "<:ShinoSmirk:867686091501994004>",
@@ -63,7 +63,8 @@ def emoji_converter(name):
     "redtick":"<:redtick:881500898273144852>",
     "greentick":"<:greentick:881500884725547021>",
     "trash":"<:trashcan:883641203051073557>",
-    "miraishocked":"<:miraishocked:867683570750980096>"
+    "miraishocked":"<:miraishocked:867683570750980096>",
+    "image":"<:image:889841860183461918>"
   }
   
   return names_to_emojis.get(name)

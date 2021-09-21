@@ -30,7 +30,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Bully",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
 
@@ -45,7 +45,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Cry",url=api["url"] , color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)           
+                    await ctx.reply(embed=embed, mention_author=False)           
                 else:
                     error=api["error"]
 
@@ -60,7 +60,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Bonk" , url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)          
+                    await ctx.reply(embed=embed, mention_author=False)          
                 else:
                     return
     
@@ -75,7 +75,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Kiss",url=api["url"] , color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -90,7 +90,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Lick",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -105,7 +105,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Pat",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -120,7 +120,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Smug",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -135,7 +135,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Blush",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -150,7 +150,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Smile",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -165,7 +165,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Nom",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -180,7 +180,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Bite",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -195,7 +195,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Slap",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -210,7 +210,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Kick",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -225,7 +225,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Happy",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -240,7 +240,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Wink",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -256,7 +256,7 @@ class api_waifu(commands.Cog):
                         embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
                         embed.set_image(url=image_url)
 
-                        await ctx.reply(embed=embed)
+                        await ctx.reply(embed=embed, mention_author=False)
                     else:
                         return
         else:
@@ -268,7 +268,7 @@ class api_waifu(commands.Cog):
                         embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
                         embed.set_image(url=image_url)
 
-                        await ctx.reply(embed=embed)
+                        await ctx.reply(embed=embed, mention_author=False)
                     else:
                         return
     
@@ -284,7 +284,7 @@ class api_waifu(commands.Cog):
                         embed = discord.Embed(title="Neko",url=api["url"], color=0xffffff)
                         embed.set_image(url=image_url)
 
-                        await ctx.reply(embed=embed)
+                        await ctx.reply(embed=embed, mention_author=False)
                     else:
                         return
         else:
@@ -296,7 +296,7 @@ class api_waifu(commands.Cog):
                         embed = discord.Embed(title="Neko",url=api["url"], color=0xffffff)
                         embed.set_image(url=image_url)
 
-                        await ctx.reply(embed=embed)
+                        await ctx.reply(embed=embed, mention_author=False)
                     else:
                         return
 
@@ -312,7 +312,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Trap",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
     
@@ -327,7 +327,7 @@ class api_waifu(commands.Cog):
                     embed = discord.Embed(title="Blowjob",url=api["url"], color=0xffffff)
                     embed.set_image(url=image_url)
 
-                    await ctx.reply(embed=embed)
+                    await ctx.reply(embed=embed, mention_author=False)
                 else:
                     return
 
