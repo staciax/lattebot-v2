@@ -80,7 +80,7 @@ class Help_support(commands.Cog):
         embedhelp.set_image(url="https://i.imgur.com/3jz8m3V.png")
 
         #start_selection_view
-        view = discord.ui.View()
+        view = discord.ui.View(timeout=180)
         view.add_item(Help_selection())
 
         #button_view
@@ -94,6 +94,30 @@ class Help_support(commands.Cog):
         
         if command is None:
             await ctx.send(embed=embedhelp, view=view)
+        elif command == "anime":
+            await ctx.send(embed=utils.Anime(), view=view)
+        elif command == "image":
+            await ctx.send(embed=utils.Help_image(), view=view)
+        elif command in ["util","utils","utility"]:
+            await ctx.send(embed=utils.Utility(), view=view)
+        elif command in ["info","infomation","infomations"]:
+            await ctx.send(embed=utils.Infomation(), view=view)
+        elif command in ["mod","moderation"]:
+            if ctx.author.guild_permissions.administrator:
+                await ctx.send(embed=utils.Moderation(), view=view)
+        elif command in ["gw","giveaway"]:
+            if ctx.author.guild_permissions.administrator:
+                await ctx.send(embed=utils.Giveaway(), view=view)
+        elif command == "fun":
+            await ctx.send(embed=utils.Fun(), view=view)
+        elif command == "misc":
+            await ctx.send(embed=utils.Meta(), view=view)
+        elif command == ["rr","reaction","reaction role","reaction roles"]:
+            await ctx.send(embed=utils.Reaction(), view=view)
+        elif command == "level":
+            await ctx.send(embed=utils.Leveling(), view=view)
+        elif command == "nsfw":
+            await ctx.send(embed=utils.NSFW(), view=view)
         else:
             helpEmbed = discord.Embed (
                 color = 0xffffff

@@ -1,5 +1,6 @@
 # Standard 
 import discord , asyncio
+from discord import Embed
 import datetime
 from discord.ext import commands
 from datetime import datetime, timezone , timedelta
@@ -9,6 +10,29 @@ import aiohttp
 
 # Local
 import utils
+
+#button_view
+class button(discord.ui.Button):
+    async def callback(self, interaction):
+        if self.label == "❤️":
+            async with aiohttp.ClientSession() as cs:
+                async with cs.get(f"https://api.waifu.pics/sfw/waifu") as rep:
+                    api = await rep.json()
+                    if rep.status == 200:
+                        image_url=api["url"]
+                        embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
+                        embed.set_image(url=image_url)
+
+        elif self.label == "💙":
+            async with aiohttp.ClientSession() as cs:
+                async with cs.get(f"https://api.waifu.pics/nsfw/waifu") as rep:
+                    api = await rep.json()
+                    if rep.status == 200:
+                        image_url=api["url"]
+                        embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
+                        embed.set_image(url=image_url)
+                    
+        await interaction.response.edit_message(embed=embed, view=self.view)
 
 class api_waifu(commands.Cog):
 
@@ -256,7 +280,10 @@ class api_waifu(commands.Cog):
                         embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
                         embed.set_image(url=image_url)
 
-                        await ctx.reply(embed=embed, mention_author=False)
+                        #with_button
+                        view = discord.ui.View(timeout=120)
+                        view.add_item(button(label="💙"))
+                        await ctx.send(embed=embed, view=view)
                     else:
                         return
         else:
@@ -268,7 +295,10 @@ class api_waifu(commands.Cog):
                         embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
                         embed.set_image(url=image_url)
 
-                        await ctx.reply(embed=embed, mention_author=False)
+                        #with_button
+                        view = discord.ui.View(timeout=120)
+                        view.add_item(button(label="❤️"))
+                        await ctx.send(embed=embed, view=view)
                     else:
                         return
     
