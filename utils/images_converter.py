@@ -11,6 +11,10 @@ class cat_view(discord.ui.View):
         super().__init__(timeout=300)
         self.ctx = ctx
         self.url = "http://aws.random.cat/meow"
+        self.json_url = ""
+    
+    def add_button(self):
+        self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
         self.stop()
@@ -21,6 +25,7 @@ class cat_view(discord.ui.View):
             async with aiohttp.ClientSession() as cs:
                 async with cs.get(self.url) as r:
                     data = await r.json()
+                    self.json_url = data["url"]
 
                     embed = discord.Embed(title="Meow" , color=0xffffff)
                     embed.set_image(url=data['file'])
@@ -29,12 +34,16 @@ class cat_view(discord.ui.View):
 
     @discord.ui.button(emoji="💖", style=discord.ButtonStyle.blurple, custom_id='b2')
     async def disable_all_button(self, button, interaction):
-        self.stop()
+        if self.ctx.author.id == interaction.user.id:
+            self.add_button()
+            await interaction.response.edit_message(view=self)
+            self.stop()
 
     async def api_start(self):
         async with aiohttp.ClientSession() as cs:
             async with cs.get(self.url) as r:
                 data = await r.json()
+                self.json_url = data["url"]
 
                 embed = discord.Embed(title="Meow" , color=0xffffff)
                 embed.set_image(url=data['file'])
@@ -46,6 +55,10 @@ class fox_view(discord.ui.View):
         super().__init__(timeout=300)
         self.ctx = ctx
         self.url = "http://randomfox.ca/floof/"
+        self.json_url = ""
+    
+    def add_button(self):
+        self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
         self.stop()
@@ -56,6 +69,7 @@ class fox_view(discord.ui.View):
             async with aiohttp.ClientSession() as cs:
                 async with cs.get(self.url) as r:
                     data = await r.json()
+                    self.json_url = data['image']
 
                     embed = discord.Embed(title="Fox" , color=0xffffff)
                     embed.set_image(url=data['image'])
@@ -64,12 +78,16 @@ class fox_view(discord.ui.View):
 
     @discord.ui.button(emoji="💖", style=discord.ButtonStyle.blurple, custom_id='b2')
     async def disable_all_button(self, button, interaction):
-        self.stop()
+        if self.ctx.author.id == interaction.user.id:
+            self.add_button()
+            await interaction.response.edit_message(view=self)
+            self.stop()
 
     async def api_start(self):
         async with aiohttp.ClientSession() as cs:
             async with cs.get(self.url) as r:
                 data = await r.json()
+                self.json_url = data['image']
 
                 embed = discord.Embed(title="Fox" , color=0xffffff)
                 embed.set_image(url=data['image'])
