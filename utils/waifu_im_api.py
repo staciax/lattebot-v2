@@ -31,7 +31,7 @@ class sfw_all_view(discord.ui.View):
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
     async def button_api(self, button: discord.ui.Button, interaction: discord.Interaction):
-        if self.ctx.author.id == interaction.user.id:
+#        if self.ctx.author.id == interaction.user.id:
             async with aiohttp.ClientSession() as session:
                 request = await session.get(self.url)
                 api = await request.json()
