@@ -45,7 +45,7 @@ class sfw_all_view(discord.ui.View):
 
     @discord.ui.button(emoji="💖", style=discord.ButtonStyle.blurple, custom_id='b2')
     async def disable_all_button(self, button, interaction):
-        if self.ctx.author.id == interaction.user.id:
+#        if self.ctx.author.id == interaction.user.id:
             self.add_button()
             await interaction.response.edit_message(view=self)
             self.stop()
@@ -60,7 +60,7 @@ class sfw_all_view(discord.ui.View):
 
         embed1 = API_waifu_im_Embed(self, json)
         
-        await self.ctx.reply(embed=embed1, view=self , mention_author=False)
+        await self.ctx.send(embed=embed1, view=self)
 
 class sfw_waifu_view(discord.ui.View):
     def __init__(self, ctx):
