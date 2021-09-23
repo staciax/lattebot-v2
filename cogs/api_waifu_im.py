@@ -25,96 +25,107 @@ class api_waifu_im(commands.Cog):
     @commands.command(aliases=['sfw_all', 'all_sfw'])
     @commands.guild_only()
     async def waifuall(self, ctx):
-        view = sfw_all_view(ctx)
+        url = "https://api.waifu.im/sfw/all/"
+        view = sfw_all_view(ctx, url)
         await view.api_start()
 
     @commands.command(aliases=['sfw_waifu', 'waifu_sfw'])
     @commands.guild_only()
     async def waifu2(self, ctx):
-        view = sfw_waifu_view(ctx)
+        url = "https://api.waifu.im/sfw/waifu/"
+        view = base_waifu_im_api(ctx, url)
         await view.api_start()
     
-    @commands.command(aliases=['sfw_maid', 'maid_sfw'])
+    @commands.command(aliases=['sfw_maid', 'maid_sfw', 'hmaid'])
     @commands.guild_only()
     async def maid(self, ctx):
-        view = sfw_maid_view(ctx)
-        await view.api_start()
+        if ctx.channel.is_nsfw():
+            url = "https://api.waifu.im/nsfw/maid/"
+            view = base_waifu_im_api(ctx, url)
+            await view.api_start()
+        else:
+            url = "https://api.waifu.im/sfw/maid/"
+            view = base_waifu_im_api(ctx, url)
+            await view.api_start()
 
     @commands.command(aliases=['nsfw_ass', 'ass_nsfw'])
     @commands.guild_only()
     @commands.is_nsfw()
     async def ass(self, ctx):
-        view = nsfw_ass_view(ctx)
+        url = "https://api.waifu.im/nsfw/ass/"
+        view = base_waifu_im_api(ctx, url)
         await view.api_start()
         
     @commands.command(aliases=['nsfw_ecchi', 'ecchi_nsfw'])
     @commands.guild_only()
     @commands.is_nsfw()
     async def ecchi(self, ctx):
-        view = nsfw_ecchi_view(ctx)
-        await view.api_start()        
+        url = "https://api.waifu.im/nsfw/ecchi/"
+        view = base_waifu_im_api(ctx, url)
+        await view.api_start()       
 
     @commands.command(aliases=['nsfw_ero', 'ero_nsfw'])
     @commands.guild_only()
     @commands.is_nsfw()
     async def ero(self, ctx):
-        view = nsfw_ero_view(ctx)
+        url = "https://api.waifu.im/nsfw/ero/"
+        view = base_waifu_im_api(ctx, url)
         await view.api_start()
         
     @commands.command(aliases=['nsfw_hentai', 'hentai_nsfw'])
     @commands.guild_only()
     @commands.is_nsfw()
     async def hentai(self, ctx):
-        view = nsfw_hentai_view(ctx)
+        url = "https://api.waifu.im/nsfw/hentai/"
+        view = base_waifu_im_api(ctx, url)
         await view.api_start()
         
-    @commands.command(aliases=['maidh', 'nsfw_maid', 'maid_nsfw'])
-    @commands.guild_only()
-    @commands.is_nsfw()
-    async def hmaid(self, ctx):
-        view = nsfw_maid_view(ctx)
-        await view.api_start()
-
     @commands.command(aliases=['nsfw_milf', 'milf_nsfw'])
     @commands.guild_only()
     @commands.is_nsfw()
     async def milf(self, ctx):
-        view = nsfw_milf_view(ctx)
+        url = "https://api.waifu.im/nsfw/milf/"
+        view = base_waifu_im_api(ctx, url)
         await view.api_start()
 
     @commands.command(aliases=['nsfw_oppai', 'oppai_nsfw'])
     @commands.guild_only()
     @commands.is_nsfw()
     async def oppai(self, ctx):
-        view = nsfw_oppai_view(ctx)
+        url = "https://api.waifu.im/nsfw/oppai/"
+        view = base_waifu_im_api(ctx, url)
         await view.api_start()
 
     @commands.command(aliases=['nsfw_oral', 'oral_nsfw'])
     @commands.guild_only()
     @commands.is_nsfw()
     async def oral(self, ctx):
-        view = nsfw_oral_view(ctx)
+        url = "https://api.waifu.im/nsfw/oral/"
+        view = base_waifu_im_api(ctx, url)
         await view.api_start()
 
     @commands.command(aliases=['nsfw_paizuri', 'paizuri_nsfw'])
     @commands.guild_only()
     @commands.is_nsfw()
     async def paizuri(self, ctx):
-        view = nsfw_paizuri_view(ctx)
+        url = "https://api.waifu.im/nsfw/paizuri/"
+        view = base_waifu_im_api(ctx, url)
         await view.api_start()
         
     @commands.command(aliases=['nsfw_selfies', 'selfies_nsfw', 'selfie', 'nsfw_selfie', 'selfie_nsfw'])
     @commands.guild_only()
     @commands.is_nsfw()
     async def selfies(self, ctx):
-        view = nsfw_selfies_view(ctx)
+        url = "https://api.waifu.im/nsfw/selfies/"
+        view = base_waifu_im_api(ctx, url)
         await view.api_start()
         
     @commands.command(aliases=['nsfw_uniform', 'uniform_nsfw'])
     @commands.guild_only()
     @commands.is_nsfw()
     async def uniform(self, ctx):
-        view = nsfw_uniform_view(ctx)
+        url = "https://api.waifu.im/nsfw/uniform/"
+        view = base_waifu_im_api(ctx, url)
         await view.api_start()
 
 def setup(bot):

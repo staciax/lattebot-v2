@@ -71,12 +71,13 @@ class Help_support(commands.Cog):
 
         #if ctx.author.guild_permissions.administrator:
         if ctx.channel.id == LATTE_TEST_BOT:
-            embedhelp.add_field(name=f"•🎉 **Giveaway**", value=f"`{PREFIX}help gw`", inline=True)
-            embedhelp.add_field(name=f"•{emojis('moderation')} **Moderation**", value=f"`{PREFIX}help mod`", inline=True)
+            embedhelp.add_field(name='** **', value=f"•🎉 Giveaway\n•{emojis('moderation')} Moderation")
+        #    embedhelp.add_field(name=f"•🎉 **Giveaway**", value=f"`{PREFIX}help gw`", inline=True)
+        #    embedhelp.add_field(name=f"•{emojis('moderation')} **Moderation**", value=f"`{PREFIX}help mod`", inline=True)
 
         lastup = datetime(UYEAR, UMONTH, UDATE)
         dt = lastup.strftime("%d %B %Y") #%A,
-        embedhelp.set_footer(text=f"Recently Updated • {dt}")
+        embedhelp.set_footer(text=f"{BOTVERSION} Recently updated • {dt}", icon_url=self.bot.user.avatar.url)
         embedhelp.set_image(url="https://i.imgur.com/3jz8m3V.png")
 
         #start_selection_view
@@ -158,47 +159,47 @@ class Help_support(commands.Cog):
 
             await ctx.send(embed = helpEmbed)
 
-#backup
+    #backup
 
-"""
-class Test_selection(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=None)
+    """
+    class Test_selection(discord.ui.View):
+        def __init__(self):
+            super().__init__(timeout=None)
 
-    @discord.ui.select(custom_id="squad_play_status", placeholder="Select a category.",
-                       min_values=1, max_values=1,
-                       options=[discord.SelectOption(label='Anime', value="Anime1",  description='Anime gif and picture', emoji='🟥'),
-                            discord.SelectOption(label='Image', value="Image",description='Image commands', emoji='<:image:889841860183461918>'),
-                            discord.SelectOption(label='Utility', value="Utility",description='Some useful commands', emoji='⚙️'),
-                            discord.SelectOption(label='Infomation', value="Infomation",description='Display infomation', emoji='🟦'),
-                            discord.SelectOption(label='Fun', value="Fun",description='Fun commands', emoji='🟦'),
-                            discord.SelectOption(label='Misc', value="Misc",description='Setup , config and various other command', emoji='🟦'),
-                            discord.SelectOption(label='Reaction roles', value="Reaction",description='Reaction Roles', emoji='🟦'),
-                            discord.SelectOption(label='Leveling', value="Leveling",description='Leveling system', emoji='🟦'),
-                            discord.SelectOption(label='NSFW', value="NSFW",description='NSFW gif and picture', emoji='🟦')])
-    async def signup_callback(self, select: discord.ui.select, interaction: discord.Interaction):
-        print(self.values[0])
-"""
-#fields = [(f"•{emojis('miraishocked')} **Anime**", f"`{PREFIX}help anime`" , True),
-        #        (f"•📷 **Image**", f"`{PREFIX}help image`" , True),
-        #        (f"•{emojis('shidapout')} **Utility**", f"`{PREFIX}help util`" , True),
-        #        (f"•{emojis('ShinoSmirk')} **Infomation**", f"`{PREFIX}help info`", True),
-#                   (f"•{emojis('lutoaraka')} **Moderation**", "`lt help mod`", True),
-#                   (f"•{emojis('winkai')} **Giveaway**", "`lt help gw`", True),
-        #        (f"•{emojis('wowanime')} **Fun**", f"`{PREFIX}help fun`", True),
-        #        (f"•{emojis('Ani1')} **Meta**", f"`{PREFIX}help meta`", True),
-        #        (f"•{emojis('chocolawow')} **Reaction Roles**", f"`{PREFIX}help rr`", True),
-        #        (f"•{emojis('ClevelandDeal')} **Leveling**", f"`{PREFIX}help level`", True),
-        #        (f"•{emojis('tohka')} **NSFW**", f"`{PREFIX}help nsfw`", True)]
-#for name, value, inline in fields:
-            #embedhelp.add_field(name=name, value=value, inline=inline)
+        @discord.ui.select(custom_id="squad_play_status", placeholder="Select a category.",
+                        min_values=1, max_values=1,
+                        options=[discord.SelectOption(label='Anime', value="Anime1",  description='Anime gif and picture', emoji='🟥'),
+                                discord.SelectOption(label='Image', value="Image",description='Image commands', emoji='<:image:889841860183461918>'),
+                                discord.SelectOption(label='Utility', value="Utility",description='Some useful commands', emoji='⚙️'),
+                                discord.SelectOption(label='Infomation', value="Infomation",description='Display infomation', emoji='🟦'),
+                                discord.SelectOption(label='Fun', value="Fun",description='Fun commands', emoji='🟦'),
+                                discord.SelectOption(label='Misc', value="Misc",description='Setup , config and various other command', emoji='🟦'),
+                                discord.SelectOption(label='Reaction roles', value="Reaction",description='Reaction Roles', emoji='🟦'),
+                                discord.SelectOption(label='Leveling', value="Leveling",description='Leveling system', emoji='🟦'),
+                                discord.SelectOption(label='NSFW', value="NSFW",description='NSFW gif and picture', emoji='🟦')])
+        async def signup_callback(self, select: discord.ui.select, interaction: discord.Interaction):
+            print(self.values[0])
+    """
+    #fields = [(f"•{emojis('miraishocked')} **Anime**", f"`{PREFIX}help anime`" , True),
+            #        (f"•📷 **Image**", f"`{PREFIX}help image`" , True),
+            #        (f"•{emojis('shidapout')} **Utility**", f"`{PREFIX}help util`" , True),
+            #        (f"•{emojis('ShinoSmirk')} **Infomation**", f"`{PREFIX}help info`", True),
+    #                   (f"•{emojis('lutoaraka')} **Moderation**", "`lt help mod`", True),
+    #                   (f"•{emojis('winkai')} **Giveaway**", "`lt help gw`", True),
+            #        (f"•{emojis('wowanime')} **Fun**", f"`{PREFIX}help fun`", True),
+            #        (f"•{emojis('Ani1')} **Meta**", f"`{PREFIX}help meta`", True),
+            #        (f"•{emojis('chocolawow')} **Reaction Roles**", f"`{PREFIX}help rr`", True),
+            #        (f"•{emojis('ClevelandDeal')} **Leveling**", f"`{PREFIX}help level`", True),
+            #        (f"•{emojis('tohka')} **NSFW**", f"`{PREFIX}help nsfw`", True)]
+    #for name, value, inline in fields:
+                #embedhelp.add_field(name=name, value=value, inline=inline)
 
-#elif command == "mod":
-#            if ctx.author.guild_permissions.administrator:
-#                await ctx.send(embed=utils.Moderation(ctx))
-#        elif command == "gw":
-#            if ctx.author.guild_permissions.administrator:
-#                await ctx.send(embed=utils.Giveaway(ctx))
+    #elif command == "mod":
+    #            if ctx.author.guild_permissions.administrator:
+    #                await ctx.send(embed=utils.Moderation(ctx))
+    #        elif command == "gw":
+    #            if ctx.author.guild_permissions.administrator:
+    #                await ctx.send(embed=utils.Giveaway(ctx))
             
 def setup(bot):
     bot.add_cog(Help_support(bot))

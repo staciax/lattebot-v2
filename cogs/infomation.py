@@ -172,7 +172,7 @@ class Infomation(commands.Cog):
             role_string = "this user don't have a role"
         #fetch_banner
         fetch_member = await self.bot.fetch_user(member.id)
-#            if fetchedMember.banner.is_animated() == True:
+        #if fetchedMember.banner.is_animated() == True:
 
         #member_color
         if member.colour:
@@ -247,7 +247,7 @@ class Infomation(commands.Cog):
             view.add_item(item=item)
             await ctx.send(embed=embed , view=view)
         elif fetch_member.accent_color:
-#            print(fetch_member.accent_color)
+        #print(fetch_member.accent_color)
             #pillow_generate
             img = Image.new("RGB", (256, 144), ImageColor.getrgb(f"{fetch_member.accent_color}"))
             buffer = BytesIO()
@@ -270,7 +270,7 @@ class Infomation(commands.Cog):
             embed_help.set_author(name=f"{ctx.author.name}" , icon_url = ctx.author.avatar.url)
             embed_help.add_field(name="Emoji Infomation" , value="```yaml\n.emojiinfo [emoji] | .ei [emoji]```", inline = True)
             return await ctx.send(embed=embed_help , delete_after=15)
-#            return await ctx.invoke(self.bot.get_command("help") , category="info")
+        #            return await ctx.invoke(self.bot.get_command("help") , category="info")
                     
 
         try:
@@ -297,14 +297,14 @@ class Infomation(commands.Cog):
         **Guild Name:** {emoji.guild.name}
         **Guild Id:** {emoji.guild.id}
         """
-#        **Other:**
-#           **- Usable by:** {can_use_emoji}
-#        **- Animated:** {is_animated}
-#        **- Managed:** {is_managed}
-#        **- Requires Colons:** {requires_colons}
-#        **- Guild Name:** {emoji.guild.name}
-#        **- Guild Id:** {emoji.guild.id}
-#        """
+        #        **Other:**
+        #           **- Usable by:** {can_use_emoji}
+        #        **- Animated:** {is_animated}
+        #        **- Managed:** {is_managed}
+        #        **- Requires Colons:** {requires_colons}
+        #        **- Guild Name:** {emoji.guild.name}
+        #        **- Guild Id:** {emoji.guild.id}
+        #        """
 
         embed = discord.Embed(
             title=f"**Emoji Information for:** `{emoji.name}`",

@@ -58,7 +58,7 @@ class Error(commands.Cog):
             cm_error = f"You can't use this command."  
         else:
             return
-#            cm_error = f"{error}"
+    #            cm_error = f"{error}"
         embed.description = cm_error
         await ctx.send(embed=embed, delete_after=15)
     

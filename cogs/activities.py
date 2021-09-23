@@ -43,8 +43,8 @@ class Activities(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
-#        guild = self.bot.get_guild(MYGUILD)
-#        self.invites[guild.id] = await guild.invites()
+    #        guild = self.bot.get_guild(MYGUILD)
+    #        self.invites[guild.id] = await guild.invites()
         for guild in self.bot.guilds:
             self.invites[guild.id] = await guild.invites()
 
@@ -58,7 +58,7 @@ class Activities(commands.Cog):
             self.total_ = total_count
             total_channel = guild.get_channel(876738880282431489)
             total_name = f"ᴛᴏᴛᴀʟ‌・{self.total_}"
-#            print(f"\n\n{total_name}")
+    #            print(f"\n\n{total_name}")
             await total_channel.edit(name=total_name)
         
         member_count = len([member for member in guild.members if not member.bot])
@@ -66,7 +66,7 @@ class Activities(commands.Cog):
             self.member_ = member_count
             member_channel = guild.get_channel(876712142160678923)
             member_name = f"ᴍᴇᴍʙᴇʀs・{self.member_}"
-#            print(member_name)
+    #            print(member_name)
             await member_channel.edit(name=member_name)
 
         bot_count = len([Member for Member in guild.members if Member.bot])
@@ -74,7 +74,7 @@ class Activities(commands.Cog):
             self.bot_ = bot_count
             bot_channel = guild.get_channel(876724022686150687)
             bot_name = f"ʙᴏᴛs‌・{self.bot_}"
-#            print(bot_name)
+    #            print(bot_name)
             await bot_channel.edit(name=bot_name)
         
         role_count = len(guild.roles)
@@ -82,7 +82,7 @@ class Activities(commands.Cog):
             self.role_ = role_count
             role_channel = guild.get_channel(876712169662742588)
             role_name = f"ʀᴏʟᴇs‌・{self.role_}"
-#            print(role_name)
+    #            print(role_name)
             await role_channel.edit(name=role_name)
         
         channel_count = len(guild.channels)
@@ -90,7 +90,7 @@ class Activities(commands.Cog):
             self.channel_ = channel_count
             channel_channel = guild.get_channel(876712200214024192)
             channel_name = f"ᴄʜᴀɴɴᴇʟs・{self.channel_}"
-#            print(channel_name)
+    #            print(channel_name)
             await channel_channel.edit(name=channel_name)
         
         text_channel_count = len(guild.text_channels)
@@ -98,7 +98,7 @@ class Activities(commands.Cog):
             self.text_ = text_channel_count
             text_channel = guild.get_channel(876740437505871922)
             text_name = f"ᴛᴇxᴛ・{self.text_}"
-#            print(text_name)
+    #            print(text_name)
             await text_channel.edit(name=text_name)
         
         voice_channel_count = len(guild.voice_channels)
@@ -106,7 +106,7 @@ class Activities(commands.Cog):
             self.voice_ = voice_channel_count
             voice_channel = guild.get_channel(876740515863879711)
             voice_name = f"ᴠᴏɪᴄᴇ・{self.voice_}"
-#            print(voice_name)
+    #            print(voice_name)
             await voice_channel.edit(name=voice_name)
         
         boost_count = guild.premium_subscription_count
@@ -121,19 +121,19 @@ class Activities(commands.Cog):
     async def before_counted(self):
         await self.bot.wait_until_ready()
 
-#    @commands.Cog.listener()
-#    async def on_member_join(self, member):
-#        if member.guild.id == 867729118308204564:
-#	        await sleep(60*10)
-#	        for channel in member.guild.channels:
-#		        if channel.name.startswith('♢・latte'):
-#			        await channel.edit(name=f'♢・latte・{member.guild.member_count}')
-#			        break
-#auto role event
-#@commands.Cog.listener()
-#async def on_member_join(self, member):
-##  role = get(member.guild.roles, id=role_id)
-##  await member.add_roles(role)
+    #    @commands.Cog.listener()
+    #    async def on_member_join(self, member):
+    #        if member.guild.id == 867729118308204564:
+    #	        await sleep(60*10)
+    #	        for channel in member.guild.channels:
+    #		        if channel.name.startswith('♢・latte'):
+    #			        await channel.edit(name=f'♢・latte・{member.guild.member_count}')
+    #			        break
+    #auto role event
+    #@commands.Cog.listener()
+    #async def on_member_join(self, member):
+    ##  role = get(member.guild.roles, id=role_id)
+    ##  await member.add_roles(role)
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -356,7 +356,7 @@ class Activities(commands.Cog):
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
                     embed.set_thumbnail(url=after.avatar.url)
-#                    embed.set_footer(text="", icon_url=after.avatar.url)
+    #                    embed.set_footer(text="", icon_url=after.avatar.url)
 
                 await self.server_log.send(embed=embed)
 
@@ -456,14 +456,14 @@ class Activities(commands.Cog):
                     await self.message_log.send(embed=em)
                 else:
                     pass
-#            else:
-#                delem = discord.Embed(color=0xDC143C , timestamp=datetime.now(timezone.utc))
-#                delem.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
-#                delem.description = f"**Message deleted in:** {message.channel}"
-#                delem.add_field(name=f"**Content:**", value=f"```{message.clean_content}```", inline=False)
-#                delem.set_footer(text="Message delete")
+    #            else:
+    #                delem = discord.Embed(color=0xDC143C , timestamp=datetime.now(timezone.utc))
+    #                delem.set_author(name=message.author.display_name,icon_url=message.author.avatar.url)
+    #                delem.description = f"**Message deleted in:** {message.channel}"
+    #                delem.add_field(name=f"**Content:**", value=f"```{message.clean_content}```", inline=False)
+    #                delem.set_footer(text="Message delete")
 
-#                await self.message_log.send(embed=delem)
+    #                await self.message_log.send(embed=delem)
     
     @commands.Cog.listener()
     async def on_voice_state_update(self , member, before, after):
@@ -526,7 +526,7 @@ class Activities(commands.Cog):
                         for streamer in self.current_streamers:
                             if member.id == streamer:
                                 if not member.voice.self_stream:
-#                                    print("user stopped streaming")
+    #                                    print("user stopped streaming")
                                     self.current_streamers.remove(member.id)
                                 break        
         else:
@@ -621,16 +621,16 @@ class Activities(commands.Cog):
                 embed.set_footer(text=f"{str(after.status)}", icon_url=utils.status_icon(after.status))
                 await self.status_log.send(embed=embed)
 
-#    @commands.Cog.listener() #activity = role
-#    async def on_presence_update(self, before, after):
-#        games = ["game1", "game2", "game3"]
-#        if after.activity and after.activity.name.lower() in games:
-#            role = discord.utils.get(after.guild.roles, name=after.activity)
-#            await after.add_roles(role)
-#        elif before.activity and before.activity.name.lower() in games and not after.activity:
-#            role = discord.utils.get(after.guild.roles, name=after.activity)
-#            if role in after.roles: 
-#                await after.remove_roles(role)
+    #    @commands.Cog.listener() #activity = role
+    #    async def on_presence_update(self, before, after):
+    #        games = ["game1", "game2", "game3"]
+    #        if after.activity and after.activity.name.lower() in games:
+    #            role = discord.utils.get(after.guild.roles, name=after.activity)
+    #            await after.add_roles(role)
+    #        elif before.activity and before.activity.name.lower() in games and not after.activity:
+    #            role = discord.utils.get(after.guild.roles, name=after.activity)
+    #            if role in after.roles: 
+    #                await after.remove_roles(role)
 
 def setup(bot):
     bot.add_cog(Activities(bot))

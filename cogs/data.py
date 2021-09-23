@@ -346,32 +346,32 @@ class Data(commands.Cog):
         
         await ctx.channel.send(f'I started {uptime_string} ago.')
 
-# dm message to my text channel   
-#    @commands.Cog.listener()
-#    async def on_message(self, message):
-#        if not message.author.bot:
-#            if isinstance(message.channel, discord.DMChannel):
-#                if len(message.content) < 20:
-#                    await message.channel.send("<a:b_hitopotatowhat:864921118296506418>")
-#
-#               else:
-#                    embed = discord.Embed(title="DM Report",
-#                                            color=0xffffff,
-#                                            timestamp=datetime.now(timezone.utc)
-#                    )
-#                    embed.set_thumbnail(url=message.author.avatar.url)
-#
-#                    fields = [("Member", message.author.display_name, False),
-#                                ("Message",message.content, False)
-#                    
-#                    ]
-#                    for name, value, inline in fields:
-#                        embed.add_field(name=name, value=value , inline=inline)
-#
-#                    await self.bug_channel.send(embed=embed)
-#                    await message.channel.send("message relayed to bot developer")            
-#            else:
-#                await self.process_commands(message)
+    # dm message to my text channel   
+    #    @commands.Cog.listener()
+    #    async def on_message(self, message):
+    #        if not message.author.bot:
+    #            if isinstance(message.channel, discord.DMChannel):
+    #                if len(message.content) < 20:
+    #                    await message.channel.send("<a:b_hitopotatowhat:864921118296506418>")
+    #
+    #               else:
+    #                    embed = discord.Embed(title="DM Report",
+    #                                            color=0xffffff,
+    #                                            timestamp=datetime.now(timezone.utc)
+    #                    )
+    #                    embed.set_thumbnail(url=message.author.avatar.url)
+    #
+    #                    fields = [("Member", message.author.display_name, False),
+    #                                ("Message",message.content, False)
+    #                    
+    #                    ]
+    #                    for name, value, inline in fields:
+    #                        embed.add_field(name=name, value=value , inline=inline)
+    #
+    #                    await self.bug_channel.send(embed=embed)
+    #                    await message.channel.send("message relayed to bot developer")            
+    #            else:
+    #                await self.process_commands(message)
 
 def setup(bot):
     bot.add_cog(Data(bot))

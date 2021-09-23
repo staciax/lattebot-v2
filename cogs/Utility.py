@@ -72,10 +72,10 @@ class Utility_(commands.Cog):
     @commands.command(name="random", aliases=["r"], description="random", brief=f"{PREFIX}random", usage=f"{PREFIX}random")
     @commands.guild_only()
     async def random_(self, ctx ,*,msg) :
-#        await ctx.send("Please Enter a Range:")
+        #        await ctx.send("Please Enter a Range:")
 
         #split message
-#        message_response = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
+        #        message_response = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
         input_value = msg#message_response.content
         list_input = list(input_value.split())
 

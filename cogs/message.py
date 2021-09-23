@@ -140,13 +140,13 @@ class Message(commands.Cog):
                     angel = message.guild.get_channel(angel_channel)
                     await message.author.move_to(angel) 
                     await message.delete()
-#                    for c in message.guild.channels:
-#                        if c.id == channel_id:
-#                            checkvoice = c
+        #                    for c in message.guild.channels:
+        #                        if c.id == channel_id:
+        #                            checkvoice = c
      
         #when_mention_bot
-#        if self.bot.user.mentioned_in(message):
-#            await message.channel.send(f"This is my prefix `.`", delete_after=10)
+        #        if self.bot.user.mentioned_in(message):
+        #            await message.channel.send(f"This is my prefix `.`", delete_after=10)
 
         #temp_channel
         if message.channel.id == TEMP_CH:

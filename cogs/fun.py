@@ -29,37 +29,37 @@ class Fun(commands.Cog):
         self.sleep_sec = {}
         self.sleeping_db = {}
         self.sleeped.start()
-#        self.sleeped_delete.start()
+    #        self.sleeped_delete.start()
     
     def cog_unload(self):
         self.sleeped.cancel()
-#        self.sleeped_delete.cancel()
+    #        self.sleeped_delete.cancel()
 
-#    @tasks.loop(minutes=2)
-#    async def sleeped_delete(self):
-#        for key in self.sleeping.keys():
-#            if self.sleeping[key]["time"] is None:
-#                self.sleeping = {}
-#                print(f"deleted {self.sleeping}")
+    #    @tasks.loop(minutes=2)
+    #    async def sleeped_delete(self):
+    #        for key in self.sleeping.keys():
+    #            if self.sleeping[key]["time"] is None:
+    #                self.sleeping = {}
+    #                print(f"deleted {self.sleeping}")
     
-#    @sleeped_delete.before_loop
-#    async def before_sleeped_delete(self):
-#        await self.bot.wait_until_ready()
+    #    @sleeped_delete.before_loop
+    #    async def before_sleeped_delete(self):
+    #        await self.bot.wait_until_ready()
         
     @tasks.loop(minutes=1)
     async def sleeped(self):
         guild = self.bot.get_guild(MYGUILD)
-#        for key in self.sleeping.keys():
-#            dt = datetime.now(timezone.utc).strftime("%d, %m ,%Y, %H, %M")
-#            print(self.sleeping[key]["time"] , dt)
-#            if self.sleeping[key]["time"] is None:
-#                return print("time != dt")
-#            if self.sleeping[key]["time"] < dt:
-#                member_sleep = guild.get_member(key)
-#                if member_sleep is None:
-#                    return
-#                self.sleeping[key]["time"] = None
-#                await member_sleep.move_to(channel=None)
+    #        for key in self.sleeping.keys():
+    #            dt = datetime.now(timezone.utc).strftime("%d, %m ,%Y, %H, %M")
+    #            print(self.sleeping[key]["time"] , dt)
+    #            if self.sleeping[key]["time"] is None:
+    #                return print("time != dt")
+    #            if self.sleeping[key]["time"] < dt:
+    #                member_sleep = guild.get_member(key)
+    #                if member_sleep is None:
+    #                    return
+    #                self.sleeping[key]["time"] = None
+    #                await member_sleep.move_to(channel=None)
 
         data = utils.json_loader.read_json("sleeping")
         if not data:
@@ -79,18 +79,18 @@ class Fun(commands.Cog):
                     except:
                         return print("error sleep")
             
-#        delete_dt = datetime.now(timezone.utc).strftime("%M")
-#        if delete_dt == "00":
-#            self.sleeping_db = {}
-#            print("deleted")
+    #        delete_dt = datetime.now(timezone.utc).strftime("%M")
+    #        if delete_dt == "00":
+    #            self.sleeping_db = {}
+    #            print("deleted")
 
-#        delete_dt = datetime.now(timezone.utc).strftime("%M")
-#        if delete_dt == "00":
-#            if self.sleeping[key]["time"] is None:
-#                self.sleeping = {}
-#                print(f"deleted {self.sleeping}")
-#            else:
-#                print("sleep is have data")
+    #        delete_dt = datetime.now(timezone.utc).strftime("%M")
+    #        if delete_dt == "00":
+    #            if self.sleeping[key]["time"] is None:
+    #                self.sleeping = {}
+    #                print(f"deleted {self.sleeping}")
+    #            else:
+    #                print("sleep is have data")
                       
     @sleeped.before_loop
     async def before_sleeped(self):

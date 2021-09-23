@@ -64,7 +64,7 @@ class XP(commands.Cog):
                         if xp < ((50*(lvl**2))+(50*lvl)):
                             break
                         lvl += 1
-#                    print(f'now level{lvl}')
+        #                    print(f'now level{lvl}')
                     xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
                     if xp == 0:
                         emlvup = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!",color=0xffffff)
@@ -98,7 +98,7 @@ class XP(commands.Cog):
                     if stats["id"] == x["id"]:
                         break
                 embed = discord.Embed(color=0xffffff)
-#                embed.add_field(name="Name" , value=ctx.author.mention , inline=True)
+        #                embed.add_field(name="Name" , value=ctx.author.mention , inline=True)
                 embed.set_author(name=f'{ctx.author.name}s level stats', icon_url=ctx.author.avatar.url)
                 embed.add_field(name="XP", value=f"{xp}/{int(200*((1/2)*lvl))}", inline=True)
                 embed.add_field(name="Level", value=str(lvl), inline=True)
@@ -109,23 +109,23 @@ class XP(commands.Cog):
     @commands.command(description="Show ranking xp", aliases=['rank'], brief=f"{PREFIX}rank", usage=f"{PREFIX}rank")
     @commands.guild_only()
     async def ranking(self, ctx): #only one ch use '==' , more use 'in'
-#        if (ctx.channel.id in BOT_CH):
+        #        if (ctx.channel.id in BOT_CH):
             rankings = levelling.find().sort("xp",-1)
             i = 1
             embed = discord.Embed(color=0x77dd77 , timestamp=datetime.now(timezone.utc))
-#           embed.set_author(name=f"{self.bot.user.name} Rankings", url=self.bot.user.avatar.url) #, icon_url=ctx.guild.icon.url            
+
             embed.set_author(name=f"{ctx.guild.name} Rankings", url=ctx.guild.icon.url , icon_url=ctx.guild.icon.url)
             embed.set_footer(text = f'{self.bot.user.name}') # icon_url=self.bot.user.avatar.url
-#            for x in rankings:
-#                try:
-#                    temp = ctx.guild.get_member(x["id"])
-#                    tempxp = x["xp"]       
-#                    embed.add_field(name=f"{i}: {temp.name}", value=f"Total XP: {tempxp} ", inline=False)
-#                    i += 1
-#                except:
-#                    pass
-#                if i == 11:
-#                    break
+    #            for x in rankings:
+    #                try:
+    #                    temp = ctx.guild.get_member(x["id"])
+    #                    tempxp = x["xp"]       
+    #                    embed.add_field(name=f"{i}: {temp.name}", value=f"Total XP: {tempxp} ", inline=False)
+    #                    i += 1
+    #                except:
+    #                    pass
+    #                if i == 11:
+    #                    break
 
             for x in rankings:
                 try:
@@ -149,10 +149,10 @@ class XP(commands.Cog):
        
             await ctx.channel.send(embed=embed)
 
-#        else:
-#            embedbot = discord.Embed(description=f"please use bot command in <#861874852050894868> !",color=0xffffff)
-#            await ctx.message.delete()
-#            await ctx.channel.send(embed=embedbot , delete_after=10)
+    #        else:
+    #            embedbot = discord.Embed(description=f"please use bot command in <#861874852050894868> !",color=0xffffff)
+    #            await ctx.message.delete()
+    #            await ctx.channel.send(embed=embedbot , delete_after=10)
 
     @commands.command(description="Show my xp or member", aliases=['lvl' , 'exp'], brief=f"{PREFIX}xp", usage=f"{PREFIX}xp [member]")
     @commands.guild_only()

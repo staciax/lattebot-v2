@@ -130,7 +130,7 @@ class Reaction(commands.Cog):
             if emoji == '861128979313328128':
                 role = discord.utils.get(guild.roles, id = 860069256904572928)
 
-#            role_lvl = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
+        #            role_lvl = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
 
             if member is not None:
                 await member.remove_roles(role)# , role_lvl)

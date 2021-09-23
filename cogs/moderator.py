@@ -27,7 +27,7 @@ class Moderation(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
         while True:
-#            print("spam detct")
+        #print("spam detct")
             await asyncio.sleep(10)
             with open("data/spam_detect.txt", "r+") as file:
                 file.truncate(0)
@@ -148,8 +148,8 @@ class Moderation(commands.Cog):
             embed.add_field(name="Reason:", value=f"```{reason}```" , inline=False)
         embed.set_footer(text=f"Muted by {ctx.author}", icon_url = ctx.author.avatar.url)
 
-#            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n`Reason` : {reason} \n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
-#            embedmute.set_footer(text=f"{self.bot.user.name}",icon_url=self.bot.user.avatar.url)
+        #            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n`Reason` : {reason} \n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
+        #            embedmute.set_footer(text=f"{self.bot.user.name}",icon_url=self.bot.user.avatar.url)
 
         await member.add_roles(role, reason=reason)
 
@@ -244,7 +244,7 @@ class Moderation(commands.Cog):
     @commands.command(description="lockdown or unlock text channel" , aliases=['lock', 'lockdown'], brief=f"{PREFIX}lockdown\n{PREFIX}lockdown #general", usage=f"{PREFIX}lockdown [channel]")
     @commands.guild_only()
     @commands.has_permissions(manage_channels=True)
-#    @commands.bot_has_guild_permissions(manage_channels=True)
+    #    @commands.bot_has_guild_permissions(manage_channels=True)
     async def lock_down(self, ctx, channel: discord.TextChannel=None):
         channel = channel or ctx.channel
         if ctx.guild.default_role not in channel.overwrites:
@@ -330,37 +330,37 @@ class Moderation(commands.Cog):
 
                 
                 
-#            elif counter > 5:
-#                await message.guild.ban(message.author, reason="spam")
-#                await asyncio.sleep(20)
-#                await message.guild.unban(message.author)     
+        #            elif counter > 5:
+        #                await message.guild.ban(message.author, reason="spam")
+        #                await asyncio.sleep(20)
+        #                await message.guild.unban(message.author)     
 
 
-#                unmutes = await self.mute(message, [message.author], reason="Mention spam")
+        #                unmutes = await self.mute(message, [message.author], reason="Mention spam")
 
-#                if len(unmutes):
-#                    await message.channel.send("You can't use that word here.", delete_after=10)
-            
-#            elif message.channel.id not in self.links_allowedr and seach(self.url_regex, message.content):
-#                await message.delete()
-#                await message.channel.send("You can't send links in this channel.", delete_after=10)
-            
-#            elif (message.channel.id not in self.images_allowed
-#			 	and any([hasattr(a, "width") for a in message.attachments])):
-#                await message.delete()
-#                await message.channel.send("You can't send images here.", delete_after=10)
+        #                if len(unmutes):
+        #                    await message.channel.send("You can't use that word here.", delete_after=10)
+                    
+        #            elif message.channel.id not in self.links_allowedr and seach(self.url_regex, message.content):
+        #                await message.delete()
+        #                await message.channel.send("You can't send links in this channel.", delete_after=10)
+                    
+        #            elif (message.channel.id not in self.images_allowed
+        #			 	and any([hasattr(a, "width") for a in message.attachments])):
+        #                await message.delete()
+        #                await message.channel.send("You can't send images here.", delete_after=10)
 
-##########################
-#            if (message.channel.id in self.only_images
-#			 	and any([hasattr(a, "width") for a in message.attachments])):             
-#                return
-#            else:
-#                if message.channel.id in self.only_images:
-#                    em = discord.Embed(description="You can't send message in this channel.",color=PTRED2)
-#                    await message.delete()
-#                    await message.channel.send(embed=em , delete_after=10)
-#                else:
-#                    return
+        ##########################
+        #            if (message.channel.id in self.only_images
+        #			 	and any([hasattr(a, "width") for a in message.attachments])):             
+        #                return
+        #            else:
+        #                if message.channel.id in self.only_images:
+        #                    em = discord.Embed(description="You can't send message in this channel.",color=PTRED2)
+        #                    await message.delete()
+        #                    await message.channel.send(embed=em , delete_after=10)
+        #                else:
+        #                    return
     
     @commands.command(aliases=["tban"], brief=f"{PREFIX}tban @latte 10h", usage=f"{PREFIX}tban <member> [duration]")
     @commands.guild_only()
