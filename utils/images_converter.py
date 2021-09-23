@@ -25,7 +25,7 @@ class cat_view(discord.ui.View):
             async with aiohttp.ClientSession() as cs:
                 async with cs.get(self.url) as r:
                     data = await r.json()
-                    self.json_url = data["url"]
+                    self.json_url = data['file']
 
                     embed = discord.Embed(title="Meow" , color=0xffffff)
                     embed.set_image(url=data['file'])
@@ -43,7 +43,7 @@ class cat_view(discord.ui.View):
         async with aiohttp.ClientSession() as cs:
             async with cs.get(self.url) as r:
                 data = await r.json()
-                self.json_url = data["url"]
+                self.json_url = data['file']
 
                 embed = discord.Embed(title="Meow" , color=0xffffff)
                 embed.set_image(url=data['file'])
