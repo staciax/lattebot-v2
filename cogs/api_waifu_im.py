@@ -24,7 +24,7 @@ class api_waifu_im(commands.Cog):
 
     @commands.command(aliases=['sfw_all', 'all_sfw'])
     @commands.guild_only()
-    async def all_waifu(self, ctx):
+    async def waifuall(self, ctx):
         view = sfw_all_view(ctx)
         await view.api_start()
 

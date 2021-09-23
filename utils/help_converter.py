@@ -98,7 +98,7 @@ def Anime():
   description="""
   Use `.help <command>` for more informations about a command.
     
-  • `all_waifu`,`waifu`, `waifu2`, `awoo`, `bonk`, `bully`, `blush` ,`bite`, `cry`, `cuddle`, `cringe`, `dance`, `glomp`, `happy`, `highfive`, `handhold`, `kiss`, `kill`, `kicks`, `lick`, `neko` , `nom` , `maid`, `megumin`, `pat`, `pokes` , `smug` , `shinobu` , `slap` , `smile` , `wink`, `wave`, `yeet`
+  • `waifuall`,`waifu`, `waifu2`, `awoo`, `bonk`, `bully`, `blush` ,`bite`, `cry`, `cuddle`, `cringe`, `dance`, `glomp`, `happy`, `highfive`, `handhold`, `kiss`, `kill`, `kicks`, `lick`, `neko` , `nom` , `maid`, `megumin`, `pat`, `pokes` , `smug` , `shinobu` , `slap` , `smile` , `wink`, `wave`, `yeet`
   """
   embed.description = description
   
