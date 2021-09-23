@@ -86,7 +86,7 @@ def Fun():
   Use `.help <command>` for more informations about a command.
   
  
-  • `owo`, `echo` ,`saybot`, `saybotm`
+  • `owo`, `echo` ,`saybot`, `saybotm`, `valorant`, `apex`,
   """
   embed.description = description
   
@@ -98,7 +98,7 @@ def Anime():
   description="""
   Use `.help <command>` for more informations about a command.
     
-  • `waifu`, `waifu2`, `bonk`, `bully`, `blush` ,`bite`, `cry`, `happy`, `kiss`, `kicks`, `lick`, `neko` , `nom` , `maid`, `pat` , `smug` , `slap` , `smile` , `wink`
+  • `waifu`, `waifu2`, `awoo`, `bonk`, `bully`, `blush` ,`bite`, `cry`, `cuddle`, `cringe`, `dance`, `glomp`, `happy`, `highfive`, `handhold`, `kiss`, `kill`, `kicks`, `lick`, `neko` , `nom` , `maid`, `megumin`, `pat`, `pokes` , `smug` , `shinobu` , `slap` , `smile` , `wink`, `wave`, `yeet`
   """
   embed.description = description
   

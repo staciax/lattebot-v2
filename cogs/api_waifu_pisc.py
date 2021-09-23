@@ -183,6 +183,12 @@ class api_waifu2(commands.Cog):
     async def kill(self, ctx):
         view = sfw_kill(ctx)
         await view.api_start()
+    
+    @commands.command()
+    @commands.guild_only()
+    async def kicks(self, ctx):
+        view = sfw_kick(ctx)
+        await view.api_start()
 
     @commands.command()
     @commands.guild_only()
@@ -192,7 +198,7 @@ class api_waifu2(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def waink(self, ctx):
+    async def wink(self, ctx):
         view = sfw_wink(ctx)
         await view.api_start()
 
