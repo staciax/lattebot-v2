@@ -17,6 +17,8 @@ class cat_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -61,6 +63,8 @@ class fox_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')

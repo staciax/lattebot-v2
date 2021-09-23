@@ -18,7 +18,7 @@ def API_waifu_im_Embed(self, json):
 
 class sfw_all_view(discord.ui.View):
     def __init__(self, ctx):
-        super().__init__(timeout=300)
+        super().__init__(timeout=600)
         self.ctx = ctx
         self.url = "https://api.waifu.im/sfw/all/"
         self.json_url = ""
@@ -27,6 +27,8 @@ class sfw_all_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -73,6 +75,8 @@ class sfw_waifu_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -119,6 +123,8 @@ class sfw_maid_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -165,6 +171,8 @@ class nsfw_ass_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -211,6 +219,8 @@ class nsfw_ecchi_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -257,6 +267,8 @@ class nsfw_ero_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -303,6 +315,8 @@ class nsfw_hentai_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -349,6 +363,8 @@ class nsfw_maid_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -395,6 +411,8 @@ class nsfw_milf_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -441,6 +459,8 @@ class nsfw_oppai_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -487,6 +507,8 @@ class nsfw_oral_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -533,6 +555,8 @@ class nsfw_paizuri_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -579,6 +603,8 @@ class nsfw_selfies_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -625,6 +651,8 @@ class nsfw_uniform_view(discord.ui.View):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
     
     async def on_timeout(self):
+        self.add_button()
+        await interaction.response.edit_message(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
