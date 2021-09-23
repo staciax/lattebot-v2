@@ -8,8 +8,8 @@ from datetime import datetime, timezone , timedelta
 import aiohttp
 
 # Local
-import utils
 from config import *
+from utils.images_converter import *
 
 class Images_(commands.Cog):
 
@@ -23,28 +23,14 @@ class Images_(commands.Cog):
     @commands.command(description="Random picture of a meow",brief=f"{PREFIX}cat", usage=f"{PREFIX}cat")
     @commands.guild_only()
     async def cat(self, ctx):
-        async with ctx.channel.typing():
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get("http://aws.random.cat/meow") as r:
-                    data = await r.json()
-
-                    embed = discord.Embed(title="Meow" , color=0xffffff)
-                    embed.set_image(url=data['file'])
-
-                    await ctx.send(embed=embed)
+        view = cat_view(ctx)
+        await view.api_start()
     
     @commands.command(description="Random picture of a floofy" , brief=f"{PREFIX}fox", usage=f"{PREFIX}fox")
     @commands.guild_only()
     async def fox(self, ctx):
-        async with ctx.channel.typing():
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get("http://randomfox.ca/floof/") as r:
-                    data = await r.json()
-
-                    embed = discord.Embed(title="Fox", color=0xffffff)
-                    embed.set_image(url=data['image'])
-
-                    await ctx.send(embed=embed)
+        view = fox_view(ctx)
+        await view.api_start()
 
     @commands.command(aliases=['gif'], brief=f"{PREFIX}giphy aqua", usage=f"{PREFIX}giphy [search]")
     @commands.guild_only()

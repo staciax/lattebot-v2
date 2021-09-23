@@ -348,3 +348,57 @@ intents = discord.Intents(
     emojis=True/False,  # emoji update
     bans=True/False  # member ban/unban
 )```
+
+
+So I'm trying to learn and figure out `discord.ui.View`, specifically with buttons:
+The following code is code I just made to familiarize myself with the functionality of components.
+
+There are a few things I cannot wrap my head around. When i have `view.stop()` in my command, Hello World is never printed. What exactly am I doing wrong and how to I appropriately terminate an interaction?
+The other thing im comfused about is setting disabled to True. The button never gets disabled.
+```python
+class TestView(discord.ui.View):
+    def __init__(self, ctx: commands.Context):
+        super().__init__()
+        self.ctx: commands.Context = ctx
+
+    def disable_hello(self):
+        self.say_hello.disabled = True
+
+    @discord.ui.button(label='Hello', style=discord.ButtonStyle.green, custom_id='b1')
+    async def say_hello(self, button: discord.ui.Button, interaction: discord.Interaction):
+        print('Hello world', button, interaction)
+        self.disable_hello()
+
+    async def start(self):
+        await self.ctx.send('Hi there', view=self)
+
+@commands.command()
+@commands.has_guild_permissions(administrator=True)
+async def test(self, ctx: commands.Context):
+    view = TestView(ctx)
+    await view.start()
+    view.stop()
+```
+
+```py
+class ButtonDelete(discord.ui.View):
+    def __init__(self, ctx):
+        super().__init__(timeout=30)
+        self.ctx = ctx
+        
+    async def on_timeout(self):
+        self.clear_items()
+        await self.message.edit(view=self)
+        self.stop()
+
+    @discord.ui.button(emoji=':trashcan:', style=discord.ButtonStyle.gray)
+    async def buttondelete(self, button: discord.ui.Button, interaction: discord.Interaction):
+        if self.ctx.author == interaction.user:
+            try:
+                await self.ctx.message.delete()
+            except:
+                pass
+            await interaction.message.delete()
+            self.stop()
+        else:
+            await interaction.response.send_message('This isn\'t yours to delete.', ephemeral=True)```

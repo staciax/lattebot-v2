@@ -9,33 +9,10 @@ from datetime import datetime, timezone , timedelta
 import aiohttp
 
 # Local
-import utils
+from utils.waifu_pisc_api import *
 
-#button_view
-class button(discord.ui.Button):
-    async def callback(self, interaction):
-        if self.label == "❤️":
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get(f"https://api.waifu.pics/sfw/waifu") as rep:
-                    api = await rep.json()
-                    if rep.status == 200:
-                        image_url=api["url"]
-                        embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
-                        embed.set_image(url=image_url)
 
-        elif self.label == "💙":
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get(f"https://api.waifu.pics/nsfw/waifu") as rep:
-                    api = await rep.json()
-                    if rep.status == 200:
-                        image_url=api["url"]
-                        embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
-                        embed.set_image(url=image_url)
-                    
-        await interaction.response.edit_message(embed=embed, view=self.view)
-
-class api_waifu(commands.Cog):
-
+class api_waifu2(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -45,321 +22,209 @@ class api_waifu(commands.Cog):
     
     @commands.command()
     @commands.guild_only()
-    async def bully(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/bully") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Bully",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-
-    @commands.command()
-    @commands.guild_only()
-    async def cry(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/cry") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Cry",url=api["url"] , color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)           
-                else:
-                    error=api["error"]
-
-    @commands.command()
-    @commands.guild_only()
-    async def bonk(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/bonk") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Bonk" , url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)          
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def kiss(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/kiss") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Kiss",url=api["url"] , color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def lick(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/lick") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Lick",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def pat(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/pat") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Pat",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def smug(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/smug") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Smug",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def blush(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/blush") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Blush",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def smile(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/smile") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Smile",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def nom(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/nom") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Nom",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def bite(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/bite") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Bite",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def slap(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/slap") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Slap",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def kicks(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/kick") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Kick",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def happy(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/happy") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Happy",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
-    async def wink(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/sfw/wink") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Wink",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
-    
-    @commands.command()
-    @commands.guild_only()
     async def waifu(self, ctx):
         if ctx.channel.is_nsfw():
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get(f"https://api.waifu.pics/nsfw/waifu") as rep:
-                    api = await rep.json()
-                    if rep.status == 200:
-                        image_url=api["url"]
-                        embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
-                        embed.set_image(url=image_url)
-
-                        #with_button
-                        view = discord.ui.View(timeout=300)
-                        view.add_item(button(label="💙"))
-                        await ctx.send(embed=embed, view=view)
-                    else:
-                        return
+            view = nsfw_waifu(ctx)
+            await view.api_start()
         else:
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get(f"https://api.waifu.pics/sfw/waifu") as rep:
-                    api = await rep.json()
-                    if rep.status == 200:
-                        image_url=api["url"]
-                        embed = discord.Embed(title="Waifu",url=api["url"], color=0xffffff)
-                        embed.set_image(url=image_url)
-
-                        #with_button
-                        view = discord.ui.View(timeout=300)
-                        view.add_item(button(label="❤️"))
-                        await ctx.send(embed=embed, view=view)
-                    else:
-                        return
+            view = sfw_waifu(ctx)
+            await view.api_start()
     
     @commands.command()
     @commands.guild_only()
     async def neko(self, ctx):
         if ctx.channel.is_nsfw():
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get(f"https://api.waifu.pics/nsfw/neko") as rep:
-                    api = await rep.json()
-                    if rep.status == 200:
-                        image_url=api["url"]
-                        embed = discord.Embed(title="Neko",url=api["url"], color=0xffffff)
-                        embed.set_image(url=image_url)
-
-                        await ctx.reply(embed=embed, mention_author=False)
-                    else:
-                        return
+            view = nsfw_neko(ctx)
+            await view.api_start()
         else:
-            async with aiohttp.ClientSession() as cs:
-                async with cs.get(f"https://api.waifu.pics/sfw/neko") as rep:
-                    api = await rep.json()
-                    if rep.status == 200:
-                        image_url=api["url"]
-                        embed = discord.Embed(title="Neko",url=api["url"], color=0xffffff)
-                        embed.set_image(url=image_url)
-
-                        await ctx.reply(embed=embed, mention_author=False)
-                    else:
-                        return
-
-    #nsfw
-    @commands.command()
-    @commands.is_nsfw()
-    async def trap(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/nsfw/trap") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Trap",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
-
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
+            view = sfw_neko(ctx)
+            await view.api_start()
     
     @commands.command()
-    @commands.is_nsfw()
-    async def blowjob(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f"https://api.waifu.pics/nsfw/blowjob") as rep:
-                api = await rep.json()
-                if rep.status == 200:
-                    image_url=api["url"]
-                    embed = discord.Embed(title="Blowjob",url=api["url"], color=0xffffff)
-                    embed.set_image(url=image_url)
+    @commands.guild_only()
+    async def shinobu(self, ctx):
+        view = sfw_shinobu(ctx)
+        await view.api_start()
+    
+    @commands.command()
+    @commands.guild_only()
+    async def megumin(self, ctx):
+        view = sfw_megumin(ctx)
+        await view.api_start()
+    
+    @commands.command()
+    @commands.guild_only()
+    async def bully(self, ctx):
+        view = sfw_bully(ctx)
+        await view.api_start()
+    
+    @commands.command()
+    @commands.guild_only()
+    async def cuddle(self, ctx):
+        view = sfw_cuddle(ctx)
+        await view.api_start()
+    
+    @commands.command()
+    @commands.guild_only()
+    async def cry(self, ctx):
+        view = sfw_cry(ctx)
+        await view.api_start()
+    
+    @commands.command()
+    @commands.guild_only()
+    async def hug(self, ctx):
+        view = sfw_hug(ctx)
+        await view.api_start()
+    
+    @commands.command()
+    @commands.guild_only()
+    async def awoo(self, ctx):
+        view = sfw_awoo(ctx)
+        await view.api_start()
 
-                    await ctx.reply(embed=embed, mention_author=False)
-                else:
-                    return
+    @commands.command()
+    @commands.guild_only()
+    async def kiss(self, ctx):
+        view = sfw_kiss(ctx)
+        await view.api_start()
+    
+    @commands.command()
+    @commands.guild_only()
+    async def lick(self, ctx):
+        view = sfw_lick(ctx)
+        await view.api_start()
+    
+    @commands.command()
+    @commands.guild_only()
+    async def pat(self, ctx):
+        view = sfw_pat(ctx)
+        await view.api_start()
+    
+    @commands.command()
+    @commands.guild_only()
+    async def hug(self, ctx):
+        view = sfw_hug(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def smug(self, ctx):
+        view = sfw_smug(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def bonk(self, ctx):
+        view = sfw_bonk(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def yeet(self, ctx):
+        view = sfw_yeet(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def blush(self, ctx):
+        view = sfw_blush(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def smile(self, ctx):
+        view = sfw_smile(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def wave(self, ctx):
+        view = sfw_wave(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def highfive(self, ctx):
+        view = sfw_highfive(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def handhold(self, ctx):
+        view = sfw_handhold(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def nom(self, ctx):
+        view = sfw_nom(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def bite(self, ctx):
+        view = sfw_bite(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def glomp(self, ctx):
+        view = sfw_glomp(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def slap(self, ctx):
+        view = sfw_slap(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def kill(self, ctx):
+        view = sfw_kill(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def happy(self, ctx):
+        view = sfw_happy(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def waink(self, ctx):
+        view = sfw_wink(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def pokes(self, ctx):
+        view = sfw_poke(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def dance(self, ctx):
+        view = sfw_dance(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def cringe(self, ctx):
+        view = sfw_cringe(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def trap(self, ctx):
+        view = nsfw_trap(ctx)
+        await view.api_start()
+
+    @commands.command()
+    @commands.guild_only()
+    async def blowjob(self, ctx):
+        view = nsfw_blowjob(ctx)
+        await view.api_start()
 
 def setup(bot):
-    bot.add_cog(api_waifu(bot))
+    bot.add_cog(api_waifu2(bot))
