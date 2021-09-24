@@ -216,6 +216,7 @@ class Utility_(commands.Cog):
                 await ctx.message.delete()
     
     @commands.command(name="platform", aliases=["pt"] , usage=f"{PREFIX}usage <member>")
+    @commands.guild_only()
     async def check_platform(self, ctx, member: discord.Member=None):
 
         #check_member
@@ -235,12 +236,19 @@ class Utility_(commands.Cog):
         await ctx.send(embed=embed)
     
     @commands.command(brief="Send a message with a button!") # Create a command inside a cog
+    @commands.guild_only()
     async def some_button(self, ctx):
         view = discord.ui.View() # Establish an instance of the discord.ui.View class
         style = discord.ButtonStyle.gray  # The button will be gray in color
         item = discord.ui.Button(style=style, label="Read the docs!", url="https://discordpy.readthedocs.io/en/master")  # Create an item to pass into the view class.
         view.add_item(item=item)  # Add that item into the view class
         await ctx.send("This message has buttons!", view=view)
+
+    @commands.command(aliases=["genshinmap","gmap","genshin map"])
+    @commands.guild_only()
+    async def genshinmap(self, ctx):
+        await ctx.send("https://genshin-impact-map.appsample.com/#/")
+
         
 def setup(bot):
     bot.add_cog(Utility_(bot))
