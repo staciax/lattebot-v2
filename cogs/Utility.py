@@ -243,12 +243,11 @@ class Utility_(commands.Cog):
         item = discord.ui.Button(style=style, label="Read the docs!", url="https://discordpy.readthedocs.io/en/master")  # Create an item to pass into the view class.
         view.add_item(item=item)  # Add that item into the view class
         await ctx.send("This message has buttons!", view=view)
-
-    @commands.command(aliases=["gmap","genshin map"])
+    
+    @commands.command(aliases=["gsmap"])
     @commands.guild_only()
     async def genshinmap(self, ctx):
         await ctx.send("https://genshin-impact-map.appsample.com/#/")
-
         
 def setup(bot):
     bot.add_cog(Utility_(bot))
