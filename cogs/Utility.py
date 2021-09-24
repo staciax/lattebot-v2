@@ -244,7 +244,7 @@ class Utility_(commands.Cog):
         view.add_item(item=item)  # Add that item into the view class
         await ctx.send("This message has buttons!", view=view)
 
-    @commands.command(aliases=["genshinmap","gmap","genshin map"])
+    @commands.command(aliases=["gmap","genshin map"])
     @commands.guild_only()
     async def genshinmap(self, ctx):
         await ctx.send("https://genshin-impact-map.appsample.com/#/")
