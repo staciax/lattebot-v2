@@ -156,6 +156,7 @@ if __name__ == "__main__":
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
     bot.db = bot.mongo["latteonly"]
     bot.sleepdb = Document(bot.db, "sleeping")
+    bot.tagdb = Document(bot.db, "tags")
 
     for file in os.listdir(cwd + "/cogs"):
         if file.endswith(".py") and not file.startswith("_"):

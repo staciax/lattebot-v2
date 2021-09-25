@@ -116,13 +116,13 @@ class Data(commands.Cog):
         typingms = round((typinge - typings) * 1000)
 
         dbstart = time.monotonic()
-        check_ping
+        check_ping.find_one({"id" : 385049730222129152})
         dbend = time.monotonic()
        
         embed = discord.Embed(description="",color=0xc4cfcf)
         embed.add_field(name=f"{utils.emoji_converter('latteicon')} Latency", value=f"```nim\n{bot_latency} ms```", inline=True)
         embed.add_field(name=f"{utils.emoji_converter('typing')} Typing", value=f"```nim\n{typingms} ms```", inline=True)
-        embed.add_field(name=f"{utils.emoji_converter('mongodb')} Database", value=f"```nim\n{(dbend-dbstart)*1000:,.2f} ms```", inline=True)
+        embed.add_field(name=f"{utils.emoji_converter('mongodb')} Database(find)", value=f"```nim\n{(dbend-dbstart)*1000:,.2f} ms```", inline=True)
         await ctx.send(embed=embed)
     
     @commands.command(name="stats")

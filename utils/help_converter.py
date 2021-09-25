@@ -3,6 +3,8 @@ from discord.ext import commands
 from discord import Embed
 from utils import emoji_converter
 
+from config import *
+
 fields = [
     ("","",True)
   ]
@@ -165,5 +167,22 @@ def Help_image():
   """
 
   embed.description = description
+  
+  return embed
+
+def Help_tag():
+  embed = Embed(title=f"{emoji_converter('amelia')} Tag Commands",color=0xffffff)
+
+  description = """
+  Use `.help <command>` for more informations about a command.
+  """
+  embed.description = description
+  embed.add_field(name="tag", value=f"```css\n{PREFIX}tag <ชื่อ>```",inline=False)
+  embed.add_field(name="tag add : เพิ่ม", value=f"```css\n{PREFIX}tag add <ชื่อ> <ข้อความ>```",inline=False)
+  embed.add_field(name="tag remove : ลบออก", value=f"```css\n{PREFIX}tag remove <ชื่อ>```",inline=False)
+  embed.add_field(name="tag list : ตรวจสอบรายการ", value=f"```css\n{PREFIX}tag list```",inline=False)
+  embed.add_field(name="tag edit : แก้ไขข้อความ", value=f"```css\n{PREFIX}tag edit <ชื่อ> <ข้อความ>```",inline=False)
+  embed.add_field(name="tag alias : แก้ไขชื่อ", value=f"```css\n{PREFIX}tag alias <ชื่อเก่า> <ชื่อใหม่>```",inline=False)
+  embed.add_field(name="tag search : ค้นหา", value=f"```css\n{PREFIX}tag search <คำที่จะค้นหา>```",inline=False)
   
   return embed

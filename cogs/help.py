@@ -22,7 +22,8 @@ class Help_selection(discord.ui.Select):
             discord.SelectOption(label='Misc', description='Miscellaneous commands', emoji=f'{emojis("Ani1")}'),
             discord.SelectOption(label='Reaction roles', description='Self assignable roles', emoji=f'{emojis("chocolawow")}'),
             discord.SelectOption(label='Leveling', description='Leveling system', emoji=f'{emojis("ClevelandDeal")}'),
-            discord.SelectOption(label='NSFW', description='NSFW commands', emoji=F'{emojis("Aoba")}')
+            discord.SelectOption(label='NSFW', description='NSFW commands', emoji=F'{emojis("Aoba")}'),
+            discord.SelectOption(label='Tag', description='Tag commands', emoji=F'{emojis("amelia")}')
         ]
 
         super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
@@ -37,6 +38,7 @@ class Help_selection(discord.ui.Select):
         elif self.values[0] == "Reaction roles": return await interaction.response.edit_message(embed=utils.Reaction())
         elif self.values[0] == "Leveling": return await interaction.response.edit_message(embed=utils.Leveling())
         elif self.values[0] == "NSFW": return await interaction.response.edit_message(embed=utils.NSFW())
+        elif self.values[0] == "Tag": return await interaction.response.edit_message(embed=utils.Help_tag())
 
 class Admin_selection(discord.ui.Select):
     def __init__(self):
@@ -51,7 +53,7 @@ class Admin_selection(discord.ui.Select):
         if self.values[0] == "Giveaway": return await interaction.response.edit_message(embed=utils.Giveaway())
         elif self.values[0] == "Moderation": return await interaction.response.edit_message(embed=utils.Moderation())
 
-class Help_support(commands.Cog):
+class Help(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -65,7 +67,7 @@ class Help_support(commands.Cog):
     async def custom_help(self, ctx, command=None):
         embedhelp = discord.Embed(title="✧ LATTE Help", description=f"Use **Selection** for more informations about a category.\n",color=0xffffff)
         
-        embedhelp.add_field(name='** **', value=f"•{emojis('miraishocked')} Anime\n•{emojis('ShinoSmirk')} Infomation\n•{emojis('chocolawow')} Reaction Roles")
+        embedhelp.add_field(name='** **', value=f"•{emojis('miraishocked')} Anime\n•{emojis('ShinoSmirk')} Infomation\n•{emojis('chocolawow')} Reaction Roles\n•{emojis('amelia')} Tag command")
         embedhelp.add_field(name='** **', value=f"•<:image:889841860183461918> Image\n•🥳 Fun\n•{emojis('ClevelandDeal')} Leveling")
         embedhelp.add_field(name='** **', value=f"•⚙️ Utility\n•{emojis('Ani1')} Misc\n•{emojis('Aoba')} NSFW")
 
@@ -119,6 +121,8 @@ class Help_support(commands.Cog):
             await ctx.send(embed=utils.Leveling(), view=view)
         elif command == "nsfw":
             await ctx.send(embed=utils.NSFW(), view=view)
+        elif command == "tag":
+            await ctx.send(embed=utils.Help_tag(), view=view)
         else:
             helpEmbed = discord.Embed (
                 color = 0xffffff
@@ -202,4 +206,4 @@ class Help_support(commands.Cog):
     #                await ctx.send(embed=utils.Giveaway(ctx))
             
 def setup(bot):
-    bot.add_cog(Help_support(bot))
+    bot.add_cog(Help(bot))
