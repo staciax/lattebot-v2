@@ -62,7 +62,7 @@ class Tags(commands.Cog):
                 i += 1
                 matches = "\n".join(matches)
                 message = f"Tag not found. Did you mean...\n`{matches}`"
-                
+
         await ctx.send(message)
     
     @tag.command(aliases=['add'])
@@ -97,7 +97,7 @@ class Tags(commands.Cog):
         embed = Embed(description=f"`{name}` is added", color=0xC1FFD7)
         await ctx.send(embed=embed, delete_after=15)
     
-    @tag.command(name="alias")
+    @tag.command(aliases=["alias"])
     @commands.guild_only()
     async def tag_alias(self, ctx, name_old:str, name_new:str):
         #find_data
@@ -123,10 +123,10 @@ class Tags(commands.Cog):
         )
 
         #reponse
-        embed = Embed(description=f"{ctx.author} is edited alias `{name_old}` to `{name_new}`", color=0xFCFFA6)
+        embed = Embed(description=f"{ctx.author.mention} is edited alias `{name_old}` to `{name_new}`", color=0xFCFFA6)
         await ctx.send(embed=embed, delete_after=15)
     
-    @tag.command(name="edit")
+    @tag.command(aliases=["edit"])
     @commands.guild_only()
     async def tag_edit(self, ctx, name:str, *, content: commands.clean_content):
         #find_data
@@ -154,7 +154,7 @@ class Tags(commands.Cog):
         embed = Embed(description=f"`{name}` is edited message by {ctx.author.mention}", color=0xFCFFA6)
         await ctx.send(embed=embed, delete_after=15)
 
-    @tag.command(name="remove")
+    @tag.command(aliases=["remove"])
     @commands.guild_only()
     async def tag_remove(self, ctx, name:str):
         #find_data
@@ -180,14 +180,14 @@ class Tags(commands.Cog):
         
         #delete_is_true_or_false
         if data_deleted and data_deleted.acknowledged:
-            embed_del = Embed(description=f"{ctx.author} is deleted tag `{name}`", color=0xFF7878)
+            embed_del = Embed(description=f"{ctx.author.mention} is deleted tag `{name}`", color=0xFF7878)
             await ctx.send(embed=embed_del)
         else:
             await ctx.send(
                 f"I could not find tag"
             , delete_after=15)
 
-    @tag.command(name="all" , alias=["list"])
+    @tag.command(name="all" , aliases=["list"])
     @commands.guild_only()
     async def tag_all(self, ctx):
 
@@ -205,7 +205,7 @@ class Tags(commands.Cog):
         m = Base_page(All_tag_view(all_tag, per_page=10))
         await m.start(ctx)
        
-    @tag.command(name="search", alias=["find"])
+    @tag.command(name="search", aliases=["find"])
     @commands.guild_only()
     async def tag_search(self, ctx, name:str):
 
@@ -221,7 +221,7 @@ class Tags(commands.Cog):
             print(x)
             tag_found.append(x)
 
-        if len(tag_found) > 5:
+        if len(tag_found) > 10:
             #view_button
             message = Base_page(Search_tag_view(tag_found, per_page=10))
             await message.start(ctx)
