@@ -59,13 +59,17 @@ def emoji_converter(name):
     "online" : "<:Online:864171414466592788>",
     "member" : "<:member:864219999954796615>",
     "invisible" : "<:invisible:873598381073768469>",
-    "what":"<a:question_:867701480797765642>",
-    "redtick":"<:redtick:881500898273144852>",
-    "greentick":"<:greentick:881500884725547021>",
-    "trash":"<:trashcan:883641203051073557>",
-    "miraishocked":"<:miraishocked:867683570750980096>",
-    "image":"<:image:889841860183461918>",
-    "amelia":"<:ameliawatsoninspect:867686566528811038>"
+    "what": "<a:question_:867701480797765642>",
+    "redtick": "<:redtick:881500898273144852>",
+    "greentick": "<:greentick:881500884725547021>",
+    "trash": "<:trashcan:883641203051073557>",
+    "miraishocked": "<:miraishocked:867683570750980096>",
+    "image": "<:image:889841860183461918>",
+    "amelia": "<:ameliawatsoninspect:867686566528811038>",
+    "python": "<:python:891685987695079454>",
+    "dpy": "<:dpy:891685978866057277>",
+    "github": "<:github:889792131852546088>",
+
   }
   
   return names_to_emojis.get(name)

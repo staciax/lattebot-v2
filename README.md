@@ -8,8 +8,9 @@ My first discord bot write with python and use cogs
 
 | Required                            | version   |
 | ------------------------------------| --------- | 
-| **Python**                          | 3.9.6     | 
-| **discord.py**                      | 2.0.0a bata   | 
+| **Python**                          | 3.9.7     | 
+| **discord.py**                      | 2.0.0a    | 
+| **discord-ext-menus**               | Unknow    | 
 
 ### Installing and setup
 
@@ -18,7 +19,7 @@ My first discord bot write with python and use cogs
 pip install -r requirements.txt
 
 # bot_config/secrets.js
-token , mongolink
+token
 
 ## Help 
 My discord : ꜱᴛᴀᴄɪᴀ.#7475

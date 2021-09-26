@@ -238,6 +238,10 @@ class Tags(commands.Cog):
             embed = Embed(description=f"`{name}` is not found", color=0xC1FFD7)
             await ctx.send(embed=embed , delete_after=15)
 
+    @commands.command()
+    async def tagcount(self, ctx):
+        not_found = await self.bot.tagdb.find_many_by_custom({"guild_id": ctx.guild.id})
+        await ctx.send(len(not_found))
 
 def setup(bot):
     bot.add_cog(Tags(bot))

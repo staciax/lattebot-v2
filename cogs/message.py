@@ -49,6 +49,7 @@ class Message(commands.Cog):
     async def on_message(self, message):
         if message.author == self.bot.user:
             return
+#        await self.bot.process_commands(message)
 
         #only_image_channel
         data = utils.json_loader.read_json("latte")

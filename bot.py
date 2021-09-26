@@ -20,18 +20,14 @@ cwd = Path(__file__).parents[0]
 cwd = str(cwd)
 print(f"{cwd}\n-----")
 
-#owner
+#json_secret_file
 secrets = utils.json_loader.read_json("secrets")
 owner = secrets["owner"]
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(f'{PREFIX}'), case_insensitive=True, intents=intents, owner_id=owner , help_command=None)
-
-bot.connection_url = secrets["mongo"]
-
-#discord_py_interactions
-#from discord_slash import SlashCommand, SlashContext
-#slash = SlashCommand(bot , sync_commands=True , sync_on_cog_reload=True)
+bot.latte_version = BOTVERSION
+bot.latte_source = LATTESOURCE
 
 @bot.event
 async def on_ready():
@@ -42,55 +38,10 @@ async def on_ready():
     print(f"\nName : {bot.user}\nActivity : {bot_activity}\nServer : {len(bot.guilds)}\nMembers : {len(set(bot.get_all_members()))}\nPrefix : {PREFIX}")
     print(f"\nCogs list\n-----")
 
-#json_secret_file
-secret_file = utils.json_loader.read_json("secrets")
-bot.config_token = secret_file["token"]
-bot.connection_url = secret_file["mongo"]
-bot.giphy_api_ = secret_file["giphy"]
-
-#message
-@bot.event
-async def on_message(message):
-    if message.author.bot:
-        return
-    await bot.process_commands(message)
-
-#prefix
-@bot.command()
-async def prefix(ctx):
-    await ctx.send("This is my prefix `lt ` or `l `")
-
-#cogs
-@bot.command()
-@commands.is_owner()
-async def load(ctx, extension):
-    try:
-        bot.load_extension(f'cogs.{extension}')
-    except Exception as e:
-        await ctx.send("Could not load cog")
-        return
-    await ctx.send(f"Cog loaded : {extension}")
-
-@bot.command()
-@commands.is_owner()
-async def unload(ctx, extension):
-    try:
-        bot.unload_extension(f'cogs.{extension}')
-    except Exception as e:
-        await ctx.send("Could not unload cog")
-        return
-    await ctx.send(f"Cog unloaded : {extension}")
-
-@bot.command()
-@commands.is_owner()
-async def reload(ctx, extension):
-    try:
-        bot.unload_extension(f'cogs.{extension}')
-        bot.load_extension(f'cogs.{extension}')
-    except Exception as e:
-        await ctx.send("Could not reload cog")
-        return
-    await ctx.send(f"Cog reloaded : {extension}")
+#json_loader
+bot.config_token = secrets["token"]
+bot.connection_url = secrets["mongo"]
+bot.giphy_api_ = secrets["giphy"]
 
 #eval
 @bot.command(name="eval", aliases=["exec"])
@@ -133,30 +84,19 @@ async def _eval(ctx, *, code):
 
     await pager.start(ctx)
 
-@bot.command()
-async def send_webhook(ctx , output):
-    async with aiohttp.ClientSession() as session:
-        webhook = Webhook.from_url('https://discord.com/api/webhooks/881095764519043073/b0x0UDuhLs79DJ64IQMD7AW7z1k7dDGL6uZ9LviaXkzvF5wgbRQpMo7Q8D2AYkQJXGoW', adapter=AsyncWebhookAdapter(session))
-        await webhook.send(output, username=ctx.message.author.name)
-
 #jishaku
 bot.load_extension('jishaku')
 
-#bot_config_read
-@bot.command(name="botconfig", aliases=["bconfig"])
-@utils.owner_bot()
-async def bot_config_(ctx):
-    with open('config.py' , encoding='utf-8') as f:
-        lines = f.read()
-        embed = discord.Embed(description=f"```nim\n{lines}```",color=0xffffff)
-        await ctx.send(embed=embed)
-
-
+#cogs_and_mongodb
 if __name__ == "__main__":
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
     bot.db = bot.mongo["latteonly"]
     bot.sleepdb = Document(bot.db, "sleeping")
     bot.tagdb = Document(bot.db, "tags")
+
+    #db_2nd
+    bot.db2 = bot.mongo["lattebot"]
+    bot.latency_bot = Document(bot.db2, "latency")
 
     for file in os.listdir(cwd + "/cogs"):
         if file.endswith(".py") and not file.startswith("_"):

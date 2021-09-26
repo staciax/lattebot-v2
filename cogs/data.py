@@ -7,24 +7,11 @@ from time import perf_counter
 
 # Third party
 import psutil
-import pymongo 
 import json
-from pymongo import MongoClient
 
 # Local
 import utils
 from config import *
-
-#open_json
-with open('bot_config/secrets.json') as f:
-    data = json.load(f)
-
-#mongodb
-mango_url = data["mongo"]
-cluster = MongoClient(mango_url)
-check_ping = cluster[MGDATABASE][LATTEDOCUMENT]
-
-intents = discord.Intents.all()
 
 class Data(commands.Cog):
 
@@ -49,32 +36,45 @@ class Data(commands.Cog):
         self.bug_channel = self.bot.get_channel(MOD_MAIL)
         print(f"-{self.__class__.__name__}")
     
+    #prefix
+    @commands.command()
+    async def prefix(self, ctx):
+        await ctx.send(f"This is my prefix `{PREFIX}`")
+    
     @commands.command(aliases=["botinfo", "about"])
+    @commands.guild_only()
     async def latte_info_(self, ctx):
-        stacia = self.bot.get_user(385049730222129152) or await self.bot.fetch_user(385049730222129152)
-        embed = discord.Embed(
-            title=f"{self.bot.user.name} Info about ",
-            color=0xffffff
-        )
+        owner_bot = self.bot.get_user(self.bot.owner_id) #(https://discord.com/users/{owner_bot.id})
+
+        embed = discord.Embed(color=0xffffff)
+        embed.set_author(name=f"About Me",icon_url=self.bot.user.avatar.url)
+        embed.set_thumbnail(url=owner_bot.avatar.url)
+
+        #owner
+        fields1 = [
+            ("About Developer" , f"Owner:[{owner_bot}](https://discord.com/users/{owner_bot.id})" , False),
+            ("Platform" , f"OS : `{platform.system()}`" , False),
+            ("Bot Info" , f"{utils.emoji_converter('python')} Python : `{platform.python_version()}`\n{utils.emoji_converter('dpy')} Discord.py : `{discord.__version__}`\n{utils.emoji_converter('latteicon')} Latte : `{self.bot.latte_version}`\n{utils.emoji_converter('mongodb')} Database : `MongoDB`" , False),
+
+            ]
+        for name , value , inline in fields1:
+            embed.add_field(name=name , value=value , inline=inline)
         
         fields = [
-            ("Prefix" , "``.` or `lt ``" , True),
-            ("Language" , "`Python`" , True),
-            ("Library" , f"`Discord.py {discord.__version__}`" , True),
-            ("DataBase" , "`MongoDB`" , True),
-            ("Platform", f"`{platform.system()} {platform.release()}`", True),
-            ("Developer" , f"`{str(self.bot.get_user(self.bot.owner_id))}`" , True),
             ("Open Source", "`Yes. but not now.`", True),
             ("Bot created", f"{utils.format_dt(self.bot.user.created_at)}", True)
-
         ]
-
-        for name , value , inline in fields:
-            embed.add_field(name=name , value=value , inline=inline)
-
-        embed.set_thumbnail(url=self.bot.user.avatar.url)
+#        for name , value , inline in fields:
+#            embed.add_field(name=name , value=value , inline=inline)
         
-        await ctx.send(embed=embed, mention_author=False)
+        #start_view_button
+        view = discord.ui.View()
+        style = discord.ButtonStyle.gray
+        Source_code = discord.ui.Button(emoji=f"{utils.emoji_converter('github')}",style=style, label="Source code", url=self.bot.latte_source)
+        #Vote.gg = discord.ui.Button(style=style, label="Source code", url=self.bot.latte_source)
+        view.add_item(item=Source_code)
+    
+        await ctx.send(embed=embed, view=view)
 
     @commands.command()
     @utils.owner_bot()
@@ -116,7 +116,7 @@ class Data(commands.Cog):
         typingms = round((typinge - typings) * 1000)
 
         dbstart = time.monotonic()
-        check_ping.find_one({"id" : 385049730222129152})
+        await self.bot.latency_bot.find_by_custom({"stacia_id": 240059262297047040})
         dbend = time.monotonic()
        
         embed = discord.Embed(description="",color=0xc4cfcf)

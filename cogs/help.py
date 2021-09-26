@@ -79,7 +79,7 @@ class Help(commands.Cog):
 
         lastup = datetime(UYEAR, UMONTH, UDATE)
         dt = lastup.strftime("%d %B %Y") #%A,
-        embedhelp.set_footer(text=f"{BOTVERSION} Recently updated • {dt}", icon_url=self.bot.user.avatar.url)
+        embedhelp.set_footer(text=f"v{BOTVERSION} Recently updated • {dt}", icon_url=self.bot.user.avatar.url)
         embedhelp.set_image(url="https://i.imgur.com/3jz8m3V.png")
 
         #start_selection_view
