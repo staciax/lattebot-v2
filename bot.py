@@ -90,11 +90,13 @@ bot.load_extension('jishaku')
 #cogs_and_mongodb
 if __name__ == "__main__":
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
+
+    #db_main
     bot.db = bot.mongo["latteonly"]
     bot.sleepdb = Document(bot.db, "sleeping")
     bot.tagdb = Document(bot.db, "tags")
 
-    #db_2nd
+    #db_testing
     bot.db2 = bot.mongo["lattebot"]
     bot.latency_bot = Document(bot.db2, "latency")
 

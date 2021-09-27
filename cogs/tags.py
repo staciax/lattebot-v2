@@ -86,7 +86,11 @@ class Tags(commands.Cog):
 
         #data_count
         data_count = await self.bot.tagdb.find_many_by_custom({})
-        data_count = len(data_count) + 10000
+        num_list = []
+        for x in data_count:     
+            num = x['tag_id']
+            num_list.append(num)
+        next_num = max(num_list)
 
         #check_data
         if bool(data_check) == True:
@@ -103,7 +107,7 @@ class Tags(commands.Cog):
             "guild_id": ctx.guild.id,
             "tag": name,
             "content": content,
-            "tag_id": data_count + 1
+            "tag_id": next_num + 1
         }
 
         #update_data
@@ -263,8 +267,20 @@ class Tags(commands.Cog):
 
     @commands.command()
     @commands.is_owner()
-    async def tagcount(self, ctx):
-        not_found = await self.bot.tagdb.find_many_by_custom({})
+    async def tagcount(self, ctx, guild_id:int=None):
+        if guild_id:
+            not_found = await self.bot.tagdb.find_many_by_custom({"guild_id": guild_id})
+        else:
+            not_found = await self.bot.tagdb.find_many_by_custom({})
+        
+        if not not_found:
+            return await ctx.send("data not found")
+        
+#        max_num = []
+#        for x in not_found:     
+#            num = x['tag_id']
+#            max_num.append(num)
+
         embed = discord.Embed(description=f"Total tags : `{len(not_found)}`",color=PTGREEN)
         await ctx.send(embed=embed)
 

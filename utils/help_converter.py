@@ -14,8 +14,8 @@ def Utility():
   description="""
   Use `.help <command>` for more informations about a command.
 
+  `afk` • set your afk
   `sleep` • Set timer disconnect voice channel.
-  `sleep stop` • Stop sleep timer.
   `remind`• timer remind me
   `poll` • Create poll.
   `binary` • Text to binary.
@@ -96,7 +96,7 @@ def Fun():
   Use `.help <command>` for more informations about a command.
   
  
-  • `owo`, `echo` ,`saybot`, `saybotm`, `valorant`, `apex`,
+  • `owo`, `echo` ,`saybot`, `saybotm`, `valorant`, `apex`, `genshinmap , gsmap`
   """
   embed.description = description
   

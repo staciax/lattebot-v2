@@ -247,24 +247,37 @@ class Utility_(commands.Cog):
         embed.description = f"{desktop}\n{mobiles}\n{Web}"
 
         await ctx.send(embed=embed)
-    
-    @commands.command(aliases=["gsmap"])
-    @commands.guild_only()
-    async def genshinmap(self, ctx):
-        await ctx.send("https://genshin-impact-map.appsample.com/#/")
         
     @commands.command(aliases=["rtn"])
     @commands.guild_only()
     async def roman_to_number(self, ctx, args:str=None):
-        number = utils.roman_to_int(input=args)
-        await ctx.send(number)
+        try:
+            number = utils.roman_to_int(input=args)
+            await ctx.send(number)
+        except:
+            return await ctx.send("Bad valid")
 
     @commands.command(aliases=["ntr"])
     @commands.guild_only()
     async def number_to_roman(self, ctx, args:int=None):
-        number = utils.int_to_roman(input=args)
-        await ctx.send(number)
+        try:
+            number = utils.int_to_roman(input=args)
+            await ctx.send(number)
+        except:
+            return await ctx.send("Bad valid")
 
+    @commands.command(aliases=["gsmap","hoyomap"])
+    @commands.guild_only()
+    async def genshinmap(self, ctx):
+        embed = discord.Embed(color=0x2484d7)
+        embed.set_author(name='Genshin impact Map' , icon_url="https://cdn.discordapp.com/emojis/892114299793842266.png")
+        #start_view_button
+        view = discord.ui.View()
+        Off = discord.ui.Button(style=discord.ButtonStyle.gray, label="Official", url="https://webstatic-sea.mihoyo.com/")
+        Un = discord.ui.Button(style=discord.ButtonStyle.gray, label="Unofficial", url="https://genshin-impact-map.appsample.com/#/")
+        view.add_item(item=Off)
+        view.add_item(item=Un)
+        await ctx.send(embed=embed, view=view)
 
 def setup(bot):
     bot.add_cog(Utility_(bot))
