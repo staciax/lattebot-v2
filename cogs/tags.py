@@ -217,12 +217,16 @@ class Tags(commands.Cog):
         for x in data:
             tags = f'{x["tag"]} (ID : {x["tag_id"]})'
             all_tag.append(tags)
-
+        
         #view_button
-        p = SimplePages(entries=all_tag, per_page=10, ctx=ctx)
-#        p.embed.title = "Tags list"
-        p.embed.color = 0xBFA2DB
-        await p.start()
+        if all_tag:
+            p = SimplePages(entries=all_tag, per_page=10, ctx=ctx)
+            p.embed.color = 0xBFA2DB
+            await p.start()
+        else:
+            #reponse
+            embed = Embed(description=f"Tags is not found", color=PTGREEN)
+            await ctx.send(embed=embed , delete_after=15)
 
 #        m = Base_page(All_tag_view(all_tag, per_page=10))
 #        await m.start(ctx)
