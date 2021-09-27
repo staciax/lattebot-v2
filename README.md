@@ -1,8 +1,8 @@
 <a href="#"><img width="100%" height="auto" src="https://i.imgur.com/jJovi0C.png" height="175px"/></a>
 
-# Latte Bot v2 discord py v2.0.0a beta
+# Latte Bot v2
 
-My first discord bot write with python and use cogs 
+My first discord bot write with cogs
 
 ## Prerequisites
 
