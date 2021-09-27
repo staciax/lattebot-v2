@@ -69,15 +69,22 @@ class Utility_(commands.Cog):
             embed.add_field(name="Highest Number:",value=f"{numbers[-1]}")
             await ctx.send(embed=embed)
     
-    @commands.command(name="random", aliases=["r"], description="random", brief=f"{PREFIX}random", usage=f"{PREFIX}random")
+    @commands.command(name="random", aliases=["r"], description="random", brief=f"{PREFIX}random asuna alice", usage=f"{PREFIX}random")
     @commands.guild_only()
-    async def random_(self, ctx ,*,msg) :
-        #        await ctx.send("Please Enter a Range:")
-
+    async def random_(self, ctx ,*,msg=None):
+        if msg is None:
+            await ctx.send("Please enter a split message" , delete_after=15)
         #split message
-        #        message_response = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
-        input_value = msg#message_response.content
+        #message_response = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author) #message_response.content
+        
+        #convert_to_split
+        input_value = msg 
         list_input = list(input_value.split())
+
+        if len(list_input) == 1:
+            await ctx.send("There must be at least 2 split messages." , delete_after=15)
+            return
+        
 
         #try_random
         try:
@@ -241,19 +248,23 @@ class Utility_(commands.Cog):
 
         await ctx.send(embed=embed)
     
-    @commands.command(brief="Send a message with a button!") # Create a command inside a cog
-    @commands.guild_only()
-    async def some_button(self, ctx):
-        view = discord.ui.View() # Establish an instance of the discord.ui.View class
-        style = discord.ButtonStyle.gray  # The button will be gray in color
-        item = discord.ui.Button(style=style, label="Read the docs!", url="https://discordpy.readthedocs.io/en/master")  # Create an item to pass into the view class.
-        view.add_item(item=item)  # Add that item into the view class
-        await ctx.send("This message has buttons!", view=view)
-    
     @commands.command(aliases=["gsmap"])
     @commands.guild_only()
     async def genshinmap(self, ctx):
         await ctx.send("https://genshin-impact-map.appsample.com/#/")
         
+    @commands.command(aliases=["rtn"])
+    @commands.guild_only()
+    async def roman_to_number(self, ctx, args:str=None):
+        number = utils.roman_to_int(input=args)
+        await ctx.send(number)
+
+    @commands.command(aliases=["ntr"])
+    @commands.guild_only()
+    async def number_to_roman(self, ctx, args:int=None):
+        number = utils.int_to_roman(input=args)
+        await ctx.send(number)
+
+
 def setup(bot):
     bot.add_cog(Utility_(bot))

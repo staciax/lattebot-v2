@@ -113,14 +113,12 @@ class XP(commands.Cog):
             if not member:
                 member = ctx.author
             member_id = member.id 
-            stats = await self.bot.latte_level.find_by_custom({"id": member_id, "guild_id": ctx.guild.id})    
-            print(stats)
+            stats = await self.bot.latte_level.find_by_custom({"id": member_id, "guild_id": ctx.guild.id})
             if stats is None:
                 embed = discord.Embed(description="You haven't sent any messages, **no xp**!!",color=0xffffff)
                 await ctx.channel.send(embed=embed)
             else:
                 xp = stats["xp"]
-                print(xp)
                 lvl = 0
                 rank = 0
                 while True:

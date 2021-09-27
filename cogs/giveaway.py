@@ -100,16 +100,17 @@ class Giveaway(commands.Cog):
         except asyncio.TimeoutError:
             await ctx.send("You took to long, please try again.")
 
-        logembed = discord.Embed(title="Giveaway Logged",
-                                 description=f"**Prize:** ``{msg4.content}``\n**Winners:** ``{winerscount}``\n**Channel:** {giveawaychannel.mention}\n**Host:** {ctx.author.mention}",
-                                 color=0xffffff)
-        logembed.set_thumbnail(url=ctx.author.avatar.url)
+        if ctx.guild.id == MYGUILD:
+            logembed = discord.Embed(title="Giveaway Logged",
+                                    description=f"**Prize:** ``{msg4.content}``\n**Winners:** ``{winerscount}``\n**Channel:** {giveawaychannel.mention}\n**Host:** {ctx.author.mention}",
+                                    color=0xffffff)
+            logembed.set_thumbnail(url=ctx.author.avatar.url)
 
-        logchannel = ctx.guild.get_channel(GIVEAWAY_LOG) 
-        await logchannel.send(embed=logembed)
+            logchannel = ctx.guild.get_channel(GIVEAWAY_LOG) 
+            await logchannel.send(embed=logembed)
 
         futuredate = datetime.utcnow() + timedelta(seconds=timewait)
-        embed1 = discord.Embed(color=discord.Color(0x6f2da8), # random color (color=discord.Color(random.randint(0x000000, 0xFFFFFF)),
+        embed1 = discord.Embed(color=0xBFA2DB, # random color (color=discord.Color(random.randint(0x000000, 0xFFFFFF)),
                                title=f"🎉 LATTE GIVEAWAY 🎉", timestamp=futuredate,
                                description=f'React with 🎉 to enter!\nWinner(s) : **{winerscount}**\nHosted by: {ctx.author.mention}\n\n`{msg4.content}`\n')
 
@@ -131,10 +132,11 @@ class Giveaway(commands.Cog):
 
         newEmbed = discord.Embed(title=f'🎉GIVEAWAY ENDED🎉',description=f'Winner(s) : **{winnerstosend}**\nHosted By :{ctx.author.mention}\n\n`{msg4.content}`\n', color=0x2f3136,timestamp=futuredate)
         newEmbed.set_footer(text=f'Ends at')
-    
+        
         win = await msg.edit(embed=newEmbed)
-        Embed_embed = discord.Embed(description=f"**Congrats {winnerstosend}!**\nPlease contact {ctx.author.mention} about your prize.\n [giveaway]({ctx.jump_url})" , color=WHITE)
-        await ctx.send(embed=Embed_embed)
+        print(winnerstosend)
+        embed_ended = discord.Embed(description=f"**Congrats {winnerstosend}!**\nPlease contact {ctx.author.mention} about your prize.\n [giveaway url]({win.jump_url})" , color=WHITE)
+        await ctx.send(embed=embed_ended)
 
     @commands.command(description="reroll giveaway", brief=f"{PREFIX}reroll", usage=f"{PREFIX}reroll")
     @commands.guild_only()

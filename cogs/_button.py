@@ -96,6 +96,15 @@ class Button_test(commands.Cog):
         p = SimplePages(entries=rows, per_page=2, ctx=ctx)
         p.embed.set_author(name=ctx.author.display_name)
         await p.start()
+    
+    @commands.command(brief="Send a message with a button!") # Create a command inside a cog
+    @commands.guild_only()
+    async def some_button(self, ctx):
+        view = discord.ui.View() # Establish an instance of the discord.ui.View class
+        style = discord.ButtonStyle.gray  # The button will be gray in color
+        item = discord.ui.Button(style=style, label="Read the docs!", url="https://discordpy.readthedocs.io/en/master")  # Create an item to pass into the view class.
+        view.add_item(item=item)  # Add that item into the view class
+        await ctx.send("This message has buttons!", view=view)
 
 
 def setup(bot):

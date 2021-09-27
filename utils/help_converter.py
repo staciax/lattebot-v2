@@ -10,18 +10,23 @@ fields = [
   ]
 
 def Utility():
-  embed = Embed(title=f"⚙️ Utility Commands",color=0xffffff)#\n\n`sleep:` set my or member timer disconnect voice channel\n\n`poll [message]:` poll in your server",color=0xffffff)
-  
+  embed = Embed(title=f"⚙️ Utility Commands",color=0xffffff)
   description="""
   Use `.help <command>` for more informations about a command.
 
   `sleep` • Set timer disconnect voice channel.
   `sleep stop` • Stop sleep timer.
+  `remind`• timer remind me
   `poll` • Create poll.
   `binary` • Text to binary.
   `reverse` • Reverse text.
   `translate , trans` • Translate message.
+  `random` • randrom a range.
   `random_number , rn` • Random number Lowest - Highest.
+  `random_invoice`, rnv • Random member in your current VC
+  `platform` , pt • What platform are your/members online on?
+  `number_to_roman` , ntr • Convert roman to number
+  `roman_to_number` , rtn • Convert number to roman
   """
   embed.description = description
 
@@ -115,9 +120,10 @@ def Meta():
   description="""
   Use `.help <command>` for more informations about a command.
 
-  `ping` • Show latency bot.
+  `about` • Sbout me.
+  `ping` • latency bot.
   `invite` • Invite bot.
-  `feedback` • Your feedback for bot .
+  `feedback` • Your feedback for me.
   `req` • Your request.
   """
   embed.description = description
@@ -180,12 +186,12 @@ def Help_tag():
   Use `.help <command>` for more informations about a command.
   """
   embed.description = description
-  embed.add_field(name="tag", value=f"```css\n{PREFIX}tag <ชื่อ>```",inline=False)
-  embed.add_field(name="tag add : เพิ่ม", value=f"```css\n{PREFIX}tag add <ชื่อ> <ข้อความ>```",inline=False)
-  embed.add_field(name="tag remove : ลบออก", value=f"```css\n{PREFIX}tag remove <ชื่อ>```",inline=False)
+  embed.add_field(name="tag", value=f"```css\n{PREFIX}tag <name>```",inline=False)
+  embed.add_field(name="tag add : เพิ่ม", value=f"```css\n{PREFIX}tag add <name> <message>```",inline=False)
+  embed.add_field(name="tag remove : ลบออก", value=f"```css\n{PREFIX}tag remove <name>```",inline=False)
   embed.add_field(name="tag list : ตรวจสอบรายการ", value=f"```css\n{PREFIX}tag list```",inline=False)
-  embed.add_field(name="tag edit : แก้ไขข้อความ", value=f"```css\n{PREFIX}tag edit <ชื่อ> <ข้อความ>```",inline=False)
-  embed.add_field(name="tag alias : แก้ไขชื่อ", value=f"```css\n{PREFIX}tag alias <ชื่อเก่า> <ชื่อใหม่>```",inline=False)
-  embed.add_field(name="tag search : ค้นหา", value=f"```css\n{PREFIX}tag search <คำที่จะค้นหา>```",inline=False)
+  embed.add_field(name="tag edit : แก้ไขข้อความ", value=f"```css\n{PREFIX}tag edit <name> <message>```",inline=False)
+  embed.add_field(name="tag alias : แก้ไขชื่อ", value=f"```css\n{PREFIX}tag alias <old name> <new name>```",inline=False)
+  embed.add_field(name="tag search : ค้นหา", value=f"```css\n{PREFIX}tag search <name>```",inline=False)
   
   return embed
