@@ -146,6 +146,8 @@ class Utility_(commands.Cog):
             return await ctx.send(embed=embed_time , delete_after=15)
         if msg is None:
             msg = "..."
+        elif len(msg) > 2000:
+            return await ctx.send('remind message is a maximum of 2000 characters.', delete_after=15)
 
         #try_converter
         try:
@@ -167,10 +169,12 @@ class Utility_(commands.Cog):
     @commands.guild_only()
     async def remind_chat(self, ctx , time=None, *, msg=None):
         if time is None:
-            embed_time = discord.Embed(description="**Please specify duration** : `(s|m|h|d)`\n```yaml\nExample : .sleep 5m , .sleep 2h```",color=WHITE)
+            embed_time = discord.Embed(description="**Please specify duration**",color=WHITE)
             return await ctx.send(embed=embed_time , delete_after=15)
         if msg is None:
             msg = "..."
+        elif len(msg) > 2000:
+            return await ctx.send('remind message is a maximum of 2000 characters.', delete_after=15)
 
         #try_converter
         try:
@@ -190,7 +194,9 @@ class Utility_(commands.Cog):
         
     @commands.command(description="Crete poll" , brief=f"{PREFIX}poll i pretty?", usage=f"{PREFIX}poll <message>")
     @commands.guild_only()
-    async def poll(self, ctx,*,message):
+    async def poll(self, ctx, *, message):
+        if len(message) > 2000:
+            return await ctx.send('remind message is a maximum of 2000 characters.', delete_after=15)
         embed = discord.Embed(title="POLL", description=f"{message}",color=0xffffff)
         msg = await ctx.channel.send(embed=embed)
         await msg.add_reaction("<:greentick:881500884725547021>")

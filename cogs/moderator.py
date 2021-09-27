@@ -404,6 +404,20 @@ class Moderation(commands.Cog):
             await emoji.delete()
         except:
             await ctx.send('error delete emoji!')
+    
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(view_audit_log=True)
+    async def audit(self,ctx, num: int=None):
+        embed=discord.Embed(title='Audit Logs',description="", color=0xffffff)
+        embed.set_footer(text=f"Requested by {ctx.author}" , icon_url=ctx.author.avatar.url)
+        if num is None: num=5
+        async for entry in ctx.guild.audit_logs(limit=num):
+            action_str = str(entry.action)
+            category_str = str(entry.category)
+            embed.description += f'**User:** `{entry.user}` **Action:** `{action_str[15:]}`  **Target:** `{entry.target}` **Time:** `{entry.created_at.strftime("%a, %#d %B %Y, %I:%M %p")}\n\n`'
+            #**Category:** `{category_str[23:]}`
+        await ctx.reply(embed=embed, mention_author=False) 
 
 def setup(bot):
     bot.add_cog(Moderation(bot))

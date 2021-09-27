@@ -1,7 +1,7 @@
 # Standard 
 import discord , asyncio
 import datetime
-from discord.ext import commands , tasks
+from discord.ext import commands , tasks , menus
 from datetime import datetime, timezone , timedelta
 from discord import Embed
 
@@ -10,6 +10,7 @@ import aiohttp
 
 # Local
 from utils.waifu_pisc_api import *
+from utils.paginator import SimplePages
 
 class base_pisc_api(discord.ui.View):
     def __init__(self, ctx , url , title):
@@ -89,7 +90,13 @@ class Button_test(commands.Cog):
         title = "Neko"
         view = base_pisc_api(ctx, url, title)
         await view.api_start()
-        #view.stop()
-        
+    
+    @commands.command()
+    async def page_simple(self, ctx):
+        p = SimplePages(entries=rows, per_page=2, ctx=ctx)
+        p.embed.set_author(name=ctx.author.display_name)
+        await p.start()
+
+
 def setup(bot):
     bot.add_cog(Button_test(bot))

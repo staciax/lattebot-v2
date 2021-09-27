@@ -1,40 +1,27 @@
 # Standard 
-import discord , random , asyncio
+import discord , random , asyncio , json
 from discord.ext import commands 
 from datetime import datetime, timedelta, timezone
 
-intents = discord.Intents.default()
-intents.members = True
-
 # Third party
-import json
-import pymongo 
-from pymongo import MongoClient
+import requests
 from PIL import Image, ImageDraw , ImageFont , ImageEnhance , ImageFilter
 from io import BytesIO
-import requests
 
 # Local
 import json
 import utils
 from config import * 
-from utils import Pag
+from utils.paginator import SimplePages
 
 #xpchannel
 bot_channel = BOT_CH
 chat_channel = CHAT_CH
 
-#open_json
-with open('bot_config/secrets.json') as f:
-    data = json.load(f)
-
-#mongodb
-mango_url = data["mongo"]
+#lvl_data
 level = LVLROLE #level role
 levelnum = LVLNUM #level number
 colorlvl = LVLROLECOLOR #level role color
-cluster = MongoClient(mango_url)
-levelling = cluster[MGDATABASE][MGDOCUMENT]
 
 class XP(commands.Cog):
 
@@ -47,112 +34,73 @@ class XP(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.channel.id in CHAT_CH: #only one ch use '==' , more use 'in'
-            stats = levelling.find_one({"id" : message.author.id})
-            if not message.author.bot:
-                if stats is None:
-                    newuser = {"id" : message.author.id, "xp" : 100}
-                    levelling.insert_one(newuser)
-                    guild = message.guild
-                    lvl_bar = discord.utils.get(guild.roles, id = 854503041775566879)#・ ──────꒰ ・ levels ・ ꒱────── ・
-                    await message.author.add_roles(lvl_bar)
-                else:
-                    xp = stats["xp"] + 5
-                    levelling.update_one({"id":message.author.id}, {"$set":{"xp":xp}})
-                    lvl = 0 
-                    while True:
-                        if xp < ((50*(lvl**2))+(50*lvl)):
-                            break
-                        lvl += 1
-        #                    print(f'now level{lvl}')
-                    xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
-                    if xp == 0:
-                        emlvup = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!",color=0xffffff)
-                        msg = await message.channel.send(embed=emlvup)
-                        for i in range(len(level)):
-                            if lvl == levelnum[i]:
-                                await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
-                                embed = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
-                                await msg.edit(embed=embed)
-                 
-    @commands.command(name="xp2")
-    async def level_2(self, ctx):
-        if ctx.channel.id in BOT_CH: 
-            stats = levelling.find_one({"id": ctx.author.id})
-            if stats is None:
-                embed = discord.Embed(description="You haven't sent any messages, **no xp**!!")
-                await ctx.channel.send(embed=embed)
-            else:
-                xp = stats["xp"]
-                lvl = 0
-                rank = 0
-                while True:
-                    if xp < ((50*(lvl**2))+(50*lvl)):
-                        break
-                    lvl += 1
-                xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
-                boxes = int((xp/(200*((1/2) * lvl)))*20)
-                rankings = levelling.find().sort("xp",-1)
-                for x in rankings:
-                    rank += 1
-                    if stats["id"] == x["id"]:
-                        break
-                embed = discord.Embed(color=0xffffff)
-        #                embed.add_field(name="Name" , value=ctx.author.mention , inline=True)
-                embed.set_author(name=f'{ctx.author.name}s level stats', icon_url=ctx.author.avatar.url)
-                embed.add_field(name="XP", value=f"{xp}/{int(200*((1/2)*lvl))}", inline=True)
-                embed.add_field(name="Level", value=str(lvl), inline=True)
-                embed.add_field(name="Rank", value=f"{rank}/{ctx.guild.member_count}", inline=True)
-                embed.add_field(name="Progress bar [lvl]", value="<:start_full:876998828048416849>" + boxes * "<:mid_full:876998976774234183>" + (17-boxes) * "<:mid_empty:876998865734221865>" + "<:end_blank:876998841818292224>", inline=False)
-                await ctx.channel.send(embed=embed)
+        if message.author.bot:
+            return
+        if message.channel.id in CHAT_CH:
+            data = await self.bot.latte_level.find_by_custom({"id": message.author.id, "guild_id": message.guild.id})            
+            if data is None:
+                data = {
+                    "id" : message.author.id,
+                    "xp" : 100,
+                    "guild_id": message.guild.id
+                }
+                #add_role_xp_bar
+                guild = message.guild
+                lvl_bar = discord.utils.get(guild.roles, id = 854503041775566879)#・ ──────꒰ ・ levels ・ ꒱────── ・
+                await message.author.add_roles(lvl_bar)
 
+            xp = data["xp"]
+            data["xp"] += 5
+            await self.bot.latte_level.update_by_custom(
+                {"id": message.author.id, "guild_id": message.guild.id}, data
+            )
+
+            lvl = 0 
+            while True:
+                if xp < ((50*(lvl**2))+(50*lvl)):
+                    break
+                lvl += 1
+            xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
+            if xp == 0:
+                emlvup = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!",color=0xffffff)
+                msg = await message.channel.send(embed=emlvup)
+                for i in range(len(level)):
+                    if lvl == levelnum[i]:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
+                        embed = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
+                        await msg.edit(embed=embed)
+            
     @commands.command(description="Show ranking xp", aliases=['rank'], brief=f"{PREFIX}rank", usage=f"{PREFIX}rank")
     @commands.guild_only()
-    async def ranking(self, ctx): #only one ch use '==' , more use 'in'
-        #        if (ctx.channel.id in BOT_CH):
-            rankings = levelling.find().sort("xp",-1)
-            i = 1
-            embed = discord.Embed(color=0x77dd77 , timestamp=datetime.now(timezone.utc))
+    async def ranking(self, ctx):
+        filter_member = await self.bot.latte_level.find_many_by_custom({"guild_id": ctx.guild.id})
+        filter_member = sorted(filter_member, key=lambda x: x["xp"] , reverse=True)
 
-            embed.set_author(name=f"{ctx.guild.name} Rankings", url=ctx.guild.icon.url , icon_url=ctx.guild.icon.url)
-            embed.set_footer(text = f'{self.bot.user.name}') # icon_url=self.bot.user.avatar.url
-    #            for x in rankings:
-    #                try:
-    #                    temp = ctx.guild.get_member(x["id"])
-    #                    tempxp = x["xp"]       
-    #                    embed.add_field(name=f"{i}: {temp.name}", value=f"Total XP: {tempxp} ", inline=False)
-    #                    i += 1
-    #                except:
-    #                    pass
-    #                if i == 11:
-    #                    break
+        filter_xp = []
+        for x in filter_member:
+            try:
+                member_name = ctx.guild.get_member(x["id"]).name
+                member_xp = x["xp"]  
+                lvl = 0
+                while True:
+                    if member_xp < ((50*(lvl**2))+(50*lvl)):
+                        break
+                    lvl += 1
+                #member_xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
+                #final_xp = (200*((1/2)*lvl))
+                #({member_xp}/{int(final_xp)})
+                message = f"**{member_name}**\nLevel : {lvl} (Total XP: {member_xp})\n"
+                filter_xp.append(message)
 
-            for x in rankings:
-                try:
-                    temp = ctx.guild.get_member(x["id"])
-                    tempxp = x["xp"]       
-                    if i == 1:
-                        embed.add_field(name=f"{i}: {temp.name} {utils.emoji_converter('1st')}", value=f"Total XP: {tempxp}", inline=False)
-                    elif i == 2:
-                        embed.add_field(name=f"{i}: {temp.name} {utils.emoji_converter('2nd')}", value=f"Total XP: {tempxp}", inline=False)
-                    elif i == 3:
-                        embed.add_field(name=f"{i}: {temp.name} {utils.emoji_converter('3rd')}", value=f"Total XP: {tempxp}", inline=False)
-                    elif i == 4:
-                        embed.add_field(name=f"{i}: {temp.name}  ", value=f"Total XP: {tempxp}", inline=False)
-                    else:
-                        embed.add_field(name=f"{i}: {temp.name}", value=f"Total XP: {tempxp}", inline=False)
-                except:
-                    pass
-                i += 1
-                if i == 11:
-                    break
-       
-            await ctx.channel.send(embed=embed)
-
-    #        else:
-    #            embedbot = discord.Embed(description=f"please use bot command in <#861874852050894868> !",color=0xffffff)
-    #            await ctx.message.delete()
-    #            await ctx.channel.send(embed=embedbot , delete_after=10)
+            except:
+                pass
+                
+        #view_button
+        p = SimplePages(entries=filter_xp, per_page=5, ctx=ctx)
+        p.embed.set_author(name=f"{ctx.guild.name} Rankings", url=ctx.guild.icon.url , icon_url=ctx.guild.icon.url)
+        p.embed.set_footer(text = f'{self.bot.user.name}') 
+        p.embed.color = 0x77dd77
+        await p.start()
 
     @commands.command(description="Show my xp or member", aliases=['lvl' , 'exp'], brief=f"{PREFIX}xp", usage=f"{PREFIX}xp [member]")
     @commands.guild_only()
@@ -162,34 +110,36 @@ class XP(commands.Cog):
             await ctx.message.delete()
             return await ctx.send(embed=embed , delete_after=10)
         async with ctx.typing():
-                if not member:
-                    member = ctx.message.author
-                member_id = member.id 
-                stats = levelling.find_one({"id": member_id})
-                if stats is None:
-                    embed = discord.Embed(description="You haven't sent any messages, **no xp**!!",color=0xffffff)
-                    await ctx.channel.send(embed=embed)
-                else:
-                    xp = stats["xp"]
-                    lvl = 0
-                    rank = 0
-                    while True:
-                        if xp < ((50*(lvl**2))+(50*lvl)):
-                            break
-                        lvl += 1
-                    xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
-                    boxes = int((xp/(200*((1/2) * lvl)))*20)
-                    rankings = levelling.find().sort("xp",-1)
-                    for x in rankings:
-                        rank += 1
-                        if stats["id"] == x["id"]:
-                            break
-                    final_xp = (200*((1/2)*lvl))
-                    
-                    embedlv = discord.Embed(title=f"{member.name}'s level stats | {ctx.guild.name}",color=0x77dd77)
-                    embedlv.set_image(url="attachment://latte-level.png")
-                    
-                    await ctx.channel.send(file=utils.level_images(member, final_xp, lvl, rank, xp), embed=embedlv)
+            if not member:
+                member = ctx.author
+            member_id = member.id 
+            stats = await self.bot.latte_level.find_by_custom({"id": member_id, "guild_id": ctx.guild.id})    
+            print(stats)
+            if stats is None:
+                embed = discord.Embed(description="You haven't sent any messages, **no xp**!!",color=0xffffff)
+                await ctx.channel.send(embed=embed)
+            else:
+                xp = stats["xp"]
+                print(xp)
+                lvl = 0
+                rank = 0
+                while True:
+                    if xp < ((50*(lvl**2))+(50*lvl)):
+                        break
+                    lvl += 1
+                xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
+                filter_member = await self.bot.latte_level.find_many_by_custom({"guild_id": ctx.guild.id})
+                filter_member = sorted(filter_member, key=lambda x: x["xp"] , reverse=True)
+                for x in filter_member:
+                    rank += 1
+                    if stats["id"] == x["id"]:
+                        break
+                final_xp = (200*((1/2)*lvl))
+                
+                embedlv = discord.Embed(title=f"{member.name}'s level stats | {ctx.guild.name}",color=0x77dd77)
+                embedlv.set_image(url="attachment://latte-level.png")
+                
+                await ctx.channel.send(file=utils.level_images(member, final_xp, lvl, rank, xp), embed=embedlv)
   
     @commands.command(description="Crete xp role", brief=f"{PREFIX}xprole", usage=f"{PREFIX}xprole")
     @commands.guild_only()

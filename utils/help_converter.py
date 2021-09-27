@@ -62,6 +62,9 @@ def Moderation():
   `lock` • lockdown channel
   `slow` • slowmode channel
   `nick` • change nickname member
+  `audit` • view audit-log
+  `createemoji` • crate emoji with link
+  `deleteemoji` • delete emoji
 
   """
   embed.description = description

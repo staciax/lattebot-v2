@@ -98,6 +98,10 @@ if __name__ == "__main__":
     bot.db2 = bot.mongo["lattebot"]
     bot.latency_bot = Document(bot.db2, "latency")
 
+    #db_leveling
+    bot.db_level = bot.mongo["discord"]
+    bot.latte_level = Document(bot.db_level, "levelling")
+
     for file in os.listdir(cwd + "/cogs"):
         if file.endswith(".py") and not file.startswith("_"):
             bot.load_extension(f"cogs.{file[:-3]}")

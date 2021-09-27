@@ -12,6 +12,8 @@ from discord.ext import menus
 # Local
 import utils
 from utils.ButtonRef import Base_page
+from utils.paginator import SimplePages
+from config import PTGREEN
 
 class All_tag_view(menus.ListPageSource):
     async def format_page(self, view, entry):
@@ -46,9 +48,20 @@ class Tags(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
-    async def tag(self, ctx, *, name:str):
-        #find_data
-        check_data = await self.bot.tagdb.find_by_custom({"guild_id": ctx.guild.id, "tag": name})
+    async def tag(self, ctx, *, name):
+        
+        #check_int_or_str
+        isInt = True
+        try:
+            int(name)
+        except ValueError:
+            isInt = False
+
+        #check_int_true_or_false
+        if isInt:
+            check_data = await self.bot.tagdb.find_by_custom({"guild_id": ctx.guild.id, "tag_id": int(name)})
+        else:
+            check_data = await self.bot.tagdb.find_by_custom({"guild_id": ctx.guild.id, "tag": str(name)})
         
         #found_or_not_found
         if check_data is not None:
@@ -71,6 +84,10 @@ class Tags(commands.Cog):
         #find_data
         data_check = await self.bot.tagdb.find_by_custom({"guild_id": ctx.guild.id, "tag": name})
 
+        #data_count
+        data_count = await self.bot.tagdb.find_many_by_custom({})
+        data_count = len(data_count) + 10000
+
         #check_data
         if bool(data_check) == True:
             await ctx.send("can't use this tag!", delete_after=15)
@@ -85,7 +102,8 @@ class Tags(commands.Cog):
             "user_id": ctx.author.id,
             "guild_id": ctx.guild.id,
             "tag": name,
-            "content": content
+            "content": content,
+            "tag_id": data_count + 1
         }
 
         #update_data
@@ -94,9 +112,9 @@ class Tags(commands.Cog):
         )
 
         #reponse
-        embed = Embed(description=f"`{name}` is added", color=0xC1FFD7)
-        await ctx.send(embed=embed, delete_after=15)
-    
+        embed = Embed(description=f"`{name}` is added", color=PTGREEN)
+        await ctx.send(embed=embed)
+
     @tag.command(aliases=["alias"])
     @commands.guild_only()
     async def tag_alias(self, ctx, name_old:str, name_new:str):
@@ -193,17 +211,21 @@ class Tags(commands.Cog):
 
         #sort_tag
         data = await self.bot.tagdb.find_many_by_custom({"guild_id": ctx.guild.id})
-        data = sorted(data, key=lambda x: x["tag"] ,  reverse=True)
         
         #count_tag
         all_tag = []
         for x in data:
-            tags = x["tag"]
+            tags = f'{x["tag"]} (ID : {x["tag_id"]})'
             all_tag.append(tags)
 
         #view_button
-        m = Base_page(All_tag_view(all_tag, per_page=10))
-        await m.start(ctx)
+        p = SimplePages(entries=all_tag, per_page=10, ctx=ctx)
+#        p.embed.title = "Tags list"
+        p.embed.color = 0xBFA2DB
+        await p.start()
+
+#        m = Base_page(All_tag_view(all_tag, per_page=10))
+#        await m.start(ctx)
        
     @tag.command(name="search", aliases=["find"])
     @commands.guild_only()
@@ -211,37 +233,36 @@ class Tags(commands.Cog):
 
         #find_name_tag
         not_found = await self.bot.tagdb.find_many_by_custom({"guild_id": ctx.guild.id})
+        
+        total:int = len(not_found)
         names = (r['tag'] for r in not_found)
-        matches = get_close_matches(name , names , n=25)
-        print(matches)
+        matches = get_close_matches(name , names , n=total)
 
         #coverter_to_string
         tag_found = []
         for x in matches:
-            print(x)
-            tag_found.append(x)
+            data = await self.bot.tagdb.find_many_by_custom({"guild_id": ctx.guild.id, "tag": x})
+            find_id = '\n'.join(f'{i["tag_id"]}' for i in data)
+            tag_name_id = f'{x} (ID : {find_id})'
+            tag_found.append(tag_name_id)
 
-        if len(tag_found) > 10:
+        if tag_found:
             #view_button
-            message = Base_page(Search_tag_view(tag_found, per_page=10))
-            await message.start(ctx)
-        elif tag_found:
-            i = 0
-            embed = Embed(title="Tags search", description="",color=0xBFA2DB)
-            for x in tag_found:
-                i += 1
-                embed.description += f"{i}. {x}\n"
-
-            await ctx.send(embed=embed)
+            p = SimplePages(entries=tag_found, per_page=10, ctx=ctx)
+#            p.embed.title = "Tags search"
+            p.embed.color = 0xBFA2DB
+            await p.start()
         else:
             #reponse
-            embed = Embed(description=f"`{name}` is not found", color=0xC1FFD7)
+            embed = Embed(description=f"`{name}` is not found", color=PTGREEN)
             await ctx.send(embed=embed , delete_after=15)
 
     @commands.command()
+    @commands.is_owner()
     async def tagcount(self, ctx):
-        not_found = await self.bot.tagdb.find_many_by_custom({"guild_id": ctx.guild.id})
-        await ctx.send(len(not_found))
+        not_found = await self.bot.tagdb.find_many_by_custom({})
+        embed = discord.Embed(description=f"Total tags : `{len(not_found)}`",color=PTGREEN)
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Tags(bot))

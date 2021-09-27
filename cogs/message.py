@@ -34,6 +34,9 @@ class Message(commands.Cog):
     async def afk(self, ctx, *, reason=None):
         if reason is None:
             reason = "personal problems"
+        elif len(reason) > 1000:
+            return await ctx.send('reason is a maximum of 1000 characters.', delete_after=15)
+
         self.afk[ctx.author.id] = reason #storing at self.afk as {657846039914479617: "reason"}
         embed = discord.Embed(description=f"**{ctx.author}** I have set your afk: `{reason}`" , color=WHITE)
         
