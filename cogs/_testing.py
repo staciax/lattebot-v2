@@ -10,7 +10,6 @@ import typing
 from typing import Union
 
 # Third party
-#from discord_components import *
 
 #import humanize
 from utils import Pag
@@ -25,15 +24,7 @@ class Testing(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        #DiscordComponents(self.bot)
         print(f"-{self.__class__.__name__}")
-     
-    @commands.command(name="testembed")
-    async def test_embed(self, ctx):
-        embed = discord.Embed()
-        embed.set_image(url="https://i.imgur.com/JOsg4RL.gif")
-
-        await ctx.send(embed=embed)
     
     @commands.command()
     async def test_time2(self, ctx):
@@ -118,33 +109,6 @@ class Testing(commands.Cog):
             return await ctx.send('Member not found?')
 
         await self.say_permissions(ctx, member, channel)
-
-    @commands.command()
-    async def select(self, ctx):
-        embed = discord.Embed(description="TEST (v2.0.0a)")
-        await ctx.send(
-           "test",
-            components=[
-                Select(
-                    placeholder="Test",
-                    options=[
-                        SelectOption(label="TEST1", value="1.1"),
-                    ],            
-                ),
-            ],
-        )
-        while True:
-            interaction = await self.bot.wait_for("select_option")
-            await interaction.respond(
-                content=f"{','.join(map(lambda x: x.label, interaction.component))} selected!"
-            )
-
-    @commands.command()
-    async def numtest(self,ctx , num:int):
-        if num > 300:
-            print("300+")
-        else:
-            print("no")
             
 def setup(bot):
     bot.add_cog(Testing(bot))

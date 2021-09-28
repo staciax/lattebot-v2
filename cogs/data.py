@@ -12,6 +12,7 @@ import json
 # Local
 import utils
 from config import *
+from utils.general import count_python
 
 class Data(commands.Cog):
 
@@ -50,12 +51,18 @@ class Data(commands.Cog):
         embed.set_author(name=f"About Me",icon_url=self.bot.user.avatar.url)
         embed.set_thumbnail(url=owner_bot.avatar.url)
 
+        #stats
+        serverCount = len(self.bot.guilds)
+        memberCount = len(set(self.bot.get_all_members()))
+        totalcogs = len(self.bot.cogs)
+        totalcommands = len(self.bot.commands)
+
         #owner
         fields1 = [
             ("About Developer" , f"Owner:[{owner_bot}](https://discord.com/users/{owner_bot.id})" , False),
-            ("Platform" , f"OS : `{platform.system()}`" , False),
+            ("Stats " , f"{self.bot.get_emoji(892293677404278805)} Line count : `{count_python('.'):,}`\n<:latteicon:870419352632045568> Servers : `{serverCount}`\n<:member:864219999954796615> Users : `{memberCount}`\n<:bot_commands:892297283532632116> Commands : `{totalcommands}`" , False), #{platform.system()}
             ("Bot Info" , f"{utils.emoji_converter('python')} Python : `{platform.python_version()}`\n{utils.emoji_converter('dpy')} Discord.py : `{discord.__version__}`\n{utils.emoji_converter('latteicon')} Latte : `{self.bot.latte_version}`\n{utils.emoji_converter('mongodb')} Database : `MongoDB`" , False),
-
+            
             ]
         for name , value , inline in fields1:
             embed.add_field(name=name , value=value , inline=inline)

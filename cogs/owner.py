@@ -1,6 +1,12 @@
 # Standard 
-import discord , asyncio , os
+import discord
+import asyncio
+import os
+import io
 import datetime
+import contextlib
+import textwrap
+from traceback import format_exception
 from discord.ext import commands , tasks
 from datetime import datetime, timezone , timedelta
 
@@ -8,15 +14,35 @@ from datetime import datetime, timezone , timedelta
 
 # Local
 import utils
+from utils import clean_code , Pag
 
 class Owner_(commands.Cog):
 
     def __init__(self, bot):
+        self.hidden = True
         self.bot = bot
-
+    
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
+    
+    @commands.command()
+    @commands.is_owner()
+    async def enable(self, ctx, command : str):
+        command = self.bot.get_command(command)
+        if command.enabled:
+            return await ctx.send(f"`{command}` is already enabled.")
+        command.enabled = True
+        await ctx.send(f"Successfully enabled the `{command.name}` command.")
+        
+    @commands.command()
+    @commands.is_owner()
+    async def disable(self, ctx, command : str):
+        command = self.bot.get_command(command)
+        if not command.enabled:
+            return await ctx.send(f"`{command}` is already disabled.")
+        command.enabled = False
+        await ctx.send(f"Successfully disabled the `{command.name}` command.")
     
     #bot_config_read
     @commands.command(name="botconfig", aliases=["bconfig"])
@@ -92,6 +118,46 @@ class Owner_(commands.Cog):
         embed.color = 0x8be28b
         await ctx.send(embed=embed)
     
+    #eval
+    @commands.command(name="eval", aliases=["exec"])
+    @commands.is_owner()
+    async def _eval(self, ctx, *, code):
+    #    await ctx.reply("Let me evaluate this code for you! Won't be a sec")
+        code = clean_code(code)
+
+        local_variables = {
+            "discord": discord,
+            "commands": commands,
+            "bot": self.bot,
+            "ctx": ctx,
+            "channel": ctx.channel,
+            "author": ctx.author,
+            "guild": ctx.guild,
+            "message": ctx.message,
+        }
+
+        stdout = io.StringIO()
+
+        try:
+            with contextlib.redirect_stdout(stdout):
+                exec(
+                    f"async def func():\n{textwrap.indent(code, '    ')}", local_variables,
+                )
+
+                obj = await local_variables["func"]()
+                result = f"{stdout.getvalue()}\n-- {obj}\n"
+        except Exception as e:
+            result = "".join(format_exception(e, e, e.__traceback__))
+
+        pager = Pag(
+            timeout=100,
+            entries=[result[i : i + 2000] for i in range(0, len(result), 2000)],
+            length=1,
+            prefix="```py\n",
+            suffix="```",
+        )
+
+        await pager.start(ctx)
     
 def setup(bot):
     bot.add_cog(Owner_(bot))

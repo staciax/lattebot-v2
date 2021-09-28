@@ -1,21 +1,26 @@
 # Standard 
-import discord , json , os , datetime , random , asyncio , re , io , contextlib , logging , sys , logging , asyncpg
+import discord
+import json
+import os
+import datetime
+import random
+import asyncio
+import re
+import io
+import sys
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta, timezone
 
 # Third party 
-import aiohttp
-import textwrap
 import motor.motor_asyncio
-from traceback import format_exception
 from pathlib import Path
 
 # Local
 from config import *
 import utils.json_loader
-from utils import clean_code , Pag
 from utils.mongo import Document
 
+#cwd
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
 print(f"{cwd}\n-----")
@@ -26,8 +31,6 @@ owner = secrets["owner"]
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(f'{PREFIX}'), case_insensitive=True, intents=intents, owner_id=owner , help_command=None)
-bot.latte_version = BOTVERSION
-bot.latte_source = LATTESOURCE
 
 @bot.event
 async def on_ready():
@@ -38,54 +41,27 @@ async def on_ready():
     print(f"\nName : {bot.user}\nActivity : {bot_activity}\nServer : {len(bot.guilds)}\nMembers : {len(set(bot.get_all_members()))}\nPrefix : {PREFIX}")
     print(f"\nCogs list\n-----")
 
+@bot.event
+async def on_disconnect():
+    print("bot disconnected")
+
 #json_loader
 bot.config_token = secrets["token"]
 bot.connection_url = secrets["mongo"]
 bot.giphy_api_ = secrets["giphy"]
 
-#eval
-@bot.command(name="eval", aliases=["exec"])
-@commands.is_owner()
-async def _eval(ctx, *, code):
-#    await ctx.reply("Let me evaluate this code for you! Won't be a sec")
-    code = clean_code(code)
-
-    local_variables = {
-        "discord": discord,
-        "commands": commands,
-        "bot": bot,
-        "ctx": ctx,
-        "channel": ctx.channel,
-        "author": ctx.author,
-        "guild": ctx.guild,
-        "message": ctx.message,
-    }
-
-    stdout = io.StringIO()
-
-    try:
-        with contextlib.redirect_stdout(stdout):
-            exec(
-                f"async def func():\n{textwrap.indent(code, '    ')}", local_variables,
-            )
-
-            obj = await local_variables["func"]()
-            result = f"{stdout.getvalue()}\n-- {obj}\n"
-    except Exception as e:
-        result = "".join(format_exception(e, e, e.__traceback__))
-
-    pager = Pag(
-        timeout=100,
-        entries=[result[i : i + 2000] for i in range(0, len(result), 2000)],
-        length=1,
-        prefix="```py\n",
-        suffix="```",
-    )
-
-    await pager.start(ctx)
-
 #jishaku
 bot.load_extension('jishaku')
+
+#soruce
+bot.latte_version = BOTVERSION
+bot.latte_source = LATTESOURCE
+bot.github = ""
+bot.invite_url = "-"
+bot.top_gg = "-"
+bot.bots_gg = "-"
+bot.blacklist = {}
+bot.latte_server_id = 840379510704046151
 
 #cogs_and_mongodb
 if __name__ == "__main__":

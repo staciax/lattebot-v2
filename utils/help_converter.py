@@ -16,6 +16,7 @@ def Utility():
 
   `afk` • set your afk
   `sleep` • Set timer disconnect voice channel.
+  `snipe` • Snipe message after delete
   `remind`• timer remind me
   `poll` • Create poll.
   `binary` • Text to binary.
