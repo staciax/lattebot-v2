@@ -1,5 +1,7 @@
 # Standard 
-import discord , asyncio , random
+import discord
+import asyncio
+import random
 import datetime
 from discord.ext import commands
 from datetime import datetime, timezone , timedelta
@@ -39,7 +41,7 @@ class Utility_(commands.Cog):
 
             await message.channel.send(result.text)
 
-    @commands.command(description="Converter text to binary", brief=f"{PREFIX}binary i like you", usage=f"{PREFIX}binary <message>")
+    @commands.command(description="Converter text to binary", help=f"i like you", usage=f"<message>")
     @commands.guild_only()
     async def binary(self, ctx, *, args=None):
         if args is None:
@@ -49,14 +51,14 @@ class Utility_(commands.Cog):
 
         await ctx.send(str(res))
     
-    @commands.command()
+    @commands.command(description="reverse message" , help=f"like this", usage=f"<message>")
     @commands.guild_only()
     async def reverse(self, ctx, *, args=None):
         res = ''.join(reversed(args))
 
         await ctx.send(str(res))
     
-    @commands.command(name="rn", description="takes smallest and largest numbers then does a random number between.", brief=f"{PREFIX}rn 20 300", usage=f"{PREFIX}rn <Lowest number> <Highest number>")
+    @commands.command(name="rn", description="takes smallest and largest numbers then does a random number between.", help=f"20 300", usage=f"<Lowest number> <Highest number>")
     @commands.guild_only()
     async def random_number(self , ctx , *numbers: typing.Union[int,str]):
         numbers=sorted(list(filter(lambda x: isinstance(x, int), numbers)))
@@ -69,7 +71,7 @@ class Utility_(commands.Cog):
             embed.add_field(name="Highest Number:",value=f"{numbers[-1]}")
             await ctx.send(embed=embed)
     
-    @commands.command(name="random", aliases=["r"], description="random", brief=f"{PREFIX}random asuna alice", usage=f"{PREFIX}random")
+    @commands.command(name="random", aliases=["r"], description="random", help="asuna alice silica")
     @commands.guild_only()
     async def random_(self, ctx ,*,msg=None):
         if msg is None:
@@ -92,7 +94,7 @@ class Utility_(commands.Cog):
         except ValueError:
             await ctx.send("Invalid Range")
 
-    @commands.command(name="random_invoice", aliases=["rnv"] ,description="random member in voice channel", brief=f"{PREFIX}rnv @latte 840381453779206166", usage=f"{PREFIX} <member> <voice>")
+    @commands.command(name="random_invoice", aliases=["rnv"] ,description="random member in current voice channel")
     @commands.guild_only()
     async def random_voice_member(self, ctx, member:discord.Member=None, channel:discord.VoiceChannel=None):
         
@@ -120,7 +122,7 @@ class Utility_(commands.Cog):
         await ctx.send(embed=embed)
         
             
-    @commands.command(aliases=["trans"] , description="Translate your message" , brief=f"{PREFIX}trans th こんにちは\n{PREFIX}trans en สวัสดีค่ะ", usage=f"{PREFIX}trans <output_language> <message>")
+    @commands.command(aliases=["trans"] , description="Translate your message" , help="trans th こんにちは", usage="<output_language> <message>")
     @commands.guild_only()
     async def translate(self, ctx, to_lang=None, *, args=None):
         if to_lang is None:
@@ -145,7 +147,7 @@ class Utility_(commands.Cog):
         embed.add_field(name=f"Translated ({str(b.lang)})", value=f"```{result.text}```", inline=False)
         await ctx.send(embed=embed)
 
-    @commands.command(description="Reminder" , brief=f"{PREFIX}remind 10h working time\n{PREFIX}remind 10m i will go sleep ", usage=f"{PREFIX}remind <when> [message]")
+    @commands.command(description="Reminder" , help="10h working time", usege="<duration> [message]")
     @commands.guild_only()
     async def remind(self, ctx , time=None, *, msg=None):
         if time is None:
@@ -172,8 +174,8 @@ class Utility_(commands.Cog):
         await discord.utils.sleep_until(remind_time)
         await ctx.send(f"{ctx.author.mention}, {utils.format_relative(remind_time)}: {msg}\n\n{ctx.message.jump_url}")
     
-    @commands.command(description="Reminder in chat" , brief=f"{PREFIX}remind_chat 10h working time\n{PREFIX}remind_chat 10m i will go sleep ", usage=f"{PREFIX}remind_chat <when> [message]")
-    @commands.guild_only()
+    @commands.command(description="Reminder in chat" , help="10h working time", usege="<duration> [message]")
+    @utils.is_latte_guild()
     async def remind_chat(self, ctx , time=None, *, msg=None):
         if time is None:
             embed_time = discord.Embed(description="**Please specify duration**",color=WHITE)
@@ -199,7 +201,7 @@ class Utility_(commands.Cog):
         await discord.utils.sleep_until(remind_time)
         await self.latte_chat.send(f"{ctx.author.mention}, {utils.format_relative(remind_time)}: {msg}")
         
-    @commands.command(description="Crete poll" , brief=f"{PREFIX}poll i pretty?", usage=f"{PREFIX}poll <message>")
+    @commands.command(description="Crete poll" , help="i pretty?", usege="<message>")
     @commands.guild_only()
     async def poll(self, ctx, *, message):
         if len(message) > 2000:
@@ -228,7 +230,7 @@ class Utility_(commands.Cog):
             if str(reaction.emoji) == "<:trashcan:883641203051073557>":
                 await ctx.message.delete()
     
-    @commands.command(name="platform", aliases=["pt"] , usage=f"{PREFIX}usage <member>")
+    @commands.command(name="platform", aliases=["pt"] , usege="<member>")
     @commands.guild_only()
     async def check_platform(self, ctx, member: discord.Member=None):
 
@@ -248,7 +250,7 @@ class Utility_(commands.Cog):
 
         await ctx.send(embed=embed)
         
-    @commands.command(aliases=["rtn"])
+    @commands.command(description="converter roman to number", aliases=["rtn"],help="XII", usage="<roman>")
     @commands.guild_only()
     async def roman_to_number(self, ctx, args:str=None):
         try:
@@ -257,7 +259,7 @@ class Utility_(commands.Cog):
         except:
             return await ctx.send("Bad valid")
 
-    @commands.command(aliases=["ntr"])
+    @commands.command(description="converter number to roman",aliases=["ntr"],help="200", usage="<number>")
     @commands.guild_only()
     async def number_to_roman(self, ctx, args:int=None):
         try:

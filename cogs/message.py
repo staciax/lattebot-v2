@@ -1,5 +1,8 @@
 # Standard 
-import discord , json , re , asyncio
+import discord
+import json
+import re
+import asyncio
 from discord.ext import commands
 from datetime import datetime, timezone
 from re import search
@@ -29,7 +32,7 @@ class Message(commands.Cog):
         self.sniped_img = {}
         print(f"-{self.__class__.__name__}")
 
-    @commands.command(description="Set your afk" , brief=f"{PREFIX}afk eating", usage=f"{PREFIX}afk [reason]")
+    @commands.command(description="Set your afk" , help=f"sleep", usage=f"[reason]")
     @commands.guild_only()
     async def afk(self, ctx, *, reason=None):
         if reason is None:
@@ -189,7 +192,7 @@ class Message(commands.Cog):
             if message.content.startswith('.snipe'):
                 return
     
-    @commands.group(invoke_without_command=True , name="snipe", aliases=["sni", "blackmail"] , description="Snipe message after deleted", brief=f"{PREFIX}snipe\n{PREFIX}image", usage=f"{PREFIX}snipe [image , text]")
+    @commands.group(invoke_without_command=True , name="snipe", aliases=["sni", "blackmail"] , description="Snipe message after deleted")
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def snipe(self , ctx):
@@ -279,7 +282,7 @@ class Message(commands.Cog):
         else:
             await ctx.channel.send(embed=embed)
 
-    @commands.command(name='dm' , description="direct message user", brief=f"{PREFIX}dm @latte mymessage", usage=f"{PREFIX}dm <user> <message>")
+    @commands.command(name='dm' , description="direct message user", help=f"@latte mymessage", usage=f"<user> <message>")
     @commands.guild_only()
     @commands.has_permissions(administrator = True)
     async def botdm(self, ctx, user: discord.Member=None,* , args=None):       

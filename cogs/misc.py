@@ -19,6 +19,7 @@ class Misc(commands.Cog):
         print(f"-{self.__class__.__name__}")
     
     @commands.command()
+    @commands.has_role(842309176104976387) 
     async def bypass(self, ctx):
         await ctx.message.delete()
         await ctx.send("https://discord.gg/jhK46N6QWU this link will not keep history", delete_after=15)

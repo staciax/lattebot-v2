@@ -1,5 +1,8 @@
 # Standard 
-import discord , random , asyncio , json
+import discord
+import random
+import asyncio
+import json
 from discord.ext import commands 
 from datetime import datetime, timedelta, timezone
 
@@ -9,7 +12,6 @@ from PIL import Image, ImageDraw , ImageFont , ImageEnhance , ImageFilter
 from io import BytesIO
 
 # Local
-import json
 import utils
 from config import * 
 from utils.paginator import SimplePages
@@ -70,7 +72,7 @@ class XP(commands.Cog):
                         embed = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
                         await msg.edit(embed=embed)
             
-    @commands.command(description="Show ranking xp", aliases=['rank'], brief=f"{PREFIX}rank", usage=f"{PREFIX}rank")
+    @commands.command(description="Show ranking xp", aliases=['rank'])
     @commands.guild_only()
     async def ranking(self, ctx):
         filter_member = await self.bot.latte_level.find_many_by_custom({"guild_id": ctx.guild.id})
@@ -102,7 +104,7 @@ class XP(commands.Cog):
         p.embed.color = 0x77dd77
         await p.start()
 
-    @commands.command(description="Show my xp or member", aliases=['lvl' , 'exp'], brief=f"{PREFIX}xp", usage=f"{PREFIX}xp [member]")
+    @commands.command(description="Show my xp or member", aliases=['lvl' , 'exp'], usage="[member]")
     @commands.guild_only()
     async def xp(self, ctx, member: discord.Member = None):
         if ctx.channel.id == 861883647070437386:
@@ -139,7 +141,7 @@ class XP(commands.Cog):
                 
                 await ctx.channel.send(file=utils.level_images(member, final_xp, lvl, rank, xp), embed=embedlv)
   
-    @commands.command(description="Crete xp role", brief=f"{PREFIX}xprole", usage=f"{PREFIX}xprole")
+    @commands.command(description="Crete xp role")
     @commands.guild_only()
     @commands.has_permissions(administrator = True)
     async def xprole(self, ctx):

@@ -1,5 +1,9 @@
 # Standard 
-import discord , datetime , time , os , io
+import discord
+import datetime
+import time
+import os
+import io
 from discord.ext import commands , tasks
 from datetime import datetime, timezone
 from discord.channel import TextChannel

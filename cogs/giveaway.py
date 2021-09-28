@@ -1,5 +1,9 @@
 # Standard 
-import discord , random , datetime , asyncio , re
+import discord
+import random
+import datetime
+import asyncio
+import re
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 
@@ -18,7 +22,7 @@ class Giveaway(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
         
-    @commands.command(aliases=['start', 'g'], brief=f"{PREFIX}giveaway", usage=f"{PREFIX}giveaway")
+    @commands.command(aliases=['start', 'g'])
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True) #@commands.has_permissions(administrator = True)
     async def giveaway(self, ctx):
@@ -138,7 +142,7 @@ class Giveaway(commands.Cog):
         embed_ended = discord.Embed(description=f"**Congrats {winnerstosend}!**\nPlease contact {ctx.author.mention} about your prize.\n [giveaway url]({win.jump_url})" , color=WHITE)
         await ctx.send(embed=embed_ended)
 
-    @commands.command(description="reroll giveaway", brief=f"{PREFIX}reroll", usage=f"{PREFIX}reroll")
+    @commands.command(description="reroll giveaway")
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def reroll(self, ctx):

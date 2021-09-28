@@ -1,8 +1,10 @@
 # Standard
-import discord , datetime , time , asyncio , re 
-from discord.ext import commands , tasks
-import time
+import discord
 import datetime
+import time
+import asyncio
+import re
+from discord.ext import commands , tasks
 from datetime import datetime, timezone , timedelta
 
 # Third party
@@ -100,20 +102,20 @@ class Fun(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
     
-    @commands.command(name="pastel" , description="pastel color" , usage=f"{PREFIX}pastel" , brief=f"{PREFIX}pastel")
+    @commands.command(name="pastel" , description="pastel color")
     async def pastel(self, ctx):
         await ctx.send("https://colorhunt.co/palettes/pastel")
     
-    @commands.command(name="color", description="color hex", usage=f"{PREFIX}color", brief=f"{PREFIX}color")
+    @commands.command(name="color", description="color hex")
     async def color(self, ctx):
         await ctx.send("https://www.color-hex.com/")
 
-    @commands.command(description="Any message to owo",brief=f"{PREFIX}owo drink latte" , usage=f"{PREFIX}owo <message>")
+    @commands.command(description="Any message to owo",help="drink latte" , usage="<message>")
     @commands.guild_only()
     async def owo(self, ctx):
         await ctx.send(text_to_owo(ctx.message.content))
     
-    @commands.command(description="Poke",brief=f"{PREFIX}poke @latte" , usage=f"{PREFIX}poke <member>")
+    @commands.command(description="Poke", help="@latte" , usage="<member>")
     @commands.guild_only()
     @commands.is_owner()
     async def poke(self, ctx, member: discord.Member = None):
@@ -130,7 +132,7 @@ class Fun(commands.Cog):
             return commands.Cooldown(5, 60)  # 5 per minute
         return commands.Cooldown(2, 60)  # 2
                 
-    @commands.group(invoke_without_command=True , aliases=["sl" , "slp"], brief=f"{PREFIX}sleep 25min\n{PREFIX}sleep 1h @latte", usage=f"{PREFIX}sleep <duration> [member]\n{PREFIX}sleep stop [member]")
+    @commands.group(invoke_without_command=True , aliases=["sl" , "slp"], help="25min", usage="<duration> [member]")
     @commands.dynamic_cooldown(custom_cooldown, commands.BucketType.user)
     async def sleep(self, ctx, time=None,*, member : discord.Member=None):
         if time is None:
@@ -196,7 +198,7 @@ class Fun(commands.Cog):
             await member.move_to(channel=None)
     
 
-    @sleep.command(invoke_without_command=True , aliases=["del", "delete" , "off" , "stop"], brief=f"{PREFIX}sleep stop\n{PREFIX}sleep stop @latte", usage=f"{PREFIX}sleep stop [member]")
+    @sleep.command(invoke_without_command=True , aliases=["del", "delete" , "off" , "stop"], help="stop", usage="[member]")
     async def sleep_stop(self, ctx, *, member: discord.Member=None):
         if member is None:
             member = ctx.author
@@ -249,7 +251,7 @@ class Fun(commands.Cog):
             embed_edit.description += f"\n||Req by : {ctx.author.mention}||"
         await ctx.send("sleep db")
         
-    @commands.command(aliases=["fake"] , brief=f"{PREFIX}saybot holamyfrient", usage=f"{PREFIX}saybot <message>")
+    @commands.command(aliases=["fake"] , help="holamyfrient", usage="<message>")
     @commands.guild_only()
     @commands.has_role(mystic_role)
     async def saybot(self , ctx , *, msg):
@@ -260,7 +262,7 @@ class Fun(commands.Cog):
         for webhook in webhooks:
             await webhook.delete()
     
-    @commands.command(aliases=["fakem","saybotm"] , brief=f"{PREFIX}saybotm <member> iloveyou", usage=f"{PREFIX}saybotm <member> [member]")
+    @commands.command(aliases=["fakem","saybotm"] , help="@Latte iloveyou", usage="<member> <message>")
     @commands.guild_only()
     @commands.has_role(mystic_role)
     async def saybot_member(self , ctx , member:discord.Member=None,*, msg):
@@ -301,7 +303,7 @@ class Fun(commands.Cog):
         #converter_from_utils.game_converter
         await ctx.send(embed=utils.apex_random_weapon(category))
     
-    @commands.group(invoke_without_command=True, name="valorant" , aliases=["vlr"])
+    @commands.group(invoke_without_command=True, name="valorant" , aliases=["vlr"] , usage="<type : agent , weapon >")
     @commands.guild_only()
     async def valorant(self, ctx):
         embed = discord.Embed(

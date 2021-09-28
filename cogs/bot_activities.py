@@ -1,14 +1,12 @@
 # Standard 
-import discord, random, os , platform
+import discord, random
+import random
 from discord.ext import commands
 from time import time
 from datetime import datetime, timedelta, timezone
 
 # Third party
 # Local
-
-intents = discord.Intents.default()
-intents.members = True
 
 class Bot_activities(commands.Cog):
 

@@ -1,5 +1,8 @@
 # Standard 
-import discord , datetime , asyncio , os
+import discord
+import datetime
+import asyncio
+import os
 import json
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
@@ -32,7 +35,7 @@ class Moderation(commands.Cog):
             with open("data/spam_detect.txt", "r+") as file:
                 file.truncate(0)
 
-    @commands.command(description="ban member from your server", brief=f"{PREFIX}ban @latte", usage=f"{PREFIX}ban <member> [reason]")
+    @commands.command(description="ban member from your server", help="@latte", usage="<member> [reason]")
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *, reason = None):
@@ -48,7 +51,7 @@ class Moderation(commands.Cog):
         except Exception:
             await ctx.channel.send(embed=embedprm)
 
-    @commands.command(description="unbanned member", brief=f"{PREFIX}unban @latte", usage=f"{PREFIX}unban <member>")
+    @commands.command(description="unbanned member", help="@latte", usage="<member>")
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def unban(self, ctx, *, member):
@@ -64,7 +67,7 @@ class Moderation(commands.Cog):
                 await ctx.guild.unban(user)
                 await ctx.send(embed=embedub)
     
-    @commands.command(name="kick", description="kick member", pass_context=True, brief=f"{PREFIX}kick @latte", usage=f"{PREFIX}kick <member> [reason]")
+    @commands.command(name="kick", description="kick member", pass_context=True, help="@latte", usage="<member> [reason]")
     @commands.has_permissions(kick_members=True)
     @commands.guild_only()
     async def kick(self, ctx, member: discord.Member, *, reason=None):
@@ -74,7 +77,7 @@ class Moderation(commands.Cog):
         await member.kick(reason=reason)
         await ctx.send(embed=embedkick)
     
-    @commands.command(description="clear message" , aliases=['purge'], brief=f"{PREFIX}clear 20\n{PREFIX}clear all", usage=f"{PREFIX}clear <amount>")
+    @commands.command(description="clear message" , aliases=['purge'], help="20", usage="<amount>")
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, amount: str):
@@ -122,7 +125,7 @@ class Moderation(commands.Cog):
         await member.send(embed=embedmute)
         await msg.edit(embed = embedfinish)
 
-    @commands.command(description="Mute member", brief=f"{PREFIX}mute @latte 20m", usage=f"{PREFIX}mute <member> [duration]")
+    @commands.command(description="Mute member", help="@latte 20m", usage="<member> [duration]")
     @commands.has_permissions(administrator = True)
     @commands.guild_only()
     async def mute(self, ctx, member: discord.Member,*, time: utils.TimeConverter=None , reason=None):
@@ -197,7 +200,7 @@ class Moderation(commands.Cog):
                 await member.remove_roles(role)
                 await ctx.send(f"Unmuted `{member.display_name}`")
 
-    @commands.command(description="Unmuted member", brief=f"{PREFIX}unmute @latte", usage=f"{PREFIX}unmute <member>")
+    @commands.command(description="Unmuted member", help="@latte", usage="<member>")
     @commands.has_permissions(administrator = True)
     @commands.guild_only()
     async def unmute(self, ctx, member: discord.Member):
@@ -209,7 +212,7 @@ class Moderation(commands.Cog):
         await member.remove_roles(mutedRole)
         await ctx.send(embed=embed)
     
-    @commands.command(description="create mute role" , brief=f"{PREFIX}muterole", usage=f"{PREFIX}muterole")
+    @commands.command(description="create mute role")
     @commands.has_permissions(administrator = True)
     @commands.guild_only()
     async def muterole(self, ctx):
@@ -241,10 +244,10 @@ class Moderation(commands.Cog):
     async def _leave_(self, ctx):
         await ctx.voice_client.disconnect()
 
-    @commands.command(description="lockdown or unlock text channel" , aliases=['lock', 'lockdown'], brief=f"{PREFIX}lockdown\n{PREFIX}lockdown #general", usage=f"{PREFIX}lockdown [channel]")
+    @commands.command(description="lockdown or unlock text channel" , aliases=['lock', 'lockdown'], help="#channel", usage="[channel]")
     @commands.guild_only()
     @commands.has_permissions(manage_channels=True)
-    #    @commands.bot_has_guild_permissions(manage_channels=True)
+    #@commands.bot_has_guild_permissions(manage_channels=True)
     async def lock_down(self, ctx, channel: discord.TextChannel=None):
         channel = channel or ctx.channel
         if ctx.guild.default_role not in channel.overwrites:
@@ -267,7 +270,7 @@ class Moderation(commands.Cog):
             await channel.set_permissions(ctx.guild.default_role, overwrite=overwrites)
             await ctx.send(embed=embed3, delete_after=15)
 
-    @commands.command(aliases=["nick"], brief=f"{PREFIX}nick @latte coffe", usage=f"{PREFIX}nick <member> [new_name]")
+    @commands.command(aliases=["nick"], help="@latte coffe", usage="<member> [new_name]")
     @commands.has_permissions(manage_nicknames=True)
     @commands.guild_only()
     async def changenick(self, ctx , member: discord.Member, nick):
@@ -275,7 +278,7 @@ class Moderation(commands.Cog):
         await member.edit(nick=nick)
         await ctx.channel.send(embed=embed)
     
-    @commands.command(aliases=["slow"], brief=f"{PREFIX}slowmode 10", usage=f"{PREFIX}slowmode [seconds]")
+    @commands.command(aliases=["slow"], help="10", usage="[seconds]")
     @commands.has_permissions(manage_channels=True)
     @commands.guild_only()
     async def slowmode(self, ctx ,*, seconds: int= None):
@@ -362,7 +365,7 @@ class Moderation(commands.Cog):
         #                else:
         #                    return
     
-    @commands.command(aliases=["tban"], brief=f"{PREFIX}tban @latte 10h", usage=f"{PREFIX}tban <member> [duration]")
+    @commands.command(aliases=["tban"], help="@latte 10h", usage="<member> [duration]")
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def tempban(self, ctx, member: utils.BetterMemberConverter, duration: utils.DurationConverter):
@@ -375,7 +378,7 @@ class Moderation(commands.Cog):
         await asyncio.sleep(amount * multiplier[unit])
         await ctx.guild.unban(member)
     
-    @commands.command(aliases=["create_emoji", "add_emoji"], description="Create emoji from link", brief=f"{PREFIX}createemoji <link image or gif>", usage=f"{PREFIX}createemoji <link image or gif>")
+    @commands.command(aliases=["create_emoji", "add_emoji"], description="Create emoji from link", usage="<url type: .png .gif>")
     @commands.guild_only()
     @commands.has_permissions(manage_emojis=True)
     async def createemoji(self, ctx, url: str, *, name):
@@ -395,7 +398,7 @@ class Moderation(commands.Cog):
                 except discord.HTTPException:
                     await ctx.send('File size is too big!')
 
-    @commands.command(aliases=["delete_emoji", "del-ei"], description="delete custom emoji from server", brief=f"{PREFIX}deleteemoji <:shidapout:864930911869992980>\n{PREFIX}deleteemoji 864930911869992980", usage=f"{PREFIX}deleteemoji <emoji or id>")
+    @commands.command(aliases=["delete_emoji", "del-ei"], description="delete custom emoji from server", usage="<emoji>")
     @commands.guild_only()
     @commands.has_permissions(manage_emojis=True)
     async def deleteemoji(self, ctx, emoji: discord.Emoji):
@@ -405,7 +408,7 @@ class Moderation(commands.Cog):
         except:
             await ctx.send('error delete emoji!')
     
-    @commands.command()
+    @commands.command(description="Audit logs")
     @commands.guild_only()
     @commands.has_permissions(view_audit_log=True)
     async def audit(self,ctx, num: int=None):

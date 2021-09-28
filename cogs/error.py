@@ -2,7 +2,6 @@
 import discord
 from discord.ext import commands
 from datetime import datetime, timezone
-import asyncio
 
 # Third party
 from difflib import get_close_matches

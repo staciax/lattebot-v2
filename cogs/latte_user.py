@@ -1,5 +1,5 @@
 # Standard 
-import discord , asyncio
+import discord
 import datetime
 from discord.ext import commands , tasks
 from datetime import datetime, timezone , timedelta

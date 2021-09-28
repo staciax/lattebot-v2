@@ -1,8 +1,12 @@
 # Standard 
-import discord , platform , os , asyncio , re , platform 
+import discord
+import platform
+import os
+import asyncio
+import re
+import time
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
-import time
 from time import perf_counter
 
 # Third party
@@ -44,7 +48,7 @@ class Data(commands.Cog):
     
     @commands.command(aliases=["botinfo", "about"])
     @commands.guild_only()
-    async def latte_info_(self, ctx):
+    async def latte_about(self, ctx):
         owner_bot = self.bot.get_user(self.bot.owner_id) #(https://discord.com/users/{owner_bot.id})
 
         embed = discord.Embed(color=0xffffff)
@@ -83,7 +87,7 @@ class Data(commands.Cog):
     
         await ctx.send(embed=embed, view=view)
 
-    @commands.command()
+    @commands.command(description="change status bot")
     @utils.owner_bot()
     async def status(self, ctx, statusType: str, *, statusText):
 
@@ -321,10 +325,9 @@ class Data(commands.Cog):
         except:
             await ctx.send("error")
     
-    @commands.command(name='uptime')
+    @commands.command(name='uptime', description="Gets the uptime of the bot")
     @commands.is_owner()
-    async def uptime(self, ctx: commands.Context):
-        """Gets the uptime of the bot"""
+    async def uptime(self, ctx):
         
         delta_uptime = utils.relativedelta(datetime.utcnow(), self.bot.launch_time)
         days, hours, minutes, seconds = delta_uptime.days, delta_uptime.hours, delta_uptime.minutes, delta_uptime.seconds
@@ -334,11 +337,12 @@ class Data(commands.Cog):
 
         last = "".join(value for index, value in enumerate(uptimes.keys()) if index == len(uptimes)-1)
         uptime_string = "".join(
-            f"{v} {k}" if k != last else f" and {v} {k}" if len(uptimes) != 1 else f"{v} {k}"
+            f"{v} {k} " if k != last else f" and {v} {k}" if len(uptimes) != 1 else f"{v} {k}"
             for k, v in uptimes.items()
         )
         
-        await ctx.channel.send(f'I started {uptime_string} ago.')
+        embed = discord.Embed(description=f"I started {uptime_string} ago.", color=0xffffff)
+        await ctx.send(embed=embed)
 
     # dm message to my text channel   
     #    @commands.Cog.listener()

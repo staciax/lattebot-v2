@@ -1,5 +1,8 @@
 # Standard 
-import discord, asyncio, json, random
+import discord
+import asyncio
+import json
+import random
 import datetime
 from discord.ext import commands , tasks
 from datetime import datetime, timezone , timedelta
@@ -20,19 +23,19 @@ class Images_(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
     
-    @commands.command(description="Random picture of a meow",brief=f"{PREFIX}cat", usage=f"{PREFIX}cat")
+    @commands.command(description="Random picture of a meow")
     @commands.guild_only()
     async def cat(self, ctx):
         view = cat_view(ctx)
         await view.api_start()
     
-    @commands.command(description="Random picture of a floofy" , brief=f"{PREFIX}fox", usage=f"{PREFIX}fox")
+    @commands.command(description="Random picture of a floofy")
     @commands.guild_only()
     async def fox(self, ctx):
         view = fox_view(ctx)
         await view.api_start()
 
-    @commands.command(aliases=['gif'], brief=f"{PREFIX}giphy aqua", usage=f"{PREFIX}giphy [search]")
+    @commands.command(aliases=['gif'], help=f"aqua", usage=f"[search]")
     @commands.guild_only()
     async def giphy(self, ctx, *, search=None):
         gipht_apis = self.bot.giphy_api_

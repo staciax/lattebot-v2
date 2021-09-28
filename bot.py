@@ -40,7 +40,7 @@ async def on_ready():
     )
     print(f"\nName : {bot.user}\nActivity : {bot_activity}\nServer : {len(bot.guilds)}\nMembers : {len(set(bot.get_all_members()))}\nPrefix : {PREFIX}")
     print(f"\nCogs list\n-----")
-
+    
 @bot.event
 async def on_disconnect():
     print("bot disconnected")
@@ -56,8 +56,8 @@ bot.load_extension('jishaku')
 #soruce
 bot.latte_version = BOTVERSION
 bot.latte_source = LATTESOURCE
-bot.github = ""
-bot.invite_url = "-"
+bot.invite_url = f'https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=applications.commands%20bot'
+bot.github = "https://github.com/staciax"
 bot.top_gg = "-"
 bot.bots_gg = "-"
 bot.blacklist = {}

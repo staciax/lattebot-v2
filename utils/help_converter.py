@@ -22,7 +22,7 @@ def Utility():
   `binary` • Text to binary.
   `reverse` • Reverse text.
   `translate , trans` • Translate message.
-  `random` • randrom a range.
+  `random` • random a range.
   `random_number , rn` • Random number Lowest - Highest.
   `random_invoice`, rnv • Random member in your current VC
   `platform` , pt • What platform are your/members online on?

@@ -1,14 +1,18 @@
 # Standard 
 import discord
-import random , time , re , os , typing , unicodedata , asyncio
+import random
+import time
+import re
+import os
+import typing
+import unicodedata
+import asyncio
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 
 # Third party
-import giphy_client 
 import typing
 from typing import Union
-from giphy_client.rest import ApiException
 from PIL import Image , ImageColor
 from io import BytesIO
 
@@ -38,7 +42,7 @@ class Infomation(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
 
-    @commands.command(aliases=["si", "serverinformation", "serverinformations" , "guildinfo" , "gi"], brief=f"{PREFIX}serverinfo", usage=f"{PREFIX}serverinfo")
+    @commands.command(description="Show server infomation", aliases=["si", "serverinformation", "serverinformations" , "guildinfo" , "gi"])
     @commands.guild_only()
     async def serverinfo(self, ctx):
 
@@ -81,7 +85,7 @@ class Infomation(commands.Cog):
     
         await ctx.send(embed=embed , mention_author=False)
     
-    @commands.command(aliases=["servericon","guildicon" ,"sic"], brief=f"{PREFIX}servericon", usage=f"{PREFIX}servericon")
+    @commands.command(description="Show server icon", aliases=["servericon","guildicon" ,"sic"])
     @commands.guild_only()
     async def server_icon(self, ctx , *, guild_id: int = None):
         if guild_id is None:
@@ -101,7 +105,7 @@ class Infomation(commands.Cog):
             embed = discord.Embed(description="guild not found" , color=WHITE)
             await ctx.send(embed=embed)
     
-    @commands.command(aliases=["serverbanner","sb","guildbanner"], brief=f"{PREFIX}serverbanner", usage=f"{PREFIX}serverbanner")
+    @commands.command(description="Show server banner",aliases=["serverbanner","sb","guildbanner"])
     @commands.guild_only()
     async def server_banner(self, ctx , *, guild_id: int = None):
         if guild_id is None:
@@ -121,7 +125,7 @@ class Infomation(commands.Cog):
             embed = discord.Embed(description="Not found" , color=WHITE)
             await ctx.send(embed=embed)
     
-    @commands.command(aliases=["splash","serversplash","ss","invitebanner"], brief=f"{PREFIX}serversplash", usage=f"{PREFIX}serversplash")
+    @commands.command(description="Show server splash", aliases=["splash","serversplash","ss","invitebanner"])
     @commands.guild_only()
     async def server_splash(self, ctx , *, guild_id: int = None):
         if guild_id is None:
@@ -142,7 +146,7 @@ class Infomation(commands.Cog):
             await ctx.send(embed=embed)
         
 
-    @commands.command(brief=f"{PREFIX}userinfo", usage=f"{PREFIX}userinfo [member]" , aliases=["ui", "userinformation","memberinfo"])
+    @commands.command(description="Userinfomation", usage=f"[member]" , aliases=["ui", "userinformation","memberinfo"])
     @commands.guild_only()
     async def userinfo(self, ctx, member: discord.Member = None):
         if not member:
@@ -213,7 +217,7 @@ class Infomation(commands.Cog):
 
         await ctx.send(embed=embed , view=view)
     
-    @commands.command(brief=f"{PREFIX}avatar", usage=f"{PREFIX}avatar [member]" , aliases=["av"])
+    @commands.command(description="Show avatar", usage=f"[member]" , aliases=["av"])
     @commands.guild_only()
     async def avatar(self, ctx, *, member: discord.Member = None):
         member = member or ctx.author
@@ -230,7 +234,7 @@ class Infomation(commands.Cog):
             embed.description = f"this user must have a avatar."
             await ctx.send(embed = embed)
     
-    @commands.command(brief=f"{PREFIX}banner", usage=f"{PREFIX}banner [member]" , aliases=["bn"])
+    @commands.command(description="Show banner", usage=f"[member]" , aliases=["bn"])
     @commands.guild_only()
     async def banner(self, ctx, *,member: discord.Member=None):
         member = member or ctx.author
@@ -262,7 +266,7 @@ class Infomation(commands.Cog):
             embed.description = f"this user must have a banner."
             await ctx.send(embed=embed, delete_after=10)
 
-    @commands.command(name="emojiinfo", aliases=["ei"], brief=f"{PREFIX}emojiinfo 🤫", usage=f"{PREFIX}emojiinfo <emoji>")
+    @commands.command(name="emojiinfo", aliases=["ei"], usage=f"<emoji>")
     @commands.guild_only()
     async def emoji_info(self, ctx, emoji: discord.Emoji = None):
         if not emoji:
@@ -314,7 +318,7 @@ class Infomation(commands.Cog):
         embed.set_thumbnail(url=emoji.url)
         await ctx.send(embed=embed)
     
-    @commands.command(aliases=["ri"], brief=f"{PREFIX}roleinfo @role1\n{PREFIX}roleinfo 876444109320093696", usage=f"{PREFIX}roleinfo <role>")
+    @commands.command(aliases=["ri"], usage="<role>")
     async def roleinfo(self, ctx, role: discord.Role=None):
         if role is None:
             print("role is None")
@@ -365,7 +369,7 @@ class Infomation(commands.Cog):
 
         await Pag(title=f"List member in role {role.name}",color=role.color, entries=pages, length=1).start(ctx)
 
-    @commands.command(brief = "gives info on emoji_id and emoji image.")
+    @commands.command(description = "gives info on emoji_id and emoji image.", usage="<emoji>")
     @commands.guild_only()
     async def emoji_id(self, ctx, *, emoji : typing.Optional [typing.Union[discord.PartialEmoji, discord.Message, utils.EmojiBasic]] = None):
 
@@ -377,7 +381,7 @@ class Infomation(commands.Cog):
                 emoji = await utils.EmojiBasic.convert(ctx, emoji_message) or await commands.PartialEmojiConverter().convert(ctx, emoji_message)
 
         if emoji:
-            embed = discord.Embed(description=f" Emoji ID: {emoji.id}",color=random.randint(0, 16777215))
+            embed = discord.Embed(description=f"Emoji ID: {emoji.id}",color=random.randint(0, 16777215))
             embed.set_image(url=emoji.url)
             await ctx.send(embed=embed)
 

@@ -1,5 +1,7 @@
 # Standard 
-import discord , asyncio , re #import json #import os
+import discord
+import asyncio
+import re
 from datetime import datetime, timedelta, timezone
 from discord.ext import commands #, menus
 
@@ -62,9 +64,9 @@ class Help(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
     
-    @commands.command(name="help" , aliases=["latte"] , brief=f"{PREFIX}help", usage=f"{PREFIX}help")
+    @commands.command(name="help" , aliases=["latte"] , usage=f"<category>")
     @commands.guild_only()
-    async def custom_help(self, ctx, command=None):
+    async def help(self, ctx, *,command=None):
         embedhelp = discord.Embed(title="✧ LATTE Help", description=f"Use **Selection** for more informations about a category.\n",color=0xffffff)
         
         embedhelp.add_field(name='** **', value=f"•{emojis('miraishocked')} Anime\n•{emojis('ShinoSmirk')} Infomation\n•{emojis('chocolawow')} Reaction Roles\n•{emojis('amelia')} Tag command")
@@ -96,6 +98,7 @@ class Help(commands.Cog):
             view.add_item(Admin_selection())
         
         if command is None:
+            print(ctx.clean_prefix)
             await ctx.send(embed=embedhelp, view=view)
         elif command == "anime":
             await ctx.send(embed=utils.Anime(), view=view)
@@ -136,15 +139,15 @@ class Help(commands.Cog):
             
             helpEmbed.add_field (
                 name = "Usage",
-                value = f"```{command.usage}```",
+                value = f"```{ctx.clean_prefix}{command.name} {command.usage}```",
                 inline=False
                 
             )
 
-            if command.brief:
+            if command.help:
                 helpEmbed.add_field (
                     name = "Example",
-                    value = f"```{command.brief}```",
+                    value = f"```{ctx.clean_prefix}{command.name} {command.help}```",
                     inline=False
                 )
 

@@ -1,7 +1,9 @@
 # Standard 
-import discord , asyncio , json
-from discord import Embed
+import discord
+import asyncio
+import json
 import datetime
+from discord import Embed
 from discord.ext import commands , tasks
 from datetime import datetime, timezone , timedelta
 
@@ -46,7 +48,7 @@ class Tags(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
 
-    @commands.group(invoke_without_command=True)
+    @commands.group(invoke_without_command=True, usage="<tag_name>")
     @commands.guild_only()
     async def tag(self, ctx, *, name):
         
@@ -78,7 +80,7 @@ class Tags(commands.Cog):
 
         await ctx.send(message)
     
-    @tag.command(aliases=['add'])
+    @tag.command(aliases=['add'] , usage="<tag_name> <message>", help="Latte i like latte")
     @commands.guild_only()
     async def tag_add(self, ctx, name:str, *, content: commands.clean_content):
         #find_data
@@ -119,7 +121,7 @@ class Tags(commands.Cog):
         embed = Embed(description=f"`{name}` is added", color=PTGREEN)
         await ctx.send(embed=embed)
 
-    @tag.command(aliases=["alias"])
+    @tag.command(aliases=["alias"], usage="<tag_name>")
     @commands.guild_only()
     async def tag_alias(self, ctx, name_old:str, name_new:str):
         #find_data
@@ -148,7 +150,7 @@ class Tags(commands.Cog):
         embed = Embed(description=f"{ctx.author.mention} is edited alias `{name_old}` to `{name_new}`", color=0xFCFFA6)
         await ctx.send(embed=embed, delete_after=15)
     
-    @tag.command(aliases=["edit"])
+    @tag.command(aliases=["edit"],usage="<tag_name> <new message>")
     @commands.guild_only()
     async def tag_edit(self, ctx, name:str, *, content: commands.clean_content):
         #find_data
@@ -176,7 +178,7 @@ class Tags(commands.Cog):
         embed = Embed(description=f"`{name}` is edited message by {ctx.author.mention}", color=0xFCFFA6)
         await ctx.send(embed=embed, delete_after=15)
 
-    @tag.command(aliases=["remove"])
+    @tag.command(aliases=["remove"], usage="<tag_name>")
     @commands.guild_only()
     async def tag_remove(self, ctx, name:str):
         #find_data
@@ -235,7 +237,7 @@ class Tags(commands.Cog):
 #        m = Base_page(All_tag_view(all_tag, per_page=10))
 #        await m.start(ctx)
        
-    @tag.command(name="search", aliases=["find"])
+    @tag.command(name="search", aliases=["find"], usage="<tag_name>")
     @commands.guild_only()
     async def tag_search(self, ctx, name:str):
 
