@@ -14,6 +14,7 @@ def Utility():
   description="""
   Use `.help <command>` for more informations about a command.
 
+
   `afk` • set your afk
   `sleep` • Set timer disconnect voice channel.
   `snipe` • Snipe message after delete
@@ -28,6 +29,7 @@ def Utility():
   `platform` , pt • What platform are your/members online on?
   `number_to_roman` , ntr • Convert roman to number
   `roman_to_number` , rtn • Convert number to roman
+  `screenshot, ss` • Takes a screenshot of a website
   """
   embed.description = description
 
@@ -45,7 +47,7 @@ def Infomation():
   `banner , bn` • Display banner.
   `servericon , sic` • Display Server icon.
   `serverbanner , sb` • Display server banner.
-  `splash , ss` • Display server splash.
+  `splash , ssp` • Display server splash.
   `emojinfo , ei` • Show emojinfo.
   `roleinfo , ri` • Show roleinfo.
   """
@@ -65,6 +67,7 @@ def Moderation():
   `unmute` • unmute member 
   `kick` • kick member
   `ban` • ban member
+  `bans` • ban list
   `lock` • lockdown channel
   `slow` • slowmode channel
   `nick` • change nickname member

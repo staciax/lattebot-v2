@@ -125,7 +125,7 @@ class Infomation(commands.Cog):
             embed = discord.Embed(description="Not found" , color=WHITE)
             await ctx.send(embed=embed)
     
-    @commands.command(description="Show server splash", aliases=["splash","serversplash","ss","invitebanner"])
+    @commands.command(description="Show server splash", aliases=["splash","serversplash","ssp","invitebanner"])
     @commands.guild_only()
     async def server_splash(self, ctx , *, guild_id: int = None):
         if guild_id is None:

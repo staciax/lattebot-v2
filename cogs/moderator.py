@@ -8,16 +8,14 @@ from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 
 # Third party
+import aiohttp
 from re import search
 from io import BytesIO
-import aiohttp
 
 # Local
 import utils
 from config import *
-
-intents = discord.Intents()
-intents.all()
+from utils.paginator import SimplePages
 
 class Moderation(commands.Cog):
 
@@ -50,6 +48,22 @@ class Moderation(commands.Cog):
             await ctx.channel.send(embed=embed)
         except Exception:
             await ctx.channel.send(embed=embedprm)
+    
+    @commands.command(help="Gets the current guild's list of bans")
+    @commands.has_permissions(ban_members=True)
+#    @commands.bot_has_permissions(send_messages=True, embed_links=True, ban_members=True)
+    async def bans(self, ctx) -> discord.Message:
+        bans = await ctx.guild.bans()
+        if not bans:
+            return await ctx.send(embed=discord.Embed(title="There are no banned users in this server",color=WHITE))
+        ban_list = []
+        for ban_entry in bans:
+            ban_list.append(f"**{ban_entry.user}**")
+        p = SimplePages(entries=ban_list, per_page=10, ctx=ctx)
+        p.embed.title = "Bans list"
+        p.embed.color = WHITE
+        await p.start()
+
 
     @commands.command(description="unbanned member", help="@latte", usage="<member>")
     @commands.guild_only()

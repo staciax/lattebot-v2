@@ -1,5 +1,7 @@
 # Standard 
-import discord , asyncio
+import discord
+import asyncio
+import re
 import datetime
 from discord.ext import commands , tasks
 from datetime import datetime, timezone , timedelta
@@ -23,6 +25,19 @@ class Misc(commands.Cog):
     async def bypass(self, ctx):
         await ctx.message.delete()
         await ctx.send("https://discord.gg/jhK46N6QWU this link will not keep history", delete_after=15)
+    
+    @commands.command(help="Takes a screenshot of a website", aliases=["ss"])
+    @commands.guild_only()
+    async def screenshot(self, ctx, link):
+        URL_REGEX = re.compile(r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+")
+        
+        if not re.fullmatch(URL_REGEX, link):
+            return await ctx.send("Invalid URL! Make sure you put `https://` infront of it.")
+        
+        else:
+            embed=discord.Embed(title=f"Screenshot : {link}", color=0xffffff)
+            embed.set_image(url=f"https://image.thum.io/get/width/1920/crop/675/maxAge/1/noanimate/{link}")
+            await ctx.send(embed=embed)
     
 def setup(bot):
     bot.add_cog(Misc(bot))

@@ -99,33 +99,33 @@ class Help(commands.Cog):
         
         if command is None:
             print(ctx.clean_prefix)
-            await ctx.send(embed=embedhelp, view=view)
+            return await ctx.send(embed=embedhelp, view=view)
         elif command == "anime":
-            await ctx.send(embed=utils.Anime(), view=view)
+            return await ctx.send(embed=utils.Anime(), view=view)
         elif command == "image":
-            await ctx.send(embed=utils.Help_image(), view=view)
+            return await ctx.send(embed=utils.Help_image(), view=view)
         elif command in ["util","utils","utility"]:
-            await ctx.send(embed=utils.Utility(), view=view)
+            return await ctx.send(embed=utils.Utility(), view=view)
         elif command in ["info","infomation","infomations"]:
-            await ctx.send(embed=utils.Infomation(), view=view)
+            return await ctx.send(embed=utils.Infomation(), view=view)
         elif command in ["mod","moderation"]:
             if ctx.author.guild_permissions.administrator:
-                await ctx.send(embed=utils.Moderation(), view=view)
+                return await ctx.send(embed=utils.Moderation(), view=view)
         elif command in ["gw","giveaway"]:
             if ctx.author.guild_permissions.administrator:
-                await ctx.send(embed=utils.Giveaway(), view=view)
+                return await ctx.send(embed=utils.Giveaway(), view=view)
         elif command == "fun":
-            await ctx.send(embed=utils.Fun(), view=view)
+            return await ctx.send(embed=utils.Fun(), view=view)
         elif command == "misc":
-            await ctx.send(embed=utils.Meta(), view=view)
+            return await ctx.send(embed=utils.Meta(), view=view)
         elif command == ["rr","reaction","reaction role","reaction roles"]:
-            await ctx.send(embed=utils.Reaction(), view=view)
+            return await ctx.send(embed=utils.Reaction(), view=view)
         elif command == "level":
-            await ctx.send(embed=utils.Leveling(), view=view)
+            return await ctx.send(embed=utils.Leveling(), view=view)
         elif command == "nsfw":
-            await ctx.send(embed=utils.NSFW(), view=view)
+            return await ctx.send(embed=utils.NSFW(), view=view)
         elif command == "tag":
-            await ctx.send(embed=utils.Help_tag(), view=view)
+            return await ctx.send(embed=utils.Help_tag(), view=view)
         else:
             helpEmbed = discord.Embed (
                 color = 0xffffff
@@ -136,10 +136,12 @@ class Help(commands.Cog):
             helpEmbed.title = command.name
             helpEmbed.description = command.description
             helpEmbed.description = f"{command.description}"
+            if command.usage is None: cmd_usage = ""
+            else: cmd_usage = command.usage
             
             helpEmbed.add_field (
                 name = "Usage",
-                value = f"```{ctx.clean_prefix}{command.name} {command.usage}```",
+                value = f"```{ctx.clean_prefix}{command.name} {cmd_usage}```",
                 inline=False
                 
             )
