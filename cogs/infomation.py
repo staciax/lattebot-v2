@@ -83,7 +83,7 @@ class Infomation(commands.Cog):
             embed.add_field(name=name, value=value, inline=inline)
         embed.set_thumbnail(url=ctx.guild.icon.url)
     
-        await ctx.send(embed=embed , mention_author=False)
+        await ctx.send(embed=embed)
     
     @commands.command(description="Show server icon", aliases=["servericon","guildicon" ,"sic"])
     @commands.guild_only()

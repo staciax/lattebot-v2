@@ -54,6 +54,7 @@ bot.giphy_api_ = secrets["giphy"]
 bot.load_extension('jishaku')
 
 #soruce
+bot.prefixes = {PREFIX}
 bot.latte_version = BOTVERSION
 bot.latte_source = LATTESOURCE
 bot.invite_url = f'https://discord.com/api/oauth2/authorize?client_id=861179952576856065&permissions=8&scope=applications.commands%20bot'

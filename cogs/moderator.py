@@ -90,6 +90,32 @@ class Moderation(commands.Cog):
 
         await member.kick(reason=reason)
         await ctx.send(embed=embedkick)
+
+    #check_message
+    async def do_removal(self, ctx, limit, predicate, *, before=None, after=None):
+        if limit > 2000:
+            return await ctx.send(f'Too many messages to search given ({limit}/2000)')
+
+        if before is None:
+            before = ctx.message
+        else:
+            before = discord.Object(id=before)
+
+        if after is not None:
+            after = discord.Object(id=after)
+
+        try:
+            deleted = await ctx.channel.purge(limit=limit, before=before, after=after, check=predicate)
+        except discord.Forbidden as e:
+            return await ctx.send('I do not have permissions to delete messages.')
+        except discord.HTTPException as e:
+            return await ctx.send(f'Error: {e} (try a smaller search?)')
+    
+    @commands.command(description="Cleanup the bot's messages",aliases=["clearbot"])
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def cleanup(self, ctx , amount : int=15):        
+        await self.do_removal(ctx=ctx, limit=amount, predicate=lambda e: e.author == ctx.me)
     
     @commands.command(description="clear message" , aliases=['purge'], help="20", usage="<amount>")
     @commands.guild_only()

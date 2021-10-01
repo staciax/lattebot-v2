@@ -15,7 +15,7 @@ class Bot_activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.join_leave = self.bot.get_channel(863806084414439454)
+        self.join_leave = self.bot.get_channel(892901777823911946)
         print(f"-{self.__class__.__name__}")
 
     @commands.Cog.listener()

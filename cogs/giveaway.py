@@ -17,6 +17,7 @@ class Giveaway(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.server_log = self.bot.get_channel(859789105507598346)
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -110,8 +111,7 @@ class Giveaway(commands.Cog):
                                     color=0xffffff)
             logembed.set_thumbnail(url=ctx.author.avatar.url)
 
-            logchannel = ctx.guild.get_channel(GIVEAWAY_LOG) 
-            await logchannel.send(embed=logembed)
+            await self.server_log.send(embed=logembed)
 
         futuredate = datetime.utcnow() + timedelta(seconds=timewait)
         embed1 = discord.Embed(color=0xBFA2DB, # random color (color=discord.Color(random.randint(0x000000, 0xFFFFFF)),
