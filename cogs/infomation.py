@@ -19,7 +19,7 @@ from io import BytesIO
 # Local
 import utils
 from config import *
-from utils import Pag
+from utils.ButtonRef import roleinfo_view
 
 emoji_s = utils.emoji_converter
 
@@ -47,7 +47,8 @@ class Infomation(commands.Cog):
     async def serverinfo(self, ctx):
 
         #afk_channel_check and timeout
-        sec = utils.afk_channel_timeout(ctx)
+        afk_channels = utils.afk_channel_check(ctx)      
+        afk_timeouts = utils.afk_channel_timeout(ctx)
 
         #member_status and emoji_member_status
         statuses = utils.member_status(ctx)
@@ -70,11 +71,11 @@ class Infomation(commands.Cog):
                 ("Voice Channels",len(ctx.guild.voice_channels), True),
                 ("Stage Chennels",len(ctx.guild.stage_channels), True),
                 ("Category size",len(ctx.guild.categories), True),
-                ("AFK Chennels",ctx.guild.afk_channel, True),
-                ("AFK Timer",sec,True),
+                ("AFK Chennels",afk_channels, True),
+                ("AFK Timer",afk_timeouts,True),
                 ("Rules Channel",utils.rules_channel(ctx),True),
                 ("System Channel",utils.system_channel(ctx),True),
-                ("Verification Level",ctx.guild.verification_level,True),
+                ("Verification Level",utils.guild_verification_level(ctx),True),
                 ("Activity",f"{emoji_s('member')} **Total:** {str(ctx.guild.member_count)}\n{emoji_s('online')} **Online:** {statuses[0]} \n{emoji_s('idle')} **Idle:** {statuses[1]} \n{emoji_s('dnd')} **Dnd:** {statuses[2]} \n{emoji_s('offline')} **Offline:** {statuses[3]}",True),
                 ("Boosts",boost,True),
                 ("Emoji",f"**Total:** {emoji_total}\n**Regular:** {emoji_regular}\n**Animated:** {emoji_animated}",True)]
@@ -217,7 +218,7 @@ class Infomation(commands.Cog):
 
         await ctx.send(embed=embed , view=view)
     
-    @commands.command(description="Show avatar", usage=f"[member]" , aliases=["av"])
+    @commands.group(invoke_without_command=True,description="Show avatar", usage=f"[member]" , aliases=["av"])
     @commands.guild_only()
     async def avatar(self, ctx, *, member: discord.Member = None):
         member = member or ctx.author
@@ -233,6 +234,20 @@ class Infomation(commands.Cog):
         else:
             embed.description = f"this user must have a avatar."
             await ctx.send(embed = embed)
+    
+    @avatar.command(name="server",description="Show server avatar", usage=f"[member]" , aliases=["sav"])
+    @commands.guild_only()
+    async def display_avatar(self, ctx, member:discord.Member=None):
+        member = member or ctx.author
+        embed = discord.Embed(title = f"{member.name}'s Avatar:", color=0xffffff)
+        embed.set_image(url = member.display_avatar.url)
+        #start_view_button
+        view = discord.ui.View()
+        style = discord.ButtonStyle.gray
+        item = discord.ui.Button(style=style, label="Avatar URL", url=member.display_avatar.url)
+        view.add_item(item=item)
+        await ctx.send(embed = embed , view=view)
+
     
     @commands.command(description="Show banner", usage=f"[member]" , aliases=["bn"])
     @commands.guild_only()
@@ -322,7 +337,7 @@ class Infomation(commands.Cog):
     async def roleinfo(self, ctx, role: discord.Role=None):
         if role is None:
             print("role is None")
-        embed = discord.Embed(color=role.color)
+        embed_role = discord.Embed(color=role.color)
         role_perm_string = ', '.join([str(p[0]).replace("_", " ").title() for p in role.permissions if p[1]])
         info = f"""
         **Mention**: {role.mention}
@@ -334,40 +349,15 @@ class Infomation(commands.Cog):
         **Members**: {len(role.members)}
         **Permission**: {role_perm_string}
         """
-        embed.description = f"{info}"
+        embed_role.description = f"{info}"
 
-        msg = await ctx.send(embed=embed)
+        role_member_list = []
 
-        await msg.add_reaction("<:greentick:881500884725547021>")
+        for x in role.members:
+            member_role = f"{x} | `{x.id}`"
+            role_member_list.append(member_role)
 
-        try:
-            reaction , user = await self.bot.wait_for(
-                "reaction_add",
-                timeout=30,
-                check=lambda reaction, user: user == ctx.author
-                and reaction.message.channel == ctx.channel
-            )
-
-        except asyncio.TimeoutError:
-            await msg.delete()
-            return
-
-        await msg.delete()
-
-        pages = []
-        member_per_page = 10
-        a = 0
-        for i in range(0, len(role.members), member_per_page):
-            message = ""
-            next_commands = role.members[i: i + member_per_page]
-            
-            for x in next_commands:
-                a += 1
-                message += f"**{a}**. {x} | `{x.id}`\n"
-
-            pages.append(message)
-
-        await Pag(title=f"List member in role {role.name}",color=role.color, entries=pages, length=1).start(ctx)
+        await ctx.send(embed=embed_role , view=roleinfo_view(ctx=ctx, entries=role_member_list, role=role))
 
     @commands.command(description = "gives info on emoji_id and emoji image.", usage="<emoji>")
     @commands.guild_only()

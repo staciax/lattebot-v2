@@ -43,7 +43,8 @@ def Infomation():
 
   `userinfo , ui` • Show user infomation.
   `serverinfo , si` • Show serverinfo infomation.
-  `avatar , av` • Display avatar.
+  `avatar , av` • Display user avatar.
+  `avatar server, sav` • Display server avatar.
   `banner , bn` • Display banner.
   `servericon , sic` • Display Server icon.
   `serverbanner , sb` • Display server banner.

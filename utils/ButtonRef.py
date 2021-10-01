@@ -2,6 +2,8 @@ import discord
 from discord import ui , ButtonStyle
 from discord.ext import menus
 
+from utils.paginator import SimplePages
+
 class Base_page(ui.View, menus.MenuPages):
     def __init__(self, source):
         super().__init__()
@@ -73,3 +75,26 @@ class Base_page(ui.View, menus.MenuPages):
 class Page_format_(menus.ListPageSource):
     async def format_page(self, view, entry):
         return str(entry)
+
+class roleinfo_view(ui.View):
+    def __init__(self, ctx, entries, role):
+        super().__init__(timeout=300)
+        self.ctx = ctx
+        self.entries = entries
+        self.role = role
+
+    async def on_timeout(self):
+        self.stop()
+
+    @ui.button(label="member list", style=ButtonStyle.blurple)
+    async def member_list(self, button: discord.ui.Button, interaction: discord.Interaction):
+        p = SimplePages(entries=self.entries, per_page=10, ctx=self.ctx)
+        p.embed.title = f"{self.role.name} : members list"
+        p.embed.color = self.role.color
+        await p.start()
+
+    @ui.button(label='Quit', style=ButtonStyle.red)
+    async def stop_pages(self, button: discord.ui.Button, interaction: discord.Interaction):
+        await interaction.response.defer()
+        await interaction.delete_original_message()
+        self.stop()

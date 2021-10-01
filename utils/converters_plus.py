@@ -79,22 +79,16 @@ m_idle = emoji_s('idle')
 m_dnd = emoji_s('dnd')
 m_invisible = emoji_s('invisible')
 
+def afk_channel_check(ctx):
+    if ctx.guild.afk_channel: afk_channels = ctx.guild.afk_channel
+    else: afk_channels = "⠀"
+    return afk_channels
+
 def afk_channel_timeout(ctx):
-    second = ctx.guild.afk_timeout
-    if second == 3600:
-        sec = "1 Hour"
-    elif second == 1800:
-        sec = "30 Minutes"
-    elif second == 900:
-        sec = "15 Minutes"
-    elif second == 300:
-        sec = "5 Minutes"
-    elif second == 60:
-        sec = "1 Minute"
-    
-    if ctx.guild.afk_channel == None:
-        sec = "None"
-    return sec
+    if ctx.guild.afk_channel:
+        if ctx.guild.afk_timeout: afk_time = f"{int(ctx.guild.afk_timeout / 60)} Minutes"
+    else: afk_time = "⠀"
+    return afk_time
 
 def member_status(ctx):
     statuses = [len(list(filter(lambda m: str(m.status) == "online", ctx.guild.members))),
@@ -104,20 +98,19 @@ def member_status(ctx):
     return statuses
 
 def rules_channel(ctx):
-    rulesch = ctx.guild.rules_channel
-    if rulesch == None:
-        rs = "⠀"
-    else:
-        rs = ctx.guild.rules_channel.mention   
+    if ctx.guild.rules_channel is None: rs = "⠀"
+    else: rs = ctx.guild.rules_channel.mention   
     return rs
 
 def system_channel(ctx):
-    systemch = ctx.guild.system_channel
-    if systemch == None:
-        sy = "⠀"
-    else:
-        sy = ctx.guild.system_channel.mention
+    if ctx.guild.system_channel is None: sy = "⠀"
+    else: sy = ctx.guild.system_channel.mention
     return sy
+
+def guild_verification_level(ctx):
+    if str(ctx.guild.verification_level) == "none": gvl = "⠀"
+    else: gvl = ctx.guild.verification_level
+    return gvl
 
 def check_boost(ctx):
     format_relative = lambda dt: discord.utils.format_dt(dt, 'R')
