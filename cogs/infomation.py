@@ -239,14 +239,18 @@ class Infomation(commands.Cog):
     @commands.guild_only()
     async def display_avatar(self, ctx, member:discord.Member=None):
         member = member or ctx.author
-        embed = discord.Embed(title = f"{member.name}'s Avatar:", color=0xffffff)
-        embed.set_image(url = member.display_avatar.url)
-        #start_view_button
-        view = discord.ui.View()
-        style = discord.ButtonStyle.gray
-        item = discord.ui.Button(style=style, label="Avatar URL", url=member.display_avatar.url)
-        view.add_item(item=item)
-        await ctx.send(embed = embed , view=view)
+        embed = discord.Embed(title = f"{member.name}'s Server avatar:", color=0xffffff)
+        if member.avatar != member.display_avatar:
+            embed.set_image(url = member.display_avatar.url)
+            #start_view_button
+            view = discord.ui.View()
+            style = discord.ButtonStyle.gray
+            item = discord.ui.Button(style=style, label="Server avatar URL", url=member.display_avatar.url)
+            view.add_item(item=item)
+            await ctx.send(embed = embed , view=view)
+        else:
+            embed.description = f"this user must have a server avatar."
+            await ctx.send(embed = embed)
 
     
     @commands.command(description="Show banner", usage=f"[member]" , aliases=["bn"])
