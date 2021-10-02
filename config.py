@@ -6,8 +6,8 @@ DEV_OWNER_ID = 240059262297047041 #385049730222129152
 #last update time #\u200b 
 BOTVERSION = "2.2.1 pre-1"
 UYEAR = 2021
-UMONTH = 9
-UDATE = 28
+UMONTH = 10
+UDATE = 2
 
 #helpcommands
 INVITE_LATTE = "https://discord.gg/bvwpZ2B4rj"

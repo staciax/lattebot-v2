@@ -7,6 +7,7 @@ import os
 import typing
 import unicodedata
 import asyncio
+import contextlib
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 
@@ -19,7 +20,8 @@ from io import BytesIO
 # Local
 import utils
 from config import *
-from utils.ButtonRef import roleinfo_view
+#from utils.ButtonRef import roleinfo_view
+from utils.view_converter import roleinfo_view, channel_info_view
 
 emoji_s = utils.emoji_converter
 
@@ -340,7 +342,7 @@ class Infomation(commands.Cog):
     @commands.command(aliases=["ri"], usage="<role>")
     async def roleinfo(self, ctx, role: discord.Role=None):
         if role is None:
-            print("role is None")
+            await ctx.send("role in none")
         embed_role = discord.Embed(color=role.color)
         role_perm_string = ', '.join([str(p[0]).replace("_", " ").title() for p in role.permissions if p[1]])
         info = f"""
@@ -361,7 +363,8 @@ class Infomation(commands.Cog):
             member_role = f"{x} | `{x.id}`"
             role_member_list.append(member_role)
 
-        await ctx.send(embed=embed_role , view=roleinfo_view(ctx=ctx, entries=role_member_list, role=role))
+        view = roleinfo_view(ctx=ctx, embed=embed_role, entries=role_member_list, role=role)
+        await view.start()
 
     @commands.command(description = "gives info on emoji_id and emoji image.", usage="<emoji>")
     @commands.guild_only()
@@ -381,6 +384,41 @@ class Infomation(commands.Cog):
 
         else:
             await ctx.send("Not a valid emoji id.")
+
+    @commands.command(help="channel infomation")
+    @commands.guild_only()
+    async def channel_info(self, ctx, channel: typing.Union[discord.TextChannel, discord.VoiceChannel]=None):
+        if channel is None:
+            await ctx.send("channel in none")
+        embed = discord.Embed(color=0xffffff)
+        embed.title = f"{channel.name}'s Info"
+        if str(channel.type) == "voice": embed.add_field(
+            name="infomation:",
+            value=f"**Type:** voice channel\n**Birate:** {int(channel.bitrate / 1000)}kbps\n**Region:** {channel.rtc_region}\n**Connected:** {len(channel.members)} connected",
+            inline=False
+        )
+        if str(channel.type) == "text": embed.add_field(
+            name="infomation:", 
+            value=f"**Type:** text channel\n**Topic** : {channel.topic}\n**NSFW** : {channel.nsfw}",
+            inline=False
+        )
+        
+        role_list = []
+        member_list = []
+        for role in channel.changed_roles:
+            role_msg = f"{role.mention} | `{role.id}`"
+            role_list.append(role_msg)
+        for member in channel.members:
+            member_msg = f"{member.name} | `{member.id}`"
+            member_list.append(member_msg)
+              
+        embed.add_field(name="Category:" , value=f"{channel.category}" , inline=False)
+        #@embed.add_field(name="Create date:" , value=f"{utils.format_dt(channel.created_at)}" , inline=False)
+        embed.set_thumbnail(url=channel.guild.icon.url)
+        embed.set_footer(text=f"ID : {channel.id}")
+
+        view = channel_info_view(ctx=ctx, embed=embed, channel_name=channel.name, role_list=role_list, member_list=member_list)
+        await view.start()
 
 def setup(bot):
     bot.add_cog(Infomation(bot))

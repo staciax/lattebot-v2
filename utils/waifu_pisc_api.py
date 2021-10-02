@@ -20,14 +20,14 @@ class base_pisc_api(discord.ui.View):
         self.title = title
         self.url = url
         self.json_url = ""
-        print(f"{self.title}\n{self.url}\n{self.json_url}")
+        self.message = ""
 
     def add_button(self):
         self.add_item(discord.ui.Button(label='Image URL', url=self.json_url))
 
     async def on_timeout(self):
         self.clear_items()
-        await interaction.response.edit_message(view=self)
+        await self.message.edit(view=self)
         self.stop()
 
     @discord.ui.button(label='▶', style=discord.ButtonStyle.blurple, custom_id='b1')
@@ -66,5 +66,5 @@ class base_pisc_api(discord.ui.View):
 
         self.add_button()
         embed1 = API_waifu_im_Embed(self, json, title=self.title)
-        await self.ctx.reply(embed=embed1, view=self, mention_author=False)
+        self.message = await self.ctx.reply(embed=embed1, view=self, mention_author=False)
 

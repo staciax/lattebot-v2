@@ -67,9 +67,24 @@ class EmojiConverter(commands.Converter):
       raise commands.BadArgument(f"{arg} is not an emoji")
 
 class EmojiBasic:
-  def __init__(self, id: int, url: str):
-    self.id = id
-    self.url = url
+    def __init__(self, id: int, url: str):
+        self.id = id
+        self.url = url
+
+    @classmethod
+    async def convert(cls,ctx,argument):
+        match=re.match(r'(?P<id>[0-9]{15,21})',argument)
+        if match:
+            emoji_id=(match.group(0))
+            extentions = ["gif","png"]
+
+        for x in extentions:
+            response=await ctx.bot.session.get(f"https://cdn.discordapp.com/emojis/{emoji_id}.{x}")
+            if response.ok:
+                return cls(emoji_id,response.real_url)
+
+        else:
+            return None
 
 """ Server info converter"""
 emoji_s = emoji_converter

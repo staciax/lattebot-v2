@@ -4,8 +4,10 @@ import datetime
 import time
 import os
 import io
+import random
+from time import time
 from discord.ext import commands , tasks
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from discord.channel import TextChannel
 from asyncio import sleep
 
@@ -47,6 +49,8 @@ class Activities(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
+        self.join_guild = self.bot.get_channel(893695417320087573)
+        self.leave_guild = self.bot.get_channel(893695447309369345)
     #        guild = self.bot.get_guild(MYGUILD)
     #        self.invites[guild.id] = await guild.invites()
         for guild in self.bot.guilds:
@@ -624,6 +628,43 @@ class Activities(commands.Cog):
                 embed.set_author(name=f"{after}", icon_url=after.avatar.url)
                 embed.set_footer(text=f"{str(after.status)}", icon_url=utils.status_icon(after.status))
                 await self.status_log.send(embed=embed)
+    
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        channels = [channel for channel in guild.channels]
+        roles = roles= [role for role in guild.roles]
+        embed = discord.Embed(title="Bot just joined: "+str(guild.name), color=random.randint(0,16777215))
+        embed.set_thumbnail(url = guild.icon.url)
+        embed.add_field(name='Server Name:',value=f'{guild.name}')
+        embed.add_field(name='Server ID:',value=f'{guild.id}')
+        embed.add_field(name='Server region:',value=f'{guild.region}')
+        embed.add_field(name='Server Creation Date:',value=f'{guild.created_at.strftime(r"%d/%m/%Y %H:%M")}')
+        embed.add_field(name='Server Owner:',value=f'{guild.owner}')
+        embed.add_field(name='Server Owner ID:',value=f'{guild.owner_id}')
+        embed.add_field(name='Member Count:',value=f'{guild.member_count}')
+        embed.add_field(name='Amount of Channels:',value=f"{len(channels)}")
+        embed.add_field(name='Amount of Roles:',value=f"{len(roles)}")
+        await self.join_guild.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_guild_remove(self, guild):
+        channels = [channel for channel in guild.channels]
+        roles = roles= [role for role in guild.roles]
+        embed = discord.Embed(title="Bot just left: "+str(guild.name), color=random.randint(0,16777215))
+        embed.set_thumbnail(url = guild.icon.url)
+        embed.add_field(name='Server Name:',value=f'{guild.name}')
+        embed.add_field(name='Server ID:',value=f'{guild.id}')
+        embed.add_field(name='Server region:',value=f'{guild.region}')
+        embed.add_field(name='Server Creation Date:',value=f'{guild.created_at.strftime(r"%d/%m/%Y %H:%M")}')
+        embed.add_field(name='Server Owner:',value=f'{guild.owner}')
+        embed.add_field(name='Server Owner ID:',value=f'{guild.owner_id}')
+        try:
+            embed.add_field(name='Member Count:',value=f'{guild.member_count}')
+        except:
+            pass
+        embed.add_field(name='Amount of Channels:',value=f"{len(channels)}")
+        embed.add_field(name='Amount of Roles:',value=f"{len(roles)}")
+        await self.leave_guild.send(embed=embed)
 
     #    @commands.Cog.listener() #activity = role
     #    async def on_presence_update(self, before, after):
