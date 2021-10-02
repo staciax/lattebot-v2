@@ -342,7 +342,8 @@ class Infomation(commands.Cog):
     @commands.command(aliases=["ri"], usage="<role>")
     async def roleinfo(self, ctx, role: discord.Role=None):
         if role is None:
-            await ctx.send("role in none")
+            embed_error = discord.Embed(description="Please specify role",color=0xffffff)
+            await ctx.send(embed=embed_error)
         embed_role = discord.Embed(color=role.color)
         role_perm_string = ', '.join([str(p[0]).replace("_", " ").title() for p in role.permissions if p[1]])
         info = f"""
@@ -385,11 +386,12 @@ class Infomation(commands.Cog):
         else:
             await ctx.send("Not a valid emoji id.")
 
-    @commands.command(help="channel infomation")
+    @commands.command(help="channel infomation", aliases=["ci"])
     @commands.guild_only()
     async def channel_info(self, ctx, channel: typing.Union[discord.TextChannel, discord.VoiceChannel]=None):
         if channel is None:
-            await ctx.send("channel in none")
+            embed_error = discord.Embed(description="Please specify channel",color=0xffffff)
+            await ctx.send(embed=embed_error)
         embed = discord.Embed(color=0xffffff)
         embed.title = f"{channel.name}'s Info"
         if str(channel.type) == "voice": embed.add_field(
@@ -413,12 +415,16 @@ class Infomation(commands.Cog):
             member_list.append(member_msg)
               
         embed.add_field(name="Category:" , value=f"{channel.category}" , inline=False)
-        #@embed.add_field(name="Create date:" , value=f"{utils.format_dt(channel.created_at)}" , inline=False)
+        embed.add_field(name="Create date:" , value=f"{utils.format_dt(channel.created_at)}" , inline=False)
         embed.set_thumbnail(url=channel.guild.icon.url)
         embed.set_footer(text=f"ID : {channel.id}")
 
-        view = channel_info_view(ctx=ctx, embed=embed, channel_name=channel.name, role_list=role_list, member_list=member_list)
-        await view.start()
+        if str(channel.type) == 'text':
+            view = channel_info_view(ctx=ctx, embed=embed, channel=channel, role_list=role_list, member_list=member_list)
+            await view.start_text()
+        if str(channel.type) == 'voice':
+            view = channel_info_view(ctx=ctx, embed=embed, channel=channel, role_list=role_list, member_list=member_list)
+            await view.start_voice()
 
 def setup(bot):
     bot.add_cog(Infomation(bot))

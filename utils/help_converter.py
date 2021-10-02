@@ -51,6 +51,7 @@ def Infomation():
   `splash , ssp` • Display server splash.
   `emojinfo , ei` • Show emojinfo.
   `roleinfo , ri` • Show roleinfo.
+  `channel_info , ci` • Show channel info.
   """
   embed.description = description
   

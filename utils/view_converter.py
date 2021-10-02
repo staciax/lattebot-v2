@@ -40,11 +40,11 @@ class roleinfo_view(discord.ui.View):
 
 
 class channel_info_view(discord.ui.View):
-    def __init__(self, ctx, embed, channel_name , role_list, member_list):
+    def __init__(self, ctx, embed, channel , role_list, member_list):
         super().__init__(timeout=600)
         self.ctx = ctx
         self.embed = embed
-        self.channel_name = channel_name
+        self.channel = channel
         self.role_list = role_list
         self.member_list = member_list
         self.message = ""
@@ -57,14 +57,14 @@ class channel_info_view(discord.ui.View):
     @discord.ui.button(label="Roles access", style=discord.ButtonStyle.blurple)
     async def roles_list(self, button: discord.ui.Button, interaction: discord.Interaction):
         p = SimplePages(entries=self.role_list, per_page=10, ctx=self.ctx)
-        p.embed.title = f"Roles in {self.channel_name}"
+        p.embed.title = f"Roles in {self.channel.name}"
         p.embed.color = 0xffffff
         await p.start()
     
     @discord.ui.button(label="Member access", style=discord.ButtonStyle.blurple)
     async def member_list(self, button: discord.ui.Button, interaction: discord.Interaction):
         p = SimplePages(entries=self.member_list, per_page=10, ctx=self.ctx)
-        p.embed.title = f"Members in {self.channel_name}"
+        p.embed.title = f"Members in {self.channel.name}"
         p.embed.color = 0xffffff
         await p.start()
 
@@ -74,13 +74,18 @@ class channel_info_view(discord.ui.View):
         await interaction.delete_original_message()
         self.stop()
     
-    async def start(self):
+    async def start_text(self):
         if not self.role_list:
-            print(self.role_list)
             if self.children[0].label == 'Roles access':
                 self.remove_item(item=self.children[0])
         if not self.member_list:
-            print(self.member_list)
             if self.children[0].label == 'Member access':
                 self.remove_item(item=self.children[0])
+
+        self.message = await self.ctx.reply(embed=self.embed, view=self, mention_author=False)
+    
+    async def start_voice(self):
+        for item in self.children:
+            if item.label == 'Member access':
+                self.remove_item(item)
         self.message = await self.ctx.reply(embed=self.embed, view=self, mention_author=False)
