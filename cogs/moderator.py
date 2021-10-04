@@ -172,7 +172,7 @@ class Moderation(commands.Cog):
         role = discord.utils.get(ctx.guild.roles, name=MUTEROLE)
 
         if not role:
-            embeddh = discord.Embed(title="MUTE ROLE",description=f"Your server don't have : **`Muted Role`**\n please use command : `lt muterole`",color=0xffffff)
+            embeddh = discord.Embed(title="MUTE ROLE",description=f"Your server don't have : **`Muted Role`**",color=0xffffff)
             await ctx.send(embed=embeddh)
             return
             
@@ -194,9 +194,8 @@ class Moderation(commands.Cog):
         #            embedmute = discord.Embed(description=f"**SERVER MUTED**\n\n`You are muted on the server`: {ctx.guild.name}\n`Reason` : {reason} \n\n",color=0xffffff, timestamp=datetime.now(timezone.utc))
         #            embedmute.set_footer(text=f"{self.bot.user.name}",icon_url=self.bot.user.avatar.url)
 
-        await member.add_roles(role, reason=reason)
-
         if not time:
+            await member.add_roles(role, reason=reason)
             await ctx.send(embed = embed)                
         else:
             await member.add_roles(role, reason=reason)
@@ -418,7 +417,7 @@ class Moderation(commands.Cog):
         await asyncio.sleep(amount * multiplier[unit])
         await ctx.guild.unban(member)
     
-    @commands.command(aliases=["create_emoji", "add_emoji"], description="Create emoji from link", usage="<url type: .png .gif>")
+    @commands.command(aliases=["create_emoji", "add_emoji"], description="Create emoji from url", usage="<url type: .png .gif>")
     @commands.guild_only()
     @commands.has_permissions(manage_emojis=True)
     async def createemoji(self, ctx, url: str, *, name):

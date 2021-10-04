@@ -23,7 +23,7 @@ class Error(commands.Cog):
     async def on_command_error(self , ctx, error):
         embed = discord.Embed(color=0xffffff)
         if isinstance(error, commands.CommandNotFound):
-            cm_error = f"I couldn't find that command."
+            #cm_error = f"I couldn't find that command."
             command_names = [str(x) for x in ctx.bot.commands]
             matches = get_close_matches(ctx.invoked_with, command_names)
             if matches:
