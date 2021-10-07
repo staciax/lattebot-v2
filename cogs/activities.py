@@ -177,8 +177,6 @@ class Activities(commands.Cog):
                     self.invites[member.guild.id] = invites_after_join
                     
                     #temp_invite
-                    print(invite.code)
-                    print(self.invite_code)
                     if invite.code == self.invite_code:  
                         role = discord.utils.get(member.guild.roles, id = 879258879987449867)
                         await member.add_roles(role)
@@ -373,12 +371,12 @@ class Activities(commands.Cog):
                 new_roles = [x.mention for x in after.roles if x not in before.roles]
                 old_roles = [x.mention for x in before.roles if x not in after.roles]
                 if new_roles:
-                    name = "**Add role**"
+                    role_update = "**Add role**"
                     nr_str = str(new_roles)[2:-2]
                     nr_valur = " ".join(reversed([r.mention for r in after.roles]))
                     color = 0x52D452
                 else:
-                    name = "**Remove role**"
+                    role_update = "**Remove role**"
                     nr_str = str(old_roles)[2:-2]
                     nr_valur = " ".join(reversed([r.mention for r in after.roles])) #' '.join(reversed([r.mention for r in member.roles][1:]))
                     
@@ -391,13 +389,14 @@ class Activities(commands.Cog):
                 embed = discord.Embed(colour=color, #colour=after.colour,
 						            timestamp=datetime.now(timezone.utc))
                 
+
                 embed.set_author(name=f"{after.display_name} | Role updates", icon_url=after.avatar.url)
 
-                fields = [("**Current role**", nr_valur[:-22] , False),
-					        (name , nr_str , False)]
-
-                for name, value, inline in fields:
-                    embed.add_field(name=name, value=value, inline=inline)
+                if role_update and nr_valur and nr_str:
+                    embed.add_field(name="Role",value=nr_valur[:-22],inline=False)
+                    embed.add_field(name=role_update,value=nr_str,inline=False)
+                else:
+                    return
 
                 await self.roles_log.send(embed=embed)
 
@@ -623,8 +622,9 @@ class Activities(commands.Cog):
             #status
             if before.status != after.status:
                 embed = discord.Embed(
-                                    colour=after.colour,
-						            timestamp=datetime.now(timezone.utc))
+                    colour=after.colour,
+                    timestamp=datetime.now(timezone.utc)
+                )
                 embed.set_author(name=f"{after}", icon_url=after.avatar.url)
                 embed.set_footer(text=f"{str(after.status)}", icon_url=utils.status_icon(after.status))
                 await self.status_log.send(embed=embed)

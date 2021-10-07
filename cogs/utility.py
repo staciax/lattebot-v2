@@ -268,7 +268,7 @@ class Utility_(commands.Cog):
         except:
             return await ctx.send("Bad valid")
 
-    @commands.command(aliases=["gsmap","hoyomap","map"])
+    @commands.command(aliases=["gsmap","hoyomap","map","gmap"])
     @commands.guild_only()
     async def genshinmap(self, ctx):
         embed = discord.Embed(color=0x2484d7)

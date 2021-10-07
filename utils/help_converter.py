@@ -14,7 +14,6 @@ def Utility():
   description="""
   Use `.help <command>` for more informations about a command.
 
-
   `afk` • set your afk
   `sleep` • Set timer disconnect voice channel.
   `snipe` • Snipe message after delete

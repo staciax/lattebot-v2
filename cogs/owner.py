@@ -60,30 +60,28 @@ class Owner_(commands.Cog):
         embed = discord.Embed()
         try:
             self.bot.load_extension(f'cogs.{extension}')
+            embed.description = f"{utils.emoji_converter('greentick')} Load : `{extension}`"
+            embed.color = 0x8be28b
         except Exception as e:
-            embed.set_author(name=f"Could not reload : `{extension}`")
+            embed.description(f"Could not reload : `{extension}`")
             embed.color = 0xFF7878
-            return
 
-        embed.description = f"{utils.emoji_converter('greentick')} Load : `{extension}`"
-        embed.color = 0x8be28b
         await ctx.send(embed=embed)
-
+    
     @commands.command()
     @commands.is_owner()
     async def unload(self, ctx, extension):
         embed = discord.Embed()
         try:
             self.bot.unload_extension(f'cogs.{extension}')
+            embed.description = f"{utils.emoji_converter('greentick')} Unload : `{extension}`"
+            embed.color = 0x8be28b
         except Exception as e:
-            embed.set_author(name=f"Could not reload : `{extension}`")
+            embed.description(f"Could not reload : `{extension}`")
             embed.color = 0xFF7878
-            return
-    
-        embed.description = f"{utils.emoji_converter('greentick')} Unload : `{extension}`"
-        embed.color = 0x8be28b
-        await ctx.send(embed=embed)
 
+        await ctx.send(embed=embed)
+    
     @commands.command()
     @commands.is_owner()
     async def reload(self, ctx, extension):
@@ -91,14 +89,12 @@ class Owner_(commands.Cog):
         try:
             self.bot.unload_extension(f'cogs.{extension}')
             self.bot.load_extension(f'cogs.{extension}')
+            embed.description = f"{utils.emoji_converter('greentick')} Reload : `{extension}`"
+            embed.color = 0x8be28b
         except Exception as e:
-            embed.set_author(name=f"Could not reload : `{extension}`")
+            embed.description(f"Could not reload : `{extension}`")
             embed.color = 0xFF7878
-            await ctx.send(embed=embed)
-            return
 
-        embed.description = f"{utils.emoji_converter('greentick')} Reload : `{extension}`"
-        embed.color = 0x8be28b
         await ctx.send(embed=embed)
 
     @commands.command()

@@ -37,19 +37,19 @@ class Message(commands.Cog):
     async def afk(self, ctx, *, reason=None):
         if reason is None:
             reason = "personal problems"
-        elif len(reason) > 1000:
-            return await ctx.send('reason is a maximum of 1000 characters.', delete_after=15)
+        elif len(reason) > 100:
+            return await ctx.send('reason is a maximum of 100 characters.', delete_after=15)
 
         self.afk[ctx.author.id] = reason #storing at self.afk as {657846039914479617: "reason"}
         embed = discord.Embed(description=f"**{ctx.author}** I have set your afk: `{reason}`" , color=WHITE)
         
-        if ctx.channel.id in BOT_CH:
-            await ctx.send(embed=embed)
-        else:
+        if ctx.channel.id in CHAT_CH:
             msg = await ctx.send(embed=embed)
-            await asyncio.sleep(10)
+            await asyncio.sleep(15)
             await msg.delete()
             await ctx.message.delete()
+        else:
+            await ctx.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -94,7 +94,7 @@ class Message(commands.Cog):
 
             #message_events 
             if message.content.startswith('latte'):
-                await message.delete()
+#                await message.delete()
                 await message.channel.send('เอะ! เรียกเราหรอ?  <:S_CuteGWave3:859660565160001537>')
             
             if message.content.startswith('invite'):
