@@ -21,10 +21,6 @@ import utils.json_loader
 from config import *
 from utils import create_voice_channel , get_channel_by_name
 
-intents = discord.Intents.all()
-
-private_channel = PRIVATE_LOGS #chat #nsfw #onlyfans #underworld #
-
 class Activities(commands.Cog):
 
     current_streamers = list()
@@ -66,7 +62,6 @@ class Activities(commands.Cog):
             self.total_ = total_count
             total_channel = guild.get_channel(876738880282431489)
             total_name = f"ᴛᴏᴛᴀʟ‌・{self.total_}"
-    #            print(f"\n\n{total_name}")
             await total_channel.edit(name=total_name)
         
         member_count = len([member for member in guild.members if not member.bot])
@@ -74,7 +69,6 @@ class Activities(commands.Cog):
             self.member_ = member_count
             member_channel = guild.get_channel(876712142160678923)
             member_name = f"ᴍᴇᴍʙᴇʀs・{self.member_}"
-    #            print(member_name)
             await member_channel.edit(name=member_name)
 
         bot_count = len([Member for Member in guild.members if Member.bot])
@@ -82,7 +76,6 @@ class Activities(commands.Cog):
             self.bot_ = bot_count
             bot_channel = guild.get_channel(876724022686150687)
             bot_name = f"ʙᴏᴛs‌・{self.bot_}"
-    #            print(bot_name)
             await bot_channel.edit(name=bot_name)
         
         role_count = len(guild.roles)
@@ -90,7 +83,6 @@ class Activities(commands.Cog):
             self.role_ = role_count
             role_channel = guild.get_channel(876712169662742588)
             role_name = f"ʀᴏʟᴇs‌・{self.role_}"
-    #            print(role_name)
             await role_channel.edit(name=role_name)
         
         channel_count = len(guild.channels)
@@ -98,7 +90,6 @@ class Activities(commands.Cog):
             self.channel_ = channel_count
             channel_channel = guild.get_channel(876712200214024192)
             channel_name = f"ᴄʜᴀɴɴᴇʟs・{self.channel_}"
-    #            print(channel_name)
             await channel_channel.edit(name=channel_name)
         
         text_channel_count = len(guild.text_channels)
@@ -106,7 +97,6 @@ class Activities(commands.Cog):
             self.text_ = text_channel_count
             text_channel = guild.get_channel(876740437505871922)
             text_name = f"ᴛᴇxᴛ・{self.text_}"
-    #            print(text_name)
             await text_channel.edit(name=text_name)
         
         voice_channel_count = len(guild.voice_channels)
@@ -114,7 +104,6 @@ class Activities(commands.Cog):
             self.voice_ = voice_channel_count
             voice_channel = guild.get_channel(876740515863879711)
             voice_name = f"ᴠᴏɪᴄᴇ・{self.voice_}"
-    #            print(voice_name)
             await voice_channel.edit(name=voice_name)
         
         boost_count = guild.premium_subscription_count
@@ -122,7 +111,6 @@ class Activities(commands.Cog):
             self.boost_ = boost_count
             boost_channel = guild.get_channel(876737270051389470)
             boost_name = f"ʙᴏᴏꜱᴛꜱ・{self.boost_}"
- #           print(boost_name)
             await boost_channel.edit(name=boost_name)
 
     @counted.before_loop
@@ -137,11 +125,6 @@ class Activities(commands.Cog):
     #		        if channel.name.startswith('♢・latte'):
     #			        await channel.edit(name=f'♢・latte・{member.guild.member_count}')
     #			        break
-    #auto role event
-    #@commands.Cog.listener()
-    #async def on_member_join(self, member):
-    ##  role = get(member.guild.roles, id=role_id)
-    ##  await member.add_roles(role)
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -159,7 +142,7 @@ class Activities(commands.Cog):
             invites_after_join = await member.guild.invites()
             for invite in invites_before_join:
                 if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:
-                    if invite.code == "jhK46N6QWU":
+                    if invite.code == BYPASS_INVITE:
                         latte_role_bypass = discord.utils.get(member.guild.roles, id = 842309176104976387)
                         await member.add_roles(latte_role_bypass)
                         return
@@ -187,13 +170,17 @@ class Activities(commands.Cog):
 
             welcome_ch = utils.json_loader.read_json("welcome")
             data = welcome_ch[str(member.guild.id)]
-
-            #check
+            latte_json = utils.json_loader.read_json('latte')
+            wel_picture = latte_json['welcomepic']
+            
+            #check_data
             if data is None:
                 return
             
+            #get_channel
             guild = self.bot.get_guild(member.guild.id)
             channel = guild.get_channel(data)
+
             embed=discord.Embed(
                         description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
                         timestamp=datetime.now(timezone.utc),
@@ -202,8 +189,17 @@ class Activities(commands.Cog):
             )
             embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
             embed.set_thumbnail(url=member.avatar.url)
-            embed.set_image(url="https://i.imgur.com/JOsg4RL.gif")
-            embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ"),
+            if wel_picture: embed.set_image(url=wel_picture)
+            embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ")
+           
+            if member.bot:
+                role = discord.utils.get(member.guild.roles, id=840677855460458496)
+                if role:
+                    await member.add_roles(role)
+            # else:
+            #     latte_role = discord.utils.get(member.guild.roles, id=842309176104976387)
+            #     if latte_role:
+            #         await member.add_roles(role)
 
             await channel.send(embed=embed)
     
@@ -402,7 +398,7 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
-        if before.channel.id in private_channel:
+        if before.channel.id in PRIVATE_LOGS:
             message_channel = utils.json_loader.read_json("latte")
             self.message_log = self.bot.get_channel(message_channel["message-log"])
 
@@ -430,7 +426,7 @@ class Activities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        if message.channel.id in private_channel:
+        if message.channel.id in PRIVATE_LOGS:
             message_channel = utils.json_loader.read_json("latte")
             self.message_log = self.bot.get_channel(message_channel["message-log"])
 

@@ -4,17 +4,17 @@ MYGUILD = 840379510704046151 #latte
 DEV_OWNER_ID = 240059262297047041 #385049730222129152
 
 #last update time #\u200b 
-BOTVERSION = "2.2.1 pre-1"
+BOTVERSION = "2.2.2"
 UYEAR = 2021
 UMONTH = 10
-UDATE = 2
+UDATE = 9
 
 #helpcommands
 INVITE_LATTE = "https://discord.gg/bvwpZ2B4rj"
 INVITELINK = "\u200b"
 SUPPORT_SERVER = "[Support Server](https://discord.gg/bmRhc6DyqB)"
 GITHUB_DEV = "[Github](https://github.com/staciax)"
-BYPASS_INVITE = "https://discord.gg/jhK46N6QWU"
+BYPASS_INVITE = "jhK46N6QWU"
 LATTESOURCE = "https://github.com/staciax/Latte_bot_v2"
 
 #my_bad
@@ -39,8 +39,8 @@ angel_channel = 883027485455941712
 bad_channel = 886966133176017017
 
 #mute
-MUTEROLE = "Mute ♡"
-COLORMUTE = 0xff9f9f #when don't have mute role
+MUTEROLE = "⠀ mute ♡ ₊˚"
+COLORMUTE = 0xfa7870 #when don't have mute role
 
 #latte_text_channel_id
 LATTE_CHAT = 861883647070437386
