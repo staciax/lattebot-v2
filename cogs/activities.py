@@ -141,15 +141,8 @@ class Activities(commands.Cog):
             invites_before_join = self.invites[member.guild.id]
             invites_after_join = await member.guild.invites()
             for invite in invites_before_join:
-                if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:
-                    if invite.code == BYPASS_INVITE:
-                        try:
-                            latte_role_bypass = discord.utils.get(member.guild.roles, id = 842309176104976387)
-                            await member.add_roles(latte_role_bypass)
-                            return
-                        except:
-                            return
-
+                if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:                    
+                    
                     embed_log = discord.Embed(
                         title="Member join",
                         color=PTGREEN,
@@ -161,20 +154,21 @@ class Activities(commands.Cog):
                     embed_log.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
                     await self.server_log.send(embed=embed_log)
                     self.invites[member.guild.id] = invites_after_join
+
+                    #latte_role
+                    if invite.code == self.bot.latte_latte:
+                        try:
+                            latte_role = discord.utils.get(member.guild.roles, id = 842309176104976387)
+                            await member.add_roles(latte_role)
+                        except:
+                            pass
                     
                     #temp_invite
                     if invite.code == self.invite_code:
                         try:
-                            role = discord.utils.get(member.guild.roles, id = 879258879987449867)
+                            role = discord.utils.get(member.guild.roles, id=879258879987449867)
                             await member.add_roles(role)
                             return
-                        except:
-                            return
-                    
-                    if invite.code == self.bot.latte_latte:
-                        try:
-                            latte_role = discord.utils.get(member.guild.roles, id=842309176104976387)
-                            await member.add_roles(role)
                         except:
                             pass
 
@@ -212,11 +206,7 @@ class Activities(commands.Cog):
                 role = discord.utils.get(member.guild.roles, id=840677855460458496)
                 if role:
                     await member.add_roles(role)
-            # else:
-            #     latte_role = discord.utils.get(member.guild.roles, id=842309176104976387)
-            #     if latte_role:
-            #         await member.add_roles(role)
-
+                    
             await channel.send(embed=embed)
     
     @commands.Cog.listener()

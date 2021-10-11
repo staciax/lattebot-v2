@@ -4,17 +4,16 @@ MYGUILD = 840379510704046151 #latte
 DEV_OWNER_ID = 240059262297047041 #385049730222129152
 
 #last update time #\u200b 
-BOTVERSION = "2.2.2"
+BOTVERSION = "2.2.3"
 UYEAR = 2021
 UMONTH = 10
-UDATE = 9
+UDATE = 11
 
 #helpcommands
 INVITE_LATTE = "https://discord.gg/bvwpZ2B4rj"
 INVITELINK = "\u200b"
 SUPPORT_SERVER = "[Support Server](https://discord.gg/bmRhc6DyqB)"
 GITHUB_DEV = "[Github](https://github.com/staciax)"
-BYPASS_INVITE = "jhK46N6QWU"
 LATTESOURCE = "https://github.com/staciax/Latte_bot_v2"
 
 #my_bad
@@ -75,9 +74,9 @@ MGDOCUMENT = "levelling" #new
 LATTEDOCUMENT = "latte_guild"
 
 #level_system
-LVLROLE = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
-LVLNUM = [3,5,10,20,30,40,45,50,60,65]
-LVLROLECOLOR = [0xeedad1,0xc39b7d,0xffbfd7,0xdbc6eb,0xfdffbc,0xc1e7b8,0xc5ffff,0xec6fc1,0xb98fe4]
+LVLROLE = ["level 3 ꮺ","level 5 ꮺ","level 10 ꮺ","level 20 ꮺ","level 25 ꮺ","level 30 ꮺ","level 40 ꮺ","level 45 ꮺ","level 50 ꮺ","Nebula ꮺ"] #role
+LVLNUM = [3,5,10,20,25,30,40,45,50,55]
+LVLROLECOLOR = [0xeedad1,0xc39b7d,0xffbfd7,0xdbc6eb,0xcaf7e3,0xfdffbc,0xc1e7b8,0xc5ffff,0xec6fc1,0xb98fe4]
 
 #COLOR
 WHITE = 0xffffff

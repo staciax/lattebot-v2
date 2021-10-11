@@ -10,7 +10,6 @@ from datetime import datetime, timezone , timedelta
 
 # Local
 import utils
-from config import BYPASS_INVITE
 
 class Misc(commands.Cog):
 
@@ -25,7 +24,7 @@ class Misc(commands.Cog):
     @commands.has_role(842309176104976387) 
     async def bypass(self, ctx):
         await ctx.message.delete()
-        await ctx.send(f"https://discord.gg/{BYPASS_INVITE} this link will not keep history", delete_after=15)
+        await ctx.send(f"https://discord.gg/{self.bot.latte_latte}\n**Auto role**: Latte・・ ♡", delete_after=15)
     
     @commands.command(help="Takes a screenshot of a website", aliases=["ss"])
     @commands.guild_only()
