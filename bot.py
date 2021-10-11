@@ -63,6 +63,7 @@ bot.top_gg = "-"
 bot.bots_gg = "-"
 bot.blacklist = {}
 bot.latte_server_id = 840379510704046151
+bot.latte_latte = "jhK46N6QWU"
 
 #cogs_and_mongodb
 if __name__ == "__main__":

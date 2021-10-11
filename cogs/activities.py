@@ -143,9 +143,12 @@ class Activities(commands.Cog):
             for invite in invites_before_join:
                 if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:
                     if invite.code == BYPASS_INVITE:
-                        latte_role_bypass = discord.utils.get(member.guild.roles, id = 842309176104976387)
-                        await member.add_roles(latte_role_bypass)
-                        return
+                        try:
+                            latte_role_bypass = discord.utils.get(member.guild.roles, id = 842309176104976387)
+                            await member.add_roles(latte_role_bypass)
+                            return
+                        except:
+                            return
 
                     embed_log = discord.Embed(
                         title="Member join",
@@ -160,11 +163,20 @@ class Activities(commands.Cog):
                     self.invites[member.guild.id] = invites_after_join
                     
                     #temp_invite
-                    if invite.code == self.invite_code:  
-                        role = discord.utils.get(member.guild.roles, id = 879258879987449867)
-                        await member.add_roles(role)
-                        print(f"{member.name} temp invite")
-                        return
+                    if invite.code == self.invite_code:
+                        try:
+                            role = discord.utils.get(member.guild.roles, id = 879258879987449867)
+                            await member.add_roles(role)
+                            return
+                        except:
+                            return
+                    
+                    if invite.code == self.bot.latte_latte:
+                        try:
+                            latte_role = discord.utils.get(member.guild.roles, id=842309176104976387)
+                            await member.add_roles(role)
+                        except:
+                            pass
 
             """welcome embed"""
 
@@ -187,8 +199,12 @@ class Activities(commands.Cog):
                         color=0xc4cfcf
     
             )
-            embed.set_author(name=f"{member}", icon_url=member.avatar.url), 
-            embed.set_thumbnail(url=member.avatar.url)
+            if member.avatar.url is not None:
+                embed.set_author(name=f"{member}", icon_url=member.avatar.url)
+                embed.set_thumbnail(url=member.avatar.url)
+            else:
+                embed.set_author(name=f"{member}")
+
             if wel_picture: embed.set_image(url=wel_picture)
             embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ")
            
@@ -389,7 +405,7 @@ class Activities(commands.Cog):
                 embed.set_author(name=f"{after.display_name} | Role updates", icon_url=after.avatar.url)
 
                 if role_update and nr_valur and nr_str:
-                    embed.add_field(name="Role",value=nr_valur[:-22],inline=False)
+                    embed.add_field(name="**Role**",value=nr_valur[:-22],inline=False)
                     embed.add_field(name=role_update,value=nr_str,inline=False)
                 else:
                     return

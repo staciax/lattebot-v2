@@ -98,8 +98,9 @@ class Message(commands.Cog):
                 await message.channel.send('เอะ! เรียกเราหรอ?  <:S_CuteGWave3:859660565160001537>')
             
             if message.content.startswith('invite'):
+                await message.channel.send('https://discord.gg/jhK46N6QWU\n**Auto role** : <@&842309176104976387>' , delete_after=30)
+                await asyncio.sleep(30)
                 await message.delete()
-                await message.channel.send('https://discord.gg/bvwpZ2B4rj' , delete_after=15)
             
             if message.content.startswith('tempinvite'):
                 await message.delete()

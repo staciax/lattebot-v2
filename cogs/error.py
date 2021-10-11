@@ -29,6 +29,8 @@ class Error(commands.Cog):
             if matches:
                 matches = "\n".join(matches)
                 cm_error = f"I couldn't find that command. Did you mean...\n`{matches}`"
+            else:
+                return
         elif isinstance(error, commands.CommandOnCooldown):
             cm_error = f"You are on cooldown, try again in {error.retry_after:.0f} seconds"
         elif isinstance(error, commands.MessageNotFound):

@@ -50,6 +50,7 @@ class Moderation(commands.Cog):
             await ctx.channel.send(embed=embedprm)
     
     @commands.command(help="Gets the current guild's list of bans")
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
 #    @commands.bot_has_permissions(send_messages=True, embed_links=True, ban_members=True)
     async def bans(self, ctx) -> discord.Message:
