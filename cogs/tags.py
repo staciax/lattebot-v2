@@ -121,9 +121,9 @@ class Tags(commands.Cog):
         embed = Embed(description=f"`{name}` is added", color=PTGREEN)
         await ctx.send(embed=embed)
 
-    @tag.command(aliases=["alias"], usage="<tag_name>")
+    @tag.command(aliases=["rename"], usage="<tag_name>")
     @commands.guild_only()
-    async def tag_alias(self, ctx, name_old:str, name_new:str):
+    async def tag_rename(self, ctx, name_old:str, name_new:str):
         #find_data
         data_check = await self.bot.tagdb.find_by_custom({"guild_id": ctx.guild.id, "tag": name_old})
         

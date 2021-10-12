@@ -72,7 +72,7 @@ class XP(commands.Cog):
                         embed = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
                         await msg.edit(embed=embed)
             
-    @commands.command(description="Show ranking xp", aliases=['rank'])
+    @commands.command(description="Show ranking xp", aliases=['rank','leaderboard'])
     @commands.guild_only()
     async def ranking(self, ctx):
         filter_member = await self.bot.latte_level.find_many_by_custom({"guild_id": ctx.guild.id})

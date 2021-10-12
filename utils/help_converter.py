@@ -196,7 +196,7 @@ def Help_tag():
   embed.add_field(name="tag remove : ลบออก", value=f"```css\n{PREFIX}tag remove <name>```",inline=False)
   embed.add_field(name="tag list : ตรวจสอบรายการ", value=f"```css\n{PREFIX}tag list```",inline=False)
   embed.add_field(name="tag edit : แก้ไขข้อความ", value=f"```css\n{PREFIX}tag edit <name> <message>```",inline=False)
-  embed.add_field(name="tag alias : แก้ไขชื่อ", value=f"```css\n{PREFIX}tag alias <old name> <new name>```",inline=False)
+  embed.add_field(name="tag rename : แก้ไขชื่อ", value=f"```css\n{PREFIX}tag rename <old name> <new name>```",inline=False)
   embed.add_field(name="tag search : ค้นหา", value=f"```css\n{PREFIX}tag search <name>```",inline=False)
   
   return embed

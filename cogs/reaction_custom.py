@@ -28,6 +28,7 @@ class Reaction_custom(commands.Cog):
                 self.reaction_roles.append((int(data[0]), int(data[1]), data[2].strip("\n")))
 
     @commands.command(name="rc")
+    @commands.has_permissions(administrator=True)
     async def set_reaction(self, ctx, role: discord.Role=None, msg: discord.Message=None, emoji=None):
         if role != None and msg != None and emoji != None:
             await msg.add_reaction(emoji)

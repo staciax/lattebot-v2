@@ -158,10 +158,10 @@ class Activities(commands.Cog):
                     #latte_role
                     if invite.code == self.bot.latte_latte:
                         try:
-                            latte_role = discord.utils.get(member.guild.roles, id = 842309176104976387) #name="Latte・・ ♡")
+                            latte_roles = discord.utils.get(member.guild.roles, id = 842309176104976387) #name="Latte・・ ♡")
                             bar_role = discord.utils.get(member.guild.roles, id = 854503426977038338) #name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
                             lvl_bar_role = discord.utils.get(member.guild.roles, id = 854503041775566879) #name="・ ──────꒰ ・ levels ・ ꒱────── ・")
-                            await member.add_roles(latte_role , bar_role, lvl_bar_role)
+                            await member.add_roles(latte_roles , bar_role, lvl_bar_role)
                         except:
                             pass
                     

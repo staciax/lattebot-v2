@@ -253,7 +253,6 @@ class Fun(commands.Cog):
         
     @commands.command(aliases=["fake"] , help="holamyfrient", usage="<message>")
     @commands.guild_only()
-    @commands.has_role(mystic_role)
     async def saybot(self , ctx , *, msg):
         await ctx.message.delete()
         webhook = await ctx.channel.create_webhook(name=ctx.author.display_name)
@@ -264,7 +263,6 @@ class Fun(commands.Cog):
     
     @commands.command(aliases=["fakem","saybotm"] , help="@Latte iloveyou", usage="<member> <message>")
     @commands.guild_only()
-    @commands.has_role(mystic_role)
     async def saybot_member(self , ctx , member:discord.Member=None,*, msg):
         await ctx.message.delete()
         webhook = await ctx.channel.create_webhook(name=member.display_name)
