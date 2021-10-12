@@ -1,14 +1,15 @@
 wheel
 aiofiles
+aiohttp==3.7.4.post0
 buttons==0.1.9
 discord.py @ git+https://github.com/Rapptz/discord.py@master#egg=discord.py[voice]
 discord-ext-menus @ git+https://github.com/Rapptz/discord-ext-menus
 googletrans==3.1.0a0
 humanize
-jishaku
-motor
+jishaku @ git+https://github.com/Gorialis/jishaku@master
+motor==2.5.1
 parsedatetime
 pillow
-psutil
+psutil==5.8.0
 python-dateutil
 requests
