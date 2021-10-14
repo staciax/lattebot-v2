@@ -209,7 +209,11 @@ class Message(commands.Cog):
             if image == "none":
                 embed.description += f"**Deleted in:** {channel_name}\n**Content:** ```{content}```"
                 embed.timestamp = time
-                embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
+                if author.avatar.url is not None:
+                    embed.set_author(name=author , icon_url=author.avatar.url)
+                else:
+                    embed.set_author(name=author)
+
                 embed.set_footer(text=f"Message delete")
                 if sniped_time:
                     await ctx.channel.send(embed=embed , delete_after=sniped_time)
@@ -226,7 +230,10 @@ class Message(commands.Cog):
                     embed.set_image(url=image)
                 except:
                     pass
-                embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
+                if author.avatar.url is not None:
+                    embed.set_author(name=author , icon_url=author.avatar.url)
+                else:
+                    embed.set_author(name=author)
                 embed.set_footer(text=f"Message delete")
 
                 if sniped_time:
@@ -251,7 +258,10 @@ class Message(commands.Cog):
             return
             
         embed = discord.Embed(description=f"**Deleted in:** {channel_name}\n**Content:** ```{content}```" , color=0xffffff , timestamp=time)
-        embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
+        if author.avatar.url is not None:
+            embed.set_author(name=author , icon_url=author.avatar.url)
+        else:
+            embed.set_author(name=author)
         embed.set_footer(text=f"Message delete")
         if sniped_time:
             await ctx.channel.send(embed=embed , delete_after=sniped_time)
@@ -276,7 +286,10 @@ class Message(commands.Cog):
             embed.set_image(url=image)
         except:
             pass
-        embed.set_author(name=f"{author.name}#{author.discriminator}" , icon_url=author.avatar.url)
+        if author.avatar.url is not None:
+            embed.set_author(name=author , icon_url=author.avatar.url)
+        else:
+            embed.set_author(name=author)
         embed.set_footer(text=f"Message delete")
         if sniped_time:
             await ctx.channel.send(embed=embed , delete_after=sniped_time)
@@ -290,7 +303,10 @@ class Message(commands.Cog):
         if user != None and args != None:
             try:
                 embed = discord.Embed(title="",description=f"** **\nMessage : `{args}`\n\n** **",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))
-                embed.set_footer(text=f"{self.bot.user.name}" , icon_url = self.bot.user.avatar.url)
+                if self.bot.user.avatar.url is not None:
+                    embed.set_footer(text=self.bot.user.name , icon_url = self.bot.user.avatar.url)
+                else:
+                    embed.set_footer(text=self.bot.user.name)
                 embed.set_author(name=f"{ctx.guild.name} | Direct Message", icon_url= ctx.guild.icon.url)
 
                 embedsc = discord.Embed(title=f"{self.bot.user.name} | Direct Message",description=f"Bot has been sent message to `{user.name}#{user.discriminator}`\n\nMessage : `{args}`\n\n",color=0xFFFFFF,timestamp=datetime.now(timezone.utc))

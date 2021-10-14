@@ -109,8 +109,9 @@ class Giveaway(commands.Cog):
             logembed = discord.Embed(title="Giveaway Logged",
                                     description=f"**Prize:** ``{msg4.content}``\n**Winners:** ``{winerscount}``\n**Channel:** {giveawaychannel.mention}\n**Host:** {ctx.author.mention}",
                                     color=0xffffff)
-            logembed.set_thumbnail(url=ctx.author.avatar.url)
-
+            if ctx.author.avatar.url is not None:
+                logembed.set_thumbnail(url=ctx.author.avatar.url)
+    
             await self.server_log.send(embed=logembed)
 
         futuredate = datetime.utcnow() + timedelta(seconds=timewait)

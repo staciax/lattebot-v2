@@ -188,14 +188,20 @@ class Owner_(commands.Cog):
             if message.content:
                 member = message.guild.get_member(240059262297047041)
                 embed = discord.Embed(description=f"{message.clean_content}")
-                embed.set_author(name=message.author.name, icon_url=message.author.avatar.url)
+                if message.author.avatar.url is not None:
+                    embed.set_author(name=message.author.name, icon_url=message.author.avatar.url)
+                else:
+                    embed.set_author(name=message.author.name)
                 await member.send(embed=embed)
                 await message.delete()
             if message.attachments:
                 image = message.attachments[0].proxy_url
                 member = message.guild.get_member(240059262297047041)
                 embed = discord.Embed(description=f"{message.clean_content}")
-                embed.set_author(name=message.author.name, icon_url=message.author.avatar.url)
+                if message.author.avatar.url is not None:
+                    embed.set_author(name=message.author.name, icon_url=message.author.avatar.url)
+                else:
+                    embed.set_author(name=message.author.name)
                 embed.set_image(url=image)
                 await member.send(embed=embed)
                 await message.delete()

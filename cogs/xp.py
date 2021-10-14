@@ -99,7 +99,10 @@ class XP(commands.Cog):
                 
         #view_button
         p = SimplePages(entries=filter_xp, per_page=5, ctx=ctx)
-        p.embed.set_author(name=f"{ctx.guild.name} Rankings", url=ctx.guild.icon.url , icon_url=ctx.guild.icon.url)
+        if ctx.guild.icon.url is not None:
+            p.embed.set_author(name=f"{ctx.guild.name} Rankings", url=ctx.guild.icon.url , icon_url=ctx.guild.icon.url)
+        else:
+            p.embed.set_author(name=f"{ctx.guild.name} Rankings")
         p.embed.set_footer(text = f'{self.bot.user.name}') 
         p.embed.color = 0x77dd77
         await p.start()

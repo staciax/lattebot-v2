@@ -117,7 +117,8 @@ class Utility_(commands.Cog):
 
         #send_member
         embed = discord.Embed(title=f"{rn_member.display_name}",color=rn_member.colour)
-        embed.set_thumbnail(url=rn_member.avatar.url)
+        if rn_member.avatar.url is not None:
+            embed.set_thumbnail(url=rn_member.avatar.url)
         embed.set_footer(text=f"Random in: {channel}")
         await ctx.send(embed=embed)
         
@@ -245,7 +246,10 @@ class Utility_(commands.Cog):
 
         #embed
         embed = discord.Embed(color=member.colour)
-        embed.set_author(name=member , icon_url=member.avatar.url)
+        if member.avatar.url is not None:
+            embed.set_author(name=member , icon_url=member.avatar.url)
+        else:
+            embed.set_author(name=member)
         embed.description = f"{desktop}\n{mobiles}\n{Web}"
 
         await ctx.send(embed=embed)

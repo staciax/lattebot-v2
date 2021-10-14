@@ -44,7 +44,7 @@ class Data(commands.Cog):
     #prefix
     @commands.command()
     async def prefix(self, ctx):
-        await ctx.send(f"This is my prefix `{PREFIX}`")
+        await ctx.send(f"This is my prefix `{PREFIX}` (dot)")
     
     @commands.command(aliases=["botinfo", "about"])
     @commands.guild_only()
@@ -52,8 +52,10 @@ class Data(commands.Cog):
         owner_bot = self.bot.get_user(self.bot.owner_id) #(https://discord.com/users/{owner_bot.id})
 
         embed = discord.Embed(color=0xffffff)
-        embed.set_author(name=f"About Me",icon_url=self.bot.user.avatar.url)
-        embed.set_thumbnail(url=owner_bot.avatar.url)
+        if self.bot.user.avatar.url is not None:
+            embed.set_author(name=f"About Me",icon_url=self.bot.user.avatar.url)
+        if owner_bot.avatar.url is not None:
+            embed.set_thumbnail(url=owner_bot.avatar.url)
 
         #stats
         serverCount = len(self.bot.guilds)
@@ -107,7 +109,8 @@ class Data(commands.Cog):
     async def invite(self, ctx):
         invite_url = f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=8&scope=applications.commands%20bot"
         embed = discord.Embed(title=f"{self.bot.user.name} BOT Invite" , color=WHITE) #**✧ LATTE Bot**\n♡ ꒷ now is online **{len(self.bot.guilds)}** servers︰𓂃 ꒱\n\n
-        embed.set_thumbnail(url=self.bot.user.avatar.url)
+        if self.bot.user.avatar.url is not None:
+            embed.set_thumbnail(url=self.bot.user.avatar.url)            
         #start_view_button
         view = discord.ui.View()
         style = discord.ButtonStyle.gray
@@ -195,14 +198,20 @@ class Data(commands.Cog):
         lastup = datetime(UYEAR, UMONTH, UDATE)
         dt = lastup.strftime("%d %B %Y") #%A,
         embed.set_footer(text=f"Recently Updated • {dt}")
-        embed.set_author(name=f"{self.bot.user.name} Stats", icon_url=self.bot.user.avatar.url)
+        if self.bot.user.avatar.url is not None: 
+            embed.set_author(name=f"{self.bot.user.name} Stats", icon_url=self.bot.user.avatar.url)
+        else:
+            embed.set_author(name=f"{self.bot.user.name} Stats")
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['botdis'])
     @commands.is_owner()
     async def logout(self, ctx): #ทำเหมือน giveaway version x
         embed = discord.Embed(color=0xffffff)
-        embed.set_author(name=f"{self.bot.user.name} Logout",icon_url=self.bot.user.avatar.url)
+        if self.bot.user.avatar.url is not None:
+            embed.set_author(name=f"{self.bot.user.name} Logout",icon_url=self.bot.user.avatar.url)
+        else:
+            embed.set_author(name=f"{self.bot.user.name} Logout")
         embed.description = f"are you sure? {utils.emoji_converter('what')}"
 
         m = await ctx.send("Are these all valid?", embed=embed , delete_after=60)
@@ -228,7 +237,10 @@ class Data(commands.Cog):
         
         await m.delete()
         embed_lg = discord.Embed(color=0xffffff)
-        embed_lg.set_footer(text=f"{self.bot.user.name} is disconnect" , icon_url=self.bot.user.avatar.url)
+        if self.bot.user.avatar.url is not None:
+            embed_lg.set_footer(text=f"{self.bot.user.name} is disconnect" , icon_url=self.bot.user.avatar.url)
+        else:
+            embed_lg.set_footer(text=f"{self.bot.user.name} is disconnect")
 
         await ctx.message.delete()
         await ctx.send(embed=embed_lg, delete_after=10)
@@ -259,7 +271,8 @@ class Data(commands.Cog):
         reportembed = discord.Embed(title="FEED BACK",
                                  description=f"{msg1.content}",
                                  color=0xffffff)
-        reportembed.set_thumbnail(url=ctx.author.avatar.url)
+        if ctx.author.avatar.url is not None:
+            reportembed.set_thumbnail(url=ctx.author.avatar.url)
 
         embedsc = discord.Embed(title="FEED BACK",description=f"{ctx.author.mention} Thank you for feedback {utils.emoji_converter('whiteheart')} !",color=0xffffff)
 
@@ -278,7 +291,10 @@ class Data(commands.Cog):
             description=f"{str(req)}",
             color=0xffffff
         )
-        embedq.set_footer(text=f"{ctx.author}", icon_url=ctx.author.avatar.url)
+        if ctx.author.avatar.url is not None:
+            embedq.set_footer(text=ctx.author, icon_url=ctx.author.avatar.url)
+        else:
+            embedq.set_footer(text=ctx.author)
 
         embedf = discord.Embed(description="Thanks for your request!" , color=WHITE)
 

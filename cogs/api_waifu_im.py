@@ -20,8 +20,6 @@ class api_waifu_im(commands.Cog):
     async def on_ready(self):
         print(f"-{self.__class__.__name__}")
     
-    #embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
-
     @commands.command(aliases=['sfw_all', 'all_sfw'])
     @commands.guild_only()
     async def waifuall(self, ctx):

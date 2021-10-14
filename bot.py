@@ -53,7 +53,7 @@ bot.giphy_api_ = secrets["giphy"]
 #jishaku
 bot.load_extension('jishaku')
 
-#soruce
+#latte_bot
 bot.prefixes = {PREFIX}
 bot.latte_version = BOTVERSION
 bot.latte_source = LATTESOURCE
@@ -64,6 +64,17 @@ bot.bots_gg = "-"
 bot.blacklist = {}
 bot.latte_server_id = 840379510704046151
 bot.latte_latte = "jhK46N6QWU"
+
+#latte_private_voice
+
+bot.underworld_before = 873677543453126676
+bot.underworld_after = 873679362082369546
+bot.moonlight_before = 875037193196945409
+bot.moonlight_after = 875038018736644166
+bot.death_before = 883025077610876958
+bot.death_after = 883059509810040884
+bot.angel_before = 873696566165250099
+bot.angel_after = 883027485455941712
 
 #cogs_and_mongodb
 if __name__ == "__main__":

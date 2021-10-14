@@ -150,8 +150,12 @@ class Activities(commands.Cog):
                     )
                     embed_log.add_field(name="Name:", value=f"{member.name}", inline=False)
                     embed_log.add_field(name="Invite Code:", value=f"||{invite.code}||", inline=False)
-                    embed_log.set_thumbnail(url=member.avatar.url)
-                    embed_log.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
+                    if member.avatar.url is not None:
+                        embed_log.set_thumbnail(url=member.avatar.url)
+                    if invite.inviter.avatar.url is not None:
+                        embed_log.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
+                    else:
+                        embed_log.set_footer(text=f"Invited by {invite.inviter.name}")
                     await self.server_log.send(embed=embed_log)
                     self.invites[member.guild.id] = invites_after_join
 
@@ -196,10 +200,10 @@ class Activities(commands.Cog):
     
             )
             if member.avatar.url is not None:
-                embed.set_author(name=f"{member}", icon_url=member.avatar.url)
+                embed.set_author(name=member, icon_url=member.avatar.url)
                 embed.set_thumbnail(url=member.avatar.url)
             else:
-                embed.set_author(name=f"{member}")
+                embed.set_author(name=member)
 
             if wel_picture: embed.set_image(url=wel_picture)
             embed.set_footer(text=f"You're our {member.guild.member_count} members ෆ")
@@ -225,7 +229,8 @@ class Activities(commands.Cog):
                 description=f"**Member ban\n`{member}`**",
                 color=PTRED
             )
-            embed.set_thumbnail(url=member.avatar.url)
+            if member.avatar.url is not None:
+                embed.set_thumbnail(url=member.avatar.url)
             embed.set_footer(text="—・good bye bro")
             embed.timestamp = datetime.now(timezone.utc)
 
@@ -246,7 +251,8 @@ class Activities(commands.Cog):
                         color=PTRED2,
                         timestamp=datetime.now(timezone.utc))
             embed_log.add_field(name="Name:", value=f"{member.name}#{member.discriminator}", inline=False)
-            embed_log.set_thumbnail(url=member.avatar.url)
+            if member.avatar.url is not None:
+                embed_log.set_thumbnail(url=member.avatar.url)
             await self.server_log.send(embed=embed_log)
             self.invites[member.guild.id] = await member.guild.invites()
 
@@ -263,7 +269,8 @@ class Activities(commands.Cog):
             embed = discord.Embed(
                         description=f"**Leave Server\n`{member}`**",
                         color=0xdbd7d2)
-            embed.set_thumbnail(url=member.avatar.url)
+            if member.avatar.url is not None:
+                embed.set_thumbnail(url=member.avatar.url)
             embed.set_footer(text="—・see ya good bye")
             embed.timestamp = datetime.now(timezone.utc)
 
@@ -285,7 +292,10 @@ class Activities(commands.Cog):
             embed.add_field(name="Max Uses:", value=f"{max_use_count}")
             embed.add_field(name="Channel:", value=f"#{invite.channel}")
             embed.add_field(name="Inivte Code:", value=f"||{invite.code}||")
-            embed.set_footer(text = f'Created by {invite.inviter.name}', icon_url =invite.inviter.avatar.url)
+            if invite.inviter.avatar.url is not None:
+                embed.set_footer(text = f'Created by {invite.inviter.name}', icon_url =invite.inviter.avatar.url)
+            else:
+                embed.set_footer(text = f'Created by {invite.inviter.name}')
             await self.server_log.send(embed=embed)
 
     @commands.Cog.listener()
@@ -307,8 +317,11 @@ class Activities(commands.Cog):
 
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
+                if after.avatar.url is not None:
                     embed.set_thumbnail(url=after.avatar.url)
-                    embed.set_footer(text=f"{after.display_name}#{after.discriminator}", icon_url=after.avatar.url)
+                    embed.set_footer(text=after, icon_url=after.avatar.url)
+                else:
+                    embed.set_footer(text=after)
             
                 await self.server_log.send(embed=embed)
 
@@ -334,7 +347,7 @@ class Activities(commands.Cog):
 						    timestamp=datetime.now(timezone.utc))
                 embed.set_thumbnail(url=before.avatar.url)
                 embed.set_image(url=after.avatar.url)
-                embed.set_footer(text=f"{after.display_name}#{after.discriminator}", icon_url=after.avatar.url)
+                embed.set_footer(text=after, icon_url=after.avatar.url)
 
                 await self.server_log.send(embed=embed)
 
@@ -365,8 +378,9 @@ class Activities(commands.Cog):
 
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
+                if after.avatar.url is not None:    
                     embed.set_thumbnail(url=after.avatar.url)
-    #                    embed.set_footer(text="", icon_url=after.avatar.url)
+                # embed.set_footer(text="", icon_url=after.avatar.url)
 
                 await self.server_log.send(embed=embed)
 
@@ -393,8 +407,10 @@ class Activities(commands.Cog):
                 embed = discord.Embed(colour=color, #colour=after.colour,
 						            timestamp=datetime.now(timezone.utc))
                 
-
-                embed.set_author(name=f"{after.display_name} | Role updates", icon_url=after.avatar.url)
+                if after.avatar.url is not None:
+                    embed.set_author(name=f"{after.display_name} | Role updates", icon_url=after.avatar.url)
+                else:
+                    embed.set_author(name=f"{after.display_name} | Role updates")
 
                 if role_update and nr_valur and nr_str:
                     embed.add_field(name="**Role**",value=nr_valur[:-22],inline=False)
@@ -419,7 +435,10 @@ class Activities(commands.Cog):
                     embed = discord.Embed(description=f"**Edited in**: {after.channel.mention}\n**Message link:** ||[click]({after.jump_url})||",
                                 colour=0xFF8C00, #after.author.colour,
                                 timestamp=datetime.now(timezone.utc))
-                    embed.set_author(name=after.author.display_name , url=after.jump_url ,icon_url=after.author.avatar.url)
+                    if after.author.avatar.url is not None:           
+                        embed.set_author(name=after.author.display_name , url=after.jump_url ,icon_url=after.author.avatar.url)
+                    else:
+                        embed.set_author(name=after.author.display_name , url=after.jump_url)
                     embed.set_footer(text="Message edit")
                 
                     fields = [("**Before**", f"```{before.content}```" , False),
@@ -446,7 +465,10 @@ class Activities(commands.Cog):
                 if not message.author.bot:
 
                     em = discord.Embed(color=0xDC143C , timestamp=datetime.now(timezone.utc))
-                    em.set_author(name=message.author.display_name, url=message.jump_url ,icon_url=message.author.avatar.url)
+                    if message.author.avatar.url is not None:
+                        em.set_author(name=message.author.display_name, url=message.jump_url ,icon_url=message.author.avatar.url)
+                    else:
+                        em.set_author(name=message.author.display_name, url=message.jump_url)
 
                     if message.attachments is not None:
                         if len(message.attachments) > 1:
@@ -487,57 +509,60 @@ class Activities(commands.Cog):
             return
 
         if member.guild.id == MYGUILD:
-            embed = discord.Embed(description="",timestamp=datetime.now(timezone.utc))
+            
+            embed = discord.Embed(timestamp=datetime.now(timezone.utc))
+            if member.avatar.url is not None:
+                embed.set_footer(text=member , icon_url=member.avatar.url)
+            else:
+                embed.set_footer(text=member)
+
+
             if member.bot:
                 return
 
             #voice_log
             if not before.channel:
-                embed.description += f"**JOIN CHANNEL** : `{after.channel.name}`"
-                embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
-                embed.color=PTGREEN
-                
+                embed.description = f"**JOIN CHANNEL** : `{after.channel.name}`"
+                embed.color=PTGREEN            
                 await self.voice_log.send(embed=embed)
         
             if before.channel and not after.channel:
-                embed.description += f"**LEFT CHANNEL** : `{before.channel.name}`"
-                embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
+                embed.description = f"**LEFT CHANNEL** : `{before.channel.name}`"
                 embed.color=PTRED2
                 await self.voice_log.send(embed=embed)
         
             if before.channel and after.channel:
                 if before.channel.id != after.channel.id:
-                    embed.description += f"**SWITCHED CHANNELS** : `{before.channel.name}` to `{after.channel.name}`"
-                    embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
+                    embed.description = f"**SWITCHED CHANNELS** : `{before.channel.name}` to `{after.channel.name}`"
                     embed.color=PTYELLOW2
                     await self.voice_log.send(embed=embed)
+                
                 else:
                     if member.voice.self_stream:
-                        embedstm = discord.Embed(description=f"**STREAMING in** : `{before.channel.name}`",timestamp=datetime.now(timezone.utc))
-                        embedstm.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
-                        embedstm.colour=PURPLE
+
+                        embed.description = f"**STREAMING in** : `{before.channel.name}`"
+                        embed.colour=PURPLE
                         self.current_streamers.append(member.id)
-                        await self.voice_log.send(embed=embedstm)
+                        await self.voice_log.send(embed=embed)
 
                     elif member.voice.mute:
-                        embedmute = discord.Embed(description=f"**SERVER MUTED** in `{after.channel.name}`")
-                        embedmute.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
-                        embedmute.colour=PTRED
-                        await self.voice_log.send(embed=embedmute)
+                        embed.description = f"**SERVER MUTED** in `{after.channel.name}`"
+                        embed.colour=PTRED
+                        await self.voice_log.send(embed=embed)
 
                     elif member.voice.deaf:
-                        embeddeaf = discord.Embed(description=f"**SERVER DEAFEN** in `{after.channel.name}`")
-                        embeddeaf.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
-                        embeddeaf.colour=PTRED
-                        await self.voice_log.send(embed=embeddeaf)
+                        embed.description = f"**SERVER DEAFEN** in `{after.channel.name}`"
+                        embed.colour=PTRED
+                        await self.voice_log.send(embed=embed)
 
                     else:
                         if member.voice.deaf:
-                            print("unmuted")
+                            pass
+                            # print("unmuted")
                         for streamer in self.current_streamers:
                             if member.id == streamer:
                                 if not member.voice.self_stream:
-    #                                    print("user stopped streaming")
+                                        # print("user stopped streaming")
                                     self.current_streamers.remove(member.id)
                                 break        
         else:
@@ -545,67 +570,89 @@ class Activities(commands.Cog):
 
         #privete_temp_channel
         if after.channel is not None:
-            if after.channel.name == "・ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ・":
-                chname = "ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ"
-                checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
-                if checkvoice is None:
-                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
-                    
-                    if channel is not None:
-                        await member.move_to(channel)
-                    
-                elif checkvoice:
-                    await member.move_to(checkvoice)
-                else:
-                    return
-                    
-            if after.channel.name == "・ᴹᴼᴼᴺᴸᴵᴳᴴᵀ・":
-                chname = "ᴹᴼᴼᴺᴸᴵᴳᴴᵀ"
-                checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
-                if checkvoice is None:
-                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
-                    
-                    if channel is not None:
-                        await member.move_to(channel)
-                    
-                elif checkvoice:
-                    await member.move_to(checkvoice)
-                else:
-                    return
+            if after.channel.id == self.bot.underworld_before:
+                underworld_vc = member.guild.get_channel(self.bot.underworld_after)
+                return await member.move_to(underworld_vc)
+                
+            if after.channel.id == self.bot.moonlight_before:
+                moonlight_vc = member.guild.get_channel(self.bot.moonlight_after)
+                return await member.move_to(moonlight_vc)
             
-            if after.channel.name == "・ᴬᴺᴳᴱᴸ・":
-                chname = "ᴬᴺᴳᴱᴸ"
-                checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
-                if checkvoice is None:
-                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
-                    
-                    if channel is not None:
-                        await member.move_to(channel)
-                    
-                elif checkvoice:
-                    await member.move_to(checkvoice)
-                else:
-                    return
+            if after.channel.id == self.bot.angel_before:
+                angel_vc = member.guild.get_channel(self.bot.angel_after)
+                return await member.move_to(angel_vc)
             
-            if after.channel.name == "・ᴰᴱᴬᵀᴴ・":
-                chname = "ᴰᴱᴬᵀᴴ"
-                checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
-                if checkvoice is None:
-                    channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
-                    
-                    if channel is not None:
-                        await member.move_to(channel)
-                    
-                elif checkvoice:
-                    await member.move_to(checkvoice)
-                else:
-                    return
+            if after.channel.id == self.bot.death_before:            
+                death_vc = member.guild.get_channel(self.bot.death_after)
+                return await member.move_to(death_vc)
             
             if after.channel.id == bad_channel:
                 if member.id in bad_id:
                     return
                 else:
                     await member.move_to(channel=None)
+
+            # if after.channel.name == "・ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ・":
+            #     chname = "ᵁᴺᴰᴱᴿᵂᴼᴿᴸᴰ"
+            #     checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
+            #     if checkvoice is None:
+            #         channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
+                    
+            #         if channel is not None:
+            #             await member.move_to(channel)
+                    
+            #     elif checkvoice:
+            #         await member.move_to(checkvoice)
+            #     else:
+            #         return
+                    
+            # if after.channel.name == "・ᴹᴼᴼᴺᴸᴵᴳᴴᵀ・":
+            #     chname = "ᴹᴼᴼᴺᴸᴵᴳᴴᵀ"
+            #     checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
+            #     if checkvoice is None:
+            #         channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
+                    
+            #         if channel is not None:
+            #             await member.move_to(channel)
+                    
+            #     elif checkvoice:
+            #         await member.move_to(checkvoice)
+            #     else:
+            #         return
+            
+            # if after.channel.name == "・ᴬᴺᴳᴱᴸ・":
+            #     chname = "ᴬᴺᴳᴱᴸ"
+            #     checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
+            #     if checkvoice is None:
+            #         channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
+                    
+            #         if channel is not None:
+            #             await member.move_to(channel)
+                    
+            #     elif checkvoice:
+            #         await member.move_to(checkvoice)
+            #     else:
+            #         return
+            
+            # if after.channel.name == "・ᴰᴱᴬᵀᴴ・":
+            #     chname = "ᴰᴱᴬᵀᴴ"
+            #     checkvoice = get_channel_by_name(after.channel.guild, channel_name=chname)
+            #     if checkvoice is None:
+            #         channel = await create_voice_channel(after.channel.guild, f'{chname}'.lower() , category_name="୨୧ ━━━━ ・Private")
+                    
+            #         if channel is not None:
+            #             await member.move_to(channel)
+                    
+            #     elif checkvoice:
+            #         await member.move_to(checkvoice)
+            #     else:
+            #         return
+            
+            # if after.channel.id == bad_channel:
+            #     if member.id in bad_id:
+            #         return
+            #     else:
+            #         await member.move_to(channel=None)
 
     @commands.Cog.listener()
     async def on_presence_update(self, before, after):
@@ -629,7 +676,10 @@ class Activities(commands.Cog):
                     colour=after.colour,
                     timestamp=datetime.now(timezone.utc)
                 )
-                embed.set_author(name=f"{after}", icon_url=after.avatar.url)
+                if after.avatar.url is not None:
+                    embed.set_author(name=after, icon_url=after.avatar.url)
+                else:
+                    embed.set_author(name=after)
                 embed.set_footer(text=f"{str(after.status)}", icon_url=utils.status_icon(after.status))
                 await self.status_log.send(embed=embed)
     

@@ -292,8 +292,11 @@ class Infomation(commands.Cog):
     async def emoji_info(self, ctx, emoji: discord.Emoji = None):
         if not emoji:
             embed_help = discord.Embed(color = 0xffffff)
-            embed_help.set_author(name=f"{ctx.author.name}" , icon_url = ctx.author.avatar.url)
-            embed_help.add_field(name="Emoji Infomation" , value="```yaml\n.emojiinfo [emoji] | .ei [emoji]```", inline = True)
+            if ctx.author.avatar.url is not None:
+                embed_help.set_author(name=ctx.author.name , icon_url = ctx.author.avatar.url)
+            else:
+                embed_help.set_author(name=ctx.author.name)
+            embed_help.add_field(name="Emoji Infomation" , value=f"```yaml\n{ctx.clean_prefix}emojiinfo [emoji] | {ctx.clean_prefix}ei [emoji]```", inline = True)
             return await ctx.send(embed=embed_help , delete_after=15)
         #            return await ctx.invoke(self.bot.get_command("help") , category="info")
                     

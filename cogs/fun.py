@@ -148,7 +148,10 @@ class Fun(commands.Cog):
 
         embed = discord.Embed(color=YELLOW)
         embed.add_field(name="Datetime sleep:", value=f"{utils.format_dt(futuredate)}" , inline=False)
-        embed.set_footer(text=f"{member.name}#{member.discriminator}" , icon_url=member.avatar.url)
+        if member.avatar.url is not None:
+            embed.set_footer(text=member , icon_url=member.avatar.url)
+        else:
+            embed.set_footer(text=member)
 
         m = await ctx.send(embed=embed)
 
@@ -180,7 +183,10 @@ class Fun(commands.Cog):
         
         embed_edit = discord.Embed(color=member.colour , timestamp=futuredate)
         embed_edit.description = f"**TIME TO SLEEP** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_relative(futuredate)}"
-        embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
+        if member.avatar.url is not None:
+            embed_edit.set_footer(text=member , icon_url=member.avatar.url)
+        else:
+            embed_edit.set_footer(text=member)
         
         if timewait > 600:
             if member == ctx.author:
@@ -220,43 +226,46 @@ class Fun(commands.Cog):
             em_error = discord.Embed(description=f"**{member}** : sleep timer not found", color=WHITE)
             await ctx.send(embed=em_error)
     
-    @commands.command(name="sldb")
-    async def sleep_db(self, ctx, time,*, member : discord.Member=None):
-        if not time:
-            return         
-        if member is None:
-            member = ctx.author
+    # @commands.command(name="sldb")
+    # async def sleep_db(self, ctx, time,*, member : discord.Member=None):
+    #     if not time:
+    #         return         
+    #     if member is None:
+    #         member = ctx.author
         
-        #time
-        timewait = utils.FutureTime_converter(time)
-        futuredate = datetime.now(timezone.utc) + timedelta(seconds=timewait)
-        futuredate_utc7 = futuredate + timedelta(seconds=25200)
-        futuredate_ = futuredate.strftime("%d%m%Y%H%M")
+    #     #time
+    #     timewait = utils.FutureTime_converter(time)
+    #     futuredate = datetime.now(timezone.utc) + timedelta(seconds=timewait)
+    #     futuredate_utc7 = futuredate + timedelta(seconds=25200)
+    #     futuredate_ = futuredate.strftime("%d%m%Y%H%M")
         
-        data = await self.bot.sleepdb.find_by_custom({"member_id": member.id})
-        if data is None:
-            data = {
-                "member_id": member.id,
-                "timer": futuredate_
-            }
-        data["timer"] = futuredate_
-        await self.bot.sleepdb.update_by_custom(
-            {"member_id": member.id}, data
-        )
+    #     data = await self.bot.sleepdb.find_by_custom({"member_id": member.id})
+    #     if data is None:
+    #         data = {
+    #             "member_id": member.id,
+    #             "timer": futuredate_
+    #         }
+    #     data["timer"] = futuredate_
+    #     await self.bot.sleepdb.update_by_custom(
+    #         {"member_id": member.id}, data
+    #     )
 
-        embed_edit = discord.Embed(color=PTGREEN , timestamp=futuredate)
-        embed_edit.description = f"**time to sleep** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_dt(futuredate_utc7)}"
-        embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
-        if ctx.author != member:
-            embed_edit.description += f"\n||Req by : {ctx.author.mention}||"
-        await ctx.send("sleep db")
+    #     embed_edit = discord.Embed(color=PTGREEN , timestamp=futuredate)
+    #     embed_edit.description = f"**time to sleep** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_dt(futuredate_utc7)}"
+    #     embed_edit.set_footer(text=f"{member.name}" , icon_url=member.avatar.url)
+    #     if ctx.author != member:
+    #         embed_edit.description += f"\n||Req by : {ctx.author.mention}||"
+    #     await ctx.send("sleep db")
         
     @commands.command(aliases=["fake"] , help="holamyfrient", usage="<message>")
     @commands.guild_only()
     async def saybot(self , ctx , *, msg):
         await ctx.message.delete()
         webhook = await ctx.channel.create_webhook(name=ctx.author.display_name)
-        await webhook.send(msg, username=ctx.author.name, avatar_url=ctx.author.avatar.url)
+        if ctx.author.avatar.url is not None:
+            await webhook.send(msg, username=ctx.author.name, avatar_url=ctx.author.avatar.url)
+        else:
+            await webhook.send(msg, username=ctx.author.name)
         webhooks = await ctx.channel.webhooks()
         for webhook in webhooks:
             await webhook.delete()
@@ -266,16 +275,19 @@ class Fun(commands.Cog):
     async def saybot_member(self , ctx , member:discord.Member=None,*, msg):
         await ctx.message.delete()
         webhook = await ctx.channel.create_webhook(name=member.display_name)
-        await webhook.send(msg, username=member.display_name, avatar_url=member.avatar.url)
+        if member.avatar.url is not None:
+            await webhook.send(msg, username=member.display_name, avatar_url=member.avatar.url)
+        else:
+            await webhook.send(msg, username=member.display_name)
         webhooks = await ctx.channel.webhooks()
         for webhook in webhooks:
             await webhook.delete()
     
-    @commands.command()
-    async def test_webwook(self, ctx ,*, msg):
-        async with aiohttp.ClientSession() as session:
-            webhook = discord.Webhook.partial(881116610453180437,"Ljuzp58fs8zH9MSThtwOko5XGSAqPWg9Qt9OzYjAEMYJ0mp_5SbpgoQdOXaqw2sCZk1Y",session=session)
-            await webhook.send(msg, username=ctx.message.author.name , avatar_url=ctx.message.author.avatar.url)
+    # @commands.command()
+    # async def test_webwook(self, ctx ,*, msg):
+    #     async with aiohttp.ClientSession() as session:
+    #         webhook = discord.Webhook.partial(881116610453180437,"Ljuzp58fs8zH9MSThtwOko5XGSAqPWg9Qt9OzYjAEMYJ0mp_5SbpgoQdOXaqw2sCZk1Y",session=session)
+    #         await webhook.send(msg, username=ctx.message.author.name , avatar_url=ctx.message.author.avatar.url)
     
     @commands.command(aliases=["temprole","tr"])
     @commands.guild_only()

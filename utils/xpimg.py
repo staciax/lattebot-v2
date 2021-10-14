@@ -17,30 +17,31 @@ from config import *
 
 def level_images(member ,final_xp , lvl , rank , xp):
     background = Image.open('data/images/level.png')
-    url = member.avatar.replace(format='png') #when avater gif = convert gif to png 
-    response = requests.get(url)
-    logo = Image.open(BytesIO(response.content)).resize((300, 300))
-    whitecc =  Image.new("RGB", (310, 310), (119, 221, 119))
-    bigsize = (logo.size[0] * 3, logo.size[1] * 3)
-    mask = Image.new("L", bigsize, 0)
+    if member.avatar is not None:
+        url = member.avatar.replace(format='png') #when avater gif = convert gif to png 
+        response = requests.get(url)
+        logo = Image.open(BytesIO(response.content)).resize((300, 300))
+        whitecc =  Image.new("RGB", (310, 310), (119, 221, 119))
+        bigsize = (logo.size[0] * 3, logo.size[1] * 3)
+        mask = Image.new("L", bigsize, 0)
 
-    draw = ImageDraw.Draw(mask)
-    draw.ellipse((0, 0) + bigsize, 255)
+        draw = ImageDraw.Draw(mask)
+        draw.ellipse((0, 0) + bigsize, 255)
 
-    #draw.ellipse((140 * 3, 140 * 3, 189 * 3, 189 * 3), 0)
+        #draw.ellipse((140 * 3, 140 * 3, 189 * 3, 189 * 3), 0)
 
-    mask = mask.resize(logo.size, Image.ANTIALIAS )
-    logo.putalpha(mask)
+        mask = mask.resize(logo.size, Image.ANTIALIAS )
+        logo.putalpha(mask)
 
-    bigsize = (whitecc.size[0] * 3, whitecc.size[1] * 3)
-    draw.ellipse((0, 0) + bigsize, 255)
+        bigsize = (whitecc.size[0] * 3, whitecc.size[1] * 3)
+        draw.ellipse((0, 0) + bigsize, 255)
 
-    mask = mask.resize(whitecc.size, Image.ANTIALIAS )
-    whitecc.putalpha(mask)
+        mask = mask.resize(whitecc.size, Image.ANTIALIAS )
+        whitecc.putalpha(mask)
 
-    background.paste(whitecc, (35, 45), mask=whitecc)
+        background.paste(whitecc, (35, 45), mask=whitecc)
 
-    background.paste(logo, (40, 50), mask=logo)
+        background.paste(logo, (40, 50), mask=logo)
 
     # # Black Circle
     draw = ImageDraw.Draw(background)
