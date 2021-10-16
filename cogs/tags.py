@@ -77,6 +77,7 @@ class Tags(commands.Cog):
                 i += 1
                 matches = "\n".join(matches)
                 message = f"Tag not found. Did you mean...\n`{matches}`"
+                return await ctx.send(message , delete_after=15)
 
         await ctx.send(message)
     
@@ -278,10 +279,10 @@ class Tags(commands.Cog):
         if not not_found:
             return await ctx.send("data not found")
         
-#        max_num = []
-#        for x in not_found:     
-#            num = x['tag_id']
-#            max_num.append(num)
+    #    max_num = []
+    #    for x in not_found:     
+    #        num = x['tag_id']
+    #        max_num.append(num)
 
         embed = discord.Embed(description=f"Total tags : `{len(not_found)}`",color=PTGREEN)
         await ctx.send(embed=embed)

@@ -47,7 +47,7 @@ class Reaction(commands.Cog):
             if emoji == '861128979313328128':
                 role = discord.utils.get(guild.roles, id = 860069256904572928)
 
-            color_main = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
+            # color_main = discord.utils.get(guild.roles, id = 854506876674244608) #name="・ ──────꒰ ・ colors ・ ꒱────── ・")
 
             await member.add_roles(role , color_main)
         
