@@ -58,6 +58,7 @@ class Error(commands.Cog):
         elif isinstance(error, commands.CheckFailure):
             cm_error = f"You can't use this command."  
         else:
+            print(error)
             return
     #            cm_error = f"{error}"
         embed.description = cm_error

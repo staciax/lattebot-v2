@@ -14,7 +14,8 @@ from config import *
 emojis = utils.emoji_converter
 
 class Help_selection(discord.ui.Select):
-    def __init__(self):
+    def __init__(self, ctx):
+        self.ctx = ctx
         options = [
             discord.SelectOption(label='Anime', description='Anime gif and picture', emoji=f"{emojis('miraishocked')}"),
             discord.SelectOption(label='Image', description='Image commands', emoji=f"{emojis('image')}"),
@@ -27,6 +28,11 @@ class Help_selection(discord.ui.Select):
             discord.SelectOption(label='NSFW', description='NSFW commands', emoji=F'{emojis("Aoba")}'),
             discord.SelectOption(label='Tag', description='Tag commands', emoji=F'{emojis("amelia")}')
         ]
+        if self.ctx.author.guild_permissions.administrator:
+            options += [
+                discord.SelectOption(label='Giveaway', description='Create giveaway', emoji='🎉'),
+                discord.SelectOption(label='Moderation', description='Moderation commands', emoji=f'{emojis("moderation")}')     
+            ]
 
         super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
 
@@ -41,19 +47,21 @@ class Help_selection(discord.ui.Select):
         elif self.values[0] == "Leveling": return await interaction.response.edit_message(embed=utils.Leveling())
         elif self.values[0] == "NSFW": return await interaction.response.edit_message(embed=utils.NSFW())
         elif self.values[0] == "Tag": return await interaction.response.edit_message(embed=utils.Help_tag())
-
-class Admin_selection(discord.ui.Select):
-    def __init__(self):
-        options = [
-            discord.SelectOption(label='Giveaway', description='Create giveaway', emoji='🎉'),
-            discord.SelectOption(label='Moderation', description='Moderation commands', emoji=f'{emojis("moderation")}')
-        ]
-
-        super().__init__(placeholder='Admin selection.', min_values=1, max_values=1, options=options)
-
-    async def callback(self, interaction: discord.Interaction):
-        if self.values[0] == "Giveaway": return await interaction.response.edit_message(embed=utils.Giveaway())
+        elif self.values[0] == "Giveaway": return await interaction.response.edit_message(embed=utils.Giveaway())
         elif self.values[0] == "Moderation": return await interaction.response.edit_message(embed=utils.Moderation())
+
+# class Admin_selection(discord.ui.Select):
+#     def __init__(self):
+#         options = [
+#             discord.SelectOption(label='Giveaway', description='Create giveaway', emoji='🎉'),
+#             discord.SelectOption(label='Moderation', description='Moderation commands', emoji=f'{emojis("moderation")}')
+#         ]
+
+#         super().__init__(placeholder='Admin selection.', min_values=1, max_values=1, options=options)
+
+#     async def callback(self, interaction: discord.Interaction):
+#         if self.values[0] == "Giveaway": return await interaction.response.edit_message(embed=utils.Giveaway())
+#         elif self.values[0] == "Moderation": return await interaction.response.edit_message(embed=utils.Moderation())
 
 class Help(commands.Cog):
 
@@ -73,8 +81,8 @@ class Help(commands.Cog):
         embedhelp.add_field(name='** **', value=f"•<:image:889841860183461918> Image\n•🥳 Fun\n•{emojis('ClevelandDeal')} Leveling")
         embedhelp.add_field(name='** **', value=f"•⚙️ Utility\n•{emojis('Ani1')} Misc\n•{emojis('Aoba')} NSFW")
 
-        #if ctx.author.guild_permissions.administrator:
-        if ctx.channel.id == LATTE_TEST_BOT:
+        if ctx.author.guild_permissions.administrator:
+#        if ctx.channel.id == LATTE_TEST_BOT:
             embedhelp.add_field(name='** **', value=f"•🎉 Giveaway\n•{emojis('moderation')} Moderation")
         #    embedhelp.add_field(name=f"•🎉 **Giveaway**", value=f"`{PREFIX}help gw`", inline=True)
         #    embedhelp.add_field(name=f"•{emojis('moderation')} **Moderation**", value=f"`{PREFIX}help mod`", inline=True)
@@ -86,16 +94,12 @@ class Help(commands.Cog):
 
         #start_selection_view
         view = discord.ui.View(timeout=300)
-        view.add_item(Help_selection())
+        view.add_item(Help_selection(ctx))
 
         #button_view
         #style = discord.ButtonStyle.gray
         #source_button = discord.ui.Button(style=style, label="Source code", url="https://github.com/staciax/Latte-bot-v2-dpy-v2.0.0a" , emoji="<:github:889792131852546088>")
         #view.add_item(item=source_button)
-
-        #for_admin
-        if ctx.channel.id == LATTE_TEST_BOT:
-            view.add_item(Admin_selection())
         
         if command is None:
             print(ctx.clean_prefix)
@@ -142,8 +146,7 @@ class Help(commands.Cog):
             helpEmbed.add_field (
                 name = "Usage",
                 value = f"```{ctx.clean_prefix}{command.name} {cmd_usage}```",
-                inline=False
-                
+                inline=False   
             )
 
             if command.help:

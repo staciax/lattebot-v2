@@ -570,20 +570,20 @@ class Activities(commands.Cog):
 
         #privete_temp_channel
         if after.channel is not None:
-            if after.channel.id == self.bot.underworld_before:
-                underworld_vc = member.guild.get_channel(self.bot.underworld_after)
+            if after.channel.id == self.bot.underworldx[0]:
+                underworld_vc = member.guild.get_channel(self.bot.underworldx[1])
                 return await member.move_to(underworld_vc)
                 
-            if after.channel.id == self.bot.moonlight_before:
-                moonlight_vc = member.guild.get_channel(self.bot.moonlight_after)
+            if after.channel.id == self.bot.moonlightx[0]:
+                moonlight_vc = member.guild.get_channel(self.bot.moonlightx[1])
                 return await member.move_to(moonlight_vc)
             
-            if after.channel.id == self.bot.angel_before:
-                angel_vc = member.guild.get_channel(self.bot.angel_after)
+            if after.channel.id == self.bot.angelx[0]:
+                angel_vc = member.guild.get_channel(self.bot.angelx[1])
                 return await member.move_to(angel_vc)
             
-            if after.channel.id == self.bot.death_before:            
-                death_vc = member.guild.get_channel(self.bot.death_after)
+            if after.channel.id == self.bot.deathx[0]:            
+                death_vc = member.guild.get_channel(self.bot.deathx[1])
                 return await member.move_to(death_vc)
             
             if after.channel.id == bad_channel:

@@ -10,6 +10,7 @@ from datetime import datetime, timezone , timedelta
 
 # Local
 import utils
+from utils.activities import create_voice_channel
 
 class Misc(commands.Cog):
 
@@ -38,6 +39,11 @@ class Misc(commands.Cog):
             embed=discord.Embed(title=f"Screenshot : {link}", color=0xffffff)
             embed.set_image(url=f"https://image.thum.io/get/width/1920/crop/675/maxAge/1/noanimate/{link}")
             await ctx.send(embed=embed)
+    
+    # @commands.command(aliases=['cc'])
+    # @utils.is_latte_guild()
+    # async def create_channel(self, ctx, channel_name):
+    #     channel = await create_voice_channel(ctx.channel.guild, f'{channel_name}'.lower() , category_name="୨୧ ━━━━ ・Private")
     
 def setup(bot):
     bot.add_cog(Misc(bot))

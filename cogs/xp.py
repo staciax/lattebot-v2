@@ -36,41 +36,42 @@ class XP(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author.bot:
-            return
-        if message.channel.id in CHAT_CH:
-            data = await self.bot.latte_level.find_by_custom({"id": message.author.id, "guild_id": message.guild.id})            
-            if data is None:
-                data = {
-                    "id" : message.author.id,
-                    "xp" : 100,
-                    "guild_id": message.guild.id
-                }
-                #add_role_xp_bar
-                guild = message.guild
-                lvl_bar = discord.utils.get(guild.roles, id = 854503041775566879)#・ ──────꒰ ・ levels ・ ꒱────── ・
-                await message.author.add_roles(lvl_bar)
+        if not self.bot.tester or len(self.bot.tester) == 0:
+            if message.author.bot:
+                return
+            if message.channel.id in CHAT_CH: #แก้ไขเป็น json
+                data = await self.bot.latte_level.find_by_custom({"id": message.author.id, "guild_id": message.guild.id})            
+                if data is None:
+                    data = {
+                        "id" : message.author.id,
+                        "xp" : 100,
+                        "guild_id": message.guild.id
+                    }
+                    #add_role_xp_bar
+                    guild = message.guild
+                    lvl_bar = discord.utils.get(guild.roles, id = 854503041775566879)#・ ──────꒰ ・ levels ・ ꒱────── ・
+                    await message.author.add_roles(lvl_bar)
 
-            xp = data["xp"]
-            data["xp"] += 5
-            await self.bot.latte_level.update_by_custom(
-                {"id": message.author.id, "guild_id": message.guild.id}, data
-            )
+                xp = data["xp"]
+                data["xp"] += 5
+                await self.bot.latte_level.update_by_custom(
+                    {"id": message.author.id, "guild_id": message.guild.id}, data
+                )
 
-            lvl = 0 
-            while True:
-                if xp < ((50*(lvl**2))+(50*lvl)):
-                    break
-                lvl += 1
-            xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
-            if xp == 0:
-                emlvup = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!",color=0xffffff)
-                msg = await message.channel.send(embed=emlvup)
-                for i in range(len(level)):
-                    if lvl == levelnum[i]:
-                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
-                        embed = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
-                        await msg.edit(embed=embed)
+                lvl = 0 
+                while True:
+                    if xp < ((50*(lvl**2))+(50*lvl)):
+                        break
+                    lvl += 1
+                xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
+                if xp == 0:
+                    emlvup = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!",color=0xffffff)
+                    msg = await message.channel.send(embed=emlvup)
+                    for i in range(len(level)):
+                        if lvl == levelnum[i]:
+                            await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
+                            embed = discord.Embed(description=f"**Congratulations**, {message.author.mention} you leveled up to **level {lvl}.**!\nyou have gotten role **{level[i]}**!!!",color=0xffffff)
+                            await msg.edit(embed=embed)
             
     @commands.command(description="Show ranking xp", aliases=['rank','leaderboard'])
     @commands.guild_only()

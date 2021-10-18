@@ -23,7 +23,7 @@ from utils.mongo import Document
 #cwd
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
-print(f"{cwd}\n-----")
+# print(f"{cwd}\n-----")
 
 #json_secret_file
 secrets = utils.json_loader.read_json("secrets")
@@ -31,6 +31,8 @@ owner = secrets["owner"]
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(f'{PREFIX}'), case_insensitive=True, intents=intents, owner_id=owner , help_command=None)
+
+bot.tester = ''
 
 @bot.event
 async def on_ready():
@@ -66,32 +68,31 @@ bot.latte_server_id = 840379510704046151
 bot.latte_latte = "jhK46N6QWU"
 
 #latte_private_voice
+bot.underworldx = [873677543453126676, 873679362082369546]
+bot.moonlightx = [875037193196945409, 875038018736644166]
+bot.deathx = [883025077610876958, 883059509810040884]
+bot.angelx = [873696566165250099, 883027485455941712]
 
-bot.underworld_before = 873677543453126676
-bot.underworld_after = 873679362082369546
-bot.moonlight_before = 875037193196945409
-bot.moonlight_after = 875038018736644166
-bot.death_before = 883025077610876958
-bot.death_after = 883059509810040884
-bot.angel_before = 873696566165250099
-bot.angel_after = 883027485455941712
-
+# a = [100,200]
+# print(a[0])
 #cogs_and_mongodb
 if __name__ == "__main__":
-    bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
 
-    #db_main
-    bot.db = bot.mongo["latteonly"]
-    bot.sleepdb = Document(bot.db, "sleeping")
-    bot.tagdb = Document(bot.db, "tags")
+    if not bot.tester or len(bot.tester) == 0:
+        bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
 
-    #db_testing
-    bot.db2 = bot.mongo["lattebot"]
-    bot.latency_bot = Document(bot.db2, "latency")
+        #db_main
+        bot.db = bot.mongo["latteonly"]
+        bot.sleepdb = Document(bot.db, "sleeping")
+        bot.tagdb = Document(bot.db, "tags")
 
-    #db_leveling
-    bot.db_level = bot.mongo["discord"]
-    bot.latte_level = Document(bot.db_level, "levelling")
+        #db_testing
+        bot.db2 = bot.mongo["lattebot"]
+        bot.latency_bot = Document(bot.db2, "latency")
+
+        #db_leveling
+        bot.db_level = bot.mongo["discord"]
+        bot.latte_level = Document(bot.db_level, "levelling")
 
     for file in os.listdir(cwd + "/cogs"):
         if file.endswith(".py") and not file.startswith("_"):
