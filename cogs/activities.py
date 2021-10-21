@@ -419,6 +419,19 @@ class Activities(commands.Cog):
                     return
 
                 await self.roles_log.send(embed=embed)
+            
+            elif before.display_avatar != after.display_avatar:
+                try:
+                    embed = discord.Embed(title="Server Avatar change",description="New image is below, old to the right.",
+                                colour=0xf3d4b4,
+                                timestamp=datetime.now(timezone.utc))
+                    embed.set_thumbnail(url=before.display_avatar.url)
+                    embed.set_image(url=after.display_avatar.url)
+                    embed.set_footer(text=after, icon_url=after.display_avatar.url)
+
+                    await self.server_log.send(embed=embed)
+                except:
+                    pass
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
@@ -676,7 +689,7 @@ class Activities(commands.Cog):
                     colour=after.colour,
                     timestamp=datetime.now(timezone.utc)
                 )
-                if after.avatar.url is not None:
+                if after.avatar is not None:
                     embed.set_author(name=after, icon_url=after.avatar.url)
                 else:
                     embed.set_author(name=after)
