@@ -63,11 +63,11 @@ class Owner_(commands.Cog):
             self.bot.load_extension(f'cogs.{extension}')
             embed.description = f"{utils.emoji_converter('greentick')} Load : `{extension}`"
             embed.color = 0x8be28b
+            return await ctx.send(embed=embed)
         except Exception as e:
             embed.description(f"Could not reload : `{extension}`")
             embed.color = 0xFF7878
-
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
     
     @commands.command()
     @commands.is_owner()
@@ -77,11 +77,11 @@ class Owner_(commands.Cog):
             self.bot.unload_extension(f'cogs.{extension}')
             embed.description = f"{utils.emoji_converter('greentick')} Unload : `{extension}`"
             embed.color = 0x8be28b
+            return await ctx.send(embed=embed)
         except Exception as e:
             embed.description(f"Could not reload : `{extension}`")
             embed.color = 0xFF7878
-
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
     
     @commands.command()
     @commands.is_owner()
@@ -92,11 +92,11 @@ class Owner_(commands.Cog):
             self.bot.load_extension(f'cogs.{extension}')
             embed.description = f"{utils.emoji_converter('greentick')} Reload : `{extension}`"
             embed.color = 0x8be28b
+            return await ctx.send(embed=embed)
         except Exception as e:
             embed.description(f"Could not reload : `{extension}`")
             embed.color = 0xFF7878
-
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
     @commands.command()
     @commands.is_owner()

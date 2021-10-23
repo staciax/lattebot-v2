@@ -15,7 +15,8 @@ def Utility():
   Use `.help <command>` for more informations about a command.
 
   `afk` • set your afk
-  `sleep` • Set timer disconnect voice channel.
+  `sleep` • Set timer member disconnect voice channel.
+  `sleep_vc` • Set timer all member disconnect voice channel.
   `snipe` • Snipe message after delete
   `remind`• timer remind me
   `poll` • Create poll.

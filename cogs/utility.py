@@ -3,7 +3,8 @@ import discord
 import asyncio
 import random
 import datetime
-from discord.ext import commands
+import json
+from discord.ext import commands , tasks
 from datetime import datetime, timezone , timedelta
 
 # Third party
@@ -15,11 +16,48 @@ from typing import Union
 # Local
 import utils
 from config import *
+from utils.custom_menu import NewSimpage
+from utils.converters import FutureTime_converter
+from utils.json_loader import read_json , write_json
+from utils.ButtonRef import Confirm
+from utils.formats import format_dt
+from utils.time import format_relative
 
 class Utility_(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.channel_sleep = {}
+        self.channel_sleeped.start()
+    
+    def cog_unload(self):
+        self.channel_sleeped.cancel()
+    
+    @tasks.loop(minutes=1)
+    async def channel_sleeped(self):
+        guild = self.bot.get_guild(MYGUILD)
+        data = read_json("channel_sleep")
+        if not data:
+            return
+        for key in data.keys():
+            dt = datetime.now(timezone.utc).strftime("%d%m%Y%H%M")
+            if data[key]["time"] is None:
+                return
+            elif int(data[key]["time"]) == int(dt):
+                channel = guild.get_channel(int(key))
+                member_list = channel.members
+                if member_list is not None:
+                    try:
+                        for x in member_list:
+                            await x.move_to(channel=None)
+                        data[key]["time"] = None
+                        write_json(data, "channel_sleep")
+                    except:
+                        return print("error sleep")
+    
+    @channel_sleeped.before_loop
+    async def before_channel_sleeped(self):
+        await self.bot.wait_until_ready()
         
     @commands.Cog.listener()
     async def on_ready(self):
@@ -96,33 +134,29 @@ class Utility_(commands.Cog):
 
     @commands.command(name="random_invoice", aliases=["rnv"] ,description="random member in current voice channel")
     @commands.guild_only()
-    async def random_voice_member(self, ctx, member:discord.Member=None, channel:discord.VoiceChannel=None):
+    async def random_voice_member(self, ctx, channel:discord.VoiceChannel=None):
         
         #check
-        if member is None and channel is None:
+        if channel is None:
             channel = ctx.author.voice.channel
             in_channel = ctx.author.voice.channel.members
         else:
-            in_channel = member.voice.channel.members
+            in_channel = channel.members
 
+        embed = discord.Embed(title=f"Members - {channel.name}",color=WHITE)
+        
         #get_member_in_voice
         member_list = []
+
         for members in in_channel:
-            member_voice = members.id
-            member_list.append(int(member_voice))
-
-        #random
-        random_member = random.choice(member_list)
-        rn_member = ctx.guild.get_member(random_member)
-
-        #send_member
-        embed = discord.Embed(title=f"{rn_member.display_name}",color=rn_member.colour)
-        if rn_member.avatar.url is not None:
-            embed.set_thumbnail(url=rn_member.avatar.url)
-        embed.set_footer(text=f"Random in: {channel}")
-        await ctx.send(embed=embed)
+            member_voice = members
+            member_list.append(member_voice)
         
-            
+        p = NewSimpage(entries=member_list, ctx=ctx, member_list=member_list)
+        p.embed.title = f"Members - {channel.name}"
+        p.embed.color = WHITE
+        await p.start()
+                    
     @commands.command(aliases=["trans"] , description="Translate your message" , help="trans th こんにちは", usage="<output_language> <message>")
     @commands.guild_only()
     async def translate(self, ctx, to_lang=None, *, args=None):
@@ -284,6 +318,112 @@ class Utility_(commands.Cog):
         view.add_item(item=Off)
         view.add_item(item=Un)
         await ctx.send(embed=embed, view=view)
+    
+    @commands.group(invoke_without_command=True, aliases=["boom",'slch','svc','sleep_vc'], usage="<time> [channel id]")
+    @utils.is_latte_guild()
+    async def sleep_channel(self, ctx, time=None, channel:discord.VoiceChannel=None):
+
+        embed = discord.Embed()
+        embed.color = BRIGHTRINK
+
+        if time is None:
+            embed.description = "Please specify duration"
+            return await ctx.send(embed=embed , delete_after=15)
+
+        if channel is None:
+            try:
+                channel = ctx.author.voice.channel
+                in_channel = ctx.author.voice.channel.members
+            except:
+                embed.description = 'You must join a voice channel first.'
+                return await ctx.send(embed=embed , delete_after=15)
+        else:
+            in_channel = channel.members
+        
+        if channel and len(in_channel) == 0:
+            embed.description = f'No members found in `{channel}`'
+            return await ctx.send(embed=embed , delete_after=15)
+
+        timewait = FutureTime_converter(time)
+        futuredate = datetime.now(timezone.utc) + timedelta(seconds=timewait) 
+        futuredate_ = futuredate.strftime("%d%m%Y%H%M")
+
+        #fixed_utc+7
+        fix_date = futuredate + timedelta(seconds=25200)
+        fix_date = fix_date.strftime("%H:%M %d/%m/%Y")
+
+        cooldown = humanize.naturaldelta(timedelta(seconds=timewait))
+        
+        embed.color = YELLOW
+        embed.add_field(name=f"**SLEEP TIMER** <a:b_hitopotatosleep:864921119538937968>" , value=f"** **\n**CHANNEL** : {channel.mention}\n\n`{fix_date}({cooldown})\n\nnow members: {len(in_channel)}`" , inline=False)
+
+        view = Confirm(ctx)
+        m = await ctx.reply(embed=embed, view=view , mention_author=False)
+        await view.wait()
+        if view.value is None:
+            return
+        elif view.value:
+            view.clear_items()
+            embed_edit = discord.Embed(color=ctx.author.colour)
+            embed_edit.description = f"**SLEEP TIMER** <a:b_hitopotatosleep:864921119538937968>\n\n**CHANNEL**: {channel.mention}\n\n`{fix_date}`\n{format_relative(futuredate)}"
+            if ctx.author.avatar is not None:
+                embed_edit.set_footer(text='Sleep timer by %s' % (ctx.author) , icon_url=ctx.author.avatar.url)
+            else:
+                embed_edit.set_footer(text='Sleep timer by %s' % (ctx.author))
+
+            #chat_send
+            chat_channel = ctx.guild.get_channel(861883647070437386)
+            chat_embed = discord.Embed(color=WHITE)
+            chat_embed.title = f"**SLEEP TIMER** <a:b_hitopotatosleep:864921119538937968>"
+            chat_embed.description = f"**CHANNEL** : {channel.mention}\n\n`{fix_date}`\n{format_relative(futuredate)}"
+            if ctx.author.avatar is not None:
+                chat_embed.set_footer(text=f'Requested by {ctx.author}', icon_url=ctx.author.avatar.url)
+            else:
+                chat_embed.set_footer(text=f'Requested by {ctx.author}')
+            
+            await chat_channel.send(embed=chat_embed)
+
+            if timewait > 600:
+                self.channel_sleep[str(channel.id)] = {"time": futuredate_}
+                with open("bot_config/channel_sleep.json", "w") as fp:
+                    json.dump(self.channel_sleep, fp , indent=4)
+                await m.edit(embed=embed_edit, view=view)
+
+            else:
+                await m.edit(embed=embed_edit, view=view)
+                await asyncio.sleep(timewait)
+                for member in in_channel:
+                    await member.move_to(channel=None)
+        else:
+            embed_c = discord.Embed(description="*Cancelling!*" , color=WHITE)
+            await ctx.send(embed=embed_c , delete_after=10)
+            await m.delete()
+            # await ctx.message.delete()
+    
+    @sleep_channel.command(invoke_without_command=True , aliases=["del", "delete" , "off" , "stop"], help="stop", usage="[channel id]")
+    async def sleep_channel_stop(self, ctx, *, channel:discord.VoiceChannel=None):
+        if channel is None:
+            channel = ctx.author.voice.channel
+
+        data = read_json("channel_sleep")
+        check_data = data[str(channel.id)]["time"]
+
+        if check_data is not None:
+            try:
+                data[str(channel.id)]["time"] = None
+                write_json(data, "channel_sleep")
+                embed = discord.Embed(description=f"{channel.mention} : sleep timer stoped" , color=WHITE)
+                await ctx.send(embed=embed)
+            except:
+                embed = discord.Embed(description="Error stop timer" , color=BRIGHTRINK)
+                await ctx.send(embed=embed)
+                return
+        else:
+            em_error = discord.Embed(description=f"{channel.mention} : sleep timer not found", color=BRIGHTRINK)
+            await ctx.send(embed=em_error)
+        
+
+        
 
 def setup(bot):
     bot.add_cog(Utility_(bot))

@@ -98,3 +98,32 @@ class roleinfo_view(ui.View):
         await interaction.response.defer()
         await interaction.delete_original_message()
         self.stop()
+
+class Confirm(discord.ui.View):
+    def __init__(self, ctx):
+        super().__init__(timeout=300)
+        self.value = None
+        self.ctx = ctx
+
+    async def interaction_check(self, interaction: discord.Interaction) -> bool:
+        if interaction.user == self.ctx.author:
+            return True
+        await interaction.response.send_message('This interaction cannot be controlled by you, sorry!', ephemeral=True)
+        return False
+    
+    async def on_timeout(self):
+        self.clear_items()
+        await interaction.response.defer()
+        await interaction.delete_original_message()
+
+    @discord.ui.button(label='Confirm', style=discord.ButtonStyle.green)
+    async def confirm(self, button: discord.ui.Button, interaction: discord.Interaction):  
+        # await interaction.response.send_message('Confirming', ephemeral=True)
+        self.value = True
+        self.stop()
+        
+    @discord.ui.button(label='Cancel', style=discord.ButtonStyle.grey)
+    async def cancel(self, button: discord.ui.Button, interaction: discord.Interaction):
+        # await interaction.response.send_message('Cancelling', ephemeral=True)
+        self.value = False
+        self.stop()

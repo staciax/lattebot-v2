@@ -529,9 +529,8 @@ class Activities(commands.Cog):
             else:
                 embed.set_footer(text=member)
 
-
-            if member.bot:
-                return
+            # if member.bot:
+            #     return
 
             #voice_log
             if not before.channel:

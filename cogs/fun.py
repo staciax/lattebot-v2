@@ -20,6 +20,8 @@ import humanize
 from config import *
 import utils
 from utils import text_to_owo , notify_user
+from utils.ButtonRef import Confirm
+from utils.converters import FutureTime_converter
 
 intents = discord.Intents.all()
 
@@ -141,9 +143,9 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        timewait = utils.FutureTime_converter(time)
+        timewait = FutureTime_converter(time)
         futuredate = datetime.now(timezone.utc) + timedelta(seconds=timewait) 
-        futuredate2 = futuredate + timedelta(seconds=25200)
+        # futuredate2 = futuredate + timedelta(seconds=25200)
         futuredate_ = futuredate.strftime("%d%m%Y%H%M")
 
         embed = discord.Embed(color=YELLOW)
@@ -153,56 +155,39 @@ class Fun(commands.Cog):
         else:
             embed.set_footer(text=member)
 
-        m = await ctx.send(embed=embed)
-
-        await m.add_reaction("<:greentick:881500884725547021>")
-        await m.add_reaction("<:redtick:881500898273144852>")
-
-        try:
-            reaction , user = await self.bot.wait_for(
-                "reaction_add",
-                timeout=30,
-                check=lambda reaction, user: user == ctx.author
-                and reaction.message.channel == ctx.channel
-            )
-
-        except asyncio.TimeoutError:
-            embed_t = discord.Embed(description="Confirmation Failure. Please try again." , color=0xffffff)
-            await ctx.send(embed=embed_t, delete_after=15)
-            await m.delete()
+        view = Confirm(ctx)
+        m = await ctx.reply(embed=embed, view=view , mention_author=False)
+        await view.wait()
+        if view.value is None:
             return
-
-        if str(reaction.emoji) not in ["<:greentick:881500884725547021>", "<:redtick:881500898273144852>"] or str(reaction.emoji) == "<:redtick:881500898273144852>":
+        elif view.value:
+            view.clear_items()
+            embed_edit = discord.Embed(color=member.colour , timestamp=futuredate)
+            embed_edit.description = f"**TIME TO SLEEP** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_relative(futuredate)}"
+            if member.avatar.url is not None:
+                embed_edit.set_footer(text=member , icon_url=member.avatar.url)
+            else:
+                embed_edit.set_footer(text=member)
+            
+            if timewait > 600:
+                if member == ctx.author:
+                    embed_edit.description += f"\n||**Stoped timer** : {PREFIX}sleep stop||"
+                if ctx.author != member:
+                    embed_edit.description += f"\n||**Stoped timer** : {PREFIX}sleep stop @{member.display_name}||"
+                await m.edit(embed=embed_edit, view=view)
+                self.sleeping_db[str(member.id)] = {"time": futuredate_}
+                with open("bot_config/sleeping.json", "w") as fp:
+                    json.dump(self.sleeping_db, fp , indent=4)
+            else:
+                embed_edit.description += f"\n__||Timer can't be stopped.||__"
+                await m.edit(embed=embed_edit , view=view)
+                await asyncio.sleep(timewait)
+                await member.move_to(channel=None)
+        else:
             embed_c = discord.Embed(description="Cancelling sleep time!" , color=0xffffff)
             await ctx.send(embed=embed_c , delete_after=10)
             await m.delete()
-            await ctx.message.delete()
-            return
-
-        await m.clear_reactions()
-        
-        embed_edit = discord.Embed(color=member.colour , timestamp=futuredate)
-        embed_edit.description = f"**TIME TO SLEEP** <a:b_hitopotatosleep:864921119538937968>\n{utils.format_relative(futuredate)}"
-        if member.avatar.url is not None:
-            embed_edit.set_footer(text=member , icon_url=member.avatar.url)
-        else:
-            embed_edit.set_footer(text=member)
-        
-        if timewait > 600:
-            if member == ctx.author:
-                embed_edit.description += f"\n||**Stoped timer** : {PREFIX}sleep stop||"
-            if ctx.author != member:
-                embed_edit.description += f"\n||**Stoped timer** : {PREFIX}sleep stop @{member.display_name}||"
-            await m.edit(embed=embed_edit)
-            self.sleeping_db[str(member.id)] = {"time": futuredate_}
-            with open("bot_config/sleeping.json", "w") as fp:
-                json.dump(self.sleeping_db, fp , indent=4)
-        else:
-            embed_edit.description += f"\n__||Timer can't be stopped.||__"
-            await m.edit(embed=embed_edit)
-            await asyncio.sleep(timewait)
-            await member.move_to(channel=None)
-    
+            await ctx.message.delete()    
 
     @sleep.command(invoke_without_command=True , aliases=["del", "delete" , "off" , "stop"], help="stop", usage="[member]")
     async def sleep_stop(self, ctx, *, member: discord.Member=None):
