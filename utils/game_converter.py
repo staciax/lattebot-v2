@@ -2,6 +2,7 @@ import discord , random
 from discord import Embed
 from discord.ext import commands
 
+from utils.buttons import NewSimpage
 
 class APEX_RANDOM(discord.ui.View):
     def __init__(self, ctx):
@@ -9,6 +10,10 @@ class APEX_RANDOM(discord.ui.View):
         self.ctx = ctx
         self.weapon_type = None
         self.message = ''
+        self.embeds_legend = None
+        self.embeds_weapon = None
+        self.logging = ''
+        self.counts = 0
 
     async def on_timeout(self):
         self.clear_items()
@@ -34,21 +39,49 @@ class APEX_RANDOM(discord.ui.View):
     
     @discord.ui.button(label="Legend", style=discord.ButtonStyle.blurple)
     async def apex_legend(self, button, interaction):
+        self.w_log.disabled = False
+        await self.message.edit(view=self)
         
         embed = apex_random_legends()
         embed.set_footer(text=f'Req by {self.ctx.author}', icon_url=self.ctx.author.avatar.url)
-        if embed:
-            await self.ctx.send(embed=embed)
+        a_logging = str(embed.description.split('**' )[1])
+        if self.embeds_legend is None:
+            self.embeds_legend = await self.ctx.send(embed=embed)
+            self.counts += 1
+            self.logging += f'\n{self.counts}. {self.ctx.author.name}: {a_logging}'
+        else:
+            await self.embeds_legend.edit(embed=embed)
+            self.counts += 1
+            self.logging += f'\n{self.counts}. {self.ctx.author.name}: {a_logging}'
     
     @discord.ui.button(label="Weapon", style=discord.ButtonStyle.blurple)
     async def apex_weapon(self, button, interaction):
-        
+        self.w_log.disabled = False
+        await self.message.edit(view=self)
         embed = apex_random_weapon(category=self.weapon_type)
         embed.set_footer(text=f'Req by {self.ctx.author}', icon_url=self.ctx.author.avatar.url)
-        if embed:
-            await self.ctx.send(embed=embed)
+        a_logging = str(embed.description.split('**' )[1])
+        if self.embeds_weapon is None:
+            self.embeds_weapon = await self.ctx.send(embed=embed)
+            self.counts += 1
+            self.logging += f'\n{self.counts}. {self.ctx.author.name}: {a_logging}'
+        else:
+            await self.embeds_weapon.edit(embed=embed)
+            self.counts += 1
+            self.logging += f'\n{self.counts}. {self.ctx.author.name}: {a_logging}'
+    
+    @discord.ui.button(label="Log", style=discord.ButtonStyle.gray)
+    async def w_log(self, button, interaction):
+        embed = discord.Embed(color=0xffffff)
+        embed.description = ''
+        weapon_log_list = []
+
+        data = self.logging
+        if data:
+            await interaction.response.send_message(self.logging, ephemeral=True)
     
     async def start(self):
+        self.w_log.disabled = True
         embed = discord.Embed(title="Apex Legend")
         embed.description = '`apex legend random`\n`-legend`\n`-weapon`'
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/417245049315655690/902169368744566784/apex-legends.png')
@@ -63,6 +96,11 @@ class VALORANT_RANDOM(discord.ui.View):
         self.agent_type = None
         self.weapon_type = None
         self.message = ''
+        self.embeds_agent = None
+        self.embeds_weapon = None
+        self.log_agent = ''
+        self.log_weapon = ''
+        self.counts = 0
 
     async def on_timeout(self):
         self.clear_items()
@@ -99,22 +137,75 @@ class VALORANT_RANDOM(discord.ui.View):
             self.weapon_type = f'{str(select.values[0])}'
     
     @discord.ui.button(label="Agent", style=discord.ButtonStyle.blurple)
-    async def apex_legend(self, button, interaction):
+    async def valorant_agent(self, button, interaction):
+        self.w_log.disabled = False
+        await self.message.edit(view=self)
         
         embed = valorant_random_agent(category=self.agent_type)
         embed.set_footer(text=f'Req by {self.ctx.author}', icon_url=self.ctx.author.avatar.url)
-        if embed:
-            await self.ctx.send(embed=embed)
+        a_logging = str(embed.description.split('**' )[1])
+        if self.embeds_agent is None:
+            self.embeds_agent = await self.ctx.send(embed=embed)
+            self.counts += 1
+            self.log_weapon += f'\n{self.counts}. {self.ctx.author.name}: {a_logging}'
+        else:
+            await self.embeds_agent.edit(embed=embed)
+            self.counts += 1
+            self.log_weapon += f'\n{self.counts}. {self.ctx.author.name}: {a_logging}'
+
     
     @discord.ui.button(label="Weapon", style=discord.ButtonStyle.blurple)
-    async def apex_weapon(self, button, interaction):
-        
+    async def valorant_weapon(self, button, interaction):
+        self.w_log.disabled = False
+        await self.message.edit(view=self)
+
+        data = self.log_weapon.split('\n')
+        if len(data) == 100:
+            await interaction.response.send_message("", ephemeral=True)
+            
         embed = valorant_random_weapon(category=self.weapon_type)
         embed.set_footer(text=f'Req by {self.ctx.author}', icon_url=self.ctx.author.avatar.url)
-        if embed:
-            await self.ctx.send(embed=embed)
+        w_logging = str(embed.description.split('**' )[1])
+        if self.embeds_weapon is None:
+            self.embeds_weapon = await self.ctx.send(embed=embed)
+            self.counts += 1
+            self.log_weapon += f'\n{self.counts}. {self.ctx.author.name}: {w_logging}'
+        else:
+            await self.embeds_weapon.edit(embed=embed)
+            self.counts += 1
+            self.log_weapon += f'\n{self.counts}. {self.ctx.author.name}: {w_logging}'
+
+    @discord.ui.button(label="Log", style=discord.ButtonStyle.gray)
+    async def w_log(self, button, interaction):
+        embed = discord.Embed(color=0xffffff)
+        embed.description = ''
+        weapon_log_list = []
+
+        data = self.log_weapon
+        if data:
+            await interaction.response.send_message(self.log_weapon, ephemeral=True)
+            # print(self.log_weapon.split('\n'))
+
+        # p = Custom_page(entries=self.log_weapon.split('\n'), ctx=self.ctx)
+        # await p.start()
+
+        # if data:
+        #     for x in self.log_weapon.keys():
+        #         member = self.ctx.guild.get_member(int(x))
+        #         embed.description += f"{member}. {data[x]['weapon']}\n"
+            
+        #     await interaction.response.send_message(embed=embed, ephemeral=True)
+        
+        # else:
+        #     embed.description = 'logging not found'
+        #     await interaction.response.send_message(embed=embed, ephemeral=True)
     
+    # @discord.ui.button(label="Weapon Log", style=discord.ButtonStyle.blurple)
+    # async def w_log(self, button, interaction):
+    #     print()
+
     async def start(self):
+        self.w_log.disabled = True
         embed = discord.Embed(title="Valorant")
         embed.description = '`valorant random`\n`-agent`\n`-weapon`'
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/417245049315655690/902173852401025074/valorant.jpg')

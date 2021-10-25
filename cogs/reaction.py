@@ -59,7 +59,7 @@ class Reaction(commands.Cog):
                 role2 = discord.utils.get(guild.roles, id = 854503426977038338) #name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
                 role3 = discord.utils.get(guild.roles, id = 854503041775566879) #name="・ ──────꒰ ・ levels ・ ꒱────── ・")
 
-            # self.bot.new_member[str(member.id)] = False
+            self.bot.new_member[str(member.id)] = True
             await member.add_roles(role , role2 , role3)
             # await chat_channel.send(f'୨୧・━━⋄✩ ₊ ˚・\nwelcome to our latte . .\n⸝⸝・{member.mention}')
 

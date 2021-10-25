@@ -421,9 +421,26 @@ class Utility_(commands.Cog):
         else:
             em_error = discord.Embed(description=f"{channel.mention} : sleep timer not found", color=BRIGHTRINK)
             await ctx.send(embed=em_error)
-        
 
-        
+    @commands.command(aliases=['apexs','totsuki'])
+    @utils.is_latte_guild()
+    async def move_to_totsuki(self, ctx , channel:discord.VoiceChannel=None):
+        if channel is None:
+            channel = ctx.author.voice.channel
+            in_channel = ctx.author.voice.channel.members
+        else:
+            in_channel = channel.members
+
+        member_list = []
+
+        totsuki = ctx.guild.get_channel(861371712153845781)
+
+        for members in in_channel:
+            if members.activity:
+                if members.activity.type == discord.ActivityType.playing:
+                    if members.activity.name == "Apex Legends":
+                        await members.move_to(channel=totsuki)
+            
 
 def setup(bot):
     bot.add_cog(Utility_(bot))

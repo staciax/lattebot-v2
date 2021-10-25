@@ -427,8 +427,9 @@ class Activities(commands.Cog):
                     return
 
                 if new_roles == ['<@&842309176104976387>']:
-                    chat_channel = after.guild.get_channel(861883647070437386)
-                    await chat_channel.send(f'୨୧・━━⋄✩ ₊ ˚・\nwelcome to our latte . .\n⸝⸝・{after.mention}')
+                    if self.bot.new_member[str(after.id)] is True:
+                        chat_channel = after.guild.get_channel(861883647070437386)
+                        await chat_channel.send(f'୨୧・━━⋄✩ ₊ ˚・\nwelcome to our latte . .\n⸝⸝・{after.mention}')
 
                 await self.roles_log.send(embed=embed)
             
