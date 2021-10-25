@@ -293,36 +293,16 @@ class Fun(commands.Cog):
 
     @commands.command(name="apex")
     @commands.guild_only()
-    async def apex_weapon(self, ctx, category=None):
-        
-        #converter_from_utils.game_converter
-        await ctx.send(embed=utils.apex_random_weapon(category))
+    async def apex(self, ctx):
+        view = utils.APEX_RANDOM(ctx)
+        await view.start()
     
-    @commands.group(invoke_without_command=True, name="valorant" , aliases=["vlr"] , usage="<type : agent , weapon >")
+    @commands.command(name="valorant" , aliases=["vlr","valo"])
     @commands.guild_only()
     async def valorant(self, ctx):
-        embed = discord.Embed(
-            title="Valorant random",
-            color=0xffffff
-        )
-        embed.add_field(name="Agent", value=f"```yaml\nUsage: {PREFIX}vlr agent [type]\nType: Duelist, Controller, Initiator, Sentinel```",inline=False)
-        embed.add_field(name="Weapon", value=f"```yaml\nUsage: {PREFIX}vlr weapon [type]\nType: sidearm, smg, shotgun, rifle, sniper, machine gun ```",inline=False)
+        view = utils.VALORANT_RANDOM(ctx)
+        await view.start()
 
-        await ctx.send(embed=embed)
-
-    @valorant.command(invoke_without_command=True, name="agent", aliases=["a"])
-    @commands.guild_only()
-    async def agent(self, ctx, category=None):
-
-        #converter_from_utils.game_converter
-        await ctx.send(embed=utils.valorant_random_agent(category))
-
-    @valorant.command(name="weapon" , aliases=["gun","w"])
-    @commands.guild_only()
-    async def weapon(self, ctx, *,category=None):
-        
-        #converter_from_utils.game_converter
-        await ctx.send(embed=utils.valorant_random_weapon(category))
     
 def setup(bot):
     bot.add_cog(Fun(bot))

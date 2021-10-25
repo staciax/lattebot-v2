@@ -26,6 +26,7 @@ class Reaction(commands.Cog):
         member = payload.member
         guild = member.guild
         emoji = str(payload.emoji.id)
+        chat_channel = guild.get_channel(861883647070437386)
 
         #latte_color
         if ColourID == payload.message_id:
@@ -58,7 +59,9 @@ class Reaction(commands.Cog):
                 role2 = discord.utils.get(guild.roles, id = 854503426977038338) #name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
                 role3 = discord.utils.get(guild.roles, id = 854503041775566879) #name="・ ──────꒰ ・ levels ・ ꒱────── ・")
 
+            # self.bot.new_member[str(member.id)] = False
             await member.add_roles(role , role2 , role3)
+            # await chat_channel.send(f'୨୧・━━⋄✩ ₊ ˚・\nwelcome to our latte . .\n⸝⸝・{member.mention}')
 
         """ MATCHA SERVER """
         if MatchaColor == payload.message_id:
@@ -98,7 +101,6 @@ class Reaction(commands.Cog):
             
             await member.add_roles(role)
             
-
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
         ColourID = COLOR

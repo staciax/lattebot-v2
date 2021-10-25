@@ -374,7 +374,7 @@ class Utility_(commands.Cog):
             #chat_send
             chat_channel = ctx.guild.get_channel(861883647070437386)
             chat_embed = discord.Embed(color=WHITE)
-            chat_embed.title = f"**SLEEP TIMER** <a:b_hitopotatosleep:864921119538937968>"
+            # chat_embed.title = f"**SLEEP TIMER** <a:b_hitopotatosleep:864921119538937968>"
             chat_embed.description = f"**CHANNEL** : {channel.mention}\n\n`{fix_date}`\n{format_relative(futuredate)}"
             if ctx.author.avatar is not None:
                 chat_embed.set_footer(text=f'Requested by {ctx.author}', icon_url=ctx.author.avatar.url)

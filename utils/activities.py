@@ -51,3 +51,7 @@ def find_invite_by_code(invite_list, code):
 
 async def edited(self, ctx, channel: discord.TextChannel, *, new_name):
         await channel.edit(name=new_name)
+
+
+async def welcome_chat(ctx, guild):
+        print('test')

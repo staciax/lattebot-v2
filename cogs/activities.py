@@ -37,6 +37,7 @@ class Activities(commands.Cog):
         self.text_ = 0
         self.voice_ = 0
         self.boost_ = 0
+        self.code_bypass = {}
         self.counted.start()
     
     def cog_unload(self):
@@ -138,45 +139,50 @@ class Activities(commands.Cog):
                 return
 
             #invte_code
-            invites_before_join = self.invites[member.guild.id]
-            invites_after_join = await member.guild.invites()
-            for invite in invites_before_join:
-                if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:                    
-                    
-                    embed_log = discord.Embed(
-                        title="Member join",
-                        color=PTGREEN,
-                        timestamp=datetime.now(timezone.utc)
-                    )
-                    embed_log.add_field(name="Name:", value=f"{member.name}", inline=False)
-                    embed_log.add_field(name="Invite Code:", value=f"||{invite.code}||", inline=False)
-                    if member.avatar.url is not None:
-                        embed_log.set_thumbnail(url=member.avatar.url)
-                    if invite.inviter.avatar.url is not None:
-                        embed_log.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
-                    else:
-                        embed_log.set_footer(text=f"Invited by {invite.inviter.name}")
-                    await self.server_log.send(embed=embed_log)
-                    self.invites[member.guild.id] = invites_after_join
+            try:
+                invites_before_join = self.invites[member.guild.id]
+                invites_after_join = await member.guild.invites()
+                for invite in invites_before_join:
+                    if invite.uses < utils.find_invite_by_code(invites_after_join, invite.code).uses:
 
-                    #latte_role
-                    if invite.code == self.bot.latte_latte:
-                        try:
-                            latte_roles = discord.utils.get(member.guild.roles, id = 842309176104976387) #name="Latte・・ ♡")
-                            bar_role = discord.utils.get(member.guild.roles, id = 854503426977038338) #name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
-                            lvl_bar_role = discord.utils.get(member.guild.roles, id = 854503041775566879) #name="・ ──────꒰ ・ levels ・ ꒱────── ・")
-                            await member.add_roles(latte_roles , bar_role, lvl_bar_role)
-                        except:
-                            pass
-                    
-                    #temp_invite
-                    if invite.code == self.invite_code:
-                        try:
-                            role = discord.utils.get(member.guild.roles, id=879258879987449867)
-                            await member.add_roles(role)
-                            return
-                        except:
-                            pass
+                        self.code_bypass[str(member.id)] = invite.code
+                        
+                        embed_log = discord.Embed(
+                            title="Member join",
+                            color=PTGREEN,
+                            timestamp=datetime.now(timezone.utc)
+                        )
+                        embed_log.add_field(name="Name:", value=f"{member.name}", inline=False)
+                        embed_log.add_field(name="Invite Code:", value=f"||{invite.code}||", inline=False)
+                        if member.avatar.url is not None:
+                            embed_log.set_thumbnail(url=member.avatar.url)
+                        if invite.inviter.avatar.url is not None:
+                            embed_log.set_footer(text=f"Invited by {invite.inviter.name}", icon_url=invite.inviter.avatar.url)
+                        else:
+                            embed_log.set_footer(text=f"Invited by {invite.inviter.name}")
+                        await self.server_log.send(embed=embed_log)
+                        self.invites[member.guild.id] = invites_after_join
+
+                        #latte_role
+                        if invite.code == self.bot.latte_latte:
+                            try:
+                                latte_roles = discord.utils.get(member.guild.roles, id = 842309176104976387) #name="Latte・・ ♡")
+                                bar_role = discord.utils.get(member.guild.roles, id = 854503426977038338) #name="・ ───────꒰ ・ ♡ ・ ꒱─────── ・")
+                                lvl_bar_role = discord.utils.get(member.guild.roles, id = 854503041775566879) #name="・ ──────꒰ ・ levels ・ ꒱────── ・")
+                                await member.add_roles(latte_roles , bar_role, lvl_bar_role)
+                            except:
+                                pass
+                        
+                        #temp_invite
+                        if invite.code == self.invite_code:
+                            try:
+                                role = discord.utils.get(member.guild.roles, id=879258879987449867)
+                                await member.add_roles(role)
+                                return
+                            except:
+                                pass
+            except:
+                pass
 
             """welcome embed"""
 
@@ -192,6 +198,7 @@ class Activities(commands.Cog):
             #get_channel
             guild = self.bot.get_guild(member.guild.id)
             channel = guild.get_channel(data)
+            # chat_channel = guild.get_channel(861883647070437386)
 
             embed=discord.Embed(
                         description=f"ʚ˚̩̥̩ɞ ◟‧Welcome‧ *to* **{member.guild}!** <a:ab__purplestar:854958903656710144>\n　。\nෆ ₊˚don’t forget to check out . . .\n\n♡ ꒷ get latte roles~︰𓂃 ꒱\n⸝⸝﹒<#861774918290636800> \n⸝⸝﹒<#840380566862823425>\n\n⸝⸝﹒||{member.mention}|| ꒱ {utils.emoji_converter('3rd')}", #⊹₊˚**‧Welcome‧**˚₊⊹ 
@@ -212,7 +219,8 @@ class Activities(commands.Cog):
                 role = discord.utils.get(member.guild.roles, id=840677855460458496)
                 if role:
                     await member.add_roles(role)
-                    
+
+            # await chat_channel.send(f'୨୧・━━⋄✩ ₊ ˚・\nwelcome to our latte . .\n⸝⸝・{member.mention}')
             await channel.send(embed=embed)
     
     @commands.Cog.listener()
@@ -417,6 +425,10 @@ class Activities(commands.Cog):
                     embed.add_field(name=role_update,value=nr_str,inline=False)
                 else:
                     return
+
+                if new_roles == ['<@&842309176104976387>']:
+                    chat_channel = after.guild.get_channel(861883647070437386)
+                    await chat_channel.send(f'୨୧・━━⋄✩ ₊ ˚・\nwelcome to our latte . .\n⸝⸝・{after.mention}')
 
                 await self.roles_log.send(embed=embed)
             

@@ -2,6 +2,127 @@ import discord , random
 from discord import Embed
 from discord.ext import commands
 
+
+class APEX_RANDOM(discord.ui.View):
+    def __init__(self, ctx):
+        super().__init__(timeout=1800)
+        self.ctx = ctx
+        self.weapon_type = None
+        self.message = ''
+
+    async def on_timeout(self):
+        self.clear_items()
+        if self.message:
+            await self.message.edit(view=self)
+
+    @discord.ui.select(custom_id="Select Weapon type", placeholder="Weapon type (default=random)", min_values=1, max_values=1, options=[        
+        discord.SelectOption(label='Random', value="random"),
+        discord.SelectOption(label='Assault rifles', value="ar"),
+        discord.SelectOption(label='Sub machine guns', value="sub"),
+        discord.SelectOption(label='Light machine guns', value="light"),
+        discord.SelectOption(label='Marksman weapons', value="marksman"),
+        discord.SelectOption(label='Sniper rifles', value="sniper"),
+        discord.SelectOption(label='Shotguns', value="shotgun"),
+        discord.SelectOption(label='Pistols', value="pistol"),
+
+    ])
+    async def callback_a_k(self, select: discord.ui.select, interaction: discord.Interaction):
+        if select.values[0] == 'random':
+            self.weapon_type = None
+        elif select.values[0]:
+            self.weapon_type = f'{str(select.values[0])}'
+    
+    @discord.ui.button(label="Legend", style=discord.ButtonStyle.blurple)
+    async def apex_legend(self, button, interaction):
+        
+        embed = apex_random_legends()
+        embed.set_footer(text=f'Req by {self.ctx.author}', icon_url=self.ctx.author.avatar.url)
+        if embed:
+            await self.ctx.send(embed=embed)
+    
+    @discord.ui.button(label="Weapon", style=discord.ButtonStyle.blurple)
+    async def apex_weapon(self, button, interaction):
+        
+        embed = apex_random_weapon(category=self.weapon_type)
+        embed.set_footer(text=f'Req by {self.ctx.author}', icon_url=self.ctx.author.avatar.url)
+        if embed:
+            await self.ctx.send(embed=embed)
+    
+    async def start(self):
+        embed = discord.Embed(title="Apex Legend")
+        embed.description = '`apex legend random`\n`-legend`\n`-weapon`'
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/417245049315655690/902169368744566784/apex-legends.png')
+        embed.color = 0xFFA500
+        if embed:
+            self.message = await self.ctx.send(embed=embed, view=self, mention_author=False)
+
+class VALORANT_RANDOM(discord.ui.View):
+    def __init__(self, ctx):
+        super().__init__(timeout=1800)
+        self.ctx = ctx
+        self.agent_type = None
+        self.weapon_type = None
+        self.message = ''
+
+    async def on_timeout(self):
+        self.clear_items()
+        if self.message:
+            await self.message.edit(view=self)
+
+    @discord.ui.select(custom_id="Select Agent type", placeholder="Agent type (default=random)", min_values=1, max_values=1, options=[        
+        discord.SelectOption(label='Random', value="random"),
+        discord.SelectOption(label='Duelist', value="duelist"),
+        discord.SelectOption(label='Controller', value="controller"),
+        discord.SelectOption(label='Initiator', value="initiator"),
+        discord.SelectOption(label='Sentinel', value="sentinel"),
+
+    ])
+    async def callback_agent(self, select: discord.ui.select, interaction: discord.Interaction):
+        if select.values[0] == 'random':
+            self.agent_type = None
+        elif select.values[0]:
+            self.agent_type = f'{str(select.values[0])}'
+    
+    @discord.ui.select(custom_id="Select Weapon type", placeholder="Weapon type (default=random)", min_values=1, max_values=1, options=[        
+        discord.SelectOption(label='Random', value="random"),
+        discord.SelectOption(label='Sidearms', value="side"),
+        discord.SelectOption(label='Sub-machine guns', value="smg"),
+        discord.SelectOption(label='Shotguns', value="sg"),
+        discord.SelectOption(label='Assault rifles', value="ar"),
+        discord.SelectOption(label='Sniper Rifles', value="sniper"),
+        discord.SelectOption(label='Machine Guns', value="mg"),
+    ])
+    async def callback_weapon(self, select: discord.ui.select, interaction: discord.Interaction):
+        if select.values[0] == 'random':
+            self.weapon_type = None
+        elif select.values[0]:
+            self.weapon_type = f'{str(select.values[0])}'
+    
+    @discord.ui.button(label="Agent", style=discord.ButtonStyle.blurple)
+    async def apex_legend(self, button, interaction):
+        
+        embed = valorant_random_agent(category=self.agent_type)
+        embed.set_footer(text=f'Req by {self.ctx.author}', icon_url=self.ctx.author.avatar.url)
+        if embed:
+            await self.ctx.send(embed=embed)
+    
+    @discord.ui.button(label="Weapon", style=discord.ButtonStyle.blurple)
+    async def apex_weapon(self, button, interaction):
+        
+        embed = valorant_random_weapon(category=self.weapon_type)
+        embed.set_footer(text=f'Req by {self.ctx.author}', icon_url=self.ctx.author.avatar.url)
+        if embed:
+            await self.ctx.send(embed=embed)
+    
+    async def start(self):
+        embed = discord.Embed(title="Valorant")
+        embed.description = '`valorant random`\n`-agent`\n`-weapon`'
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/417245049315655690/902173852401025074/valorant.jpg')
+        embed.color = 0xfa4454
+        if embed:
+            self.message = await self.ctx.send(embed=embed, view=self, mention_author=False)
+
+
 def apex_random_weapon(category):
     #embed
     embed = Embed(color=0xFFA500)
@@ -28,8 +149,8 @@ def apex_random_weapon(category):
         `light` • Light machine guns
         `marksman` • Marksman weapons
         `sniper` • Sniper rifles
-        `sg` • Shotguns
-        `pt` • Pistols
+        `shotgun` • Shotguns
+        `pistol` • Pistols
         """
     elif category == "ar":
         random_gun = random.choice(Assault_rifles)
@@ -41,9 +162,9 @@ def apex_random_weapon(category):
         random_gun = random.choice(Marksman_weapons)
     elif category == "sniper":
         random_gun = random.choice(Sniper_rifles)
-    elif category == "sg":
+    elif category == "shotgun":
         random_gun = random.choice(Shotguns)
-    elif category == "pt":
+    elif category == "pistol":
         random_gun = random.choice(Pistols)
     
     #picture_of_gun
@@ -103,7 +224,58 @@ def apex_random_weapon(category):
         embed.set_image(url="https://static.wikia.nocookie.net/apexlegends_gamepedia_en/images/0/09/Wingman.png/revision/latest/scale-to-width-down/1000?cb=20210813090820")
     
     embed.description = f"**{random_gun}**"
+
+    return embed
+
+def apex_random_legends():
+    #embed
+    embed = Embed(color=0xFFA500)
+
+    #list_of_legends
+    legends_list = ['Bangalore','Bloodhound','Caustic','Crypto','Fuse','Gibraltar','Horizon','Lifeline','Loba','Mirage','Octane','Pathfinder','Rampart','Revenant','Seer','Valkyrie','Wattson','Wraith']
     
+    random_legends = random.choice(legends_list)
+
+    #picture_of_agent
+    if random_legends == "Bangalore":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-bangalore.png.adapt.crop16x9.png")
+    elif random_legends == "Bloodhound":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-bloodhound.png.adapt.crop16x9.png")
+    elif random_legends == "Caustic":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-caustic.png.adapt.crop16x9.png")
+    elif random_legends == "Crypto":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-crypto.png.adapt.crop16x9.png")
+    elif random_legends == "Fuse":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2021/01/apex-grid-tile-legends-fuse.png.adapt.crop16x9.png")
+    elif random_legends == "Gibraltar":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-gibraltar.png.adapt.crop16x9.png")
+    elif random_legends == "Horizon":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2020/10/horizon/apex-grid-tile-legends-horizon.png.adapt.crop16x9.png")
+    elif random_legends == "Lifeline":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-lifeline.png.adapt.crop16x9.png")
+    elif random_legends == "Loba":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2020/05/apex-grid-tile-legends-loba.png.adapt.crop16x9.png")
+    elif random_legends == "Mirage":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-mirage.png.adapt.crop16x9.png")
+    elif random_legends == "Octane":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-octane.png.adapt.crop16x9.png")
+    elif random_legends == "Pathfinder":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-pathfinder.png.adapt.crop16x9.png")
+    elif random_legends == "Rampart":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2020/08/rampart/apex-grid-tile-legends-rampart.png.adapt.crop16x9.png")
+    elif random_legends == "Revenant":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2020/02/apex-legend-revenant-grid-tile.png.adapt.crop16x9.png")
+    elif random_legends == "Seer":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2021/07/seer-assets/apex-grid-tile-legends-seer.png.adapt.crop16x9.png")
+    elif random_legends == "Valkyrie":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2021/04/apex-grid-tile-legends-valkyrie.png.adapt.crop16x9.png")
+    elif random_legends == "Wattson":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-wattson.png.adapt.crop16x9.png")
+    elif random_legends == "Wraith":
+        embed.set_thumbnail(url="https://media.contentapi.ea.com/content/dam/apex-legends/images/2019/01/legends-character-tiles/apex-grid-tile-legends-wraith.png.adapt.crop16x9.png")
+    
+    embed.description = f"**{random_legends}**"
+
     return embed
 
 #valorant
@@ -117,7 +289,6 @@ def valorant_random_agent(category):
     Initiator = ["Sova", "Breach", "KAY/O" "Skye"]
     Sentinel = ["Killjoy", "Cypher", "Sage"]
     all_agent = ["Phoenix", "Jett", "Reyna", "Raze", "Yoru", "Brimston","Viper","Omen","Astra", "Sova", "Breach", "KAY/O", "Killjoy", "Cypher", "Sage"]
-
     
     #category
     if category == None:
@@ -140,41 +311,58 @@ def valorant_random_agent(category):
     elif category == "sentinel":
         random_agent = random.choice(Sentinel)
     
+    embed.description = f"**{random_agent}**\n"
+
     #picture_of_agent
     if random_agent == "Phoenix":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/1/14/Phoenix_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234131")
+        embed.description += f"`duelist`"
     elif random_agent == "Jett":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/3/35/Jett_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234156")
+        embed.description += f"`duelist`"
     elif random_agent == "Reyna":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/b/b0/Reyna_icon.png/revision/latest/scale-to-width-down/256?cb=20200607180311")
+        embed.description += f"`duelist`"
     elif random_agent == "Raze":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/9/9c/Raze_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234400")
+        embed.description += f"`duelist`"
     elif random_agent == "Yoru":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/d/d4/Yoru_icon.png/revision/latest/scale-to-width-down/256?cb=20210112211830")
+        embed.description += f"`duelist`"
     elif random_agent == "Brimston":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/4/4d/Brimstone_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234311")
+        embed.description += f"`controller`"
     elif random_agent == "Viper":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/5/5f/Viper_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234408")
+        embed.description += f"`controller`"
     elif random_agent == "Omen":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/b/b0/Omen_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234318")
+        embed.description += f"`controller`"
     elif random_agent == "Astra":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/0/08/Astra_icon.png/revision/latest/scale-to-width-down/256?cb=20210302164234")
+        embed.description += f"`controller`"
     elif random_agent == "Sova":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/4/49/Sova_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234221")
+        embed.description += f"`initiator`"
     elif random_agent == "Breach":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/5/53/Breach_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234328")
+        embed.description += f"`initiator`"
     elif random_agent == "KAY/O":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/f/f0/KAYO_icon.png/revision/latest/scale-to-width-down/256?cb=20210622225019")
+        embed.description += f"`initiator`"
     elif random_agent == "Skye":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/3/33/Skye_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234628")
+        embed.description += f"`initiator`"
     elif random_agent == "Killjoy":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/1/15/Killjoy_icon.png/revision/latest/scale-to-width-down/256?cb=20200805002141")
+        embed.description += f"`sentinel`"
     elif random_agent == "Cypher":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/8/88/Cypher_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234211")
+        embed.description += f"`sentinel`"
     elif random_agent == "Sage":
         embed.set_thumbnail(url="https://static.wikia.nocookie.net/valorant/images/7/74/Sage_icon.png/revision/latest/scale-to-width-down/256?cb=20201128234057")
+        embed.description += f"`sentinel`"
     
-    embed.description = f"**{random_agent}**"
 
     return embed
 

@@ -33,6 +33,7 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(f'{PREFIX}'), case_insensitive=True, intents=intents, owner_id=owner , help_command=None)
 
 bot.tester = ''
+bot.new_member = {}
 
 @bot.event
 async def on_ready():

@@ -2,13 +2,13 @@
 
 # Latte Bot v2
 
-My first discord bot write with cogs
+Latte bot is personal bot for my server and friends
 
 ## Prerequisites
 
 | Required                            | version   |
 | ------------------------------------| --------- | 
-| **Python**                          | 3.9.7     | 
+| **Python**                          | 3.10.0    | 
 | **discord.py**                      | 2.0.0a    | 
 | **discord-ext-menus**               | Unknow    | 
 
