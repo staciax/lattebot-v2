@@ -344,7 +344,11 @@ class Activities(commands.Cog):
             
                 for name, value, inline in fields:
                     embed.add_field(name=name, value=value, inline=inline)
-                    embed.set_footer(text=f"{after.display_name}#{after.discriminator}", icon_url=after.avatar.url)
+                    
+                if after.avatar.url is not None:  
+                    embed.set_footer(text=after, icon_url=after.avatar.url)
+                else:
+                    embed.set_footer(text=after)
             
                 await self.server_log.send(embed=embed)
 
@@ -354,7 +358,8 @@ class Activities(commands.Cog):
 						    colour=0xf3d4b4,
 						    timestamp=datetime.now(timezone.utc))
                 embed.set_thumbnail(url=before.avatar.url)
-                embed.set_image(url=after.avatar.url)
+                if after.avatar.url is not None:
+                    embed.set_image(url=after.avatar.url)
                 embed.set_footer(text=after, icon_url=after.avatar.url)
 
                 await self.server_log.send(embed=embed)

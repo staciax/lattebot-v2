@@ -105,10 +105,12 @@ class Fun(commands.Cog):
         print(f"-{self.__class__.__name__}")
     
     @commands.command(name="pastel" , description="pastel color")
+    @commands.guild_only()
     async def pastel(self, ctx):
         await ctx.send("https://colorhunt.co/palettes/pastel")
     
     @commands.command(name="color", description="color hex")
+    @commands.guild_only()
     async def color(self, ctx):
         await ctx.send("https://www.color-hex.com/")
 
