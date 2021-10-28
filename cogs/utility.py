@@ -236,11 +236,11 @@ class Utility_(commands.Cog):
         await discord.utils.sleep_until(remind_time)
         await self.latte_chat.send(f"{ctx.author.mention}, {utils.format_relative(remind_time)}: {msg}")
         
-    @commands.command(description="Crete poll" , help="i pretty?", usege="<message>")
+    @commands.command(description="Create poll" , help="i pretty?", usege="<message>")
     @commands.guild_only()
     async def poll(self, ctx, *, message):
         if len(message) > 2000:
-            return await ctx.send('remind message is a maximum of 2000 characters.', delete_after=15)
+            return await ctx.send('poll message is a maximum of 2000 characters.', delete_after=15)
         embed = discord.Embed(title="POLL", description=f"{message}",color=0xffffff)
         msg = await ctx.channel.send(embed=embed)
         await msg.add_reaction("<:greentick:881500884725547021>")
@@ -355,7 +355,7 @@ class Utility_(commands.Cog):
         cooldown = humanize.naturaldelta(timedelta(seconds=timewait))
         
         embed.color = YELLOW
-        embed.add_field(name=f"**SLEEP TIMER** <a:b_hitopotatosleep:864921119538937968>" , value=f"** **\n**CHANNEL** : {channel.mention}\n\n`{fix_date}({cooldown})\n\nnow members: {len(in_channel)}`" , inline=False)
+        embed.add_field(name=f"**SLEEP TIMER** <a:b_hitopotatosleep:864921119538937968>" , value=f"** **\n**CHANNEL** : {channel.mention}\n{format_dt(futuredate, style='f')}({format_dt(futuredate, style='R')})" , inline=False)
 
         view = Confirm(ctx)
         m = await ctx.reply(embed=embed, view=view , mention_author=False)
@@ -365,23 +365,15 @@ class Utility_(commands.Cog):
         elif view.value:
             view.clear_items()
             embed_edit = discord.Embed(color=ctx.author.colour)
-            embed_edit.description = f"**SLEEP TIMER** <a:b_hitopotatosleep:864921119538937968>\n\n**CHANNEL**: {channel.mention}\n\n`{fix_date}`\n{format_relative(futuredate)}"
+            embed_edit.description = f"**SLEEP TIMER** <a:b_hitopotatosleep:864921119538937968>\n\n**CHANNEL**: {channel.mention}\n{format_dt(futuredate, style='f')}({format_dt(futuredate, style='R')})"
             if ctx.author.avatar is not None:
                 embed_edit.set_footer(text='Sleep timer by %s' % (ctx.author) , icon_url=ctx.author.avatar.url)
             else:
                 embed_edit.set_footer(text='Sleep timer by %s' % (ctx.author))
 
             #chat_send
-            chat_channel = ctx.guild.get_channel(861883647070437386)
-            chat_embed = discord.Embed(color=WHITE)
-            # chat_embed.title = f"**SLEEP TIMER** <a:b_hitopotatosleep:864921119538937968>"
-            chat_embed.description = f"**CHANNEL** : {channel.mention}\n\n`{fix_date}`\n{format_relative(futuredate)}"
-            if ctx.author.avatar is not None:
-                chat_embed.set_footer(text=f'Requested by {ctx.author}', icon_url=ctx.author.avatar.url)
-            else:
-                chat_embed.set_footer(text=f'Requested by {ctx.author}')
-            
-            await chat_channel.send(embed=chat_embed)
+            chat_channel = ctx.guild.get_channel(861883647070437386)            
+            await chat_channel.send(embed=embed_edit)
 
             if timewait > 600:
                 self.channel_sleep[str(channel.id)] = {"time": futuredate_}
